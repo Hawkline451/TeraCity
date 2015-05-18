@@ -78,6 +78,22 @@ public class TreeGeneratorLSystem extends AbstractTreeGenerator {
                 position, rotation, bark, leaf, 0);
     }
 
+    /**
+     * Recursively generates the tree following argument settings and recursion depth.
+     * 
+     * @param view
+     * @param rand
+     * @param posX
+     * @param posY
+     * @param posZ
+     * @param angleOffset
+     * @param axiomIterator
+     * @param position
+     * @param rotation
+     * @param bark
+     * @param leaf
+     * @param depth
+     */
     private void recurse(CoreChunk view, Random rand, int posX, int posY, int posZ, float angleOffset,
                          CharSequenceIterator axiomIterator, Vector3f position, Matrix4f rotation,
                          Block bark, Block leaf, int depth) {
@@ -141,6 +157,8 @@ public class TreeGeneratorLSystem extends AbstractTreeGenerator {
     }
 
 	/**
+	 * Generates a leave on the tree being currently generated.
+	 * 
 	 * @param view
 	 * @param posX
 	 * @param posY
@@ -187,11 +205,23 @@ public class TreeGeneratorLSystem extends AbstractTreeGenerator {
 		position.add(dir);
 	}
 
+	/**
+	 * Setter of the leafType.
+	 * 
+	 * @param b
+	 * @return
+	 */
     public TreeGeneratorLSystem setLeafType(BlockUri b) {
         leafType = b;
         return this;
     }
 
+    /**
+     * Setter of the BarkType.
+     * 
+     * @param b
+     * @return
+     */
     public TreeGeneratorLSystem setBarkType(BlockUri b) {
         barkType = b;
         return this;
