@@ -136,13 +136,13 @@ public class CodeCityBuildingProvider implements FacetProvider {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int z = obj.getHeight(scale, factory) + level;
+            int height = obj.getHeight(scale, factory) + level;
 
-            if (region.contains(x, y) && facet.getWorld(x, y) < z)
-                facet.setWorld(x, y, z);
-            
+            if (region.contains(x, y) && facet.getWorld(x, y) < height)
+                for (int z = level; z < height; z++)
+                    facet.setMapObject(x, z, y, obj);
             if (obj.isOrigin())
-                processMap(facet, region, obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), z);
+                processMap(facet, region, obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height);
         }
     }
 }

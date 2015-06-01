@@ -44,8 +44,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
         int baseHeight = codeCityFacet.getBaseHeight();
         
         for (Vector3i position : chunkRegion.getRegion()) {
-        	int height = (int) codeCityFacet.getWorld(position.x, position.z);
-        	if(position.y >= baseHeight && position.y<height){
+        	if(codeCityFacet.containsBlock(position)){
         	    chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), stone);
         	}
         }
