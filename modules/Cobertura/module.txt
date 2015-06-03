@@ -1,0 +1,9 @@
+{
+    "id" : "Cobertura",
+    "version" : "0.1.0",
+    "author" : "",
+    "displayName" : "Cobertura",
+    "description" : "",
+    "dependencies" : [],
+    "isServerSideOnly" : false
+}
