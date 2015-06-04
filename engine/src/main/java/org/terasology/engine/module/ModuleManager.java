@@ -167,11 +167,9 @@ public class ModuleManager {
 
         
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/out.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/In.java", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/cyclomaticRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "read"));
 
         moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("os.name", "read"));//For known the OS to build the console command
 

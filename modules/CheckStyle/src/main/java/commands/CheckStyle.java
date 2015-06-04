@@ -1,4 +1,4 @@
-package analizer.console.commands;
+package commands;
 
 
 import java.io.BufferedReader;
@@ -28,24 +28,25 @@ public class CheckStyle extends BaseComponentSystem{
 						 @CommandParam("Metrica") String metric,
 						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
-		String pathDefault = "./modules/CheckStyle/PruebasCheckStyle";
-		String pathMetric = pathDefault;	
+		String pathDefault = "./modules/CheckStyle/";
+		String pathMetric = pathDefault + "libs/CheckStyle/Metrics/";	
 		
-		if (metric.equals("-b")) pathMetric += "/booleanRule.xml";
-		else if (metric.equals("-c")) pathMetric += "/cyclomaticRule.xml";
+		if (metric.equals("-b")) pathMetric += "booleanRule.xml";
+		else if (metric.equals("-c")) pathMetric += "cyclomaticRule.xml";
 		else return "No existe esa metrica, prueba con -b o -c";
 		
 		setMetricValue(pathMetric, max, getTextFromFile(pathMetric));
 		
-		String commandJar = "-jar " + pathDefault  + "/checkstyle-6.6-all.jar ";
+		String commandJar = "-jar " + pathDefault  + "libs/CheckStyle/checkstyle-6.6-all.jar ";
 		String commandMetric = " -c " + pathMetric + " ";
-		String commandOut = " -f xml -o " + pathDefault + "/out.xml ";
-		String commandFile = pathDefault + "/" + path;
+		String commandOut = " -f xml -o " + pathDefault + "Project/out.xml ";
+		String commandFile = pathDefault + path;
 		
 		Runtime.getRuntime().exec("java " + commandJar
 						          + commandMetric
 						          + commandOut
 						          + commandFile);
+		
 		return "Analisis realizado";
 	}
 		
