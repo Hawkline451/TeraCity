@@ -1,6 +1,7 @@
 package commands;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,26 +15,74 @@ import org.terasology.registry.In;
 
 @RegisterSystem
 public class CoberturaCommand {
-//	@In
-//    private Console console;
-//	@Command(shortDescription = "Analysis Cobertura.",
-//            requiredPermission = PermissionManager.NO_PERMISSION)
-//    public String AnalysisCobertura(
-//    		@CommandParam(value = "sourceFilePath",required = true) String filesFolder,
-//    		@CommandParam(value="sourceTestPath",required=true) String testsFolder
-//    		) throws IOException
-//    {
-//    	if (rules == null) rules = "basic";
-//    	if (outPutType == null) outPutType = "text";
-//    	String inputString = buildInputString(sourcePath, outPutType, rules);
-//    	
-//    	Thread t = new Thread(new ThreadCoberturaExecution(inputString,console));
-//		t.start();
-//		
-//		return "Esperando por resultados del analisis...";
-//    }
-//	private String buildInputString(String sourcePath, String outPutType, String rules) {
-//		
+	private String WINbase = ".\\modules\\Cobertura\\Cobertura-2.1.1\\";
+	@In
+    private Console console;
+	@Command(shortDescription = "Analysis Cobertura.",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String AnalysisCobertura(
+    		@CommandParam(value = "filesFolder",required = true) String filesFolder,
+    		@CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException
+    {
+    	//String inputString = buildInputString(filesFolder, testsFolder);
+    	
+    	//Thread t = new Thread(new ThreadCoberturaExecution(inputString, console));
+		//t.start();
+		
+		return "Esperando por resultados del analisis...";
+    }
+	
+	private String buildCompileTesteeCommand(String src){
+		String res;
+		res = "javac -g -d " + WINbase + "/analysis/classes " + src + "/*.java";
+		return res;
+	}
+	
+	private String buildCompileTestsCommand(String testSrc){
+		String res;
+		res = "javac -g -d "
+				+ WINbase + "/analysis/testClasses " 
+				+ "-classpath " + WINbase + "/analysis/classes/*;"
+				+ WINbase + "./lib/* "
+				+ testSrc+ "/*.java";
+		return res;
+	}
+
+	private String buildInstrumentCommand(){
+		String res;
+		res = "cobertura-instrument.bat "
+				+ "--datafile " + WINbase + "/analysis/datafile.ser" 
+				+ "--destination "+ WINbase + "/analysis/instrumented "
+				+ WINbase + "/analysis/classes";
+		return res;
+	}
+
+	private String buildRunTestCommand(){
+		String testClasses = WINbase + "/analysis/testClasses";
+		File folder = new File(testClasses);
+		File[] files = folder.listFiles();
+		String testList = "";
+		for (int i = 0; i < files.length; i++){
+			if (files[i].isFile()){
+				testList += " "+files[i].getName();
+			}
+		}
+		String res;
+		res = "java -cp" + WINbase + "\\cobertura-2.1.1.jar;"
+				+ WINbase + "/analysis/instrumented;"
+				+ WINbase + "/analysis/classes;"
+				+ WINbase + "lib/*; "
+				+ "org.junit.runner.JUnitCore " + testList;
+		return res;
+	}
+			
+
+	private String buildReportingCommand(String src){
+		String res;
+		res = "cobertura-report.bat --format html "
+				+ "--datafile" + WINbase + "/analysis/datafile.ser"
+				+ "--destination" + WINbase + "/analysis/reports" + src;
+		return res;
 //		String OS = System.getProperty("os.name");
 //		String beforePath = null;
 //		String separator = null;
@@ -47,7 +96,7 @@ public class CoberturaCommand {
 //			beforePath = "";
 //			separator = "\\";
 //		}
-//		
+		
 //		StringBuilder sb = new StringBuilder();
 //		sb.append("java -cp ");
 //		sb.append(beforePath);
@@ -70,42 +119,38 @@ public class CoberturaCommand {
 //		sb.append(" -R rulesets/java/");
 //		sb.append(rules);
 //		sb.append(".xml");
-//		return sb.toString();
-//	}
-//}
-//
-//class ThreadCoberturaExecution implements Runnable
-//{
-//	String inputString;
-//	Console console;
-//	public ThreadPMDExecution(String inputString, Console console) {
-//		// TODO Auto-generated constructor stub
-//		this.inputString = inputString;
-//		this.console = console;
-//	}
-//
-//	@Override
-//	public void run() 
-//	{
-//		// TODO Auto-generated method stub
 //		
-//		try {
-//			Process process;
-//			process = Runtime.getRuntime().exec(inputString);
-//			InputStream is = process.getInputStream();
-//			 InputStreamReader isr = new InputStreamReader(is);
-//			 BufferedReader br = new BufferedReader(isr);
-//				
-//			 String line;
-//			 while ((line = br.readLine()) != null) 
-//			 {
-//				 console.addMessage(line);	
-//			 }
-//			 console.addMessage("Fin del Analisis");
-//		}
-//		catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+//		return sb.toString();
+	}
+}
+
+class ThreadCoberturaExecution implements Runnable
+{
+	String inputString;
+	Console console;
+	public ThreadCoberturaExecution(String inputString, Console console) {
+		this.inputString = inputString;
+		this.console = console;
+	}
+
+	@Override
+	public void run() 
+	{		
+		try {
+			Process process;
+			process = Runtime.getRuntime().exec(inputString);
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+				
+			String line;
+			while ((line = br.readLine()) != null) {
+				 console.addMessage(line);	
+			}
+			console.addMessage("Fin del Analisis");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
