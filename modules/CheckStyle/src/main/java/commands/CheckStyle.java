@@ -13,8 +13,19 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 
+import utility.CheckStyleParser;
+
 @RegisterSystem
 public class CheckStyle extends BaseComponentSystem{
+	
+	@Command(shortDescription = "Muestra en consola la simplificacion del parseo del ultimo analisis")
+	public String showParse() throws IOException {
+		String path = "modules/CheckStyle/Project/out.xml";
+		CheckStyleParser cp = new CheckStyleParser();
+		cp.parse(path);
+		return cp.toString();
+	}
+	
 	
 	@Command(shortDescription = "Utiliza checkstyle para analizar un archivo", 
 			 helpText = "Utiliza checkStyle para para analizar algun programa segun la metrica dada \n"
@@ -23,12 +34,11 @@ public class CheckStyle extends BaseComponentSystem{
 			 		+ "    archivo: es el archivo a analizar \n"
 			 		+ "    metrica: b para booleana, ciclomatica por defecto \n"
 			 		+ "    maxValue: maximo valor de comparadores en caso de metrica booleana")
-	
 	public String cstyle(@CommandParam("Archivo") String path, 
 						 @CommandParam("Metrica") String metric,
 						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
-		String pathDefault = "./modules/CheckStyle/";
+		String pathDefault = "modules/CheckStyle/";
 		String pathMetric = pathDefault + "libs/CheckStyle/Metrics/";	
 		
 		if (metric.equals("-b")) pathMetric += "booleanRule.xml";
