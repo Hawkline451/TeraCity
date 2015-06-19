@@ -7,8 +7,6 @@ import java.util.List;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
 

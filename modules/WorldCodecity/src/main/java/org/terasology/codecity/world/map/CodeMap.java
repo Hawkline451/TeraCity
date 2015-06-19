@@ -78,5 +78,4 @@ public interface CodeMap {
      * @return Position where the code was added
      */
     public Vector2i getCodePosition(DrawableCode code);
-    
 }

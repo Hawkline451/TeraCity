@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
 public class CodeMapHash implements CodeMap {
     private HashMap<String, MapObject> contentMap;
     private HashMap<DrawableCode, Vector2i> codePosition;
-    private int size = 0;
+    private int size;
 
     /**
      * Create a new map representation of a set of CodeContent
@@ -20,6 +20,7 @@ public class CodeMapHash implements CodeMap {
     public CodeMapHash() {
         contentMap = new HashMap<String, MapObject>();
         codePosition = new HashMap<DrawableCode, Vector2i>();
+        size = 0;
     }
 
     /**
