@@ -1,5 +1,9 @@
 package org.terasology.codecity.world.generator;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
+import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
@@ -27,7 +32,8 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
-        generateCodeMap();
+        loadCodeMapDefault();
+        //loadCodeRepresentationFromSocket();
         super.initialize();
     }
 
@@ -41,7 +47,42 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
                 .setSeaLevel(0);
     }
     
-    private void generateCodeMap() {
+    /**
+     * Load the Code Representation object from a socket connection
+     * @return The loaded Code Representation
+     */
+    private CodeRepresentation loadCodeRepresentationFromSocket() {
+        int portNumber = 25778;
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(portNumber);
+            return getCodeRepresentation(serverSocket);
+        } catch (IOException | ClassNotFoundException e) {
+            return new CodePackage("", "");
+        } finally {
+            try {
+                if (serverSocket != null) {
+                    serverSocket.close();
+                }
+            } catch (IOException e) { }
+        }
+    }
+    
+    /**
+     * Get the Code Representation from the given ServerSocket
+     * @param serverSocket Socket from where the client will be connected
+     * @return The loaded Code Representation
+     */
+    private CodeRepresentation getCodeRepresentation(ServerSocket serverSocket) throws IOException, ClassNotFoundException {
+        Socket clientSocket = serverSocket.accept();
+        ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+        return (CodeRepresentation)input.readObject();
+    }
+    
+    /**
+     * Load the default code representation
+     */
+    private void loadCodeMapDefault() {
         CodePackage facet = new CodePackage("facet", "");
         CodePackage generator = new CodePackage("generator", "");
         CodePackage map = new CodePackage("map", "");

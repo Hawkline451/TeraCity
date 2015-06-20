@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ReflectPermission;
+import java.net.SocketPermission;
 import java.net.URISyntaxException;
 import java.security.Policy;
 import java.util.Collections;
@@ -118,6 +119,7 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.regex");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.net");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.image");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.annotations");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.cache");
@@ -168,7 +170,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission("com.google.gson.internal", ReflectPermission.class);
 
         
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new SocketPermission("localhost:25778","listen,resolve"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute")); // For calling Runtime.execute into the new modules
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/out.xml", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/In.java", "read"));
