@@ -26,14 +26,19 @@ import org.terasology.world.generator.RegisterWorldGenerator;
  */
 @RegisterWorldGenerator(id = "codecity", displayName = "CodeCity", description = "Generates the world using a CodeCity structure")
 public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
+    private final CodeScale cScale = new SquareRootCodeScale();
+
     public CodeCityWorldGenerator(SimpleUri uri) {
         super(uri);
     }
 
     @Override
     public void initialize() {
-        loadCodeMapDefault();
-        //loadCodeRepresentationFromSocket();
+        CodeRepresentation code = loadCodeRepresentationDefault();
+        //CodeRepresentation code = loadCodeRepresentationFromSocket();
+        CodeMap codeMap = generateCodeMap(code);
+        CoreRegistry.put(CodeMap.class, codeMap);
+
         super.initialize();
     }
 
@@ -78,11 +83,23 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
         return (CodeRepresentation)input.readObject();
     }
-    
+
+    /**
+     * Insert into the CodeRegistry the DrawableCode, gen
+     * @param code
+     */
+    private CodeMap generateCodeMap(CodeRepresentation code) {
+        List<DrawableCode> list = new ArrayList<DrawableCode>();
+        list.add(code.getDrawableCode());
+
+        CodeMapFactory factory = new CodeMapFactory(cScale);
+        return factory.generateMap(list);
+    }
+
     /**
      * Load the default code representation
      */
-    private void loadCodeMapDefault() {
+    private CodeRepresentation loadCodeRepresentationDefault() {
         CodePackage facet = new CodePackage("facet", "");
         CodePackage generator = new CodePackage("generator", "");
         CodePackage map = new CodePackage("map", "");
@@ -138,12 +155,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         scale.addCodeContent(cLin);
         scale.addCodeContent(cSqu);
         structure.addCodeContent(scale);
- 
-        List<DrawableCode> code = new ArrayList<DrawableCode>();
-        code.add(terasology.getDrawableCode());
         
-        CodeScale cScale = new SquareRootCodeScale();
-        CodeMapFactory factory = new CodeMapFactory(cScale);
-        CoreRegistry.put(CodeMap.class, factory.generateMap(code));
+        return terasology;
     }
 }
