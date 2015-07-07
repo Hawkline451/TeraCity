@@ -10,6 +10,7 @@ import java.util.List;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.DrawableCodeFactory;
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -90,7 +91,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      */
     private CodeMap generateCodeMap(CodeRepresentation code) {
         List<DrawableCode> list = new ArrayList<DrawableCode>();
-        list.add(code.getDrawableCode());
+        list.add(DrawableCodeFactory.generateDrawableCode(code));
 
         CodeMapFactory factory = new CodeMapFactory(cScale);
         return factory.generateMap(list);

@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.terasology.codecity.world.map.DrawableCode;
-import org.terasology.codecity.world.map.DrawableCodePackage;
-
 public class CodePackage extends CodeRepresentation implements Serializable {
     private static final long serialVersionUID = -8679763624498442725L;
     private List<CodeRepresentation> contentList;
@@ -28,12 +25,12 @@ public class CodePackage extends CodeRepresentation implements Serializable {
     public void addCodeContent(CodeRepresentation content) {
         contentList.add(content);
     }
-
+    
     /**
-     * {@inheritDoc}
+     * Get the code that is contained in the package
+     * @return
      */
-    @Override
-    public DrawableCode getDrawableCode() {
-        return new DrawableCodePackage(contentList);
+    public List<CodeRepresentation> getContent() {
+        return new ArrayList<CodeRepresentation>(contentList);
     }
 }

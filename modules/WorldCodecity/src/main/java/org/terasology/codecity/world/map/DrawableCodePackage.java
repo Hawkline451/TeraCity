@@ -3,6 +3,7 @@ package org.terasology.codecity.world.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
@@ -10,7 +11,8 @@ import org.terasology.codecity.world.structure.scale.CodeScale;
  * This class represent a Package that can be drawed in the map
  */
 public class DrawableCodePackage implements DrawableCode {
-    List<DrawableCode> contentList;
+    private CodePackage base;
+    private List<DrawableCode> contentList;
 
     /**
      * Create a new DrawableCodePackage
@@ -18,10 +20,11 @@ public class DrawableCodePackage implements DrawableCode {
      * @param baseContent
      *            Content of the package
      */
-    public DrawableCodePackage(List<CodeRepresentation> baseContent) {
+    public DrawableCodePackage(CodePackage base) {
+        this.base = base;
         contentList = new ArrayList<DrawableCode>();
-        for (CodeRepresentation content : baseContent)
-            contentList.add(content.getDrawableCode());
+        for (CodeRepresentation content : base.getContent())
+            contentList.add(DrawableCodeFactory.generateDrawableCode(content));
     }
 
     @Override

@@ -2,8 +2,6 @@ package org.terasology.codecity.world.structure;
 
 import java.io.Serializable;
 
-import org.terasology.codecity.world.map.DrawableCode;
-
 /**
  * This class show the size of a portion of the code.
  */
@@ -33,10 +31,4 @@ public abstract class CodeRepresentation implements Serializable {
     public String getName() {
         return name;
     }
-
-    /**
-     * Generate a Drawable version of the content
-     * @return
-     */
-    public abstract DrawableCode getDrawableCode();
 }

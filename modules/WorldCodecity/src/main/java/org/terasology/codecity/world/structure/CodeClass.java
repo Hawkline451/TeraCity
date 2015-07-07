@@ -2,9 +2,6 @@ package org.terasology.codecity.world.structure;
 
 import java.io.Serializable;
 
-import org.terasology.codecity.world.map.DrawableCode;
-import org.terasology.codecity.world.map.DrawableCodeClass;
-
 /**
  * This class represent a Class of a project, saving the variables and length
  */
@@ -37,13 +34,5 @@ public class CodeClass extends CodeRepresentation implements Serializable {
      */
     public int getClassLength() {
         return length;
-    }
-    
-    /**
-     * {@inheritDoc} 
-     */
-    @Override
-    public DrawableCode getDrawableCode() {
-        return new DrawableCodeClass(this);
     }
 }
