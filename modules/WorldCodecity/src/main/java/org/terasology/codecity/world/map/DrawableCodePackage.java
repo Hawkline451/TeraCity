@@ -26,6 +26,14 @@ public class DrawableCodePackage implements DrawableCode {
         for (CodeRepresentation content : base.getContent())
             contentList.add(DrawableCodeFactory.generateDrawableCode(content));
     }
+    
+    /**
+     * Get the CodePackage which is the base of the drawable representation.
+     * @return base of the DrawableCodePackage class.
+     */
+    public CodePackage getBase() {
+        return base;
+    }
 
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {

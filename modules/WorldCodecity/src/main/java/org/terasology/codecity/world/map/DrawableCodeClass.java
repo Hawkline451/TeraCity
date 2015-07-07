@@ -15,6 +15,14 @@ public class DrawableCodeClass implements DrawableCode {
     public DrawableCodeClass(CodeClass codeClass) {
         base = codeClass;
     }
+    
+    /**
+     * Get the CodeClass which is the base of the drawable representation.
+     * @return base of the DrawableCodeClass class.
+     */
+    public CodeClass getBase() {
+        return base;
+    }
 
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {
