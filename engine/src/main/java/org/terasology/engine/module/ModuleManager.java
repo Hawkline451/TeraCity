@@ -184,8 +184,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.ByteBuffer.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.IntBuffer.class);
 
-        Policy.setPolicy(new ModuleSecurityPolicy());
-        System.setSecurityManager(moduleSecurityManager);
+        //Policy.setPolicy(new ModuleSecurityPolicy());
+        //System.setSecurityManager(moduleSecurityManager);
     }
 
     public ModuleRegistry getRegistry() {
