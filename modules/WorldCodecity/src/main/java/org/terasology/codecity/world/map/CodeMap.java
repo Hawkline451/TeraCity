@@ -23,7 +23,7 @@ public interface CodeMap {
      * @param x
      *            Coordinate x to be used
      * @param z
-     *            Coordinate y to be used
+     *            Coordinate z to be used
      * @return
      */
     public boolean isUsed(int x, int z);
@@ -78,5 +78,4 @@ public interface CodeMap {
      * @return Position where the code was added
      */
     public Vector2i getCodePosition(DrawableCode code);
-    
 }

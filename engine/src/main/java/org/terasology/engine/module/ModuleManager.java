@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ReflectPermission;
+import java.net.SocketPermission;
 import java.net.URISyntaxException;
 import java.security.Policy;
 import java.util.Collections;
@@ -118,6 +119,7 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.regex");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.net");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.image");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.annotations");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.cache");
@@ -154,10 +156,9 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(LoggerFactory.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(Logger.class);
-                
+
         moduleSecurityManager.getBasePermissionSet().addAPIClass(org.terasology.rendering.world.WorldRenderer.class);//For accessing the worldRenderer from the Coloring module
-         
-          
+
         APIScanner apiScanner = new APIScanner(moduleSecurityManager);
         for (Module module : registry) {
             if (module.isOnClasspath()) {
@@ -169,7 +170,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission("com.google.gson.internal", ReflectPermission.class);
 
         
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new SocketPermission("localhost:25778","listen,resolve"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute")); // For calling Runtime.execute into the new modules
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/out.xml", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/In.java", "read"));
@@ -182,8 +184,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.ByteBuffer.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.IntBuffer.class);
 
-        Policy.setPolicy(new ModuleSecurityPolicy());
-        System.setSecurityManager(moduleSecurityManager);
+        //Policy.setPolicy(new ModuleSecurityPolicy());
+        //System.setSecurityManager(moduleSecurityManager);
     }
 
     public ModuleRegistry getRegistry() {
