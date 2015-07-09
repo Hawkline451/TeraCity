@@ -28,14 +28,13 @@ public abstract class XmlParser {
 
 			doc.getDocumentElement().normalize();
 
-			NodeList files = doc.getElementsByTagName("file");
-			parseFiles(files);
+			parseFiles(doc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public abstract void parseFiles(NodeList files); 
+	public abstract void parseFiles(Document doc); 
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();

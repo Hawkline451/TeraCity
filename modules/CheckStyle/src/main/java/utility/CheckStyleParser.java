@@ -1,5 +1,6 @@
 package utility;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -14,7 +15,8 @@ public class CheckStyleParser extends XmlParser {
 	}
 	
 	@Override
-	public void parseFiles(NodeList files) {
+	public void parseFiles(Document doc) {
+		NodeList files = doc.getElementsByTagName("file");
 		for (int i = 0; i < files.getLength(); i++) {
 			Node fileNode = files.item(i);
 			if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
