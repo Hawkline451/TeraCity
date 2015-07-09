@@ -94,6 +94,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	@Command(shortDescription = "Create a building  of the color specified({Red,Blue,Green} implemented)")
     public String placeColorBuilding(@CommandParam("colorBlock") String colorBlock,
     		                         @CommandParam("X") int xpos,
+    		                         @CommandParam("Y") int ypos,
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
     	if(!isImplementedColor(colorBlock))
@@ -113,7 +114,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	for(int y = 0; y< size; ++y)
-        		world.setBlock(new Vector3i(xpos, (12 + y), zpos), blockFamily.getArchetypeBlock());
+        		world.setBlock(new Vector3i(xpos, (ypos + y), zpos), blockFamily.getArchetypeBlock());
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
