@@ -18,7 +18,8 @@ public class CoberturaCommand extends BaseComponentSystem{
 	
 	@In
     private Console console;
-	@Command(shortDescription = "Analisis usando Cobertura",
+	
+	@Command(shortDescription = "Cobertura Analysis.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String CoberturaAnalysis(
     		@CommandParam(value = "filesFolder",required = true) String filesFolder,
@@ -27,61 +28,51 @@ public class CoberturaCommand extends BaseComponentSystem{
     	Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
 		t.start();
 		
-		return "Esperando por resultados del analisis ...";
+		return "Esperando por resultados del analisis...";
     }
 	
 }
 
 class ThreadCoberturaExecution implements Runnable {
 	
-	private Console console;
-	private String filesFolder;
-	private String testsFolder;
-	private String pathSep = File.pathSeparator;
-	public String extension;
-	private String base = "./modules/Cobertura/Cobertura-2.1.1";
+	Console console;
+	String filesFolder;
+	String testsFolder;
+	private String WINbase = "./modules/Cobertura/Cobertura-2.1.1";
 	
 	public ThreadCoberturaExecution(String files, String tests, Console console) {
 		this.console = console;
 		this.filesFolder = files;
 		this.testsFolder = tests;
-		
-		String OS = System.getProperty("os.name");
-		if (OS.startsWith("Linux")){
-			extension = ".sh";
-		}
-		else if (OS.startsWith("Windows")){
-			extension = ".bat";
-		}
 	}
 	
 	private String buildCompileTesteeCommand(String src){
 		String res;
-		res = "javac -g -d " + base + "/analysis/classes " + src + "/*.java";
+		res = "javac -g -d " + WINbase + "/analysis/classes " + src + "/*.java";
 		return res;
 	}
 	
 	private String buildCompileTestsCommand(String testSrc){
 		String res;
 		res = "javac -g "
-				+ "-d " + base + "/analysis/testClasses " 
-				+ "-cp " + base + "/analysis/classes" + pathSep
-				+ base + "/lib/* "
+				+ "-d " + WINbase + "/analysis/testClasses " 
+				+ "-cp " + WINbase + "/analysis/classes;"
+				+ WINbase + "/lib/* "
 				+ testSrc+ "/*.java ";
 		return res;
 	}
 
 	private String buildInstrumentCommand(){
 		String res;
-		res = "\"" + base + "/cobertura-instrument" + extension + "\" "
-				+ "--datafile " + base + "/analysis/datafile.ser " 
-				+ "--destination "+ base + "/analysis/instrumented "
-				+ base + "/analysis/classes";
+		res = "\"" + WINbase + "/cobertura-instrument.bat\" "
+				+ "--datafile " + WINbase + "/analysis/datafile.ser " 
+				+ "--destination "+ WINbase + "/analysis/instrumented "
+				+ WINbase + "/analysis/classes";
 		return res;
 	}
 
 	private String buildRunTestCommand(){
-		String testClasses = base + "/analysis/testClasses";
+		String testClasses = WINbase + "/analysis/testClasses";
 		File folder = new File(testClasses);
 		File[] files = folder.listFiles();
 		String testList = "";
@@ -93,21 +84,21 @@ class ThreadCoberturaExecution implements Runnable {
 		
 		testList = testList.replace(".class", "");
 		String res;
-		res = "java -cp " + base + "/cobertura-2.1.1.jar" + pathSep
-				+ base + "/analysis/instrumented" + pathSep
-				+ base + "/analysis/classes" + pathSep
-				+ base + "/analysis/testClasses" + pathSep
-				+ base + "/lib/*" + pathSep + " "
-				+ "-Dnet.sourceforge.cobertura.datafile=" + base + "/analysis/datafile.ser "
+		res = "java -cp " + WINbase + "/cobertura-2.1.1.jar;"
+				+ WINbase + "/analysis/instrumented;"
+				+ WINbase + "/analysis/classes;"
+				+ WINbase + "/analysis/testClasses;"
+				+ WINbase + "/lib/*; "
+				+ "-Dnet.sourceforge.cobertura.datafile=" + WINbase + "/analysis/datafile.ser "
 				+ "org.junit.runner.JUnitCore " + testList;
 		return res;
 	}
 			
 	private String buildReportingCommand(){
 		String res;
-		res = "\"" + base + "/cobertura-report" + extension + "\" --format xml "
-				+ "--datafile " + base + "/analysis/datafile.ser "
-				+ "--destination " + base + "/analysis/reports " + filesFolder;
+		res = "\"" + WINbase + "/cobertura-report.bat\" --format html "
+				+ "--datafile " + WINbase + "/analysis/datafile.ser "
+				+ "--destination " + WINbase + "/analysis/reports " + filesFolder;
 		return res;
 	}
 	
@@ -115,7 +106,7 @@ class ThreadCoberturaExecution implements Runnable {
 	public void run(){		
 		try {
 			Process process;
-//			String line;
+			String line;
 			String commands = buildCompileTesteeCommand(filesFolder) + "&&"
 		    		+ buildCompileTestsCommand(testsFolder) + "&&"
 		    		+ buildInstrumentCommand();
@@ -124,7 +115,7 @@ class ThreadCoberturaExecution implements Runnable {
 			for (String input : commands.split("&&")){
 				console.addMessage(input+"\n");
 				process = Runtime.getRuntime().exec(input);
-//				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				process.waitFor();
 				
 //				while ((line = br.readLine()) != null) {
@@ -136,11 +127,10 @@ class ThreadCoberturaExecution implements Runnable {
 			for (String input : commands.split("&&")){
 				console.addMessage(input+"\n");
 				process = Runtime.getRuntime().exec(input);
-				// BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				process.waitFor();
 			}
-			console.addMessage("Fin del Analisis:\n");
-			console.addMessage(XMLParser.parse(base + "/analysis/reports/coverage.xml"));
+			console.addMessage("Fin del Analisis");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
