@@ -149,6 +149,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.yourkit.runtime");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.bulletphysics.linearmath");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("sun.reflect");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); // For use javax.xml.parsers into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); // For use org.w3c.dom into the new modules 
         moduleSecurityManager.getBasePermissionSet().addAPIClass(com.esotericsoftware.reflectasm.MethodAccess.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(IOException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);
@@ -197,21 +199,21 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "execute"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "read"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "write"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "execute"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "execute"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "read"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "write"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "execute"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "execute"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "read"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "write"));
+//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "execute"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "write"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "execute"));
@@ -223,8 +225,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.ByteBuffer.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.IntBuffer.class);
 
-        Policy.setPolicy(new ModuleSecurityPolicy());
-        System.setSecurityManager(moduleSecurityManager);
+//        Policy.setPolicy(new ModuleSecurityPolicy());
+//        System.setSecurityManager(moduleSecurityManager);
     }
 
     public ModuleRegistry getRegistry() {
