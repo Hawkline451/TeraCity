@@ -15,6 +15,7 @@ public abstract class CodeRepresentation implements Serializable {
      * @param github Github link to the document
      */
     public CodeRepresentation(String name, String github) {
+        this.name = name;
         this.github = github;
     }
 
