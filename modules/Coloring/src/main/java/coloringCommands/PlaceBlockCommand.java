@@ -33,10 +33,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         offset.scale(3);
         spawnPos.add(offset);
 
-        BlockFamily blockFamily;
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
+        BlockFamily blockFamily = getBlockFamily(colorBlock);
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
             world.setBlock(new Vector3i((int) spawnPos.x, (int) spawnPos.y, (int) spawnPos.z), blockFamily.getArchetypeBlock());
@@ -76,10 +73,8 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         offset.scale(3);
         spawnPos.add(offset);
 
-        BlockFamily blockFamily;
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
+        BlockFamily blockFamily = getBlockFamily(colorBlock);
+        
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	for(int x = 0; x<=19; ++x)
@@ -107,10 +102,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         offset.scale(3);
         spawnPos.add(offset);
 
-        BlockFamily blockFamily;
-        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
+        BlockFamily blockFamily = getBlockFamily(colorBlock);
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	for(int y = 0; y< size; ++y)
@@ -119,6 +111,13 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+	
+	private BlockFamily getBlockFamily(String colorBlock) {
+		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
+        BlockFamily blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
+        return blockFamily;
+	}
 
 
 }
