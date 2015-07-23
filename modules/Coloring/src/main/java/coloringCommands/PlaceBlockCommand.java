@@ -2,10 +2,18 @@ package coloringCommands;
 
 import java.util.List;
 
+import org.terasology.codecity.world.facet.CodeCityFacet;
+import org.terasology.codecity.world.map.CodeMap;
+import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.math.Rect2i;
+import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -20,7 +28,12 @@ import org.terasology.world.block.family.BlockFamily;
 public class PlaceBlockCommand extends BaseComponentSystem {
 
     private String[] colors = {"Red", "Blue", "Green"};
-
+    
+    //Same that in CodeCityBuildingProvider
+    private final CodeScale scale = new SquareRootCodeScale();
+    private final CodeMapFactory factory = new CodeMapFactory(scale);
+    
+    
     @Command(shortDescription = "Places a block in front of the player of the color specified({Red,Blue,Green} implemented)")
     public String placeColorBlock(@CommandParam("colorBlock") String colorBlock) {
     	if(!isImplementedColor(colorBlock))
@@ -119,5 +132,33 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         return blockFamily;
 	}
 
+	@Command(shortDescription = "Colors the entire city of the color specified({Red,Blue,Green} implemented)")
+    public String colorCity(@CommandParam("colorBlock") String colorBlock) {
+    	if(!isImplementedColor(colorBlock))
+    		return "Put an implemented color in {Red, Blue, Green}";
+    	
+    	BlockFamily blockFamily = getBlockFamily(colorBlock);
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
+            return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
 
+	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, BlockFamily blockFamily) {
+        for (MapObject obj : map.getMapObjects()) {
+            int x = obj.getPositionX() + offset.getX();
+            int y = obj.getPositionZ() + offset.getY();
+            int height = obj.getHeight(scale, factory) + level;
+
+            for (int z = level; z < height; z++)
+            	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
+            if (obj.isOrigin())
+                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
+        }
+    }
+
+	
 }
