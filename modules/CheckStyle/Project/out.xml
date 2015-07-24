@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.6">
+<file name="/home/edward/git/Terasology/modules/CheckStyle/Project/In/File3.java">
+<error line="5" column="17" severity="warning" message="La complejidad de la expresión lógica es 4 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="6" column="17" severity="warning" message="La complejidad de la expresión lógica es 5 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="7" column="17" severity="warning" message="La complejidad de la expresión lógica es 6 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="8" column="17" severity="warning" message="La complejidad de la expresión lógica es 7 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+</file>
+<file name="/home/edward/git/Terasology/modules/CheckStyle/Project/In/File1.java">
+<error line="7" column="17" severity="warning" message="La complejidad de la expresión lógica es 4 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="8" column="17" severity="warning" message="La complejidad de la expresión lógica es 5 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="9" column="17" severity="warning" message="La complejidad de la expresión lógica es 6 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="10" column="17" severity="warning" message="La complejidad de la expresión lógica es 7 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+<error line="11" column="17" severity="warning" message="La complejidad de la expresión lógica es 8 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+</file>
+<file name="/home/edward/git/Terasology/modules/CheckStyle/Project/In/File2.java">
+<error line="9" column="33" severity="warning" message="La complejidad de la expresión lógica es 4 (máxima permitida es 3)." source="com.puppycrawl.tools.checkstyle.checks.metrics.BooleanExpressionComplexityCheck"/>
+</file>
+</checkstyle>

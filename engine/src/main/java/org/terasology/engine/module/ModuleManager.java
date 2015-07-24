@@ -113,6 +113,8 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.math");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.io"); //For use java.io into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); //For use javax.xml.parsers into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); //For use org.w3c.dom into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.atomic");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.locks");
@@ -171,12 +173,13 @@ public class ModuleManager {
 
         
         moduleSecurityManager.getBasePermissionSet().grantPermission(new SocketPermission("localhost:25778","listen,resolve"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute")); // For calling Runtime.execute into the new modules
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/out.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/In.java", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/cyclomaticRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/Project/out.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("user.dir","read")); // For read files to parse
 
         moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("os.name", "read"));//For known the OS to build the console command
 
