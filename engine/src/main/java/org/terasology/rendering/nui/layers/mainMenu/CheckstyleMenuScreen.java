@@ -32,7 +32,7 @@ import org.terasology.rendering.nui.widgets.ActivateEventListener;
 /**
  * @author Immortius
  */
-public class ColoringMenuScreen extends CoreScreenLayer {
+public class CheckstyleMenuScreen extends CoreScreenLayer {
 
     private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
 
@@ -45,27 +45,14 @@ public class ColoringMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        WidgetUtil.trySubscribe(this, "checkstyle", new ActivateEventListener() {
-        	  @Override
-              public void onActivated(UIWidget button) {
-                  getManager().pushScreen("engine:checkstyleMenuScreen");
-              }
-        });
-        WidgetUtil.trySubscribe(this, "pmd", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "ciclomatica", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	CoreCommands c = new CoreCommands();
             	c.fullscreen();
             }
         });
-        WidgetUtil.trySubscribe(this, "cobertura", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
-            }
-        });
-        WidgetUtil.trySubscribe(this, "git", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "booleana", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	CoreCommands c = new CoreCommands();
