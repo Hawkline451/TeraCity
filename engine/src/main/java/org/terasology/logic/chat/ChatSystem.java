@@ -90,7 +90,7 @@ public class ChatSystem extends BaseComponentSystem {
     }
 
     /*
-     * Show new message, it chat and console are hidden show overlay.
+     * Show new message, if chat and console are hidden show overlay.
      */
     @ReceiveEvent(components = ClientComponent.class)
     public void onMessage(MessageEvent event, EntityRef entity) {
@@ -127,7 +127,7 @@ public class ChatSystem extends BaseComponentSystem {
     }
 
     /*
-     * Command to send a private missage to another player
+     * Command to send a private message to another player
      */
     @Command(runOnServer = true,
             requiredPermission = PermissionManager.CHAT_PERMISSION,
