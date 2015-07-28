@@ -1,4 +1,4 @@
-package analizer.console.commands;
+package commands;
 
 
 import java.io.BufferedReader;
@@ -13,8 +13,19 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 
+import utility.CheckStyleParser;
+
 @RegisterSystem
 public class CheckStyle extends BaseComponentSystem{
+	
+	@Command(shortDescription = "Muestra en consola la simplificacion del parseo del ultimo analisis")
+	public String showParse() throws IOException {
+		String path = "modules/CheckStyle/Project/out.xml";
+		CheckStyleParser cp = new CheckStyleParser();
+		cp.parse(path);
+		return cp.toString();
+	}
+	
 	
 	@Command(shortDescription = "Utiliza checkstyle para analizar un archivo", 
 			 helpText = "Utiliza checkStyle para para analizar algun programa segun la metrica dada \n"
@@ -23,29 +34,29 @@ public class CheckStyle extends BaseComponentSystem{
 			 		+ "    archivo: es el archivo a analizar \n"
 			 		+ "    metrica: b para booleana, ciclomatica por defecto \n"
 			 		+ "    maxValue: maximo valor de comparadores en caso de metrica booleana")
-	
 	public String cstyle(@CommandParam("Archivo") String path, 
 						 @CommandParam("Metrica") String metric,
 						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
-		String pathDefault = "./modules/CheckStyle/PruebasCheckStyle";
-		String pathMetric = pathDefault;	
+		String pathDefault = "modules/CheckStyle/";
+		String pathMetric = pathDefault + "libs/CheckStyle/Metrics/";	
 		
-		if (metric.equals("-b")) pathMetric += "/booleanRule.xml";
-		else if (metric.equals("-c")) pathMetric += "/cyclomaticRule.xml";
+		if (metric.equals("-b")) pathMetric += "booleanRule.xml";
+		else if (metric.equals("-c")) pathMetric += "cyclomaticRule.xml";
 		else return "No existe esa metrica, prueba con -b o -c";
 		
 		setMetricValue(pathMetric, max, getTextFromFile(pathMetric));
 		
-		String commandJar = "-jar " + pathDefault  + "/checkstyle-6.6-all.jar ";
+		String commandJar = "-jar " + pathDefault  + "libs/CheckStyle/checkstyle-6.6-all.jar ";
 		String commandMetric = " -c " + pathMetric + " ";
-		String commandOut = " -f xml -o " + pathDefault + "/out.xml ";
-		String commandFile = pathDefault + "/" + path;
+		String commandOut = " -f xml -o " + pathDefault + "Project/out.xml ";
+		String commandFile = pathDefault + path;
 		
 		Runtime.getRuntime().exec("java " + commandJar
 						          + commandMetric
 						          + commandOut
 						          + commandFile);
+		
 		return "Analisis realizado";
 	}
 		

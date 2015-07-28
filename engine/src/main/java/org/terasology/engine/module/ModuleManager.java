@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ReflectPermission;
+import java.net.SocketPermission;
 import java.net.URISyntaxException;
 import java.security.Policy;
 import java.util.Collections;
@@ -112,12 +113,15 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.math");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.io"); //For use java.io into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); //For use javax.xml.parsers into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); //For use org.w3c.dom into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.atomic");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.locks");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.regex");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.net");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.image");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.annotations");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.cache");
@@ -156,7 +160,7 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(LoggerFactory.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(Logger.class);
-        
+
         moduleSecurityManager.getBasePermissionSet().addAPIClass(org.terasology.rendering.world.WorldRenderer.class);//For accessing the worldRenderer from the Coloring module
 
         APIScanner apiScanner = new APIScanner(moduleSecurityManager);
@@ -170,54 +174,15 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission("com.google.gson.internal", ReflectPermission.class);
 
         
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new SocketPermission("localhost:25778","listen,resolve"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/out.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/In.java", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/booleanRule.xml", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/PruebasCheckStyle/cyclomaticRule.xml", "read"));
-        
-        // Cobertura
-        // TODO: Revisar que cosa aqui es estrictamente necesaria + refactorizar
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/cobertura-2.1.1/cobertura-instrument.bat", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/cobertura-2.1.1/cobertura-instrument.bat", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/cobertura-2.1.1/cobertura-instrument.bat", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/cobertura-report.bat", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/cobertura-report.bat", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/cobertura-report.bat", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/lib", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/lib", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/lib", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses", "execute"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "read"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "write"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/testClasses/TestIf.class", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes", "execute"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "read"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "write"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/classes/PruebaIf.class", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented", "execute"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "read"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "write"));
-//        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/instrumented/PruebaIf.class", "execute"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "read"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "write"));
-        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/Cobertura/Cobertura-2.1.1/analysis/reports", "execute"));
-        
+
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/Project/out.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("user.dir","read")); // For read files to parse
 
         moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("os.name", "read"));//For known the OS to build the console command
 

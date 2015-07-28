@@ -13,15 +13,29 @@ import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 public class JeditCommand  extends BaseComponentSystem {
 	 @Command( shortDescription = "Open jedit", helpText = "Open jedit in the class of the selected structure" )
      public String jedit(@CommandParam("Class") String className) {
-		 String baseFolder = "~/Escritorio/Terasology/CodeCity/";
+		 String osName = System.getProperty("os.name" );
+		 String baseFolder = System.getProperty("user.dir");
+		 String dir = baseFolder+"/CodeCity/"+className;
+		 Process p;
+		 
 		 try{
-		        String cmd = "jedit "+baseFolder+className;
-		        Process p=Runtime.getRuntime().exec(cmd);
-		        return "Work";
+			 if (osName.contains("Windows")){
+				 String[] cmd = new String[4];
+				 cmd[0] ="cmd.exe";
+				 cmd[1] = "/C";
+				 cmd[2] = "\"C:/Program Files/jedit/jedit.exe\"";
+				 cmd[3] = dir;
+				 p=Runtime.getRuntime().exec(cmd);
+			 }
+			 else{
+				 String cmd = "jedit "+dir;
+				 p=Runtime.getRuntime().exec(cmd);
+			 }
+		     return "Work";
 		        
 		 }
 		 catch(IOException e1) {
-			 return e1.toString();
+			 return "You must install jedit first";
 		 }
 	 }
 }
