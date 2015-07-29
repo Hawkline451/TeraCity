@@ -109,8 +109,8 @@ class ThreadPMDExecution implements Runnable
 				 console.addMessage(line);
 				 ++messageLines;
 			 }
-			 console.addMessage("Message's Lines: "+ messageLines);
-			 console.addMessage("Total Lines: "+new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath));
+			 console.addMessage("Lineas del mensage: "+ messageLines);
+			 console.addMessage("Lineas totales: "+new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath));
 			 console.addMessage("Fin del Analisis");
 		}
 		catch (Exception e) {
