@@ -124,6 +124,7 @@ class ThreadPMDExecution implements Runnable
 class LineCounter{
     //static Pattern backup = Pattern.compile(".*~");
     public static String JAVA_REGEX = ".*\\.java";
+    public static String EVERYTHING_REGEX = ".*";
     Pattern pat;
     public LineCounter(String regex){
         pat = Pattern.compile(regex);
