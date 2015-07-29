@@ -125,6 +125,7 @@ class LineCounter{
     //static Pattern backup = Pattern.compile(".*~");
     public static String JAVA_REGEX = ".*\\.java";
     public static String EVERYTHING_REGEX = ".*";
+    public static String C_CPP_REGEX = ".*\\.(c|(cpp)|h)";
     Pattern pat;
     public LineCounter(String regex){
         pat = Pattern.compile(regex);
