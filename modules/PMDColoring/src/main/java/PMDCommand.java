@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -15,7 +17,6 @@ import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.world.block.entity.placement.PlaceBlocks;
 
 
 @RegisterSystem
@@ -137,38 +138,48 @@ class ThreadPMDExecution implements Runnable
 class LineCounter{
     //static Pattern backup = Pattern.compile(".*~");
     public static String JAVA_REGEX = ".*\\.java";
-    public static String EVERYTHING_REGEX = ".*";
-    public static String C_CPP_REGEX = ".*\\.(c|(cpp)|h)";
+    public static String ALL_REGEX = ".*";
     Pattern pat;
     public LineCounter(String regex){
         pat = Pattern.compile(regex);
     }
     public int countLines(String s){
-        return recCount(new File(s));
+
+        try {
+            return recCount(new File(s), new HashSet<String>());
+        } catch (IOException e) {
+            return -1;
+        }
     }
-   private int recCount(File f){
-       if(!f.isDirectory()) return countLines(f);
-       int r=0;
-       for(File c:f.listFiles()){
-           r+= recCount(c);
-       }
-       return r;
-   }
-   private int countLines(File f) {
-       if(!pat.matcher(f.getPath()).matches()) return 0;
-       int i=0;
-       try {
-           BufferedReader br= new BufferedReader(new FileReader(f));
-           
-           for(String line=br.readLine() ;line !=null;line = br.readLine()){
-               i++;
-           }
-           br.close();
-           
-       } catch (FileNotFoundException e) {
-       } catch (IOException e) {
-       }
-       
-       return i;
-   }
+    private int recCount(File f, Set<String> files) throws IOException{
+        System.out.println(f.getCanonicalPath());
+        if(f.getCanonicalPath() == null || files.contains(f.getCanonicalPath()))
+            return 0;
+        files.add(f.getCanonicalPath());
+        System.out.println(f.getCanonicalPath());
+        if(!f.isDirectory()) return countLines(f);
+        int r=0;
+        for(File c:f.listFiles()){
+            r+= recCount(c, files);
+        }
+        return r;
+    }
+    private int countLines(File f) throws IOException {
+        if(f.getCanonicalPath() == null)
+            return 0;
+        if(!pat.matcher(f.getCanonicalPath()).matches()) return 0;
+        int i=0;
+        try {
+            BufferedReader br= new BufferedReader(new FileReader(f));
+
+            for(String line=br.readLine() ;line !=null;line = br.readLine()){
+                i++;
+            }
+            br.close();
+
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+        return i;
+    }
 }
