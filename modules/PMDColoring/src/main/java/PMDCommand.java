@@ -13,7 +13,9 @@ import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.world.block.entity.placement.PlaceBlocks;
 
 
 @RegisterSystem
@@ -106,11 +108,22 @@ class ThreadPMDExecution implements Runnable
 			 int messageLines = 0;
 			 while ((line = br.readLine()) != null) 
 			 {
-				 console.addMessage(line);
+				 //console.addMessage(line);
 				 ++messageLines;
 			 }
 			 console.addMessage("Lineas del mensage: "+ messageLines);
-			 console.addMessage("Lineas totales: "+new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath));
+			 
+			 int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
+			 
+			 console.addMessage("Lineas totales: "+ totalLines);
+			 if(rules.equals("comments"))
+			 {
+				 String color = new CommentsMetric(messageLines, totalLines).getColor();
+				 
+				 console.addMessage(color);
+				 PlaceBlockCommand c = CoreRegistry.get(PlaceBlockCommand.class);
+				 c.colorCity(color);
+			 }
 			 console.addMessage("Fin del Analisis");
 		}
 		catch (Exception e) {
@@ -157,10 +170,5 @@ class LineCounter{
        }
        
        return i;
-   }
-   public static void main(String[] args) {
-       LineCounter javaFiles = new LineCounter(LineCounter.JAVA_REGEX);
-        System.out.println(javaFiles.countLines("/u/a/2014/jromero/Desktop/Untitled Folder"));
-
    }
 }
