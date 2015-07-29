@@ -65,7 +65,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
             serverSocket = new ServerSocket(portNumber);
             return getCodeRepresentation(serverSocket);
         } catch (IOException | ClassNotFoundException e) {
-            return new CodePackage("", "");
+            return new CodePackage("", "", "");
         } finally {
             try {
                 if (serverSocket != null) {
