@@ -16,8 +16,8 @@ public class CodeClass extends CodeRepresentation implements Serializable {
      * @param variables Number of variables in the class.
      * @param length Number of lines in the class.
      */
-    public CodeClass(String name, int variables, int length, String github) {
-        super(name, github);
+    public CodeClass(String name, int variables, int length, String path, String github) {
+        super(name, path, github);
         this.variables = variables;
         this.length = length;
     }

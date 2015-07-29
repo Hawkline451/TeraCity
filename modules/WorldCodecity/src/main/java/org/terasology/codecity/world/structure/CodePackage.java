@@ -13,8 +13,8 @@ public class CodePackage extends CodeRepresentation implements Serializable {
      * @param name Name of the package
      * @param github Github link to the document
      */
-    public CodePackage(String name, String github) {
-        super(name, github);
+    public CodePackage(String name, String path, String github) {
+        super(name, path, github);
         contentList = new ArrayList<CodeRepresentation>();
     }
 
