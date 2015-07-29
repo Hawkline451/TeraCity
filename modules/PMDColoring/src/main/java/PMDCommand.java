@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -23,14 +26,28 @@ public class PMDCommand extends BaseComponentSystem{
     {
     	if (rules == null) rules = "basic";
     	if (outPutType == null) outPutType = "text";
-    	String inputString = buildInputString(sourcePath, outPutType, rules);
-    	
-    	Thread t = new Thread(new ThreadPMDExecution(inputString,console));
+    	Thread t = new Thread(new ThreadPMDExecution(sourcePath, outPutType, rules,console));
 		t.start();
-		
 		return "Esperando por resultados del analisis...";
     }
-	private String buildInputString(String sourcePath, String outPutType, String rules) {
+}
+
+class ThreadPMDExecution implements Runnable
+{
+	private String sourcePath;
+	private String outPutType;
+	private String rules;
+	private Console console;
+
+	public ThreadPMDExecution(String sourcePath, String outPutType, String rules, Console console) {
+		// TODO Auto-generated constructor stub
+		this.sourcePath = sourcePath;
+		this.outPutType = outPutType;
+		this.rules = rules;
+		this.console = console;
+	}
+	
+	private String buildInputString() {
 		
 		String OS = System.getProperty("os.name");
 		String beforePath = null;
@@ -70,23 +87,14 @@ public class PMDCommand extends BaseComponentSystem{
 		sb.append(".xml");
 		return sb.toString();
 	}
-}
 
-class ThreadPMDExecution implements Runnable
-{
-	String inputString;
-	Console console;
-	public ThreadPMDExecution(String inputString, Console console) {
-		// TODO Auto-generated constructor stub
-		this.inputString = inputString;
-		this.console = console;
-	}
-
+	
 	@Override
 	public void run() 
 	{
 		// TODO Auto-generated method stub
 		
+		String inputString = buildInputString();
 		try {
 			Process process;
 			process = Runtime.getRuntime().exec(inputString);
@@ -95,10 +103,14 @@ class ThreadPMDExecution implements Runnable
 			 BufferedReader br = new BufferedReader(isr);
 				
 			 String line;
+			 int messageLines = 0;
 			 while ((line = br.readLine()) != null) 
 			 {
-				 console.addMessage(line);	
+				 console.addMessage(line);
+				 ++messageLines;
 			 }
+			 console.addMessage("Message's Lines: "+ messageLines);
+			 console.addMessage("Total Lines: "+new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath));
 			 console.addMessage("Fin del Analisis");
 		}
 		catch (Exception e) {
@@ -108,3 +120,45 @@ class ThreadPMDExecution implements Runnable
 	}
 
 } 
+
+class LineCounter{
+    //static Pattern backup = Pattern.compile(".*~");
+    public static String JAVA_REGEX = ".*\\.java";
+    Pattern pat;
+    public LineCounter(String regex){
+        pat = Pattern.compile(regex);
+    }
+    public int countLines(String s){
+        return recCount(new File(s));
+    }
+   private int recCount(File f){
+       if(!f.isDirectory()) return countLines(f);
+       int r=0;
+       for(File c:f.listFiles()){
+           r+= recCount(c);
+       }
+       return r;
+   }
+   private int countLines(File f) {
+       if(!pat.matcher(f.getPath()).matches()) return 0;
+       int i=0;
+       try {
+           BufferedReader br= new BufferedReader(new FileReader(f));
+           
+           for(String line=br.readLine() ;line !=null;line = br.readLine()){
+               i++;
+           }
+           br.close();
+           
+       } catch (FileNotFoundException e) {
+       } catch (IOException e) {
+       }
+       
+       return i;
+   }
+   public static void main(String[] args) {
+       LineCounter javaFiles = new LineCounter(LineCounter.JAVA_REGEX);
+        System.out.println(javaFiles.countLines("/u/a/2014/jromero/Desktop/Untitled Folder"));
+
+   }
+}
