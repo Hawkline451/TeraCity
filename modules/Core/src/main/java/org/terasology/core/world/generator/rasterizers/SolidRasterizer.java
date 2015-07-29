@@ -15,9 +15,6 @@
  */
 package org.terasology.core.world.generator.rasterizers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.terasology.core.world.CoreBiome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.math.TeraMath;
@@ -48,7 +45,6 @@ public class SolidRasterizer implements WorldRasterizer {
     private Block grass;
     private Block snow;
     private Block dirt;
-    private Map<CoreBiome, TypeMappings> mappings;
 
     @Override
     public void initialize() {
@@ -59,16 +55,7 @@ public class SolidRasterizer implements WorldRasterizer {
         sand = blockManager.getBlock("core:Sand");
         grass = blockManager.getBlock("core:Grass");
         snow = blockManager.getBlock("core:Snow");
-
-        mappings = new HashMap<CoreBiome, TypeMappings>();
-        mappings.put(CoreBiome.FOREST, new Mountain());
-        mappings.put(CoreBiome.PLAINS, new Mountain());
-        mappings.put(CoreBiome.MOUNTAINS, new Mountain());
-        mappings.put(CoreBiome.SNOW, new Snow());
-        mappings.put(CoreBiome.DESERT, new Desert());
-        mappings.put(CoreBiome.OCEAN, new Ocean());
-        mappings.put(CoreBiome.BEACH, new Beach());
-        
+        dirt = blockManager.getBlock("core:Dirt");
     }
 
     @Override
@@ -107,95 +94,52 @@ public class SolidRasterizer implements WorldRasterizer {
         }
     }
 
-    /**
-     * Returns the block intended to be on the surface.
-     * 
-     * @param depth
-     * @param height
-     * @param type
-     * @return Block
-     */
     private Block getSurfaceBlock(int depth, int height, CoreBiome type) {
-        return mappings.containsKey(type) ? mappings.get(type).getSurfaceBlock(depth, height) : dirt;
+        switch (type) {
+            case FOREST:
+            case PLAINS:
+            case MOUNTAINS:
+                // Beach
+                if (depth == 0 && height > 32 && height < 128) {
+                    return grass;
+                } else if (depth == 0 && height >= 128) {
+                    return snow;
+                } else if (depth > 32) {
+                    return stone;
+                } else {
+                    return dirt;
+                }
+            case SNOW:
+                if (depth == 0 && height > 32) {
+                    // Snow on top
+                    return snow;
+                } else if (depth > 32) {
+                    // Stone
+                    return stone;
+                } else {
+                    // Dirt
+                    return dirt;
+                }
+            case DESERT:
+                if (depth > 8) {
+                    // Stone
+                    return stone;
+                } else {
+                    return sand;
+                }
+            case OCEAN:
+                if (depth == 0) {
+                    return sand;
+                } else {
+                    return stone;
+                }
+            case BEACH:
+                if (depth < 3) {
+                    return sand;
+                } else {
+                    return stone;
+                }
+        }
+        return dirt;
     }
-    
-    private interface TypeMappings{
-    	/**
-    	 * Polymorphic method that returns the block intended to be on the surface.
-    	 * For use in SolidRasterizer Class.
-    	 * 
-    	 * @param depth
-    	 * @param height
-    	 * @return
-    	 */
-    	public Block getSurfaceBlock(int depth, int height);
-    }
-    
-    private class Mountain implements TypeMappings{
-		@Override
-		public Block getSurfaceBlock(int depth, int height) {
-			// Beach
-            if (depth == 0 && height > 32 && height < 128) {
-                return grass;
-            } else if (depth == 0 && height >= 128) {
-                return snow;
-            } else if (depth > 32) {
-                return stone;
-            } else {
-                return dirt;
-            }
-		}    	
-    }
-    
-    private class Snow implements TypeMappings{
-		@Override
-		public Block getSurfaceBlock(int depth, int height) {
-			if (depth == 0 && height > 32) {
-                // Snow on top
-                return snow;
-            } else if (depth > 32) {
-                // Stone
-                return stone;
-            } else {
-                // Dirt
-                return dirt;
-            }
-		}    	
-    }
-    
-    private class Desert implements TypeMappings{
-		@Override
-		public Block getSurfaceBlock(int depth, int height) {
-			if (depth > 8) {
-                // Stone
-                return stone;
-            } else {
-                return sand;
-            }
-		}    	
-    }
-
-    private class Ocean implements TypeMappings{
-		@Override
-		public Block getSurfaceBlock(int depth, int height) {
-			if (depth == 0) {
-                return sand;
-            } else {
-                return stone;
-            }
-		}    	
-    }
-    
-    private class Beach implements TypeMappings{
-		@Override
-		public Block getSurfaceBlock(int depth, int height) {
-			if (depth < 3) {
-                return sand;
-            } else {
-                return stone;
-            }
-		}    	
-    }
-
-    
 }
