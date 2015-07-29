@@ -120,7 +120,11 @@ class ThreadPMDExecution implements Runnable
 			 if(rules.equals("comments"))
 			 {
 				 String color = new CommentsMetric(messageLines, totalLines).getColor();
-				 
+				 console.addMessage(color);
+			 }
+			 else if(rules.equals("codesize"))
+			 {
+				 String color = new CodeSizesMetric(messageLines, totalLines).getColor();
 				 console.addMessage(color);
 			 }
 			 console.addMessage("Fin del Analisis");
