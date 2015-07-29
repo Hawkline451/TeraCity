@@ -4,6 +4,6 @@
     "author" : "",
     "displayName" : "PMDColoring",
     "description" : "",
-    "dependencies" : [],
+    "dependencies" : [{"id":"Coloring","minVersion":"0.1.0"}],
     "isServerSideOnly" : false
 }
