@@ -122,8 +122,6 @@ class ThreadPMDExecution implements Runnable
 				 String color = new CommentsMetric(messageLines, totalLines).getColor();
 				 
 				 console.addMessage(color);
-				 PlaceBlockCommand c = CoreRegistry.get(PlaceBlockCommand.class);
-				 c.colorCity(color);
 			 }
 			 console.addMessage("Fin del Analisis");
 		}
