@@ -63,7 +63,6 @@ extensions
 /facades/*
 !/facades/PC
 !/facades/subprojects.gradle
-/modules/*
 !/modules/Core
 !/modules/CoreSampleGameplay
 !/modules/subprojects.gradle
@@ -77,3 +76,4 @@ extensions
 .DS_Store?
 .Spotlight-V100
 .Trashes
+modules/jeditint/src/main/java/org/terasology/logic/console/commands/JeditCommand.java
