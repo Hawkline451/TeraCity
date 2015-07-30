@@ -21,7 +21,7 @@ public class JeditManager {
 				 String cmd = "jedit "+dir;
 				 Runtime.getRuntime().exec(cmd);
 			 }
-		     return "Work";
+		     return "jEdit "+className;
 		        
 		 }
 		 catch(IOException e1) {
