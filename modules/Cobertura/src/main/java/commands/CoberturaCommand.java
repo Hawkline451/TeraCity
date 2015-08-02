@@ -19,6 +19,9 @@ public class CoberturaCommand extends BaseComponentSystem{
 	@In
     private Console console;
 	@Command(shortDescription = "Analisis usando Cobertura",
+			helpText = "Ejecuta el análisis de Cobertura sobre los archivos especificados\n"
+					+ "<filesFolder>: Archivos que son testeados\n"
+					+ "<testsFolder>: Archivos de test\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String CoberturaAnalysis(
     		@CommandParam(value = "filesFolder",required = true) String filesFolder,
@@ -115,28 +118,20 @@ class ThreadCoberturaExecution implements Runnable {
 	public void run(){		
 		try {
 			Process process;
-//			String line;
 			String commands = buildCompileTesteeCommand(filesFolder) + "&&"
 		    		+ buildCompileTestsCommand(testsFolder) + "&&"
 		    		+ buildInstrumentCommand();
 			
-			
 			for (String input : commands.split("&&")){
 				console.addMessage(input+"\n");
 				process = Runtime.getRuntime().exec(input);
-//				BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				process.waitFor();
-				
-//				while ((line = br.readLine()) != null) {
-//					 console.addMessage(line);	
-//				}
 			}
 			
 			commands = buildRunTestCommand() + "&&" + buildReportingCommand();
 			for (String input : commands.split("&&")){
 				console.addMessage(input+"\n");
 				process = Runtime.getRuntime().exec(input);
-				// BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				process.waitFor();
 			}
 			console.addMessage("Fin del Analisis:\n");
