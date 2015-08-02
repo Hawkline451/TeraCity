@@ -1,4 +1,4 @@
-package org.terasology.FlightModeHUDToggle.systems;
+package flyMode;
 
 import org.terasology.HUDToggleButtons.systems.HUDToggleButtonsClientSystem;
 import org.terasology.codecity.world.map.*;
@@ -35,7 +35,7 @@ import org.terasology.world.generator.WorldGenerator;
  * Class that toggles the Flying mode in Terasology when clicking a button
  */
 @RegisterSystem(RegisterMode.CLIENT)
-public class FlightModeHUDToggleButton extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState {
+public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState {
     @In
     HUDToggleButtonsClientSystem toggleButtonsClientSystem;
     @In
