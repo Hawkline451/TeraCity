@@ -19,7 +19,7 @@ public class CoberturaCommand extends BaseComponentSystem{
 	@In
     private Console console;
 	@Command(shortDescription = "Analisis usando Cobertura",
-			helpText = "Ejecuta el an·lisis de Cobertura sobre los archivos especificados\n"
+			helpText = "Ejecuta el an√°lisis de Cobertura sobre los archivos especificados\n"
 					+ "<filesFolder>: Archivos que son testeados\n"
 					+ "<testsFolder>: Archivos de test\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
@@ -42,19 +42,22 @@ class ThreadCoberturaExecution implements Runnable {
 	private String testsFolder;
 	private String pathSep = File.pathSeparator;
 	public String extension;
-	private String base = "./modules/Cobertura/Cobertura-2.1.1";
+	private String base = "modules/Cobertura/cobertura-2.1.1";
 	
 	public ThreadCoberturaExecution(String files, String tests, Console console) {
 		this.console = console;
 		this.filesFolder = files;
 		this.testsFolder = tests;
-		
+		chooseExtension();
+	}
+	
+	private void chooseExtension(){
 		String OS = System.getProperty("os.name");
-		if (OS.startsWith("Linux")){
-			extension = ".sh";
-		}
-		else if (OS.startsWith("Windows")){
+		if (OS.startsWith("Windows")){
 			extension = ".bat";
+		}
+		else{
+			extension = ".sh";
 		}
 	}
 	
@@ -76,7 +79,7 @@ class ThreadCoberturaExecution implements Runnable {
 
 	private String buildInstrumentCommand(){
 		String res;
-		res = "\"" + base + "/cobertura-instrument" + extension + "\" "
+		res = base + "/cobertura-instrument" + extension + " "
 				+ "--datafile " + base + "/analysis/datafile.ser " 
 				+ "--destination "+ base + "/analysis/instrumented "
 				+ base + "/analysis/classes";
@@ -108,7 +111,7 @@ class ThreadCoberturaExecution implements Runnable {
 			
 	private String buildReportingCommand(){
 		String res;
-		res = "\"" + base + "/cobertura-report" + extension + "\" --format xml "
+		res = base + "/cobertura-report" + extension + " --format xml "
 				+ "--datafile " + base + "/analysis/datafile.ser "
 				+ "--destination " + base + "/analysis/reports " + filesFolder;
 		return res;
