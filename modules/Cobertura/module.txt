@@ -1,9 +1,15 @@
 {
     "id" : "Cobertura",
-    "version" : "0.1.0",
-    "author" : "",
+    "version" : "0.1.1",
     "displayName" : "Cobertura",
-    "description" : "",
+    "description" : "Este modulo implementa el analisis de Cobertura
+	
+	En Unix: Se debe dar permisos de ejecucion especiales usando el comando:
+	
+	chmod +x ${path a la carpeta del modulo Cobertura}/cobertura-2.1.1/*.sh
+	
+	en consola. Esto autoriza la ejecucion de las herramientas necesarias para el analisis.
+	",
     "dependencies" : [],
     "isServerSideOnly" : false
 }
