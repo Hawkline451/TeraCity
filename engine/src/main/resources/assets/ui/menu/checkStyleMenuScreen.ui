@@ -1,5 +1,5 @@
 {
-    "type" : "engine:CheckstyleMenuScreen",
+    "type" : "engine:CheckStyleMenuScreen",
     "skin" : "mainmenu",
     "contents" : {
         "type" : "relativeLayout",

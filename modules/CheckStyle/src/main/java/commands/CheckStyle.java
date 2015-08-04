@@ -26,7 +26,6 @@ public class CheckStyle extends BaseComponentSystem{
 		return cp.toString();
 	}
 	
-	
 	@Command(shortDescription = "Utiliza checkstyle para analizar un archivo", 
 			 helpText = "Utiliza checkStyle para para analizar algun programa segun la metrica dada \n"
 			 		+ "cstyle archivo metrica maxValue \n"
