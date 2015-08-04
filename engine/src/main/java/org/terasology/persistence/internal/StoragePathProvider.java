@@ -31,6 +31,7 @@ public class StoragePathProvider {
     private static final String GLOBAL_ENTITY_STORE = "global.dat";
     private static final String UNFINISHED_SAVE_TRANSACTION = "unfinished-save-transaction";
     private static final String UNMERGED_CHANGED = "unmerged-changes";
+    private static final String JEDIT_INFO_PATH = "JEditMapInfo.jm";
     private static final int CHUNK_ZIP_DIM = 32;
 
     private final Path storagePathDirectory;
@@ -146,5 +147,8 @@ public class StoragePathProvider {
 
     public Path getStoragePathDirectory() {
         return storagePathDirectory;
+    }
+    public Path getJEditMapInfoPath() {
+        return unfinishedSaveTransactionPath.resolve(JEDIT_INFO_PATH);
     }
 }

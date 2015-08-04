@@ -134,6 +134,7 @@ public class SaveTransaction extends AbstractTask {
             writePlayerStores();
             writeGlobalStore();
             writeChunkStores();
+            writeJEdit();
             saveGameManifest();
             perpareChangesForMerge();
             mergeChanges();
@@ -364,6 +365,15 @@ public class SaveTransaction extends AbstractTask {
         try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path))) {
             globalStore.writeTo(out);
         }
+    }
+    
+    /**
+     * This method stores the JEdit information if there is any.
+     */
+    private void writeJEdit() {
+        // TODO Auto-generated method stub
+        JEditExporter.export(storagePathProvider);
+         
     }
 
     private void writeChunkStores() throws IOException {
