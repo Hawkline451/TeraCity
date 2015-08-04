@@ -3,21 +3,37 @@ package org.terasology.codecity.world.map;
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.CodeVisitor;
 
-public class DrawableCodeFactory {
-    public static DrawableCode generateDrawableCode(CodeRepresentation code) {
-        if (code instanceof CodeClass)
-            return generateDrawableCode((CodeClass)code);
-        if (code instanceof CodePackage)
-            return generateDrawableCode((CodePackage)code);
-        return null;
+/**
+ * This class is used to generate DrawableCode class using a CodeRepresentation
+ */
+public class DrawableCodeFactory implements CodeVisitor {
+    private DrawableCode value;
+    
+    public DrawableCodeFactory() {
+        value = null;
     }
     
-    public static DrawableCode generateDrawableCode(CodeClass code) {
-        return new DrawableCodeClass(code);
+    /**
+     * Generate a DrawableCode
+     * @param code Base of the DrawableCode 
+     * @return The DrawableCode that represent the CodeRepresentation object
+     */
+    public DrawableCode generateDrawableCode(CodeRepresentation code) {
+        code.accept(this);
+        return value;
     }
-    
-    public static DrawableCode generateDrawableCode(CodePackage code) {
-        return new DrawableCodePackage(code);
+
+    @Override
+    public void visitCodePackage(CodePackage code) {
+        value = new DrawableCodePackage(code);
+        
+    }
+
+    @Override
+    public void visitCodeClass(CodeClass code) {
+        value = new DrawableCodeClass(code);
+        
     }
 }

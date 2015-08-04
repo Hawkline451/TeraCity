@@ -23,8 +23,9 @@ public class DrawableCodePackage implements DrawableCode {
     public DrawableCodePackage(CodePackage base) {
         this.base = base;
         contentList = new ArrayList<DrawableCode>();
+        DrawableCodeFactory factory = new DrawableCodeFactory();
         for (CodeRepresentation content : base.getContent())
-            contentList.add(DrawableCodeFactory.generateDrawableCode(content));
+            contentList.add(factory.generateDrawableCode(content));
     }
     
     /**

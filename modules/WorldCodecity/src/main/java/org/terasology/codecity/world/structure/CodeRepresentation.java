@@ -38,4 +38,10 @@ public abstract class CodeRepresentation implements Serializable {
     public String getName() {
         return name;
     }
+    
+    /**
+     * Accept a visitor in the class
+     * @param visitor
+     */
+    public abstract void accept(CodeVisitor visitor);
 }

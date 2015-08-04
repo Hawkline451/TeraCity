@@ -33,4 +33,9 @@ public class CodePackage extends CodeRepresentation implements Serializable {
     public List<CodeRepresentation> getContent() {
         return new ArrayList<CodeRepresentation>(contentList);
     }
+
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visitCodePackage(this);
+    }
 }

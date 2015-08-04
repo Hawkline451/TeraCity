@@ -32,8 +32,8 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
-        //CodeCityLoader loader = new CodeCityDefaultLoader();
-        CodeCityLoader loader = new CodeCitySocketLoader(25778);
+        CodeCityLoader loader = new CodeCityDefaultLoader();
+        //CodeCityLoader loader = new CodeCitySocketLoader(25778);
         CodeRepresentation code = loader.loadCodeRepresentation();
 
         CodeMap codeMap = generateCodeMap(code);
@@ -57,8 +57,9 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      * @param code
      */
     private CodeMap generateCodeMap(CodeRepresentation code) {
+        DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
-        list.add(DrawableCodeFactory.generateDrawableCode(code));
+        list.add(drawableFactory.generateDrawableCode(code));
 
         CodeMapFactory factory = new CodeMapFactory(cScale);
         return factory.generateMap(list);

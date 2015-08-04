@@ -35,4 +35,9 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     public int getClassLength() {
         return length;
     }
+
+    @Override
+    public void accept(CodeVisitor visitor) {
+        visitor.visitCodeClass(this);
+    }
 }
