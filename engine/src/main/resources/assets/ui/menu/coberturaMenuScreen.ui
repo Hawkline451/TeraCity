@@ -75,7 +75,7 @@
                     "position-horizontal-center" : {},
                     "position-bottom" : {
                         "target" : "BOTTOM",
-                        "offset" : 48
+                        "offset" : 90
                     }
                 }
 
