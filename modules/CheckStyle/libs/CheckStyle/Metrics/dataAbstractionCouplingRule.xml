@@ -12,7 +12,7 @@
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
     <module name="ClassDataAbstractionCoupling">
-      <property name="max" value="5"/>
+      <property name="max" value="1"/>
 	</module>
   </module>
 </module>
