@@ -1,5 +1,5 @@
 {
-    "type" : "PlayerSettingsScreen",
+    "type" : "engine:CoberturaMenuScreen",
     "skin" : "mainmenu",
     "contents" : {
         "type" : "relativeLayout",
