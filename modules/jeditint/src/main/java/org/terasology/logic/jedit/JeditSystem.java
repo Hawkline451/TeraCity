@@ -16,10 +16,11 @@ import org.terasology.utilities.jedit.JeditManager;
 @RegisterSystem
 public class JeditSystem extends BaseComponentSystem {
 	 @ReceiveEvent(components = ClientComponent.class)
-	 public void onToggleChat(JeditButton event, EntityRef entity) {
+	 public void openJedit(JeditButton event, EntityRef entity) {
 		 if (event.getState() == ButtonState.DOWN) {
 			 JeditManager.openJedit("test.java");
 	         event.consume();
 	    }
 	 }
 }
+
