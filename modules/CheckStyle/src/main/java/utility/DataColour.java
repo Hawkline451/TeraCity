@@ -1,5 +1,8 @@
 package utility;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataColour {
@@ -15,8 +18,13 @@ public class DataColour {
 		data.add(dataWarning);
 	}
 	
+	public boolean isEmpty() {
+		return data.isEmpty();
+	}
+	
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
+		
 		strBuilder.append("ruta archivo: " + path + "\n" + "warnings:\n");
 		for (DataWarning dataWarning : data) {
 			strBuilder.append("\t" + dataWarning + "\n");

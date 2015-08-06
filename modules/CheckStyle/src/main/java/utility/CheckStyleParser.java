@@ -21,7 +21,9 @@ public class CheckStyleParser extends XmlParser {
 			Node fileNode = files.item(i);
 			if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element actFile = (Element) fileNode;
-				DataColour dataColour = new DataColour(actFile.getAttribute("name")); 
+				String path = actFile.getAttribute("name");
+				if (!path.matches(".*.java")) continue;
+				DataColour dataColour = new DataColour(path); 
 				NodeList attList = actFile.getChildNodes();
 				for (int j = 0; j < attList.getLength(); j++) {
 					Node attNode = attList.item(j);
@@ -33,9 +35,8 @@ public class CheckStyleParser extends XmlParser {
 						dataColour.add(dataWarning);
 					}
 				}
-				data.add(dataColour);
+				if (!dataColour.isEmpty()) data.add(dataColour);
 			}
 		}
 	}
-
 }

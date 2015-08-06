@@ -11,8 +11,8 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
-    <module name="BooleanExpressionComplexity">
+    <module name="ClassDataAbstractionCoupling">
       <property name="max" value="1"/>
-    </module>
+	</module>
   </module>
 </module>

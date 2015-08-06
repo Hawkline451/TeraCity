@@ -29,9 +29,6 @@ import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 
-/**
- * @author Immortius
- */
 public class ColoringMenuScreen extends CoreScreenLayer {
 
     private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
@@ -45,10 +42,10 @@ public class ColoringMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        WidgetUtil.trySubscribe(this, "checkstyle", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "checkStyle", new ActivateEventListener() {
         	  @Override
               public void onActivated(UIWidget button) {
-                  getManager().pushScreen("engine:checkstyleMenuScreen");
+                  getManager().pushScreen("engine:checkStyleMenuScreen");
               }
         });
         WidgetUtil.trySubscribe(this, "pmd", new ActivateEventListener() {

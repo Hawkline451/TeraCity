@@ -11,8 +11,8 @@
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
-    <module name="BooleanExpressionComplexity">
-      <property name="max" value="1"/>
-    </module>
+    <module name="NPathComplexity">
+      <property name="max" value="4"/>
+	</module>
   </module>
 </module>

@@ -52,8 +52,8 @@
                 "contents" : [
                     {
                         "type" : "UIButton",
-                        "id" : "checkstyle",
-                        "text" : "Checkstyle"
+                        "id" : "checkStyle",
+                        "text" : "CheckStyle"
                     },
                     {
                         "type" : "UIButton",
