@@ -1,8 +1,8 @@
 package coloringCommands;
 
+import java.util.Collections;
 import java.util.List;
 
-import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
@@ -12,7 +12,6 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
-import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
@@ -27,7 +26,7 @@ import org.terasology.world.block.family.BlockFamily;
 @RegisterSystem
 public class PlaceBlockCommand extends BaseComponentSystem {
 
-    private String[] colors = {"Red", "Blue", "Green"};
+    private String[] colors = {"Red", "Blue", "Green", "Yellow"};
     
     //Same that in CodeCityBuildingProvider
     private final CodeScale scale = new SquareRootCodeScale();
@@ -37,7 +36,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     @Command(shortDescription = "Places a block in front of the player of the color specified({Red,Blue,Green} implemented)")
     public String placeColorBlock(@CommandParam("colorBlock") String colorBlock) {
     	if(!isImplementedColor(colorBlock))
-    		return "Put an implemented color in {Red, Blue, Green}";
+    		return "Put an implemented color in {Red, Blue, Green, Yellow}";
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
@@ -77,7 +76,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	@Command(shortDescription = "Puts the floor of the constant city of the color specified({Red,Blue,Green} implemented)")
     public String placeColorFloor(@CommandParam("colorBlock") String colorBlock) {
     	if(!isImplementedColor(colorBlock))
-    		return "Put an implemented color in {Red, Blue, Green}";
+    		return "Put an implemented color in {Red, Blue, Green, Yellow}";
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
@@ -141,6 +140,10 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	ClassNameGetterVisitor visitor = new ClassNameGetterVisitor();
+        	MapObject any = map.getMapObjects().iterator().next();
+        	any.getObject().getBase().accept(visitor); 
+        	System.err.println((visitor.getClasses()));
         	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
             return "Success";
         }
@@ -152,11 +155,11 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(scale, factory) + level;
-
             for (int z = level; z < height; z++)
             	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
-            if (obj.isOrigin())
+            if (obj.isOrigin()){
                 processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
+            }
         }
     }
 
