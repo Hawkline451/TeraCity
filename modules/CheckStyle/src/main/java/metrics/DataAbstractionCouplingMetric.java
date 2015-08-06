@@ -1,8 +1,7 @@
 package metrics;
 
 public class DataAbstractionCouplingMetric extends Metric {
-	public DataAbstractionCouplingMetric(int max) {
+	public DataAbstractionCouplingMetric() {
 		path += "dataAbstractionCouplingRule.xml";
-		this.max = max;
 	}
 }

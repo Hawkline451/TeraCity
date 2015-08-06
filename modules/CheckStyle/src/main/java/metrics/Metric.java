@@ -18,22 +18,28 @@ public abstract class Metric{
 	int max;
 	
 	public Metric() {
+		
 	}
 	
 	public static Metric createMetric(String StringMetric, int max) throws IOException {
 		Metric metric;
-		if (StringMetric.equals("-b")) metric = new BooleanMetric(max);
-		else if (StringMetric.equals("-c")) metric = new CyclomaticMetric(max);
-		else if (StringMetric.equals("-d")) metric = new DataAbstractionCouplingMetric(max);
-		else if (StringMetric.equals("-f")) metric = new FanOutMetric(max);
-		else if (StringMetric.equals("-n")) metric = new NPathMetric(max);
+		if (StringMetric.equals("-b")) metric = new BooleanMetric();
+		else if (StringMetric.equals("-c")) metric = new CyclomaticMetric();
+		else if (StringMetric.equals("-d")) metric = new DataAbstractionCouplingMetric();
+		else if (StringMetric.equals("-f")) metric = new FanOutMetric();
+		else if (StringMetric.equals("-n")) metric = new NPathMetric();
 		else metric = new NullMetric();
 		
+		metric.setMax(max);
 		ArrayList<String> linesArray = metric.getMetricText();
 		metric.setMetricValue(max, linesArray);
 		return metric;
 	}
 	
+	private void setMax(int max) {
+		this.max = max;
+	}
+
 	private String createJarCommand(String pathFile) {
 		String commandJar = "-jar " + jar  + " ";
 		String commandMetric = " -c " + path + " ";
@@ -42,7 +48,7 @@ public abstract class Metric{
 		return "java " + commandJar + commandMetric + commandOut + pathFile;
 	}
 	
-	public void setMetricValue(Integer max, ArrayList<String> lines) {
+	public void setMetricValue(Integer max, ArrayList<String> lines) throws IOException {
 		FileWriter bw = null; 
 		PrintWriter pw = null;
 		try {
@@ -58,12 +64,7 @@ public abstract class Metric{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			pw.close();
-			try {
-				bw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			bw.close();
 		}
 	}
 	
@@ -120,5 +121,4 @@ class MetricExecution implements Runnable {
 			console.addMessage("Falló el análisis");
 		}
 	}
-	
 }

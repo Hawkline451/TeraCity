@@ -1,8 +1,7 @@
 package metrics;
 
 public class NPathMetric extends Metric {
-	public NPathMetric(int max) {
+	public NPathMetric() {
 		path += "nPathRule.xml";
-		this.max = max;
 	}
 }

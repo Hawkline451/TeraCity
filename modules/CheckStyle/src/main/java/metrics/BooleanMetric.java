@@ -1,8 +1,7 @@
 package metrics;
 
 public class BooleanMetric extends Metric {
-	public BooleanMetric(int max) {
+	public BooleanMetric() {
 		path += "booleanRule.xml";
-		this.max = max;
 	}
 }
