@@ -15,11 +15,19 @@
  */
 package org.terasology.rendering.nui.layers.mainMenu;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.config.Config;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.console.Console;
+import org.terasology.logic.console.commandSystem.ConsoleCommand;
+import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
 import org.terasology.logic.console.commands.CoreCommands;
+import org.terasology.naming.Name;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
@@ -40,7 +48,9 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
 
     @In
     private Config config;
-
+    @In
+    private Console console;
+    
     @Override
     public void initialise() {
         CoreScreenLayer inputScreen = new InputSettingsScreen();
@@ -62,8 +72,18 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         WidgetUtil.trySubscribe(this, "analizar", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
+            	String testee = testedClass.getText();
+            	String tests = testClass.getText();
+            	ConsoleCommand ca = console.getCommand(new Name("CoberturaAnalysis"));
+            	List<String> params = new ArrayList<String>();
+            	params.add(testee); params.add(tests);
+            	EntityRef e = null;
+            	try {
+					ca.execute(params, e);
+					System.out.println("\n C: \n");
+				} catch (CommandExecutionException e1) {
+					System.out.println("\n:C You prolly don't have the Cobertura module, yo\n");
+				}
             }
         });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
