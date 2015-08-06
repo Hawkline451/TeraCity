@@ -18,8 +18,13 @@ public class DataColour {
 		data.add(dataWarning);
 	}
 	
+	public boolean isEmpty() {
+		return data.isEmpty();
+	}
+	
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
+		
 		strBuilder.append("ruta archivo: " + path + "\n" + "warnings:\n");
 		for (DataWarning dataWarning : data) {
 			strBuilder.append("\t" + dataWarning + "\n");

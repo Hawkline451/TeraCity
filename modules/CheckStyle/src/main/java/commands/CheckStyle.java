@@ -5,14 +5,19 @@ import java.io.IOException;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.registry.In;
 
 import metrics.*;
 import utility.CheckStyleParser;
 
 @RegisterSystem
 public class CheckStyle extends BaseComponentSystem{
+	
+	@In
+	Console console;
 	
 	@Command(shortDescription = "Muestra en consola la simplificacion del parseo del ultimo analisis")
 	public String showParse() throws IOException {
@@ -34,9 +39,8 @@ public class CheckStyle extends BaseComponentSystem{
 						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
 		Metric metric = Metric.createMetric(metricString, max);
-		boolean exe = metric.execute(path);
-		if (exe) return "Analisis realizado";
-		return "Error: Metrica no encontrada";
+		metric.execute(path, console);
+		return "";
 	}
 
 }

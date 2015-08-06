@@ -4,10 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public abstract class Metric {
+import org.terasology.logic.console.Console;
+import org.terasology.registry.In;
+
+public abstract class Metric{
 	String path = "modules/CheckStyle/libs/CheckStyle/Metrics/";
 	String jar = "modules/CheckStyle/libs/CheckStyle/checkstyle-6.6-all.jar";
 	int max;
@@ -83,10 +88,37 @@ public abstract class Metric {
 		return lines;
 	}
 
-	public boolean execute(String pathFile) throws IOException {
+	public void execute(String pathFile, Console console) throws IOException {
 		String commandJar = createJarCommand(pathFile);
-		System.out.println(commandJar);
-		Runtime.getRuntime().exec(commandJar);
-		return true;
+		Thread thread = new Thread(new MetricExecution(commandJar, pathFile, console));
+		console.addMessage("Comenzó el análisis....");
+		thread.start();
 	}
+}
+
+class MetricExecution implements Runnable {
+	String path;
+	String commandJar;
+	Console console;
+	
+	public MetricExecution(String commandJar, String path, Console console) {
+		this.commandJar = commandJar;
+		this.path = path;
+		this.console = console;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			Process process = Runtime.getRuntime().exec(commandJar);
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			while (br.readLine()!=null);
+			console.addMessage("Terminó el análisis");
+		} catch (Exception e) {
+			console.addMessage("Falló el análisis");
+		}
+	}
+	
 }
