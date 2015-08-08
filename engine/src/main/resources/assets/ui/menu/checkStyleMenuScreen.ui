@@ -21,14 +21,15 @@
             {
                 "type": "UILabel",
                 "family": "title",
-                "text": "Metricas para aplicar: ",
+                "text": "Métricas para aplicar: ",
                 "id": "subtitle",
                 "layoutInfo": {
                     "height": 48,
                     "position-horizontal-center": {},
                     "position-top": {
                         "target": "BOTTOM",
-                        "widget": "title"
+                        "widget": "title",
+                        "offset": 30
                     }
                 }
             },
@@ -45,7 +46,7 @@
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "BOTTON",
-                        "offset" : 100,
+                        "offset" : 50,
                         "widget" : "subtitle"
                     }
                 },
@@ -58,7 +59,7 @@
                     {
                         "type" : "UIButton",
                         "id" : "ciclomatica",
-                        "text" : "Ciclomatica"
+                        "text" : "Ciclomática"
                     },
                     {
                         "type" : "UIButton",
