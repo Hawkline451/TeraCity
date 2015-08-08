@@ -50,10 +50,6 @@
                     }
                 },
                 "contents" : [
-                	{
-                        "type" : "UIText",
-                        "id" : "max"
-                    },
                     {
                         "type" : "UIButton",
                         "id" : "booleana",
