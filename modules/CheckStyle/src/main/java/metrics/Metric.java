@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.terasology.logic.console.Console;
-import org.terasology.registry.In;
 
 public abstract class Metric{
 	String path = "modules/CheckStyle/libs/CheckStyle/Metrics/";
