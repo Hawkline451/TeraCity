@@ -6,11 +6,11 @@
         "contents" : [
             {
                 "type" : "UIImage",
-                "image" : "engine:terasology",
+                "image" : "engine:checkStyle",
                 "id" : "title",
                 "layoutInfo" : {
-                    "width" : 512,
-                    "height" : 128,
+                    "width" : 300,
+                    "height" : 97,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "TOP",
@@ -19,72 +19,113 @@
                 }
             },
             {
-                "type" : "UILabel",
-                "text" : "Coloreo según Checkstyle",
-                "family" : "title",
-                "id" : "subtitle",
-                "layoutInfo" : {
-                    "height" : 48,
-                    "position-horizontal-center" : {},
-                    "position-top" : {
-                        "target" : "BOTTOM",
-                        "widget" : "title"
+                "type": "UILabel",
+                "family": "title",
+                "text": "Metricas para aplicar: ",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 48,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title"
                     }
                 }
             },
             {
                 "type" : "columnLayout",
+                "id" : "metrics",
                 "verticalSpacing" : 8,
+                "horizontalSpacing" : 8,
+                "columns": 1,
                 "family" : "menu-options",
                 "layoutInfo" : {
-                    "width" : 280,
-                    "height" : 288,
+                    "width" : 250,
+                    "height" : 200,
                     "position-horizontal-center" : {},
                     "position-top" : {
-                        "target" : "BOTTOM",
-                        "offset" : 16,
+                        "target" : "BOTTON",
+                        "offset" : 100,
                         "widget" : "subtitle"
-                    },
-                    "position-bottom" : {
-                        "offset" : 32
                     }
                 },
                 "contents" : [
                     {
                         "type" : "UIButton",
                         "id" : "booleana",
-                        "text" : "Métrica Booleana"
+                        "text" : "Booleana"
                     },
                     {
                         "type" : "UIButton",
                         "id" : "ciclomatica",
-                        "text" : "Métrica Ciclomatica"
+                        "text" : "Ciclomatica"
                     },
                     {
                         "type" : "UIButton",
                         "id" : "fanOut",
-                        "text" : "Métrica Fan Out"
+                        "text" : "Fan Out"
                     },
                     {
                         "type" : "UIButton",
                         "id" : "nPath",
-                        "text" : "Métrica nPath"
+                        "text" : "NPath"
                     },
                     {
                         "type" : "UIButton",
                         "id" : "dataAbstractionCoupling",
-                        "text" : "Métrica Abstract Coupling"
-                    },
-                    {
-                        "type" : "UISpace",
-                        "size" : [1, 104]
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "close",
-                        "text" : "Back"
+                        "text" : "Abstract Coupling"
                     }
                 ]
+            },
+            {
+                "type" : "columnLayout",
+                "id" : "values",
+                "verticalSpacing" : 8,
+                "horizontalSpacing" : 8,
+                "columns": 2,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 400,
+                    "height" : 80,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target": "BOTTOM",
+                        "offset": 20,
+                        "widget" : "metrics"
+                    }
+                },
+                "contents" : [
+                	{
+                		"type" : "UILabel",
+                		"text" : "Valor máximo\n(dejar vacío para default): "
+                	},
+                	{
+                		"type" : "UIText",
+                		"id" : "maxValue"
+                	},
+                	{
+                		"type" : "UILabel",
+                		"text" : "Ruta Proyecto\n(dejar vacío para default): "
+                	},
+                	{
+                		"type" : "UIText",
+                		"id" : "pathProject"
+                	}
+                ]
+            },
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
             }
         ]
     }

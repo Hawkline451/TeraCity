@@ -34,6 +34,7 @@ import org.terasology.rendering.nui.asset.UIData;
 import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UIText;
 
 public class CheckStyleMenuScreen extends CoreScreenLayer {
 
@@ -52,89 +53,37 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
         
+        UIText maxValue = find("maxValue", UIText.class);
+        UIText pathProject = find("pathProject", UIText.class);
+        
         WidgetUtil.trySubscribe(this, "ciclomatica", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
-            	ArrayList<String> params = new ArrayList<String>();
-            	params.add("modules/CheckStyle/Project/In"); 
-            	params.add("-c");
-            	params.add("10");
-            	EntityRef e = null;
-            	try {
-					ca.execute(params, e);
-					System.out.println("\n C: \n");
-				} catch (CommandExecutionException e1) {
-					System.out.println("\nNo se pudo realizar el análisis\n");
-				}
+            	executeCommad(maxValue, pathProject, "-c");
             }
         });
         WidgetUtil.trySubscribe(this, "booleana", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
-            	ArrayList<String> params = new ArrayList<String>();
-            	params.add("modules/CheckStyle/Project/In"); 
-            	params.add("-b");
-            	params.add("3");
-            	EntityRef e = null;
-            	try {
-					ca.execute(params, e);
-					System.out.println("\n C: \n");
-				} catch (CommandExecutionException e1) {
-					System.out.println("\nNo se pudo realizar el análisis\n");
-				}
+            	executeCommad(maxValue, pathProject,  "-b");
             }
         });
         WidgetUtil.trySubscribe(this, "fanOut", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
-            	ArrayList<String> params = new ArrayList<String>();
-            	params.add("modules/CheckStyle/Project/In"); 
-            	params.add("-f");
-            	params.add("10");
-            	EntityRef e = null;
-            	try {
-					ca.execute(params, e);
-					System.out.println("\n C: \n");
-				} catch (CommandExecutionException e1) {
-					System.out.println("\nNo se pudo realizar el análisis\n");
-				}
+            	executeCommad(maxValue, pathProject,  "-f");
             }
         });
         WidgetUtil.trySubscribe(this, "nPath", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
-            	ArrayList<String> params = new ArrayList<String>();
-            	params.add("modules/CheckStyle/Project/In"); 
-            	params.add("-n");
-            	params.add("1000");
-            	EntityRef e = null;
-            	try {
-					ca.execute(params, e);
-					System.out.println("\n C: \n");
-				} catch (CommandExecutionException e1) {
-					System.out.println("\nNo se pudo realizar el análisis\n");
-				}
+            	executeCommad(maxValue, pathProject,  "-n");
             }
         });
         WidgetUtil.trySubscribe(this, "dataAbstractionCoupling", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
-            	ArrayList<String> params = new ArrayList<String>();
-            	params.add("modules/CheckStyle/Project/In"); 
-            	params.add("-d");
-            	params.add("5");
-            	EntityRef e = null;
-            	try {
-					ca.execute(params, e);
-					System.out.println("\n C: \n");
-				} catch (CommandExecutionException e1) {
-					System.out.println("\nNo se pudo realizar el análisis\n");
-				}
+            	executeCommad(maxValue, pathProject,  "-d");
             }
         });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
@@ -144,6 +93,39 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
                 getManager().popScreen();
             }
         });
+    }
+    
+    private void executeCommad(UIText maxValueWindow, UIText pathWindow, String metric) {
+    	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
+    	String maxValue = maxValueWindow.getText();
+    	String path = pathWindow.getText();
+    	ArrayList<String> params = new ArrayList<String>();
+    	if (path.equals("")) params.add("modules/CheckStyle/Project/In");
+    	else params.add(path);
+    	if (metric.equals("-c")) {
+    		params.add("-c");
+        	params.add("10");
+    	} else if (metric.equals("-b")) {
+    		params.add("-b");
+        	params.add("3");
+    	}else if (metric.equals("-f")) {
+        	params.add("-f");
+        	params.add("20");
+    	}else if (metric.equals("-n")) { 
+        	params.add("-n");
+        	params.add("200");
+    	} else {
+    		params.add("-d");
+        	params.add("7");
+    	}
+    	if (!maxValue.equals("")) {
+    		params.set(2, maxValue);
+    	}
+    	EntityRef e = null;
+    	try {
+			ca.execute(params, e);
+		} catch (CommandExecutionException e1) {
+		}
     }
 
     @Override
