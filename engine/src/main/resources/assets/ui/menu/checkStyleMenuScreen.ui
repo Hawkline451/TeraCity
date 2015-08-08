@@ -50,6 +50,10 @@
                     }
                 },
                 "contents" : [
+                	{
+                        "type" : "UIText",
+                        "id" : "max"
+                    },
                     {
                         "type" : "UIButton",
                         "id" : "booleana",
@@ -59,6 +63,21 @@
                         "type" : "UIButton",
                         "id" : "ciclomatica",
                         "text" : "Métrica Ciclomatica"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "fanOut",
+                        "text" : "Métrica Fan Out"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "nPath",
+                        "text" : "Métrica nPath"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "dataAbstractionCoupling",
+                        "text" : "Métrica Abstract Coupling"
                     },
                     {
                         "type" : "UISpace",

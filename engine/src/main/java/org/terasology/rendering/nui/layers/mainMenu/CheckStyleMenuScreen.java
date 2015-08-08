@@ -28,6 +28,7 @@ import org.terasology.rendering.nui.asset.UIData;
 import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UIText;
 
 public class CheckStyleMenuScreen extends CoreScreenLayer {
 
@@ -50,6 +51,27 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
             }
         });
         WidgetUtil.trySubscribe(this, "booleana", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	CoreCommands c = new CoreCommands();
+            	c.fullscreen();
+            }
+        });
+        WidgetUtil.trySubscribe(this, "fanOut", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	CoreCommands c = new CoreCommands();
+            	c.fullscreen();
+            }
+        });
+        WidgetUtil.trySubscribe(this, "nPath", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	CoreCommands c = new CoreCommands();
+            	c.fullscreen();
+            }
+        });
+        WidgetUtil.trySubscribe(this, "dataAbstractionCoupling", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	CoreCommands c = new CoreCommands();
