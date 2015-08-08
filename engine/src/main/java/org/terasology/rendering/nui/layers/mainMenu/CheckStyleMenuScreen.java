@@ -53,8 +53,8 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
         
-        UIText maxValue = find("maxValue", UIText.class);
-        UIText pathProject = find("pathProject", UIText.class);
+        final UIText maxValue = find("maxValue", UIText.class);
+        final UIText pathProject = find("pathProject", UIText.class);
         
         WidgetUtil.trySubscribe(this, "ciclomatica", new ActivateEventListener() {
             @Override
