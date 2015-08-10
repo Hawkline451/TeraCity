@@ -188,6 +188,7 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/Project/out.xml", "read"));
         moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("user.dir","read")); // For read files to parse
+        
 
         moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("os.name", "read"));//For known the OS to build the console command
 
