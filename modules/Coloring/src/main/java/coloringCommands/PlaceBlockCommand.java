@@ -1,5 +1,6 @@
 package coloringCommands;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -140,10 +141,6 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	ClassNameGetterVisitor visitor = new ClassNameGetterVisitor();
-        	MapObject any = map.getMapObjects().iterator().next();
-        	any.getObject().getBase().accept(visitor); 
-        	System.err.println((visitor.getClasses()));
         	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
             return "Success";
         }
@@ -158,10 +155,58 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             for (int z = level; z < height; z++)
             	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
             if (obj.isOrigin()){
+            	System.out.println(obj.getObject().getBase().getName());
                 processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
             }
         }
     }
-
+	@Command(shortDescription = "Get the name of the clases")
+	public String getInfoClass(){
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+			ClassNameGetterVisitor visitor = new ClassNameGetterVisitor();
+    		MapObject any = map.getMapObjects().iterator().next();
+    		any.getObject().getBase().accept(visitor);
+    		return visitor.getClasses().toString();
+        }
+        return "Sorry, something went wrong!";
+	}
 	
+	@Command(shortDescription = "give Color to a Build")
+	public String ColorBuild(@CommandParam("Name") String name,
+								@CommandParam("Color") String color){
+		ArrayList <BuildInformation> builds = getInfo();
+		for (BuildInformation element:builds){
+			if (element.getName().equals(name)){
+				return placeColorBuilding(color, element.getX(),element.getZ(),element.getY(),element.getHeight()-element.getZ());
+			}
+		}
+		return "Class doesn't exists";
+		
+	}
+	
+    private ArrayList <BuildInformation> getInfo() {
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	ArrayList<BuildInformation> result = processInfo(map, Vector2i.zero(), 10, world);//10 default ground level
+        	return result;
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+
+	private ArrayList<BuildInformation> processInfo(CodeMap map, Vector2i offset, int level, WorldProvider world) {
+		ArrayList <BuildInformation> list = new ArrayList<BuildInformation>();
+        for (MapObject obj : map.getMapObjects()) {
+            int x = obj.getPositionX() + offset.getX();
+            int y = obj.getPositionZ() + offset.getY();
+            int height = obj.getHeight(scale, factory) + level;
+            if (obj.isOrigin()){
+            	list.add(new BuildInformation(x,y,level,height,obj));
+            	list.addAll(processInfo(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world));
+            }
+        }
+        return list;
+    }
 }
