@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.util.HashMap;
  
  public abstract class XMLParser {	
 	 
@@ -46,5 +47,36 @@ import java.io.File;
 			 }
 		 }
 		 return sb.toString();
+	 }
+	 
+	 public static HashMap<String, DataNode> makeNodes(NodeList files) {
+		 NamedNodeMap nnm;
+		 Node n;
+		 
+		 HashMap<String, DataNode> hash = new HashMap<String, DataNode>();
+		 String name, fname, attName, attValue;
+		 double line, branch, comp;
+		 name = "NullNode";
+		 line = branch = comp = 0;
+		 
+		 for (int j = 0; j < files.getLength(); j++){
+			 nnm = files.item(j).getAttributes();
+			 if (nnm != null){
+				 for (int i = 0; i < nnm.getLength(); i++){
+					 n = nnm.item(i);
+					 attName = n.getNodeName();
+					 attValue= n.getNodeValue();
+					 
+					 if (attName.equals("line-rate")){ line = Double.parseDouble(attValue); }
+					 else if (attName.equals("branch-rate")){ branch = Double.parseDouble(attValue); }
+					 else if (attName.equals("complexity")){ comp = Double.parseDouble(attValue); }
+					 else if (attName.equals("filename")){ fname = attValue; }
+					 else if (attName.equals("name")){ name = attValue; }
+				 }
+				 hash.put(name, new DataNode(name, line, branch, comp));
+			 }
+		 }
+		 
+		 return hash;
 	 }
 }
