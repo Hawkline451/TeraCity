@@ -108,11 +108,16 @@ public class ModuleManager {
         // TODO: This one org.terasology entry is a hack and needs a proper fix
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.world.biomes");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.math.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.game.GameManifest");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.engine.modes.StateLoading");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.engine.modes.GameState");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.persistence.internal.StoragePathProvider");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.lang");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.lang.ref");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.math");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.io"); //For use java.io into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.nio.file"); //For use java.nio.file into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); //For use javax.xml.parsers into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); //For use org.w3c.dom into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent");
