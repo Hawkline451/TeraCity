@@ -149,6 +149,6 @@ public class StoragePathProvider {
         return storagePathDirectory;
     }
     public Path getJEditMapInfoPath() {
-        return storagePathDirectory.resolve(JEDIT_INFO_PATH);
+        return unfinishedSaveTransactionPath.resolve(JEDIT_INFO_PATH);
     }
 }
