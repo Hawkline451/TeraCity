@@ -1,9 +1,7 @@
 package commands;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -68,15 +66,15 @@ class ThreadCoberturaExecution implements Runnable {
     
     private String buildCompileTesteeCommand(String src){
         String res;
-        res = "javac -g -d " + BASE + "/analysis/classes " + src + "/*.java";
+        res = "javac -g -d " + BASE + CLASSES_PATH + " " + src + "/*.java";
         return res;
     }
     
     private String buildCompileTestsCommand(String testSrc){
         String res;
         res = "javac -g "
-                + "-d " + BASE + "/analysis/testClasses " 
-                + "-cp " + BASE + "/analysis/classes" + pathSep
+                + "-d " + BASE + TEST_CLASSES_PATH +" " 
+                + "-cp " + BASE + CLASSES_PATH + pathSep
                 + BASE + "/lib/* "
                 + testSrc+ "/*.java ";
         return res;
@@ -86,16 +84,16 @@ class ThreadCoberturaExecution implements Runnable {
         String res;
         res = BASE + "/cobertura-instrument" + extension + " "
                 + "--datafile " + BASE + "/analysis/datafile.ser " 
-                + "--destination "+ BASE + "/analysis/instrumented "
-                + BASE + "/analysis/classes";
+                + "--destination "+ BASE + INSTRUMENTED_PATH + " "
+                + BASE + CLASSES_PATH;
         return res;
     }
 
     private String buildRunTestCommand(){
-        String testClasses = BASE + "/analysis/testClasses";
+        String testClasses = BASE + TEST_CLASSES_PATH;
         File folder = new File(testClasses);
         File[] files = folder.listFiles();
-        StringBuilder testList = new StringBuilder();
+        StringBuilder testList = new StringBuilder();;
         for (int i = 0; i < files.length; i++){
             if (files[i].isFile() && !files[i].getName().equals(".gitignore")){
                 testList.append(" ");
@@ -106,9 +104,9 @@ class ThreadCoberturaExecution implements Runnable {
         sList = sList.replace(".class", "");
         String res;
         res = "java -cp " + BASE + "/cobertura-2.1.1.jar" + pathSep
-                + BASE + "/analysis/instrumented" + pathSep
-                + BASE + "/analysis/classes" + pathSep
-                + BASE + "/analysis/testClasses" + pathSep
+                + BASE + INSTRUMENTED_PATH + pathSep
+                + BASE + CLASSES_PATH + pathSep
+                + BASE + TEST_CLASSES_PATH + pathSep
                 + BASE + "/lib/*" + pathSep + " "
                 + "-Dnet.sourceforge.cobertura.datafile=" + BASE + "/analysis/datafile.ser "
                 + "org.junit.runner.JUnitCore " + sList;
@@ -119,7 +117,7 @@ class ThreadCoberturaExecution implements Runnable {
         String res;
         res = BASE + "/cobertura-report" + extension + " --format xml "
                 + "--datafile " + BASE + "/analysis/datafile.ser "
-                + "--destination " + BASE + "/analysis/reports " + filesFolder;
+                + "--destination " + BASE + REPORTS_PATH + " " + filesFolder;
         return res;
     }
     private void cleanFolderUp(String path){
@@ -164,6 +162,7 @@ class ThreadCoberturaExecution implements Runnable {
             console.addMessage(XMLParser.parse(BASE + "/analysis/reports/coverage.xml"));
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("\nError de conexion\n");
         } finally{
             cleanEverythingUp();
         }
