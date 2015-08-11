@@ -1,0 +1,4 @@
+{
+	"basedOn" : "coloring:colorTemplate",
+	"tile" : "rojo"
+}
