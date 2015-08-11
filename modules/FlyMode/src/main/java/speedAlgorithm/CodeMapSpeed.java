@@ -5,7 +5,9 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
+import org.terasology.logic.console.Console;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 
 public class CodeMapSpeed extends Speed {
     
@@ -27,9 +29,9 @@ public class CodeMapSpeed extends Speed {
 	    int sizeX = dc.getSize(scale, factory);
 	    int sizeY = dc.getSize(scale, factory);
 	    int sizeZ = dc.getHeight(scale, factory);
-	    console.addMessage("The X length of the map is :" + sizeX);
-	    console.addMessage("The Y length of the map is :" + sizeY);
-	    console.addMessage("The Z length of the map is :" + sizeZ);
+//	    console.addMessage("The X length of the map is :" + sizeX);
+//	    console.addMessage("The Y length of the map is :" + sizeY);
+//	    console.addMessage("The Z length of the map is :" + sizeZ);
 	    // We take the log2 of the module of the resultant vector, for a better scaling
 		float calculatedVelocity = (float) ((float) Math.log(Math.sqrt(sizeX*sizeX + sizeY*sizeY + sizeZ*sizeZ)) / Math.log(2));
 //		console.addMessage("The calculated Velocity according to the map is :" + calculatedVelocity);
