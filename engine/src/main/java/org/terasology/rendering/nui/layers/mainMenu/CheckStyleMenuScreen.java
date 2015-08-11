@@ -15,11 +15,17 @@
  */
 package org.terasology.rendering.nui.layers.mainMenu;
 
+import java.util.ArrayList;
+
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.config.Config;
-import org.terasology.logic.console.commands.CoreCommands;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.console.Console;
+import org.terasology.logic.console.commandSystem.ConsoleCommand;
+import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
+import org.terasology.naming.Name;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
@@ -28,6 +34,7 @@ import org.terasology.rendering.nui.asset.UIData;
 import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UIText;
 
 public class CheckStyleMenuScreen extends CoreScreenLayer {
 
@@ -35,6 +42,9 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
 
     @In
     private Config config;
+    
+    @In
+    private Console console;
 
     @Override
     public void initialise() {
@@ -42,18 +52,38 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
+        
+        final UIText maxValue = find("maxValue", UIText.class);
+        final UIText pathProject = find("pathProject", UIText.class);
+        
         WidgetUtil.trySubscribe(this, "ciclomatica", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
+            	executeCommad(maxValue, pathProject, "-c");
             }
         });
         WidgetUtil.trySubscribe(this, "booleana", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
+            	executeCommad(maxValue, pathProject,  "-b");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "fanOut", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad(maxValue, pathProject,  "-f");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "nPath", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad(maxValue, pathProject,  "-n");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "dataAbstractionCoupling", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad(maxValue, pathProject,  "-d");
             }
         });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
@@ -63,6 +93,39 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
                 getManager().popScreen();
             }
         });
+    }
+    
+    private void executeCommad(UIText maxValueWindow, UIText pathWindow, String metric) {
+    	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
+    	String maxValue = maxValueWindow.getText();
+    	String path = pathWindow.getText();
+    	ArrayList<String> params = new ArrayList<String>();
+    	if (path.equals("")) params.add("modules/CheckStyle/Project/In");
+    	else params.add(path);
+    	if (metric.equals("-c")) {
+    		params.add("-c");
+        	params.add("10");
+    	} else if (metric.equals("-b")) {
+    		params.add("-b");
+        	params.add("3");
+    	}else if (metric.equals("-f")) {
+        	params.add("-f");
+        	params.add("20");
+    	}else if (metric.equals("-n")) { 
+        	params.add("-n");
+        	params.add("200");
+    	} else {
+    		params.add("-d");
+        	params.add("7");
+    	}
+    	if (!maxValue.equals("")) {
+    		params.set(2, maxValue);
+    	}
+    	EntityRef e = null;
+    	try {
+			ca.execute(params, e);
+		} catch (CommandExecutionException e1) {
+		}
     }
 
     @Override

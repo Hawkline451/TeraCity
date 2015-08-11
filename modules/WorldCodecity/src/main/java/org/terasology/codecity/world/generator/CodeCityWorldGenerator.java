@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.terasology.codecity.world.loader.CodeCityDefaultLoader;
 import org.terasology.codecity.world.loader.CodeCityLoader;
-import org.terasology.codecity.world.loader.CodeCitySocketLoader;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
@@ -32,7 +31,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
-        CodeCityLoader loader = new CodeCityDefaultLoader();
+    	CodeCityLoader loader = new CodeCityDefaultLoader();
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
         CodeRepresentation code = loader.loadCodeRepresentation();
 
@@ -40,9 +39,16 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         CoreRegistry.put(CodeMap.class, codeMap);
 
         super.initialize();
+        
+        storeCodeRepresentation(code);
     }
 
-    @Override
+    private void storeCodeRepresentation(CodeRepresentation code) {
+		JEditExporter.export(code);
+		
+	}
+
+	@Override
     protected WorldBuilder createWorld(long seed) {
         return new WorldBuilder(seed)
                 .addProvider(new CodeCityGroundProvider())
@@ -57,11 +63,12 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      * @param code
      */
     private CodeMap generateCodeMap(CodeRepresentation code) {
-        DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
+    	DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));
 
         CodeMapFactory factory = new CodeMapFactory(cScale);
         return factory.generateMap(list);
     }
+
 }

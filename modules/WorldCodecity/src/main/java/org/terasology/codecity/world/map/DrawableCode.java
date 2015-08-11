@@ -1,12 +1,14 @@
 package org.terasology.codecity.world.map;
 
+import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
 /**
  * This class represent a part of the code that can be drawed in the map
  */
 public interface DrawableCode {
-    /**
+	public CodeRepresentation getBase();
+	/**
      * @param scale
      *            The scale used in the code
      * @param factory
