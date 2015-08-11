@@ -32,9 +32,9 @@ public class JEditExporter {
      
     public static void export(CodeRepresentation code){
         try (
-          OutputStream file = new FileOutputStream(getSavePath());
-          OutputStream buffer = new BufferedOutputStream(file);
-          ObjectOutput output = new ObjectOutputStream(buffer);
+        	    OutputStream file = new FileOutputStream(getSavePath());
+        	    OutputStream buffer = new BufferedOutputStream(file);
+        	    ObjectOutput output = new ObjectOutputStream(buffer);
         ){
             output.writeObject(code);
         }catch(IOException ex){
@@ -43,10 +43,10 @@ public class JEditExporter {
     } 
     
     public static String getSavePath(){
-    	//Path savePath = PathManager.getInstance().getSavePath(gameManifest.getTitle());
-    	Path savePath = CoreRegistry.get(Path.class);
-    	StoragePathProvider storagePathProvider = new StoragePathProvider(savePath);
-    	return storagePathProvider.getJEditMapInfoPath().toString();
+        //Path savePath = PathManager.getInstance().getSavePath(gameManifest.getTitle());
+        Path savePath = CoreRegistry.get(Path.class);
+        StoragePathProvider storagePathProvider = new StoragePathProvider(savePath);
+        return storagePathProvider.getJEditMapInfoPath().toString();
     }
      
  

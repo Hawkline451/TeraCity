@@ -32,13 +32,13 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
-    	
-    	//Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
-    	//CodeCityLoader loader = CodeCityLoaderManager.getLoader();
-    	
-    	CodeCityLoader loader = new CodeCityDefaultLoader();
+        
+        //Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
+        //CodeCityLoader loader = CodeCityLoaderManager.getLoader();
+        
+        CodeCityLoader loader = new CodeCityDefaultLoader();
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
-    	
+        
         CodeRepresentation code = loader.loadCodeRepresentation();
 
         CodeMap codeMap = generateCodeMap(code);
@@ -50,15 +50,15 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     }
 
     private void storeCodeRepresentation(CodeRepresentation code) {
-		JEditExporter.export(code);
-		
-	}
+        JEditExporter.export(code);
+        
+    }
 
-	@Override
+    @Override
     protected WorldBuilder createWorld(long seed) {
         return new WorldBuilder(seed)
                 .addProvider(new CodeCityGroundProvider())
-        		.addProvider(new CodeCityBuildingProvider())
+                .addProvider(new CodeCityBuildingProvider())
                 .addRasterizer(new CodeCityGroundRasterizer())
                 .addRasterizer(new CodeCityBuildingRasterizer())
                 .setSeaLevel(0);
@@ -69,7 +69,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      * @param code
      */
     private CodeMap generateCodeMap(CodeRepresentation code) {
-    	DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
+        DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));
 

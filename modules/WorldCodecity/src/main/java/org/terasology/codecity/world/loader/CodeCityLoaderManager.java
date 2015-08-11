@@ -13,22 +13,22 @@ import org.terasology.codecity.world.generator.JEditExporter;
  *
  */
 public class CodeCityLoaderManager {
-	private static final int SOCKET_PORT = 25778;
+    private static final int SOCKET_PORT = 25778;
 
-	private CodeCityLoaderManager(){
-		
-	}
-	
-	public static CodeCityLoader getLoader(){
-		CodeCityLoader loader = null;
-		try {
-			FileInputStream file = new FileInputStream(JEditExporter.getSavePath());
-			loader = new CodeCityFileLoader(file);
-			file.close();
-		} catch (IOException e) {
-			loader = new CodeCitySocketLoader(SOCKET_PORT);
-		}
-		return loader;
-	}
-	
+    private CodeCityLoaderManager(){
+        
+    }
+    
+    public static CodeCityLoader getLoader(){
+        CodeCityLoader loader = null;
+        try {
+            FileInputStream file = new FileInputStream(JEditExporter.getSavePath());
+            loader = new CodeCityFileLoader(file);
+            file.close();
+        } catch (IOException e) {
+            loader = new CodeCitySocketLoader(SOCKET_PORT);
+        }
+        return loader;
+    }
+    
 }
