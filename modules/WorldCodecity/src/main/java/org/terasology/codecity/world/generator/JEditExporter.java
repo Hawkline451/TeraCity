@@ -1,8 +1,11 @@
 package org.terasology.codecity.world.generator;
 
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -37,10 +40,9 @@ public class JEditExporter {
         }catch(IOException ex){
             logger.error("JEdit information couldn't be saved.");
         }
-    }
-     
+    } 
     
-    private static String getSavePath(){
+    public static String getSavePath(){
     	//Path savePath = PathManager.getInstance().getSavePath(gameManifest.getTitle());
     	Path savePath = CoreRegistry.get(Path.class);
     	StoragePathProvider storagePathProvider = new StoragePathProvider(savePath);

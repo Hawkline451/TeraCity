@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.terasology.codecity.world.loader.CodeCityDefaultLoader;
 import org.terasology.codecity.world.loader.CodeCityLoader;
+import org.terasology.codecity.world.loader.CodeCityLoaderManager;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
@@ -31,8 +32,13 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
+    	
+    	//Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
+    	//CodeCityLoader loader = CodeCityLoaderManager.getLoader();
+    	
     	CodeCityLoader loader = new CodeCityDefaultLoader();
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
+    	
         CodeRepresentation code = loader.loadCodeRepresentation();
 
         CodeMap codeMap = generateCodeMap(code);
