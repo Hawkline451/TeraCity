@@ -8,11 +8,18 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.World;
 import org.terasology.world.generator.WorldGenerator;
 
+import speedMath.RegularWorldSpeedMath;
+
+/**
+ * @author cristian
+ * Object that represents the speed of the RegularWorldSpeed map.
+ */
 public class RegularWorldSpeed extends Speed {
     @In
     private WorldGenerator worldGenerator;
     
     private float calculatedSpeed;
+    private int maxHeight;
 
     public RegularWorldSpeed(){
     	this.calculatedSpeed = calculateSpeed();
@@ -30,16 +37,22 @@ public class RegularWorldSpeed extends Speed {
 			float meanX = (float) (( worldRegion.getRegion().maxX() - worldRegion.getRegion().minX() ) / 2.0);
 			float meanY = (float) (( worldRegion.getRegion().maxY() - worldRegion.getRegion().minY() ) / 2.0);
 			float meanZ = (float) (( worldRegion.getRegion().maxZ() - worldRegion.getRegion().minZ() ) / 2.0);
-			// We take the log2 of the module of the resultant vector, for a better scaling
-			float calculatedVelocity = (float) ((float) Math.log(Math.sqrt(meanX*meanX + meanY*meanY + meanZ*meanZ)) / Math.log(2));
-			console.addMessage("The calculated Velocity according to the map is :" + calculatedVelocity);
+			this.maxHeight = worldRegion.getRegion().maxZ();
+			// We calculate the velocity according to the formula given in the RegularWorldSpeedMath class
+			float calculatedVelocity = new RegularWorldSpeedMath(meanX,meanY,meanZ).getResult();
 			return calculatedVelocity;
 		}
 		return 0;
 	}
 
+	@Override
 	public float getCalculatedSpeed() {
 		return calculatedSpeed;
+	}
+
+	@Override
+	public int getMaxHeight() {
+		return this.maxHeight;
 	}
 
 }

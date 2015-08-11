@@ -6,7 +6,6 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeDeactivateComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterMovementComponent;
 import org.terasology.logic.characters.MovementMode;
@@ -14,8 +13,13 @@ import org.terasology.logic.characters.events.SetMovementModeEvent;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.generator.WorldGenerator;
 
 import speedAlgorithm.CodeMapSpeed;
@@ -27,17 +31,23 @@ import speedAlgorithm.Speed;
 @RegisterSystem
 public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState {
     @In
-    HUDToggleButtonsClientSystem toggleButtonsClientSystem;
+    private HUDToggleButtonsClientSystem toggleButtonsClientSystem;
     @In
-    EntityManager entityManager;
+    private EntityManager entityManager;
     @In
-    Console console;
+    private Console console;
     @In
     private WorldGenerator worldGenerator;
+    @In
+    private BlockManager blockManager;
     
-    EntityRef localClientEntity;
-    Vector3f oldLocation;
+    private EntityRef localClientEntity;
+    private Vector3f oldLocation;
 
+    /* 
+     * @see org.terasology.entitySystem.systems.BaseComponentSystem#initialise()
+     * We do override of this method for register the button into the GUI.
+     */
     @Override
     public void initialise() {
         toggleButtonsClientSystem.registerToggleButton(this);
@@ -71,7 +81,7 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     }
 
     /* 
-     * Overrides the toggle method for the flying button
+     * Overrides the toggle method of the Button State Interface for the flying button
      */
     @Override
     public void toggle() {
@@ -85,23 +95,26 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     
     
     /**
-     * @return A string with a console message, showing the new speed for flying mode
      * This private method sets the new speed when the flying mode is toggled by clicking the button
      */
     private void setNewSpeed(){
     	MovementMode move = getMovementMode();
+    	// We create a new Speed object, according to the CodeMap city
     	Speed newSpeed = new CodeMapSpeed();
         ClientComponent clientComp = getLocalClientEntity().getComponent(ClientComponent.class);
         CharacterMovementComponent newMove = clientComp.character.getComponent(CharacterMovementComponent.class);
         if (move == MovementMode.FLYING) {
         	// We must save the position before the fly mode was toggled
         	saveOldPosition(clientComp);
+        	// Calling of the method that calculates the speed
             newMove.speedMultiplier = newSpeed.getCalculatedSpeed();
             clientComp.character.saveComponent(newMove);
             console.addMessage("Speed multiplier set to " + newMove.speedMultiplier + " (was 1.0f)");
+            console.addMessage("Max height of the map: " + newSpeed.getMaxHeight());
         }
         else{
         	// In this case we're toggling the walking mode. We need to get back to the old position.
+        	placeTorchMarks(clientComp.character.getComponent(LocationComponent.class));
         	goBack(clientComp);
         	newMove.speedMultiplier = 1.0f;
         	clientComp.character.saveComponent(newMove);
@@ -126,10 +139,22 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
         clientComp.character.send(OnActivatedComponent.newInstance());
         console.addMessage("You're back to the initial position. You're in: "+ this.oldLocation.toString());
 	}
+	
+    /** 
+     * @param locationComponent Component of the location of the character. Received when the button is clicked, for getting back to the surface.
+     * Method that places a torch at the position that the character was when the button is clicked for going back.
+     */
+    private void placeTorchMarks(LocationComponent locationComponent) {
+    	BlockFamily blockFamily = blockManager.getBlockFamily("core:Torch");
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+            world.setBlock(new Vector3i((int) locationComponent.getWorldPosition().x, (int) locationComponent.getWorldPosition().y, (int) locationComponent.getWorldPosition().z), blockFamily.getArchetypeBlock());
+        }
+    }
 
 	/**
 	 * @param clientComp Instance of the current ClientComponent
-	 * Helper method that saves the position of the character before flying.
+	 * Method that saves the position of the character before flying.
 	 */
 	private void saveOldPosition(ClientComponent clientComp) {
 		LocationComponent oldLocation = clientComp.character.getComponent(LocationComponent.class);
