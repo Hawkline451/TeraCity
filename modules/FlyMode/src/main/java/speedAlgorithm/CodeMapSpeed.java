@@ -5,10 +5,8 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
-import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.CoreRegistry;
 
-@RegisterSystem
 public class CodeMapSpeed extends Speed {
     
     private float calculatedSpeed;

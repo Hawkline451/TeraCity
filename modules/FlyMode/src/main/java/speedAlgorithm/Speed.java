@@ -1,12 +1,9 @@
 package speedAlgorithm;
 
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.Console;
 import org.terasology.registry.In;
 
-@RegisterSystem
-public abstract class Speed extends BaseComponentSystem{
+public abstract class Speed {
     @In
     Console console;
 	

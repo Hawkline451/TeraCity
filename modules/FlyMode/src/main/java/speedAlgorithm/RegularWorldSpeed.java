@@ -1,6 +1,5 @@
 package speedAlgorithm;
 
-import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
@@ -9,7 +8,6 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.World;
 import org.terasology.world.generator.WorldGenerator;
 
-@RegisterSystem
 public class RegularWorldSpeed extends Speed {
     @In
     private WorldGenerator worldGenerator;

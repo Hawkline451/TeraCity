@@ -24,7 +24,7 @@ import speedAlgorithm.Speed;
 /**
  * Class that toggles the Flying mode in Terasology when clicking a button
  */
-@RegisterSystem(RegisterMode.CLIENT)
+@RegisterSystem
 public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState {
     @In
     HUDToggleButtonsClientSystem toggleButtonsClientSystem;
@@ -37,7 +37,6 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     
     EntityRef localClientEntity;
     Vector3f oldLocation;
-    Speed newSpeed;
 
     @Override
     public void initialise() {
@@ -91,7 +90,7 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
      */
     private void setNewSpeed(){
     	MovementMode move = getMovementMode();
-    	newSpeed = new CodeMapSpeed();
+    	Speed newSpeed = new CodeMapSpeed();
         ClientComponent clientComp = getLocalClientEntity().getComponent(ClientComponent.class);
         CharacterMovementComponent newMove = clientComp.character.getComponent(CharacterMovementComponent.class);
         if (move == MovementMode.FLYING) {
