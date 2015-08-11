@@ -2,6 +2,7 @@ package commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -14,6 +15,7 @@ import org.terasology.registry.In;
 @RegisterSystem
 public class CoberturaCommand extends BaseComponentSystem{
     
+	public static HashMap<String, DataNode> classData;
     @In
     private Console console;
     @Command(shortDescription = "Analisis usando Cobertura",
@@ -24,11 +26,32 @@ public class CoberturaCommand extends BaseComponentSystem{
     public String CoberturaAnalysis(
             @CommandParam(value = "filesFolder",required = true) String filesFolder,
             @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
-                
+        
+    	classData = new HashMap<String, DataNode>();
         Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
         t.start();
         
         return "Esperando por resultados del analisis ...";
+    }
+    
+    public void apply(){
+    	// hacer el coloreo
+    }
+    
+    public static String getColor(String classpath){
+    	DataNode d = classData.get(classpath);
+    	if (d == null){ return "Core:stone"; }
+    	
+    	double metric = d.getLineRate();
+    	if (metric < 0){ return "Core:stone"; }
+    	else if (metric == 0){ return "Coloring:morado"; }
+    	else if (metric <= 0.2){ return "Coloring:rojo"; }
+    	else if (metric <= 0.4){ return "Coloring:naranjo"; }
+    	else if (metric <= 0.6){ return "Coloring:amarillo"; }
+    	else if (metric <= 0.8){ return "Coloring:lime"; }
+    	else if (metric < 1){ return "Coloring:verde"; }
+    	else if (metric == 1){ return "Coloring:azul"; }
+    	else { return "Core:stone"; }
     }
     
 }
@@ -159,7 +182,9 @@ class ThreadCoberturaExecution implements Runnable {
                 process.waitFor();
             }
             console.addMessage("Fin del Analisis:\n");
-            console.addMessage(XMLParser.parse(BASE + "/analysis/reports/coverage.xml"));
+            console.addMessage(XMLParser.getResults(BASE + "/analysis/reports/coverage.xml"));
+            CoberturaCommand.classData = XMLParser.getDataNodes(BASE + "/analysis/reports/coverage.xml");
+            // CoberturaColoring.apply(); --> Para avisar a la cosa que colorea que ya se analizó el reporte
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("\nError de conexion\n");

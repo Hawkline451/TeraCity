@@ -1,4 +1,4 @@
 {
 	"basedOn" : "coloring:colorTemplate",
-	"tile" : "rojo"
+	"tile" : "coloring:rojo"
 }
