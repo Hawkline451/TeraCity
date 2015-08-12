@@ -14,8 +14,11 @@ import processor.PMDProcessor;
 
 public class PMDColoring extends AbstractColoring{
 	Map<String,String> colors = new HashMap<String,String>();
-	PMDProcessor pmdP;
-	String rootPath = CoreRegistry.get(CodeRepresentation.class).getPath();
+	Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
+	
+	String rootPath = CoreRegistry.get(CodeRepresentation.class).getPath();//Modify once we have the path
+	
+	
 	
 	@Override
 	public String getColor(String path) {
@@ -25,8 +28,15 @@ public class PMDColoring extends AbstractColoring{
 	
 	@Override
 	public void getDataColoring() throws IOException {
-		if (pmdP == null ||  !(rootPath.equals(CoreRegistry.get(CodeRepresentation.class).getPath())))
-			pmdP = new PMDProcessor(rootPath);
+		PMDProcessor pmdP = getProcessor();
 		colors = pmdP.getMap();
+	}
+
+	private PMDProcessor getProcessor() {
+		String rule = params[0];
+		if (!rulesApplied.keySet().contains(rule))
+			rulesApplied.put(rule, new PMDProcessor(rootPath, rule));
+		return rulesApplied.get(rule);
+		
 	}
 }

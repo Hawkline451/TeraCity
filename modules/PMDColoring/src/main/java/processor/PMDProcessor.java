@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PMDProcessor {
 
-	public PMDProcessor(String rootPath) {
+	public PMDProcessor(String rootPath, String rule) {
 	}
 
 	public Map<String, String> getMap() {
