@@ -1,22 +1,17 @@
 package coloring;
 
+import java.io.IOException;
+
 public class GitColoring extends AbstractColoring{
 
 	@Override
-	public void executeColoring(){
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getColor() {
-		// TODO Auto-generated method stub
+	public String getColor(String path) {
 		return null;
 	}
 
 	@Override
-	public void getDataColoring() {
-		// TODO Auto-generated method stub
+	public void getDataColoring() throws IOException {
 		
 	}
+
 }

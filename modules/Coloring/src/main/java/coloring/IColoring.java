@@ -8,7 +8,7 @@ public interface IColoring{
 	
 	public void getDataColoring() throws IOException ;
 	
-	public String getColor();
+	public String getColor(String path);
 	
 	public void execute(String[] params);
 	

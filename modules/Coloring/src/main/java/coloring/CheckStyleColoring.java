@@ -1,14 +1,13 @@
 package coloring;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import coloringCommands.PlaceBlockCommand;
 import metrics.Metric;
 import utility.DataColour;
 
 public class CheckStyleColoring extends AbstractColoring{
-	ArrayList<DataColour> data;
+	HashMap<String, DataColour> data;
 	Metric metric;
 
 	@Override
@@ -25,19 +24,9 @@ public class CheckStyleColoring extends AbstractColoring{
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	public void executeColoring(){
-		PlaceBlockCommand pbc = new PlaceBlockCommand();
-		for (DataColour dc : data) {
-			System.out.println("clase: |" + dc.getPath() + "|\n");
-			System.out.println(pbc.ColorBuild(dc.getPath(), dc.getDataWarnings().get(0).getColor()));
-		}
-	}
 
 	@Override
-	public String getColor() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getColor(String path) {
+		return data.get(path).getDataWarnings().get(0).getColor();
 	}
 }
