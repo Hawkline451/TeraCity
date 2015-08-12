@@ -1,3 +1,4 @@
+package processor;
 
 public class CodeSizesMetric implements Metric {
 

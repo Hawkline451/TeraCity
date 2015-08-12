@@ -1,3 +1,4 @@
+package processor;
 
 public class CommentsMetric implements Metric
 {
