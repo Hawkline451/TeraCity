@@ -69,17 +69,17 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             public void onActivated(UIWidget widget) {
             	String testee = testedClass.getText();
             	String tests = testClass.getText();
-            	ConsoleCommand ca = console.getCommand(new Name("CoberturaAnalysis"));
+            	ConsoleCommand ca = console.getCommand(new Name("PaintWithCobertura"));
             	List<String> params = new ArrayList<String>();
             	params.add(testee); params.add(tests);
             	EntityRef e = null;
             	try {
-			ca.execute(params, e);
-			System.out.println("\n C: \n");
-		} catch (CommandExecutionException e1) {
-			System.out.println("\n:C You prolly don't have the Cobertura module, yo\n");
-		}
-            }
+            		ca.execute(params, e);
+            		System.out.println("\n C: \n");
+            	} catch (CommandExecutionException e1) {
+            		System.out.println("\n:C You prolly don't have the Cobertura module, yo\n");
+            	}
+           }
         });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
