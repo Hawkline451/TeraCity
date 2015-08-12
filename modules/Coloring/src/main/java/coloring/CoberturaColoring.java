@@ -2,7 +2,7 @@ package coloring;
 
 import java.io.IOException;
 
-public class CoverturaColoring extends AbstractColoring{
+public class CoberturaColoring extends AbstractColoring{
 
 	@Override
 	public String getColor(String path) {
