@@ -27,6 +27,8 @@ public class CheckStyleColoring extends AbstractColoring{
 
 	@Override
 	public String getColor(String path) {
-		return data.get(path).getDataWarnings().get(0).getColor();
+		DataColour dc = data.get(path);
+		if (dc == null) return "Yellow";
+		return dc.getDataWarnings().get(0).getColor();
 	}
 }
