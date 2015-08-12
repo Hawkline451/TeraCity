@@ -15,23 +15,16 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.internal.BaseEntityRef;
-import org.terasology.entitySystem.entity.internal.NullEntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.Console;
-import org.terasology.logic.console.commandSystem.ConsoleCommand;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.logic.players.LocalPlayerSystem;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.naming.Name;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.WorldProvider;
@@ -39,7 +32,6 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
 
-import com.sun.xml.internal.stream.Entity;
 import commandRunner.CommandRunner;
 
 

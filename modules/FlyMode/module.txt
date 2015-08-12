@@ -6,7 +6,8 @@
     "description" : "Adds a button to easily get in to flight mode",
     "dependencies" :
     [
-         {"id": "HUDToggleButtons", "minVersion": "0.1.0"}
+         {"id": "HUDToggleButtons", "minVersion": "0.1.0"},
+	 {"id":"WorldCodecity","minVersion":"0.1.0"}
     ],
     "isServerSideOnly" : false
 }
