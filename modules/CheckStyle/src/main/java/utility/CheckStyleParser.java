@@ -35,7 +35,7 @@ public class CheckStyleParser extends XmlParser {
 						dataColour.add(dataWarning);
 					}
 				}
-				if (!dataColour.isEmpty()) data.add(dataColour);
+				if (!dataColour.isEmpty()) data.put(dataColour.getPath(), dataColour);
 			}
 		}
 	}

@@ -7,11 +7,13 @@ public class DataWarning{
 	int line;
 	int find;
 	int max;
+	String color;
 
 	public DataWarning(int line, int find, int max) {
 		this.line = line;
 		this.find = find;
 		this.max = max;
+		generateColor();
 	}
 
 	public DataWarning(int line, String message) {
@@ -22,8 +24,21 @@ public class DataWarning{
 		find = Integer.parseInt(matcher.group(1));
 		max = Integer.parseInt(matcher.group(2));
 		this.line = line;
+		generateColor();
 	}
-
+	
+	public int getLine() {
+		return line;
+	}
+	
+	private void generateColor() {
+		color = "Red";
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	
 	public String toString() {
 		return "(linea: " + line + ", encontrado: " + find + ", max: " + max + ")";
 	}

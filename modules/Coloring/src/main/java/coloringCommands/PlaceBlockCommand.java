@@ -20,6 +20,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
@@ -141,22 +142,22 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
+        	processMap(map, Vector2i.zero(), 10, world, blockFamily.getArchetypeBlock());//10 default ground level
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 
-	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, BlockFamily blockFamily) {
+	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, Block block) {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(scale, factory) + level;
             for (int z = level; z < height; z++)
-            	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
+            	world.setBlock(new Vector3i(x, z, y), block);
             if (obj.isOrigin()){
             	System.out.println(obj.getObject().getBase().getName());
-                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
+                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, block);
             }
         }
     }
@@ -208,5 +209,16 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             }
         }
         return list;
+    }
+	@Command(shortDescription = "Restore city to default")
+    public String restoreCity() {    	
+		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	processMap(map, Vector2i.zero(), 10, world, block);//10 default ground level
+            return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 }

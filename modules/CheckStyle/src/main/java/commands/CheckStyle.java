@@ -38,9 +38,8 @@ public class CheckStyle extends BaseComponentSystem{
 						 @CommandParam("Metrica") String metricString,
 						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
-		Metric metric = Metric.createMetric(metricString, max);
-		metric.execute(path, console);
+		Metric metric = Metric.createMetric(metricString, max, console);
+		metric.execute(path);
 		return "";
 	}
-
 }
