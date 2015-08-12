@@ -1,0 +1,133 @@
+{
+    "type" : "engine:CheckStyleMenuScreen",
+    "skin" : "mainmenu",
+    "contents" : {
+        "type" : "relativeLayout",
+        "contents" : [
+            {
+                "type" : "UIImage",
+                "image" : "engine:checkStyle",
+                "id" : "title",
+                "layoutInfo" : {
+                    "width" : 300,
+                    "height" : 97,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "TOP",
+                        "offset" : 48
+                    }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Métricas para aplicar: ",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 48,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title",
+                        "offset": 30
+                    }
+                }
+            },
+            {
+                "type" : "columnLayout",
+                "id" : "metrics",
+                "verticalSpacing" : 8,
+                "horizontalSpacing" : 8,
+                "columns": 1,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 250,
+                    "height" : 200,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "BOTTON",
+                        "offset" : 50,
+                        "widget" : "subtitle"
+                    }
+                },
+                "contents" : [
+                    {
+                        "type" : "UIButton",
+                        "id" : "booleana",
+                        "text" : "Booleana"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "ciclomatica",
+                        "text" : "Ciclomática"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "fanOut",
+                        "text" : "Fan Out"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "nPath",
+                        "text" : "NPath"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "dataAbstractionCoupling",
+                        "text" : "Abstract Coupling"
+                    }
+                ]
+            },
+            {
+                "type" : "columnLayout",
+                "id" : "values",
+                "verticalSpacing" : 8,
+                "horizontalSpacing" : 8,
+                "columns": 2,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 400,
+                    "height" : 80,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target": "BOTTOM",
+                        "offset": 20,
+                        "widget" : "metrics"
+                    }
+                },
+                "contents" : [
+                	{
+                		"type" : "UILabel",
+                		"text" : "Valor máximo\n(dejar vacío para default): "
+                	},
+                	{
+                		"type" : "UIText",
+                		"id" : "maxValue"
+                	},
+                	{
+                		"type" : "UILabel",
+                		"text" : "Ruta Proyecto\n(dejar vacío para default): "
+                	},
+                	{
+                		"type" : "UIText",
+                		"id" : "pathProject"
+                	}
+                ]
+            },
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            }
+        ]
+    }
+}

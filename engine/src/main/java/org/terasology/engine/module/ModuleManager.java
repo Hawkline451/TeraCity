@@ -16,6 +16,19 @@
 package org.terasology.engine.module;
 
 import com.google.common.collect.Sets;
+import java.io.FilePermission;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ReflectPermission;
+import java.net.SocketPermission;
+import java.net.URISyntaxException;
+import java.security.Policy;
+import java.util.Collections;
+import java.util.PropertyPermission;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.engine.SimpleUri;
@@ -36,15 +49,8 @@ import org.terasology.module.sandbox.BytecodeInjector;
 import org.terasology.module.sandbox.ModuleSecurityManager;
 import org.terasology.module.sandbox.ModuleSecurityPolicy;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ReflectPermission;
-import java.net.URISyntaxException;
-import java.security.Policy;
-import java.util.Collections;
-import java.util.Set;
+
+import java.io.File;
 
 /**
  * @author Immortius
@@ -102,16 +108,25 @@ public class ModuleManager {
         // TODO: This one org.terasology entry is a hack and needs a proper fix
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.world.biomes");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.math.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.game.GameManifest");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.engine.modes.StateLoading");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.engine.modes.GameState");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.terasology.persistence.internal.StoragePathProvider");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.lang");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.lang.ref");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.math");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.io"); //For use java.io into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.nio.file"); //For use java.nio.file into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); //For use javax.xml.parsers into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); //For use org.w3c.dom into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.atomic");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.concurrent.locks");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.util.regex");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.geom");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.net");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("java.awt.image");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.annotations");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.google.common.cache");
@@ -143,11 +158,15 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.yourkit.runtime");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.bulletphysics.linearmath");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("sun.reflect");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); // For use javax.xml.parsers into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); // For use org.w3c.dom into the new modules 
         moduleSecurityManager.getBasePermissionSet().addAPIClass(com.esotericsoftware.reflectasm.MethodAccess.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(IOException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(LoggerFactory.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(Logger.class);
+
+        moduleSecurityManager.getBasePermissionSet().addAPIClass(org.terasology.rendering.world.WorldRenderer.class);//For accessing the worldRenderer from the Coloring module
 
         APIScanner apiScanner = new APIScanner(moduleSecurityManager);
         for (Module module : registry) {
@@ -159,17 +178,32 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().grantPermission("com.google.gson", ReflectPermission.class);
         moduleSecurityManager.getBasePermissionSet().grantPermission("com.google.gson.internal", ReflectPermission.class);
 
+        
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new SocketPermission("localhost:25778","listen,resolve"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("<<ALL FILES>>","execute"));//For calling Runtime.execute into the new modules
+
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "write"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/booleanRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/libs/CheckStyle/Metrics/cyclomaticRule.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new FilePermission("./modules/CheckStyle/Project/out.xml", "read"));
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("user.dir","read")); // For read files to parse
+        
+
+        moduleSecurityManager.getBasePermissionSet().grantPermission(new PropertyPermission("os.name", "read"));//For known the OS to build the console command
+
+        
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.ByteBuffer.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(java.nio.IntBuffer.class);
 
-        Policy.setPolicy(new ModuleSecurityPolicy());
-        System.setSecurityManager(moduleSecurityManager);
+//        Policy.setPolicy(new ModuleSecurityPolicy());
+//        System.setSecurityManager(moduleSecurityManager);
     }
 
     public ModuleRegistry getRegistry() {
         return registry;
     }
-
+    
     public ModuleEnvironment getEnvironment() {
         return environment;
     }
