@@ -10,35 +10,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.terasology.codecity.world.map.CodeMap;
-import org.terasology.codecity.world.map.CodeMapFactory;
-import org.terasology.codecity.world.map.MapObject;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
-import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.LocalPlayer;
-import org.terasology.math.Vector2i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.world.WorldProvider;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
 
-import commandRunner.CommandRunner;
-
 
 @RegisterSystem
 public class PMDCommand extends BaseComponentSystem{
-    private final CodeScale scale = new SquareRootCodeScale();
+    /*
+	private final CodeScale scale = new SquareRootCodeScale();
     private final CodeMapFactory factory = new CodeMapFactory(scale);
+    */
 	@In
     private Console console;
 	
@@ -56,6 +47,8 @@ public class PMDCommand extends BaseComponentSystem{
 		t.start();
 		return "Esperando por resultados del analisis...";
     }
+	
+	/*
 	@Command(shortDescription = "Colors the city based on the result of the metric")
     public String applyColoring() {
 		String color = ThreadPMDExecution.getColor();
@@ -69,6 +62,7 @@ public class PMDCommand extends BaseComponentSystem{
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+	
 	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, BlockFamily blockFamily) {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
@@ -81,7 +75,7 @@ public class PMDCommand extends BaseComponentSystem{
                 processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
         }
     }
-	
+	*/
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
