@@ -177,6 +177,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	@Command(shortDescription = "give Color to a Build")
 	public String ColorBuild(@CommandParam("Name") String name,
 								@CommandParam("Color") String color){
+		if (color.equals("normal")) return "Nothing";
 		ArrayList <BuildInformation> builds = getInfo();
 		for (BuildInformation element:builds){
 			if (element.getName().equals(name)){
