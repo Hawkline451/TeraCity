@@ -15,8 +15,8 @@ public abstract class CheckStyleColoring implements Coloring{
 		String metricString = parameters[0];
 		int max = Integer.parseInt(parameters[1]);
 		String path = parameters[2];
-		Metric metric = Metric.createMetric(metricString, max);
-		metric.execute(path, null);
+		Metric metric = Metric.createMetric(metricString, max, null);
+		metric.execute(path);
 		CheckStyleParser cp = new CheckStyleParser();
 		cp.parse(path);
 		result = cp.getData();
