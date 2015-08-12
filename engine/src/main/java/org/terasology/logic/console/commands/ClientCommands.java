@@ -33,7 +33,6 @@ import org.terasology.world.WorldProvider;
 public class ClientCommands extends BaseComponentSystem {
     @In
     private CameraTargetSystem cameraTargetSystem;
-
     @Command(shortDescription = "Displays debug information on the target entity")
     public String debugTarget() {
         EntityRef cameraTarget = cameraTargetSystem.getTarget();
