@@ -1,8 +1,8 @@
 {
-    "id" : "FlightModeToggleButton",
+    "id" : "FlyMode",
     "version" : "0.1.0",
-    "author" : "Josharias",
-    "displayName" : "FlightModeToggleButton",
+    "author" : "",
+    "displayName" : "FlyMode",
     "description" : "Adds a button to easily get in to flight mode",
     "dependencies" :
     [

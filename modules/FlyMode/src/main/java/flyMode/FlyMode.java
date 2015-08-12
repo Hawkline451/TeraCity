@@ -1,53 +1,53 @@
 package flyMode;
 
 import org.terasology.HUDToggleButtons.systems.HUDToggleButtonsClientSystem;
-import org.terasology.codecity.world.map.*;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.entity.lifecycleEvents.BeforeDeactivateComponent;
 import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.characters.CharacterMovementComponent;
 import org.terasology.logic.characters.MovementMode;
 import org.terasology.logic.characters.events.SetMovementModeEvent;
 import org.terasology.logic.console.Console;
-import org.terasology.logic.console.commandSystem.annotations.Command;
-import org.terasology.logic.console.commandSystem.annotations.Sender;
 import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.permission.PermissionManager;
-import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
-import org.terasology.world.WorldComponent;
-import org.terasology.world.chunks.ChunkConstants;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.World;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.family.BlockFamily;
 import org.terasology.world.generator.WorldGenerator;
+
+import speedAlgorithm.CodeMapSpeed;
+import speedAlgorithm.Speed;
 
 /**
  * Class that toggles the Flying mode in Terasology when clicking a button
  */
-@RegisterSystem(RegisterMode.CLIENT)
+@RegisterSystem
 public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState {
     @In
-    HUDToggleButtonsClientSystem toggleButtonsClientSystem;
+    private HUDToggleButtonsClientSystem toggleButtonsClientSystem;
     @In
-    EntityManager entityManager;
+    private EntityManager entityManager;
     @In
-    Console console;
+    private Console console;
     @In
     private WorldGenerator worldGenerator;
+    @In
+    private BlockManager blockManager;
     
-    EntityRef localClientEntity;
-    Vector3f oldLocation;
+    private EntityRef localClientEntity;
+    private Vector3f oldLocation;
 
+    /* 
+     * @see org.terasology.entitySystem.systems.BaseComponentSystem#initialise()
+     * We do override of this method for register the button into the GUI.
+     */
     @Override
     public void initialise() {
         toggleButtonsClientSystem.registerToggleButton(this);
@@ -81,7 +81,7 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     }
 
     /* 
-     * Overrides the toggle method for the flying button
+     * Overrides the toggle method of the Button State Interface for the flying button
      */
     @Override
     public void toggle() {
@@ -95,22 +95,26 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     
     
     /**
-     * @return A string with a console message, showing the new speed for flying mode
      * This private method sets the new speed when the flying mode is toggled by clicking the button
      */
     private void setNewSpeed(){
     	MovementMode move = getMovementMode();
+    	// We create a new Speed object, according to the CodeMap city
+    	Speed newSpeed = new CodeMapSpeed();
         ClientComponent clientComp = getLocalClientEntity().getComponent(ClientComponent.class);
         CharacterMovementComponent newMove = clientComp.character.getComponent(CharacterMovementComponent.class);
         if (move == MovementMode.FLYING) {
         	// We must save the position before the fly mode was toggled
         	saveOldPosition(clientComp);
-            newMove.speedMultiplier = calculateSpeed2();
+        	// Calling of the method that calculates the speed
+            newMove.speedMultiplier = newSpeed.getCalculatedSpeed();
             clientComp.character.saveComponent(newMove);
             console.addMessage("Speed multiplier set to " + newMove.speedMultiplier + " (was 1.0f)");
+            console.addMessage("Max height of the map: " + newSpeed.getMaxHeight());
         }
         else{
         	// In this case we're toggling the walking mode. We need to get back to the old position.
+        	placeTorchMarks(clientComp.character.getComponent(LocationComponent.class));
         	goBack(clientComp);
         	newMove.speedMultiplier = 1.0f;
         	clientComp.character.saveComponent(newMove);
@@ -135,56 +139,27 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
         clientComp.character.send(OnActivatedComponent.newInstance());
         console.addMessage("You're back to the initial position. You're in: "+ this.oldLocation.toString());
 	}
+	
+    /** 
+     * @param locationComponent Component of the location of the character. Received when the button is clicked, for getting back to the surface.
+     * Method that places a torch at the position that the character was when the button is clicked for going back.
+     */
+    private void placeTorchMarks(LocationComponent locationComponent) {
+    	BlockFamily blockFamily = blockManager.getBlockFamily("core:Torch");
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+            world.setBlock(new Vector3i((int) locationComponent.getWorldPosition().x, (int) locationComponent.getWorldPosition().y, (int) locationComponent.getWorldPosition().z), blockFamily.getArchetypeBlock());
+        }
+    }
 
 	/**
 	 * @param clientComp Instance of the current ClientComponent
-	 * Helper method that saves the position of the character before flying.
+	 * Method that saves the position of the character before flying.
 	 */
 	private void saveOldPosition(ClientComponent clientComp) {
 		LocationComponent oldLocation = clientComp.character.getComponent(LocationComponent.class);
 		this.oldLocation = oldLocation.getWorldPosition();
 		console.addMessage("Saved the initial position. It was: "+ this.oldLocation.toString());
-	}
-	
-	/**
-	 * @return A float value of the calculated Velocity.
-	 * Method that calculates the velocity of the character according to the size of the original WorldMap.
-	 */
-	private float calculateSpeed() {
-		World world = worldGenerator.getWorld();
-		if (world != null) {
-			Region worldRegion = world.getWorldData(Region3i.createFromMinAndSize(new Vector3i(0, 0, 0),ChunkConstants.CHUNK_SIZE));
-			// We get the mean of the Max and Min values of each coordenate
-			float meanX = (float) (( worldRegion.getRegion().maxX() - worldRegion.getRegion().minX() ) / 2.0);
-			float meanY = (float) (( worldRegion.getRegion().maxY() - worldRegion.getRegion().minY() ) / 2.0);
-			float meanZ = (float) (( worldRegion.getRegion().maxZ() - worldRegion.getRegion().minZ() ) / 2.0);
-			// We take the log2 of the module of the resultant vector, for a better scaling
-			float calculatedVelocity = (float) ((float) Math.log(Math.sqrt(meanX*meanX + meanY*meanY + meanZ*meanZ)) / Math.log(2));
-			console.addMessage("The calculated Velocity according to the map is :" + calculatedVelocity);
-			return calculatedVelocity;
-		}
-		return 0;
-	}
-	
-	/**
-	 * @return A float value of the calculated Velocity.
-	 * Method that calculates the velocity of the character according to the size
-	 * of the building generated by CodeMap. 
-	 */
-	private float calculateSpeed2() {
-	    CodeScale scale = new SquareRootCodeScale();
-	    CodeMapFactory factory = new CodeMapFactory(scale);
-	    DrawableCode dc = CoreRegistry.get(CodeMap.class).getMapObjects().iterator().next().getObject();
-	    int sizeX = dc.getSize(scale, factory);
-	    int sizeY = dc.getSize(scale, factory);
-	    int sizeZ = dc.getHeight(scale, factory);
-	    console.addMessage("The X length of the map is :" + sizeX);
-	    console.addMessage("The Y length of the map is :" + sizeY);
-	    console.addMessage("The Z length of the map is :" + sizeZ);
-	    // We take the log2 of the module of the resultant vector, for a better scaling
-		float calculatedVelocity = (float) ((float) Math.log(Math.sqrt(sizeX*sizeX + sizeY*sizeY + sizeZ*sizeZ)) / Math.log(2));
-		console.addMessage("The calculated Velocity according to the map is :" + calculatedVelocity);
-		return calculatedVelocity;
 	}
 
     @Override

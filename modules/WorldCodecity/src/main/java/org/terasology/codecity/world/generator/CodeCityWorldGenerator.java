@@ -37,6 +37,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
         CodeMap codeMap = generateCodeMap(code);
         CoreRegistry.put(CodeMap.class, codeMap);
+        CoreRegistry.put(CodeRepresentation.class, code);
 
         super.initialize();
         
