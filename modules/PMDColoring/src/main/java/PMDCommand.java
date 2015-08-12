@@ -82,14 +82,6 @@ public class PMDCommand extends BaseComponentSystem{
         }
     }
 	
-	
-	@Command(shortDescription = "Runs another command")
-    public String runCommand(@CommandParam(value = "sourcePath",required = true) String commandName) throws CommandExecutionException {
-		CommandRunner.getInstance().execute(commandName, console, localPlayer);
-		
-		return commandName;
-	}
-	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
