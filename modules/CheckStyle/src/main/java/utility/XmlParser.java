@@ -42,4 +42,8 @@ public abstract class XmlParser {
 		}
 		return str.toString();
 	}
+	
+	public ArrayList<DataColour> getData() {
+		return data;
+	}
 }
