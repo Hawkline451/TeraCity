@@ -42,5 +42,4 @@ public class CheckStyle extends BaseComponentSystem{
 		metric.execute(path);
 		return "";
 	}
-
 }

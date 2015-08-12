@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.terasology.logic.console.Console;
 import org.terasology.registry.In;
@@ -111,7 +112,7 @@ public abstract class Metric{
 		thread.start();
 	}
 	
-	public ArrayList<DataColour> getData() throws InterruptedException {
+	public HashMap<String, DataColour> getData() throws InterruptedException {
 		if (console != null) console.addMessage("Esperando termino del análisis...");
 		else System.out.println("Esperando termino del análisis...");
 		thread.join();
@@ -123,7 +124,7 @@ public abstract class Metric{
 class MetricExecution implements Runnable{
 	String path;
 	String commandJar;
-	ArrayList<DataColour> data;
+	HashMap<String, DataColour> data;
 	
 	@In
 	Console console;
