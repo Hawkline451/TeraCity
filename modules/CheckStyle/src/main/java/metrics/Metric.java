@@ -161,6 +161,5 @@ class MetricExecution implements Runnable{
 			else System.err.println("Falló el analisis");
 			e.printStackTrace();
 		}
-		
 	}
 }

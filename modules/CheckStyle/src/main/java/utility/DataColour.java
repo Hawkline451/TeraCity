@@ -30,6 +30,10 @@ public class DataColour {
 		return path;
 	}
 	
+	public ArrayList<DataWarning> getDataWarnings(){
+		return data;
+	}
+	
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
 		
