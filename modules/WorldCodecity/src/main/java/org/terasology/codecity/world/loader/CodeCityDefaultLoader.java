@@ -16,16 +16,16 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodePackage map = new CodePackage("map", "", "");
         CodePackage structure = new CodePackage("structure", "", "");
         CodePackage scale = new CodePackage("scale", "", "");
-        CodePackage terasology = new CodePackage("terasology", "", "");
+        CodePackage terasology = new CodePackage("terasology", "terasology", "");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
         facet.addCodeContent(fac);
         
-        CodeClass bProv = new CodeClass("CodeCityBuildingProvider", 2, 74, "", "");
-        CodeClass bRast = new CodeClass("CodeCityBuildingRasterizer", 1, 36, "", "");
-        CodeClass gProv = new CodeClass("CodeCityGroundProvider", 0, 37, "", "");
-        CodeClass gRast = new CodeClass("CodeCityGroundRasterizer", 1, 34, "", "");
-        CodeClass wGen = new CodeClass("CodeCityWorldGenerator", 1, 164, "", "");
+        CodeClass bProv = new CodeClass("CodeCityBuildingProvider", 2, 74, "CodeCityBuildingProvider.java", "");
+        CodeClass bRast = new CodeClass("CodeCityBuildingRasterizer", 1, 36, "CodeCityBuildingRasterizer.java", "");
+        CodeClass gProv = new CodeClass("CodeCityGroundProvider", 0, 37, "CodeCityGroundProvider.java", "");
+        CodeClass gRast = new CodeClass("CodeCityGroundRasterizer", 1, 34, "CodeCityGroundRasterizer.java", "");
+        CodeClass wGen = new CodeClass("CodeCityWorldGenerator", 1, 164, "CodeCityWorldGenerator.java", "");
         generator.addCodeContent(bProv);
         generator.addCodeContent(bRast);
         generator.addCodeContent(gProv);
@@ -33,16 +33,16 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         generator.addCodeContent(wGen);
         terasology.addCodeContent(generator);
  
-        CodeClass cMap = new CodeClass("CodeMap", 0, 82, "", "");
-        CodeClass cMapF = new CodeClass("CodeMapFactory", 1, 102, "", "");
-        CodeClass cMapH = new CodeClass("CodeMapHash", 3, 148, "", "");
-        CodeClass cMapN = new CodeClass("CodeMapNull", 0, 57, "", "");
-        CodeClass cMapCP = new CodeClass("CodePackage", 2, 37, "", "");
-        CodeClass cMapO = new CodeClass("MapObject", 4, 67, "", "");
-        CodeClass cMapDCP = new CodeClass("DrawableCodePackage", 2, 54, "", "");
-        CodeClass cMapCF = new CodeClass("DrawableCodeFactory", 0, 24, "", "");
-        CodeClass cMapCC = new CodeClass("DrawableCodeClass", 1, 42, "", "");
-        CodeClass cMapDC = new CodeClass("DrawableCode", 0, 36, "", "");
+        CodeClass cMap = new CodeClass("CodeMap", 0, 82, "CodeMap.java", "");
+        CodeClass cMapF = new CodeClass("CodeMapFactory", 1, 102, "CodeMapFactory.java", "");
+        CodeClass cMapH = new CodeClass("CodeMapHash", 3, 148, "CodeMapHash.java", "");
+        CodeClass cMapN = new CodeClass("CodeMapNull", 0, 57, "CodeMapNull.java", "");
+        CodeClass cMapCP = new CodeClass("CodePackage", 2, 37, "CodePackage.java", "");
+        CodeClass cMapO = new CodeClass("MapObject", 4, 67, "MapObject.java", "");
+        CodeClass cMapDCP = new CodeClass("DrawableCodePackage", 2, 54, "DrawableCodePackage.java", "");
+        CodeClass cMapCF = new CodeClass("DrawableCodeFactory", 0, 24, "DrawableCodeFactory.java", "");
+        CodeClass cMapCC = new CodeClass("DrawableCodeClass", 1, 42, "DrawableCodeClass.java", "");
+        CodeClass cMapDC = new CodeClass("DrawableCode", 0, 36, "DrawableCode.java", "");
         map.addCodeContent(cMap);
         map.addCodeContent(cMapF);
         map.addCodeContent(cMapH);
@@ -55,17 +55,17 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         map.addCodeContent(cMapDC);
         terasology.addCodeContent(map);
  
-        CodeClass cClas = new CodeClass("CodeClass", 3, 39, "", "");
-        CodeClass cPac = new CodeClass("CodePackage", 2, 37, "", "");
-        CodeClass cRep = new CodeClass("CodeRepresentation", 4, 42, "", "");
+        CodeClass cClas = new CodeClass("CodeClass", 3, 39, "CodeClass.java", "");
+        CodeClass cPac = new CodeClass("CodePackage", 2, 37, "CodePackage.java", "");
+        CodeClass cRep = new CodeClass("CodeRepresentation", 4, 42, "CodeRepresentation.java", "");
         structure.addCodeContent(cClas);
         structure.addCodeContent(cPac);
         structure.addCodeContent(cRep);
         terasology.addCodeContent(structure);
  
-        CodeClass cSca = new CodeClass("CodeScale", 0,28, "", "");
-        CodeClass cLin = new CodeClass("LinearCodeScale", 0,16, "", "");
-        CodeClass cSqu = new CodeClass("SquareRootCodeScale", 0,21, "", "");
+        CodeClass cSca = new CodeClass("CodeScale", 0,28, "CodeScale.java", "");
+        CodeClass cLin = new CodeClass("LinearCodeScale", 0,16, "LinearCodeScale.java", "");
+        CodeClass cSqu = new CodeClass("SquareRootCodeScale", 0,21, "SquareRootCodeScale.java", "");
         scale.addCodeContent(cSca);
         scale.addCodeContent(cLin);
         scale.addCodeContent(cSqu);
