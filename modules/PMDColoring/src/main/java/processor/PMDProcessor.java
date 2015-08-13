@@ -88,9 +88,11 @@ public class PMDProcessor {
 			String line;
 			while ((line = br.readLine()) != null) 
 			{
-				String classPath = line.substring(0, line.indexOf(':'));
-				if (!counter.containsKey(classPath)) counter.put(classPath, 0);
-				counter.put(classPath, counter.get(classPath)+1);
+				if (line.indexOf(':') != -1) {	
+					String classPath = line.substring(0, line.indexOf(':'));
+					if (!counter.containsKey(classPath)) counter.put(classPath, 0);
+					counter.put(classPath, counter.get(classPath)+1);
+				}
 			}
 		}catch (IOException e) {
 			System.out.println("Error al llamar a comando pmd desde consola");
@@ -108,9 +110,9 @@ public class PMDProcessor {
 
 	private Metric processMetric() {//Metric need the counter
 		if (rule.equals("comments"))
-			return new CommentsMetric(counter);
+			return new CommentsCounterMetric(counter);
 		else if (rule.equals("codesize"))
-			return new CodeSizesMetric(counter);
+			return new CodeSizesCounterMetric(counter);
 		return new DefaultMetric();
 	}
 	

@@ -23,7 +23,7 @@ public class PMDColoring extends AbstractColoring{
 	@Override
 	public String getColor(String path) {
 		String color = colors.get(path);
-		return color == null ? "verde" : color;
+		return color == null ? "Green" : color;
 	}
 	
 	@Override
