@@ -14,7 +14,7 @@ public class PMDProcessor {
 	private String rootPath;
 	private String rule;
 	private final String outPutType = "text";
-	private Map<String, Integer> counter;
+	private Map<String, Integer> counters;
 	private Metric metric;
 	private Map<String, String> result;
 	
@@ -25,7 +25,7 @@ public class PMDProcessor {
 	}
 
 	public Map<String, String> getMap() {
-		return new HashMap<String, String>();
+		return result;
 	}
 	
 	private String buildInputString() {
@@ -70,7 +70,7 @@ public class PMDProcessor {
 	}
 	
 	private void process(){
-		counter = new HashMap<String, Integer>();
+		counters = new HashMap<String, Integer>();
 		String inputString = buildInputString();
 		invokePMD(inputString);
 		buildColoring();
@@ -90,8 +90,8 @@ public class PMDProcessor {
 			{
 				if (line.indexOf(':') != -1) {	
 					String classPath = line.substring(0, line.indexOf(':'));
-					if (!counter.containsKey(classPath)) counter.put(classPath, 0);
-					counter.put(classPath, counter.get(classPath)+1);
+					if (!counters.containsKey(classPath)) counters.put(classPath, 0);
+					counters.put(classPath, counters.get(classPath)+1);
 				}
 			}
 		}catch (IOException e) {
@@ -104,16 +104,19 @@ public class PMDProcessor {
 		metric = processMetric();
 		result = new HashMap<String, String>();
 		
-		for (String classPath : counter.keySet())
+		for (String classPath : counters.keySet())
 			result.put(classPath, metric.getColor(classPath));
 	}
 
 	private Metric processMetric() {//Metric need the counter
 		if (rule.equals("comments"))
-			return new CommentsCounterMetric(counter);
+			return new CommentsCounterMetric(counters);
 		else if (rule.equals("codesize"))
-			return new CodeSizesCounterMetric(counter);
+			return new CodesizeCounterMetric(counters);
 		return new DefaultMetric();
 	}
 	
+	public static void main(String[] args) {
+		
+	}
 }
