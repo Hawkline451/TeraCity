@@ -2,10 +2,13 @@ package coloring;
 
 import java.io.IOException;
 
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+
+import processor.PMDProcessor;
 
 @RegisterSystem
 /**
@@ -18,7 +21,7 @@ import org.terasology.logic.permission.PermissionManager;
  * en el submenu de coloreo.
  * (ej: /engine/src/main/java/org/terasology/rendering/nui/layers/mainMenu/CoberturaMenuScreen.java)
  */
-public class ColoringCommands {
+public class ColoringCommands extends BaseComponentSystem{
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"
@@ -49,10 +52,11 @@ public class ColoringCommands {
 	@Command(shortDescription = "Coloreo usando PMD",
             helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String paintWithPMD(@CommandParam String rule) {
+    public String paintWithPMD(@CommandParam(value = "rule",required = true) String rule) {
 		String[] params = {rule};
     	IColoring c = new PMDColoring();
     	c.execute(params);
+    	new PMDProcessor(".", "comments");
     	return "";
     }
 }
