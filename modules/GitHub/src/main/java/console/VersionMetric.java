@@ -3,7 +3,7 @@ package console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-
+ 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
@@ -15,7 +15,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 public class VersionMetric extends GitHubMetric{
 	
-	public void getVersions(Git git, Repository repo, Hashtable<String, Integer> table) throws GitAPIException,
+	public static void getVersions(Git git, Repository repo, Hashtable<String, Integer> table) throws GitAPIException,
 			NoHeadException, RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException {
 		int i=0;
 		ArrayList<String> unusedClasses = browseTreeRecursive(repo);
