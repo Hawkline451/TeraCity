@@ -45,4 +45,14 @@ public class ColoringCommands {
     	c.execute(params);
     	return "";
     }
+	
+	@Command(shortDescription = "Coloreo usando PMD",
+            helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String paintWithPMD(@CommandParam String rule) {
+		String[] params = {rule};
+    	IColoring c = new PMDColoring();
+    	c.execute(params);
+    	return "";
+    }
 }
