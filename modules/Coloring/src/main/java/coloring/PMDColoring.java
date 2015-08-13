@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.registry.CoreRegistry;
-
 import processor.PMDProcessor;
 
 
@@ -16,8 +13,8 @@ public class PMDColoring extends AbstractColoring{
 	Map<String,String> colors = new HashMap<String,String>();
 	Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
 	
-	String rootPath = CoreRegistry.get(CodeRepresentation.class).getPath();//Modify once we have the path
-	
+	//String rootPath = CoreRegistry.get(CodeRepresentation.class).getPath();//Modify once we have the path
+	String rootPath = "./modules/WorldCodecity/src/main/java/org/terasology/codecity/world";
 	
 	
 	@Override
@@ -33,8 +30,9 @@ public class PMDColoring extends AbstractColoring{
 	}
 
 	private PMDProcessor getProcessor() {
+		System.out.println("ROOT: "+rootPath);
 		String rule = params[0];
-		if (!rulesApplied.keySet().contains(rule))
+		if (!rulesApplied.keySet().contains(rule)) //|| !rootPath.equals(CoreRegistry.get(CodeRepresentation.class)))
 			rulesApplied.put(rule, new PMDProcessor(rootPath, rule));
 		return rulesApplied.get(rule);
 		

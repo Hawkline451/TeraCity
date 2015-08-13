@@ -4,9 +4,9 @@ import java.util.Map;
 
 public enum ThresholdColorGetter {
 	COMMENTS_METRIC (3, 7),
-	CODESIZE_METRIC (2, 5);
+	CODESIZE_METRIC (3, 7);
 	private int [] WARNING_LIMITS;
-	private static final String[] colors = {"Green", "Blue", "Purple", "Yellow", "Orange","Red"};
+	private static final String[] colors = {"Green","Yellow","Red"};
 	private ThresholdColorGetter(int... thresholds){
 		WARNING_LIMITS = thresholds;
 	}

@@ -77,6 +77,7 @@ public class PMDProcessor {
 	}
 
 	private void invokePMD(String inputString) {
+		System.out.println(inputString);
 		Process process;
 		try {
 			process = Runtime.getRuntime().exec(inputString);
@@ -89,13 +90,26 @@ public class PMDProcessor {
 			while ((line = br.readLine()) != null) 
 			{
 				if (line.indexOf(':') != -1) {	
+					/*
 					String classPath = line.substring(0, line.indexOf(':'));
 					if (!counters.containsKey(classPath)) counters.put(classPath, 0);
 					counters.put(classPath, counters.get(classPath)+1);
+					*/
+					//System.out.println(line);
+					try{
+					String className = line.substring(line.lastIndexOf('/')+1, line.indexOf(".java"));
+					if (!counters.containsKey(className)) counters.put(className, 0);
+					counters.put(className, counters.get(className)+1);
+					}catch(IndexOutOfBoundsException e){System.out.println(line);}
 				}
 			}
 		}catch (IOException e) {
 			System.out.println("Error al llamar a comando pmd desde consola");
+		}
+		
+		for (String className: counters.keySet())
+		{
+			System.out.println(className+": "+counters.get(className));
 		}
 	}
 

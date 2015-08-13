@@ -31,7 +31,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		paths.add("CodeRepresentation");
 		paths.add("CodeScale");
 		paths.add("LinearCodeScale");
-		paths.add("SquareRootCodeSca");
+		paths.add("SquareRootCodeScale");
 		return paths;
 	}
 	

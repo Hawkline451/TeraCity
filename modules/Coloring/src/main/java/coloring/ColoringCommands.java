@@ -56,7 +56,6 @@ public class ColoringCommands extends BaseComponentSystem{
 		String[] params = {rule};
     	IColoring c = new PMDColoring();
     	c.execute(params);
-    	new PMDProcessor(".", "comments");
     	return "";
     }
 }
