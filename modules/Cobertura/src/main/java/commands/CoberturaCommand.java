@@ -27,15 +27,14 @@ public class CoberturaCommand extends BaseComponentSystem{
             @CommandParam(value = "filesFolder",required = true) String filesFolder,
             @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
         
-    	classData = new HashMap<String, DataNode>();
-        Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
-        t.start();
-        
+    	analyze(filesFolder, testsFolder);
         return "Esperando por resultados del analisis ...";
     }
     
-    public void apply(){
-    	// hacer el coloreo
+    public void analyze(String filesFolder, String testsFolder){
+    	classData = new HashMap<String, DataNode>();
+        Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
+        t.start();
     }
     
     public static String getColor(String classpath){
@@ -93,6 +92,7 @@ class ThreadCoberturaExecution implements Runnable {
         return res;
     }
     
+    
     private String buildCompileTestsCommand(String testSrc){
         String res;
         res = "javac -g "
@@ -116,7 +116,7 @@ class ThreadCoberturaExecution implements Runnable {
         String testClasses = BASE + TEST_CLASSES_PATH;
         File folder = new File(testClasses);
         File[] files = folder.listFiles();
-        StringBuilder testList = new StringBuilder();;
+        StringBuilder testList = new StringBuilder();
         for (int i = 0; i < files.length; i++){
             if (files[i].isFile() && !files[i].getName().equals(".gitignore")){
                 testList.append(" ");
@@ -184,7 +184,6 @@ class ThreadCoberturaExecution implements Runnable {
             console.addMessage("Fin del Analisis:\n");
             console.addMessage(XMLParser.getResults(BASE + "/analysis/reports/coverage.xml"));
             CoberturaCommand.classData = XMLParser.getDataNodes(BASE + "/analysis/reports/coverage.xml");
-            // CoberturaColoring.apply(); --> Para avisar a la cosa que colorea que ya se analizó el reporte
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("\nError de conexion\n");

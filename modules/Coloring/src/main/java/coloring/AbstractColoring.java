@@ -32,10 +32,6 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		paths.add("CodeScale");
 		paths.add("LinearCodeScale");
 		paths.add("SquareRootCodeSca");
-		paths.add("");
-		paths.add("");
-		paths.add("");
-		paths.add("");
 		return paths;
 	}
 	
@@ -44,7 +40,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		ArrayList<String> paths = getPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
-			System.out.println("clase: |" + path + "|\n");
+			System.out.print("clase: |" + path + "| : ");
 			System.out.println(pbc.ColorBuild(path, getColor(path)));
 		}
 	}
@@ -58,7 +54,6 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	public void run() {
 		try {
 			getDataColoring();
-			executeColoring();
 		} catch (IOException e) {
 			System.err.println("Falló el coloreo");
 			e.printStackTrace();
@@ -70,5 +65,11 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		this.params = params;
 		Thread thread = new Thread(this);
 		thread.start();
+		try {
+			thread.join();
+			executeColoring();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

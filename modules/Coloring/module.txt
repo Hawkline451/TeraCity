@@ -6,6 +6,7 @@
     "description" : "",
     "dependencies" : [  {"id":"WorldCodecity","minVersion":"0.1.0"},
 			{"id":"CheckStyle","minVersion":"0.1.0"},
-			{"id":"PMDColoring","minVersion":"0.1.0"}],
+			{"id":"PMDColoring","minVersion":"0.1.0"},
+			{"id":"Cobertura","minVersion":"0.1.0"}],
     "isServerSideOnly" : false
 }
