@@ -18,8 +18,11 @@ package console;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -44,7 +47,19 @@ import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.math.Vector2i;
+import org.terasology.math.geom.Vector3i;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockUri;
+import org.terasology.world.block.family.BlockFamily;
+import org.terasology.codecity.world.map.CodeMap;
+import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 
 
 /**
@@ -52,8 +67,10 @@ import org.terasology.registry.In;
  */
 @RegisterSystem
 public class GitCommand extends BaseComponentSystem{
-	public static Hashtable<String, Boolean> data;
-	public static Hashtable<String, Integer> data2;
+	private final CodeScale scale = new SquareRootCodeScale();
+    private final CodeMapFactory factory = new CodeMapFactory(scale);
+    
+	public static Hashtable<String, Integer> data;
 	public static String metrica;
 	@In
 	private Console console;
@@ -70,31 +87,56 @@ public class GitCommand extends BaseComponentSystem{
     		@CommandParam(value= "metric", required=true) String metric
     		) throws IOException, NoHeadException, GitAPIException {
     		metrica=metric;
-    		data=new Hashtable<String,Boolean>();
-    		data2=new Hashtable<String,Integer>();
+    		data=new Hashtable<String,Integer>();
     		Thread t = new Thread(new ThreadGithubExecution(remotePath,projectName,metrica, console));
     		t.start();
     		
     		return "Esperando por resultados del analisis... ";
     }
     
-    public void apply(){
-    	//Hacer coloreo
+    @Command(shortDescription = "Colors the city based on the result of the metric")
+    public String applyColoring() {
+    	String color=null;
+    	Set set = data.entrySet();
+    	Iterator it = set.iterator();
+    	Map.Entry entry=(Map.Entry) it.next();
+    	if(entry.getKey().toString()!=null){
+    		color=getColor((String)entry.getKey());
+    	}
+		if(color==null) return "Color no seteado";
+    	BlockFamily blockFamily = getBlockFamily(color);
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
+            return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
     }
-    public static String getColor(String classpath){
-    	if(metrica.equals("bugs")){
-	    	Boolean d=data.get(classpath);
-	    	if(d==null){return "Core:stone";}
-	    	
-	    	else if(d==true){return "Coloring:rojo";}
-	    	else { return "Coloring:verde";}
-	    }else{
-	    	Integer d=data2.get(classpath);
-	    	if(d==0){ return "Coloring:rojo";}
-	    	else if(d==1){return "Coloring:verde";}	    		
-	    	else{ return "Core:stone";}
-	    	
-	    }
+    private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, BlockFamily blockFamily) {
+        for (MapObject obj : map.getMapObjects()) {
+            int x = obj.getPositionX() + offset.getX();
+            int y = obj.getPositionZ() + offset.getY();
+            int height = obj.getHeight(scale, factory) + level;
+
+            for (int z = level; z < height; z++)
+            	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
+            if (obj.isOrigin())
+                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
+        }
+    }
+    private BlockFamily getBlockFamily(String colorBlock) {
+		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
+        BlockFamily blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
+        return blockFamily;
+	}
+    public static String getColor(String classpath){   	
+	    Integer d=data.get(classpath);
+	    if(d==0){ return "Coloring:rojo";}
+	    else if(d==1){return "Coloring:verde";}	    		
+	    else{ return "Core:stone";}
+    
 }
 
 class ThreadGithubExecution implements Runnable{
@@ -137,21 +179,22 @@ class ThreadGithubExecution implements Runnable{
 					 }else{
 			    	        	gitGlone(localPath, remotePath);
 			         }
-					 
+					 GitHubMetric metricObject = null;
 					if(metric.equals("bugs")){
 						// calcula la metrica bugs
-						BugMetric.getBugs(git, localRepo, GitCommand.data);
-					
+						metricObject = new BugMetric();					
 					}else if(metric.equals("versions")){
 						//calcula la metrica versions
-						VersionMetric.getVersions(git, localRepo, GitCommand.data2);
+						metricObject = new VersionMetric();
 						
 					}else{
 						System.err.println("parametro metric invalido");
 					}
-					 
+					try{metricObject.getData(git, localRepo, GitCommand.data);}
+					finally{
 					git.close();
 					console.addMessage("Fin del Analisis.\n");
+					}
 					 				
 				} catch (IOException e) {
 					// It can´t create a Local repository
