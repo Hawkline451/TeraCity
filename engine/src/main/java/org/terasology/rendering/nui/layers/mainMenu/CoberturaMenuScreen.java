@@ -69,7 +69,7 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             public void onActivated(UIWidget widget) {
             	String testee = testedClass.getText();
             	String tests = testClass.getText();
-            	ConsoleCommand ca = console.getCommand(new Name("PaintWithCobertura"));
+            	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
             	List<String> params = new ArrayList<String>();
             	params.add(testee); params.add(tests);
             	EntityRef e = null;

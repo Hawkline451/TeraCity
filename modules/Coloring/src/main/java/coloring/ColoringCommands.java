@@ -24,7 +24,7 @@ public class ColoringCommands {
                     + "<filesFolder>: Archivos que son testeados\n"
                     + "<testsFolder>: Archivos de test\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String PaintWithCobertura(
+    public String paintWithCobertura(
             @CommandParam(value = "filesFolder",required = true) String filesFolder,
             @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
 		CoberturaColoring cob = new CoberturaColoring();
@@ -33,5 +33,16 @@ public class ColoringCommands {
 		pars[1] = testsFolder;
 		cob.execute(pars);
 		return "Loading ...";
+    }
+	
+	@Command(shortDescription = "Coloreo usando CheckStyle",
+            helpText = "Ejecuta colore usando CheckStyle\n",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String paintWithCheckStyle(@CommandParam String path,
+    		@CommandParam String metric, @CommandParam String max) {
+		String[] params = {path, metric, max};
+    	IColoring c = new CheckStyleColoring();
+    	c.execute(params);
+    	return "";
     }
 }
