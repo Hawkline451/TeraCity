@@ -2,6 +2,7 @@ package coloring;
 
 import java.io.IOException;
 
+import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
@@ -18,7 +19,7 @@ import org.terasology.logic.permission.PermissionManager;
  * en el submenu de coloreo.
  * (ej: /engine/src/main/java/org/terasology/rendering/nui/layers/mainMenu/CoberturaMenuScreen.java)
  */
-public class ColoringCommands {
+public class ColoringCommands extends BaseComponentSystem {
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"
@@ -38,8 +39,8 @@ public class ColoringCommands {
 	@Command(shortDescription = "Coloreo usando CheckStyle",
             helpText = "Ejecuta colore usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String paintWithCheckStyle(@CommandParam String path,
-    		@CommandParam String metric, @CommandParam String max) {
+    public String paintWithCheckStyle(@CommandParam("Ruta") String path,
+    		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();
     	c.execute(params);
