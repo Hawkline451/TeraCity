@@ -30,7 +30,7 @@ public class BugMetric extends GitHubMetric {
 			System.out.println(hasBug(message));
 			ArrayList<String> classesInCommit = getClassesInCommit(i, repo);
 			if (classesInCommit.isEmpty()) {
-				for (String c: unusedClasses) {
+				for (String c : unusedClasses) {
 					classesInCommit.add(c);
 				}
 			}
@@ -45,7 +45,7 @@ public class BugMetric extends GitHubMetric {
 					unusedClasses.remove(className);
 				}
 			}
-			
+
 			i++;
 		}
 		System.out.println("bugs: " + table);
@@ -65,5 +65,58 @@ public class BugMetric extends GitHubMetric {
 			}
 		}
 		return bugged;
+	}
+	
+	public static int hasBugInt(String message) {
+		String aux;
+		int bugged = 0;
+		for (int i = 0; i < (message.length() - 5); ++i) {
+			aux = message.substring(i, i + 5);
+			aux.toLowerCase();
+			if (aux.substring(0, 3).equals("bug"))
+				bugged = 1;
+			if (aux.equals("fixed")) {
+				bugged = 0;
+				break;
+			}
+		}
+		return bugged;
+	}
+
+	public void getData(Git git, Repository repo,
+			Hashtable<String, Integer> table) throws GitAPIException,
+			NoHeadException, RevisionSyntaxException, AmbiguousObjectException,
+			IncorrectObjectTypeException, IOException {
+		ArrayList<String> unusedClasses = browseTreeRecursive(repo);
+		String message;
+		int i = 0;
+		Iterable<RevCommit> log = git.log().call();
+		for (RevCommit commit : log) {
+			message = commit.getFullMessage();
+			System.out.println(message);
+			// System.out.println(commit.getId());
+			System.out.println(hasBug(message));
+			ArrayList<String> classesInCommit = getClassesInCommit(i, repo);
+			if (classesInCommit.isEmpty()) {
+				for (String c : unusedClasses) {
+					classesInCommit.add(c);
+				}
+			}
+			for (String className : classesInCommit) {
+				if (table.get(className) == null) {
+					table.put(className, hasBugInt(message));
+				} else {
+					table.remove(className);
+					table.put(className, hasBugInt(message));
+				}
+				if (unusedClasses.contains(className)) {
+					unusedClasses.remove(className);
+				}
+			}
+
+			i++;
+		}
+		System.out.println("bugs: " + table);
+
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
@@ -21,7 +22,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
-public class GitHubMetric {
+public abstract class GitHubMetric {
 
 	public static ArrayList<String> getClassesInCommit(int commitsFromHead,
 			Repository repo) throws RevisionSyntaxException,
@@ -88,4 +89,7 @@ public class GitHubMetric {
 		}
 		return classes;
 	}
+	
+	public abstract void getData(Git git, Repository repo, Hashtable<String, Integer> table) throws GitAPIException,
+	NoHeadException, RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException; 
 }
