@@ -1,25 +1,25 @@
 package processor;
 
+import java.util.Map;
+
 public class CodeSizesMetric implements Metric {
-
-	private int requiredComments;
-	private int linesOfCode;
 	
-	public CodeSizesMetric(int requiredComments, int linesOfCode) 
-	{
-		this.requiredComments = requiredComments;
-		this.linesOfCode = linesOfCode;
+	private final int [] WARNING_LIMITS = {2, 5};
+	private Map<String, Integer> counter;
+	
+	public CodeSizesMetric(Map<String, Integer> counter) {
+		this.counter = counter;
 	}
-	
+
 	@Override
-	public String getColor() 
+	public String getColor(String classPath) 
 	{
-		if(requiredComments > 10000)
-			return "Red";
-		else if(requiredComments > 1000)
-			return "Blue";
-		return "Green";
+		Integer warnings = counter.get(classPath);
+		if (warnings == null) warnings = 0;
+		
+		if(warnings <= WARNING_LIMITS[0]) return "verde";
+		else if (warnings <= WARNING_LIMITS[1]) return "amarillo";
+		return "rojo";
 	}
-
 
 }

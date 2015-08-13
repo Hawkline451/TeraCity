@@ -162,14 +162,15 @@ class ThreadPMDExecution implements Runnable
 			 int messageLines = 0;
 			 while ((line = br.readLine()) != null) 
 			 {
-				 //console.addMessage(line);
+				 console.addMessage(line);
 				 ++messageLines;
 			 }
 			 console.addMessage("Lineas del mensage: "+ messageLines);
 			 
 			 int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
-			 
+			
 			 console.addMessage("Lineas totales: "+ totalLines);
+			 /* 
 			 if(rules.equals("comments"))
 			 {
 				 String color = new CommentsMetric(messageLines, totalLines).getColor();
@@ -182,7 +183,9 @@ class ThreadPMDExecution implements Runnable
 				 currentColor = color;
 				 console.addMessage(color);
 			 }
+			 */
 			 console.addMessage("Fin del Analisis");
+			 
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block

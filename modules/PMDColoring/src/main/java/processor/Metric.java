@@ -1,5 +1,5 @@
 package processor;
 interface Metric
 {
-	public String getColor();
+	public String getColor(String classPath);
 }

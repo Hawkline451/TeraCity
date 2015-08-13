@@ -3,6 +3,7 @@ package processor;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -13,12 +14,14 @@ public class PMDProcessor {
 	private String rootPath;
 	private String rule;
 	private final String outPutType = "text";
-
+	private Map<String, Integer> counter;
+	private Metric metric;
+	private Map<String, String> result;
+	
 	public PMDProcessor(String rootPath, String rule) {
 		this.rootPath = rootPath;
 		this.rule = rule;
-		System.out.println(buildInputString());
-		//process();
+		process();
 	}
 
 	public Map<String, String> getMap() {
@@ -65,6 +68,52 @@ public class PMDProcessor {
 		sb.append(".xml");
 		return sb.toString();
 	}
+	
+	private void process(){
+		counter = new HashMap<String, Integer>();
+		String inputString = buildInputString();
+		invokePMD(inputString);
+		buildColoring();
+	}
+
+	private void invokePMD(String inputString) {
+		Process process;
+		try {
+			process = Runtime.getRuntime().exec(inputString);
+		
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			
+			String line;
+			while ((line = br.readLine()) != null) 
+			{
+				String classPath = line.substring(0, line.indexOf(':'));
+				if (!counter.containsKey(classPath)) counter.put(classPath, 0);
+				counter.put(classPath, counter.get(classPath)+1);
+			}
+		}catch (IOException e) {
+			System.out.println("Error al llamar a comando pmd desde consola");
+		}
+	}
+
+
+	private void buildColoring() {
+		metric = processMetric();
+		result = new HashMap<String, String>();
+		
+		for (String classPath : counter.keySet())
+			result.put(classPath, metric.getColor(classPath));
+	}
+
+	private Metric processMetric() {//Metric need the counter
+		if (rule.equals("comments"))
+			return new CommentsMetric(counter);
+		else if (rule.equals("codesize"))
+			return new CodeSizesMetric(counter);
+		return new DefaultMetric();
+	}
+	
 /*//FIRST COUNT OCURRENCES, THEN ASSIGN A COLOR
 	private void process() {
 		String inputString = buildInputString();
@@ -108,4 +157,5 @@ public class PMDProcessor {
 
 	}
 */
+
 }
