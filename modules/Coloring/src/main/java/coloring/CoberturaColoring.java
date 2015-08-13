@@ -2,15 +2,21 @@ package coloring;
 
 import java.io.IOException;
 
-public class CoberturaColoring extends AbstractColoring{
+import commands.CoberturaCommand;
 
+public class CoberturaColoring extends AbstractColoring{
+	CoberturaCommand cobby;
+	
+	public CoberturaColoring(){
+		cobby = new CoberturaCommand();
+	}
+	
 	@Override
 	public String getColor(String path) {
-		return null;
+		return CoberturaCommand.getColor(path);
 	}
-
 	@Override
 	public void getDataColoring() throws IOException {
-		
+		cobby.analyze(params[0], params[1]);
 	}
 }
