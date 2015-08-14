@@ -29,6 +29,11 @@ public class BuildInformation {
 		return info.getObject().getBase().getName();
 	}
 	
+	public String getPath(){
+		return info.getObject().getBase().getPath();
+	}
+	
+	
 	public int getHeight(){
 		return height;
 	}
