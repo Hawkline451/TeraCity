@@ -1,12 +1,16 @@
 package coloring;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.registry.CoreRegistry;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 import processor.PMDProcessor;
 
@@ -57,5 +61,19 @@ public class ColoringCommands extends BaseComponentSystem{
     	IColoring c = new PMDColoring();
     	c.execute(params);
     	return "";
+    }
+	
+	
+	@Command(shortDescription = "Aplica el coloreo",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String applyColoring() {
+		ListenableFuture<AbstractColoring> listeneableFuture = CoreRegistry.get(ListenableFuture.class);
+		if (listeneableFuture == null || !listeneableFuture.isDone()) return "Analisis no terminado";
+		try {
+			listeneableFuture.get().executeColoring();
+		} catch (InterruptedException | ExecutionException e) {
+			System.out.println("Error de Pintado");
+		}
+		return "Pintado";
     }
 }
