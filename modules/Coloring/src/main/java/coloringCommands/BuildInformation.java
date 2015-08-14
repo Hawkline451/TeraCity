@@ -7,14 +7,16 @@ public class BuildInformation {
 	private int y;
 	private int z;
 	private int height;
+	private int width;
 	private MapObject info;
 	
-	public BuildInformation(int x,int y, int z, int height, MapObject object){
+	public BuildInformation(int x,int y, int z, int height, int width, MapObject object){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.height = height;
 		this.info = object;
+		this.width = width;
 	}
 	public int getX(){
 		return x;
@@ -33,9 +35,12 @@ public class BuildInformation {
 		return info.getObject().getBase().getPath();
 	}
 	
-	
 	public int getHeight(){
 		return height;
+	}
+	
+	public int getWidth(){
+		return width;
 	}
 
 }

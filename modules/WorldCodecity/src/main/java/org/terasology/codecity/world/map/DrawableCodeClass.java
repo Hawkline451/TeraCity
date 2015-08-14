@@ -38,4 +38,9 @@ public class DrawableCodeClass implements DrawableCode {
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
         return new CodeMapNull();
     }
+
+	@Override
+	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+		return scale.getScaledSize(base.getVariableNumber(),1);
+	}
 }

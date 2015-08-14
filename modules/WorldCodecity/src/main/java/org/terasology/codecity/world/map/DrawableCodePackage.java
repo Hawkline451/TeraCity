@@ -51,4 +51,9 @@ public class DrawableCodePackage implements DrawableCode {
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
         return factory.generateMap(contentList);
     }
+
+	@Override
+	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+		return 1;
+	}
 }
