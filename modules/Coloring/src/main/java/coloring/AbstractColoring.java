@@ -2,6 +2,15 @@ package coloring;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+
+import org.terasology.math.geom.Vector3i;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.family.BlockFamily;
 
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.MapObject;
@@ -10,6 +19,12 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.world.WorldProvider;
 
 import coloringCommands.PlaceBlockCommand;
+
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 public abstract class AbstractColoring implements IColoring, Runnable{
 	String[] params;
@@ -37,7 +52,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		paths.add("CodeRepresentation");
 		paths.add("CodeScale");
 		paths.add("LinearCodeScale");
-		paths.add("SquareRootCodeSca");
+		paths.add("SquareRootCodeScale");
 		return paths;
 	}
 	
@@ -87,13 +102,19 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	@Override
 	public void execute(String[] params) {
 		this.params = params;
-		Thread thread = new Thread(this);
-		thread.start();
-		try {
-			thread.join();
-			executeColoring();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
+		ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(1));
+		ListenableFuture<AbstractColoring> listenableFuture = executor.submit(this,this);
+	    CoreRegistry.put(ListenableFuture.class, listenableFuture);
+	    Futures.addCallback(listenableFuture, new FutureCallback<AbstractColoring>() {
+	        public void onSuccess(AbstractColoring result) {
+	        	System.out.println("Listo para pintar");
+	        }
+
+	        public void onFailure(Throwable thrown) {
+	            System.out.println("Falla de Analisis");
+	        }
+	    });
+	    executor.shutdown();
 	}
 }

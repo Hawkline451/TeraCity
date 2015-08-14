@@ -1,12 +1,16 @@
 package coloring;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.registry.CoreRegistry;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 @RegisterSystem
 /**
@@ -19,7 +23,7 @@ import org.terasology.logic.permission.PermissionManager;
  * en el submenu de coloreo.
  * (ej: /engine/src/main/java/org/terasology/rendering/nui/layers/mainMenu/CoberturaMenuScreen.java)
  */
-public class ColoringCommands extends BaseComponentSystem {
+public class ColoringCommands extends BaseComponentSystem{
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"
@@ -45,5 +49,29 @@ public class ColoringCommands extends BaseComponentSystem {
     	IColoring c = new CheckStyleColoring();
     	c.execute(params);
     	return "";
+    }
+	
+	@Command(shortDescription = "Coloreo usando PMD",
+            helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String paintWithPMD(@CommandParam(value = "rule",required = true) String rule) {
+		String[] params = {rule};
+    	IColoring c = new PMDColoring();
+    	c.execute(params);
+    	return "";
+    }
+	
+	
+	@Command(shortDescription = "Aplica el coloreo",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String applyColoring() {
+		ListenableFuture<AbstractColoring> listeneableFuture = CoreRegistry.get(ListenableFuture.class);
+		if (listeneableFuture == null || !listeneableFuture.isDone()) return "Analisis no terminado";
+		try {
+			listeneableFuture.get().executeColoring();
+		} catch (InterruptedException | ExecutionException e) {
+			System.out.println("Error de Pintado");
+		}
+		return "Pintado";
     }
 }
