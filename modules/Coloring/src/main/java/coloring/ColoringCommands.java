@@ -41,7 +41,7 @@ public class ColoringCommands extends BaseComponentSystem{
     }
 	
 	@Command(shortDescription = "Coloreo usando CheckStyle",
-            helpText = "Ejecuta colore usando CheckStyle\n",
+            helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(@CommandParam("Ruta") String path,
     		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {

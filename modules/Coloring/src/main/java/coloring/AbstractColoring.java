@@ -31,25 +31,34 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	
 	private ArrayList<String> getPaths() {
 		ArrayList<String> paths = new ArrayList<>();
-		paths.add("CodeMap");
+		paths.add("CodeCityFacet.java");
+
 		paths.add("CodeCityBuildingProvider");
 		paths.add("CodeCityBuildingRasterizer");
 		paths.add("CodeCityGroundProvider");
 		paths.add("CodeCityGroundRasterizer");
 		paths.add("CodeCityWorldGenerator");
-		paths.add("CodeMap");
+		paths.add("JEditExporter");
+
+		paths.add("CodeCityDefaultLoader");
+		paths.add("CodeCityLoader");
+		paths.add("CodeCitySocketLoader");
+
 		paths.add("CodeMapFactory");
 		paths.add("CodeMapHash");
+		paths.add("CodeMap");
 		paths.add("CodeMapNull");
-		paths.add("CodePackage");
-		paths.add("MapObject");
-		paths.add("DrawableCodePackage");
-		paths.add("DrawableCodeFactory");
 		paths.add("DrawableCodeClass");
+		paths.add("DrawableCodeFactory");
 		paths.add("DrawableCode");
+		paths.add("DrawableCodePackage");
+		paths.add("MapObject");
+
 		paths.add("CodeClass");
 		paths.add("CodePackage");
 		paths.add("CodeRepresentation");
+		paths.add("CodeVisitor");
+
 		paths.add("CodeScale");
 		paths.add("LinearCodeScale");
 		paths.add("SquareRootCodeScale");
