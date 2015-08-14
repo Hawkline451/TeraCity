@@ -11,10 +11,12 @@ import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.family.BlockFamily;
-
 import org.terasology.codecity.world.map.CodeMap;
+import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.WorldProvider;
 
@@ -69,15 +71,24 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	ArrayList<String> result = new ArrayList<String>();
-        	for (MapObject obj: map.getMapObjects()){
-        		result.add(obj.getObject().getBase().getPath());
-        	}
-        	return result;
+        	CodeScale scale = new SquareRootCodeScale();
+        	return getPathInfo(map,scale);
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
 	}
+	public ArrayList <String> getPathInfo(CodeMap map, CodeScale scale){
+		CodeMapFactory factory = new CodeMapFactory(scale);
+		ArrayList<String> result = new ArrayList<String>();
+		for (MapObject obj: map.getMapObjects()){
+			if (obj.isOrigin()){
+				result.add(obj.getObject().getBase().getPath());
+				CodeMap next = obj.getObject().getSubmap(scale, factory);
+				result.addAll(getPathInfo(next,scale));
+			}
+		}
+		return result;
 	
+	}
 	public String getRootPath(){
 		CodeRepresentation code =  CoreRegistry.get(CodeRepresentation.class);
 		return code.getPath();
