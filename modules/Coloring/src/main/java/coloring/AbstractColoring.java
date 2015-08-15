@@ -19,10 +19,12 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
+import coloringCommands.ColoringCommands;
 import coloringCommands.PlaceBlockCommand;
 
 public abstract class AbstractColoring implements IColoring, Runnable{
 	String[] params;
+	
 	
 	public ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
@@ -59,6 +61,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 			System.out.print("clase: |" + path + "| : ");
 			System.out.println(pbc.ColorBuild(path, getColor(path)));
 		}
+		ColoringCommands.STATE = "Esperando Análisis";
 	}
 
 	@Override
@@ -79,16 +82,19 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	@Override
 	public void execute(String[] params) {
 		this.params = params;
-		
+		ColoringCommands.STATE = "Analizando...";
 		ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(1));
 		ListenableFuture<AbstractColoring> listenableFuture = executor.submit(this,this);
 	    CoreRegistry.put(ListenableFuture.class, listenableFuture);
 	    Futures.addCallback(listenableFuture, new FutureCallback<AbstractColoring>() {
 	        public void onSuccess(AbstractColoring result) {
+	        	ColoringCommands.STATE = "Coloreando...";
 	        	System.out.println("Listo para pintar");
+	        	
 	        }
 
 	        public void onFailure(Throwable thrown) {
+	        	ColoringCommands.STATE = "Analizando...";
 	            System.err.println("Falla de Analisis");
 	        }
 	    });

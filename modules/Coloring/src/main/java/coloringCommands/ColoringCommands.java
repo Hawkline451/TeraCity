@@ -30,6 +30,9 @@ import coloring.PMDColoring;
  * (ej: /engine/src/main/java/org/terasology/rendering/nui/layers/mainMenu/CoberturaMenuScreen.java)
  */
 public class ColoringCommands extends BaseComponentSystem{
+	
+	public static String STATE = "Esperando Análisis";
+	
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"

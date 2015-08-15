@@ -12,8 +12,10 @@ public class ColoringButton extends BaseComponentSystem implements HUDToggleButt
 	
     @In
     private HUDToggleButtonsClientSystem toggleButtonsClientSystem;
-    
-    public String text = "Colorear";
+
+	boolean coloring = false;
+	
+    ColoringCommands cc = new ColoringCommands();
 	
 	@Override
     public void initialise() {
@@ -21,12 +23,7 @@ public class ColoringButton extends BaseComponentSystem implements HUDToggleButt
     }
 	@Override
 	public void toggle() {
-		ColoringCommands cc = new ColoringCommands();
-		if (cc.applyColoring().equals("Analisis no terminado")) {
-			text = "Analizando aun...";
-		} else {
-			text = "Colorear";
-		}
+		
 	}
 
 	@Override
@@ -36,6 +33,12 @@ public class ColoringButton extends BaseComponentSystem implements HUDToggleButt
 	
 	@Override
 	public String getText() {
-		return text;
+		if (ColoringCommands.STATE.equals("Coloreando...") && !coloring) {
+			cc.applyColoring();
+			coloring = true;
+		} else if (ColoringCommands.STATE.equals("Esperando Análisis")) {
+			coloring = false;
+		} 
+		return ColoringCommands.STATE;
 	}
 }
