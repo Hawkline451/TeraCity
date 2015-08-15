@@ -106,7 +106,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Y") int ypos,
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
-    	
+
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
