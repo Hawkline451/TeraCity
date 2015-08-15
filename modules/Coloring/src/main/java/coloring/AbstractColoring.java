@@ -114,7 +114,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		try {
 			getDataColoring();
 		} catch (IOException e) {
-			System.err.println("Falló el coloreo");
+			System.err.println("Falla el coloreo");
 			e.printStackTrace();
 		}
 	}

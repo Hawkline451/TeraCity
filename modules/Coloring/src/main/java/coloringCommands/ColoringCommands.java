@@ -1,4 +1,4 @@
-package coloring;
+package coloringCommands;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -11,6 +11,10 @@ import org.terasology.logic.permission.PermissionManager;
 import org.terasology.registry.CoreRegistry;
 
 import com.google.common.util.concurrent.ListenableFuture;
+
+import coloring.CheckStyleColoring;
+import coloring.CoberturaColoring;
+import coloring.IColoring;
 
 @RegisterSystem
 /**
