@@ -136,11 +136,13 @@ class MetricExecution implements Runnable{
 	}
 	
 	public void analize() throws IOException {
+		System.out.println(commandJar);
 		Process process = Runtime.getRuntime().exec(commandJar);
 		InputStream is = process.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader br = new BufferedReader(isr);
-		while (br.readLine()!=null);
+		String line;
+		while ((line = br.readLine())!=null) System.out.println(line);;
 	}
 	
 	public void parse() {

@@ -30,6 +30,9 @@ import coloring.PMDColoring;
  * (ej: /engine/src/main/java/org/terasology/rendering/nui/layers/mainMenu/CoberturaMenuScreen.java)
  */
 public class ColoringCommands extends BaseComponentSystem{
+	
+	public static String STATE = "Esperando An�lisis";
+	
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"
@@ -51,7 +54,7 @@ public class ColoringCommands extends BaseComponentSystem{
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(@CommandParam("Ruta") String path,
     		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {
-		if (path.equals("default")) path = "modules/CheckStyle/Project/Prueba";
+		if (path.equals("default")) path = "modules/WorldCodecity/src/main/java";
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();
     	c.execute(params);

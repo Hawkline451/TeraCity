@@ -126,9 +126,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        BlockFamily blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
-        return blockFamily;
+        return blockManager.getBlockFamily(colorBlock);
 	}
 
 	@Command(shortDescription = "Colors the entire city of the color specified({Red,Blue,Green} implemented)")
