@@ -12,9 +12,11 @@ import org.terasology.registry.CoreRegistry;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import coloring.AbstractColoring;
 import coloring.CheckStyleColoring;
 import coloring.CoberturaColoring;
 import coloring.IColoring;
+import coloring.PMDColoring;
 
 @RegisterSystem
 /**

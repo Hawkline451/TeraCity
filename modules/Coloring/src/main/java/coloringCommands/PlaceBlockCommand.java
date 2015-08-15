@@ -1,7 +1,6 @@
 package coloringCommands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.terasology.codecity.world.map.CodeMap;
