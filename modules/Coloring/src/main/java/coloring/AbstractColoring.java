@@ -2,15 +2,8 @@ package coloring;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.family.BlockFamily;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
@@ -20,43 +13,16 @@ import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.WorldProvider;
 
-import coloringCommands.PlaceBlockCommand;
-
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
+import coloringCommands.PlaceBlockCommand;
+
 public abstract class AbstractColoring implements IColoring, Runnable{
 	String[] params;
-	
-	private ArrayList<String> getPaths() {
-		ArrayList<String> paths = new ArrayList<>();
-		paths.add("CodeMap");
-		paths.add("CodeCityBuildingProvider");
-		paths.add("CodeCityBuildingRasterizer");
-		paths.add("CodeCityGroundProvider");
-		paths.add("CodeCityGroundRasterizer");
-		paths.add("CodeCityWorldGenerator");
-		paths.add("CodeMap");
-		paths.add("CodeMapFactory");
-		paths.add("CodeMapHash");
-		paths.add("CodeMapNull");
-		paths.add("CodePackage");
-		paths.add("MapObject");
-		paths.add("DrawableCodePackage");
-		paths.add("DrawableCodeFactory");
-		paths.add("DrawableCodeClass");
-		paths.add("DrawableCode");
-		paths.add("CodeClass");
-		paths.add("CodePackage");
-		paths.add("CodeRepresentation");
-		paths.add("CodeScale");
-		paths.add("LinearCodeScale");
-		paths.add("SquareRootCodeScale");
-		return paths;
-	}
 	
 	public ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
@@ -74,7 +40,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 			if (obj.isOrigin()){
 				result.add(obj.getObject().getBase().getPath());
 				CodeMap next = obj.getObject().getSubmap(scale, factory);
-				result.addAll(getPathInfo(next,scale));
+				result.addAll(getPathInfo(next, scale));
 			}
 		}
 		return result;
@@ -123,7 +89,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	        }
 
 	        public void onFailure(Throwable thrown) {
-	            System.out.println("Falla de Analisis");
+	            System.err.println("Falla de Analisis");
 	        }
 	    });
 	    executor.shutdown();

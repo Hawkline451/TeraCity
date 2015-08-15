@@ -12,9 +12,11 @@ import org.terasology.registry.CoreRegistry;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import coloring.AbstractColoring;
 import coloring.CheckStyleColoring;
 import coloring.CoberturaColoring;
 import coloring.IColoring;
+import coloring.PMDColoring;
 
 @RegisterSystem
 /**
@@ -45,10 +47,11 @@ public class ColoringCommands extends BaseComponentSystem{
     }
 	
 	@Command(shortDescription = "Coloreo usando CheckStyle",
-            helpText = "Ejecuta colore usando CheckStyle\n",
+            helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(@CommandParam("Ruta") String path,
     		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {
+		if (path.equals("default")) path = "modules/CheckStyle/Project/Prueba";
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();
     	c.execute(params);

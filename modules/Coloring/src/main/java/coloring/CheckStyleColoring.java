@@ -8,7 +8,6 @@ import utility.DataColour;
 
 public class CheckStyleColoring extends AbstractColoring{
 	HashMap<String, DataColour> data;
-	Metric metric;
 
 	@Override
 	public void getDataColoring() throws IOException{
@@ -16,7 +15,7 @@ public class CheckStyleColoring extends AbstractColoring{
 		String metricString = params[1];
 		int max = Integer.parseInt(params[2]);
 		
-		metric = Metric.createMetric(metricString, max, null);
+		Metric metric = Metric.createMetric(metricString, max, null);
 		metric.execute(path);
 		try {
 			data = metric.getData();
@@ -28,7 +27,7 @@ public class CheckStyleColoring extends AbstractColoring{
 	@Override
 	public String getColor(String path) {
 		DataColour dc = data.get(path);
-		if (dc == null) return "normal";
-		return dc.getDataWarnings().get(0).getColor();
+		if (dc == null) return "Coloring:verde";
+		return dc.getColor();
 	}
 }
