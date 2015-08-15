@@ -40,7 +40,12 @@ public class DataColour {
 	}
 	
 	private void pathToClassName() {
-		int ini = path.lastIndexOf("/");
+		int ini;
+		if (path.contains("\\")) {
+			ini = path.lastIndexOf("\\");
+		} else {
+			ini = path.lastIndexOf("/");
+		}
 		int fin = path.lastIndexOf(".");
 		path = path.substring(ini + 1, fin);
 	}
