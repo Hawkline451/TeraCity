@@ -7,6 +7,7 @@
     "dependencies" : [  {"id":"WorldCodecity","minVersion":"0.1.0"},
 			{"id":"CheckStyle","minVersion":"0.1.0"},
 			{"id":"PMDColoring","minVersion":"0.1.0"},
-			{"id":"Cobertura","minVersion":"0.1.0"}],
+			{"id":"Cobertura","minVersion":"0.1.0"},
+			{"id": "HUDToggleButtons", "minVersion": "0.1.0"}],
     "isServerSideOnly" : false
 }
