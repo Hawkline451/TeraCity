@@ -55,15 +55,37 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         
         final UIText testClass = find("testClasses", UIText.class);
         final UIText testedClass = find("testedClasses", UIText.class);
+        final UIText sourceFolder = find("sourceFolder", UIText.class);
+        final UIText xmlReport = find("xmlReport", UIText.class);
         
-        /* Esto hace un binding entre el texto del textArea y el valor del parámetro "name" en Config
-         * y lo guarda el metodo q maneja el boton Close (config.save()).
-         * Podrían crearse nuevos parámetros en Config para la ruta de las carpetas de tests y clases 
-         * a la hora de crear el mundo (en lugar de pedirlas al usuario) y asi automatizar el proceso
-        if (testedText != null) {
-            testedText.bindText(BindHelper.bindBeanProperty("name", config.getPlayer(), String.class));
-        }*/
+        WidgetUtil.trySubscribe(this, "analizar1", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 1 (Dos Carpetas)
+           }
+        });
+        WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 2 (Una Carpeta)
+           }
+        });
         
+        WidgetUtil.trySubscribe(this, "analizar3", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 3 (Reporte)
+           }
+        });
+        
+        WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget button) {
+                getManager().popScreen();
+            }
+        });
+        
+        /*
         WidgetUtil.trySubscribe(this, "analizar", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
@@ -81,12 +103,7 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             	}
            }
         });
-        WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget button) {
-                getManager().popScreen();
-            }
-        });
+        */
     }
 
     @Override
