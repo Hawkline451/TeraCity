@@ -1,7 +1,6 @@
 package coloringCommands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.terasology.codecity.world.map.CodeMap;
@@ -106,8 +105,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Y") int ypos,
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
-    	if(!isImplementedColor(colorBlock))
-    		return "Put an implemented color in {Red, Blue, Green}";
+
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
@@ -128,9 +126,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        BlockFamily blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
-        return blockFamily;
+        return blockManager.getBlockFamily(colorBlock);
 	}
 
 	@Command(shortDescription = "Colors the entire city of the color specified({Red,Blue,Green} implemented)")
@@ -177,10 +173,18 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	@Command(shortDescription = "give Color to a Build")
 	public String ColorBuild(@CommandParam("Name") String name,
 								@CommandParam("Color") String color){
+		if (color.equals("normal")) return "Nothing";
 		ArrayList <BuildInformation> builds = getInfo();
 		for (BuildInformation element:builds){
 			if (element.getName().equals(name)){
-				return placeColorBuilding(color, element.getX(),element.getZ(),element.getY(),element.getHeight()-element.getZ());
+				int width = element.getWidth();
+				for (int i = 0;i < width;i++){
+					for(int j = 0;j < width;j++){
+						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
+					}
+				}
+				return "Succes";
+				
 			}
 		}
 		return "Class doesn't exists";
@@ -203,8 +207,9 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(scale, factory) + level;
+            int width = obj.getWidth(scale, factory);
             if (obj.isOrigin()){
-            	list.add(new BuildInformation(x,y,level,height,obj));
+            	list.add(new BuildInformation(x,y,level,height,width,obj));
             	list.addAll(processInfo(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world));
             }
         }

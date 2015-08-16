@@ -25,6 +25,16 @@ public interface DrawableCode {
      * @return The height of the base of the building.
      */
     public int getHeight(CodeScale scale, CodeMapFactory factory);
+    
+    /**
+     * @param scale
+     *            The scale used in the code
+     * @param factory
+     *            The builder of the map
+     * @return The width of the base of the building.
+     */
+    
+    public int getWidth(CodeScale scale, CodeMapFactory factory);
 
     /**
      * @param scale
@@ -34,4 +44,5 @@ public interface DrawableCode {
      * @return The submap inside the code
      */
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory);
+    
 }

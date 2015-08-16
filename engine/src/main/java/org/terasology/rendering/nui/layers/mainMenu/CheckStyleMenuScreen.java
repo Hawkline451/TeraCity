@@ -96,11 +96,11 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
     }
     
     private void executeCommad(UIText maxValueWindow, UIText pathWindow, String metric) {
-    	ConsoleCommand ca = console.getCommand(new Name("cstyle"));
+    	ConsoleCommand ca = console.getCommand(new Name("paintWithCheckStyle"));
     	String maxValue = maxValueWindow.getText();
     	String path = pathWindow.getText();
     	ArrayList<String> params = new ArrayList<String>();
-    	if (path.equals("")) params.add("modules/CheckStyle/Project/In");
+    	if (path.equals("")) params.add("default");
     	else params.add(path);
     	if (metric.equals("-c")) {
     		params.add("-c");
