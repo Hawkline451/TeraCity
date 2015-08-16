@@ -4,6 +4,6 @@
     "author" : "kidonkey",
     "displayName" : "GitHub",
     "description" : "Module for CodeCity coloring with GitHub repo",
-    "dependencies" : [{"id":"Coloring","minVersion":"0.1.0"}],
+    "dependencies" : [],
     "isServerSideOnly" : false
 }
