@@ -1,8 +1,8 @@
 package coloring;
 
-import java.io.IOException;
 import java.util.Hashtable;
-import GitHub.gitMetrics.GitMetric;
+
+import gitMetrics.GitMetric;
 
 public class GitColoring extends AbstractColoring{
 	Hashtable<String, Integer> data;
@@ -20,24 +20,19 @@ public class GitColoring extends AbstractColoring{
 			else if (classData > 20) return "yellow";
 			else return "green";
 		}
+		return "normal";
 	}
 
 	@Override
-	public void getDataColoring() throws IOException {
+	public void getDataColoring(){
 		String url = params[1];
 		String metricString = params[0];
-		String projectName = param[2];
+		String projectName = params[2];
 		String output = "modules/GitHub/tempRepo/";
 		
 		metric = new GitMetric(metricString, url, projectName, output, null);
 		metric.execute();
 		metric.setData();
-		try {
-			data = metric.getData();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		data = metric.getData();
 	}
-	}
-
 }
