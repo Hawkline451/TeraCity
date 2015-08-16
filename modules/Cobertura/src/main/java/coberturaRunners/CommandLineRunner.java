@@ -7,17 +7,35 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.terasology.logic.console.Console;
-
+/**
+ * El subgrupo de Runners representado por esta clase corren
+ * Cobertura en la consola de comandos del sistema.
+ * 
+ * Se proveen varias metodos utiles para correr Cobertura de esta forma.
+ * 
+ *
+ */
 public abstract class CommandLineRunner extends AbstractRunner{
 	/**
 	 * Utility variable.
 	 */
     protected ArrayList<File> files;
     protected Console console;
+    protected String progExtension;
     
     public CommandLineRunner(Console console){
     	this.console = console;
+    	this.chooseExtension();
     }
+	@Override
+	protected void instrument() {
+		String command = BASE + "/cobertura-instrument" + progExtension + " "
+    			+ "--datafile "+ BASE + "/analysis/datafile.ser "
+    			+ "--destination " + BASE + INSTRUMENTED_PATH + " "
+    			+ BASE + CLASSES_PATH;
+    	executeCommand(command);
+    	console.addMessage("Done Instrumenting\n");
+	}
     public void setFiles(String folder){
     	files = new ArrayList<File>();
     	findFiles(new File(folder));
@@ -48,6 +66,15 @@ public abstract class CommandLineRunner extends AbstractRunner{
 			fileList.append(" ");
 		}
 		return fileList.toString();
+	}
+	protected static String getLibFiles(){
+    	File[] libFiles = new File(BASE+"/lib").listFiles();
+    	StringBuilder libAssetsBuilder = new StringBuilder();
+    	for (File file : libFiles) {
+			libAssetsBuilder.append(file.getAbsolutePath());
+			libAssetsBuilder.append(File.pathSeparator);
+		}
+    	return libAssetsBuilder.toString();
 	}
     protected String getAllTestNames(String path){
         String classesPath = path;
@@ -91,6 +118,7 @@ public abstract class CommandLineRunner extends AbstractRunner{
             }
         }
     }
+    // Deberia estar mas arriba en la jerarquia?
     public void cleanEverythingUp(){
         cleanFolderUp(BASE+CLASSES_PATH);
         cleanFolderUp(BASE+TEST_CLASSES_PATH);
@@ -99,4 +127,18 @@ public abstract class CommandLineRunner extends AbstractRunner{
         File datafile = new File(BASE + "/analysis/datafile.ser");
         datafile.delete();
     }
+    protected void chooseExtension(){
+        String OS = System.getProperty("os.name");
+        if (OS.startsWith("Windows")){
+            progExtension = ".bat";
+        }
+        else{
+            progExtension = ".sh";
+        }
+    }
+    /*
+     * Quizas se deben mover los metodos que manejan Files a su propia clase?
+     * Tambien, quizas encontrar una manera de abstraerse de los metodos parecidos
+     * como "getLibFiles" y "getAllFilePaths"?
+     */
 }
