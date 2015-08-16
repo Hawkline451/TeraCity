@@ -120,7 +120,6 @@ public abstract class Metric{
 	}
 }
 
-
 class MetricExecution implements Runnable{
 	String path;
 	String commandJar;
