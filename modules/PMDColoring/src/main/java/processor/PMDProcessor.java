@@ -31,19 +31,17 @@ public class PMDProcessor {
 	private String buildInputString() {
 		
 		String OS = System.getProperty("os.name");
-		String beforePath = null;
-		String separator = null;
-		if (OS.startsWith("Linux"))
+		String beforePath = File.pathSeparator;
+		String separator = File.separator;
+		/*if (OS.startsWith("Linux"))
 		{
 			beforePath = ":";
-			separator = "/";
 		}
 		else if (OS.startsWith("Windows"))
 		{
 			beforePath = "";
-			separator = "\\";
 		}
-		
+*/
 		StringBuilder sb = new StringBuilder();
 		sb.append("java -cp ");
 		sb.append(beforePath);
@@ -97,7 +95,7 @@ public class PMDProcessor {
 					*/
 					//System.out.println(line);
 					try{
-					String className = line.substring(line.lastIndexOf('/')+1, line.indexOf(".java"));
+					String className = line.substring(line.lastIndexOf(File.separator)+1, line.indexOf(".java"));
 					if (!counters.containsKey(className)) counters.put(className, 0);
 					counters.put(className, counters.get(className)+1);
 					}catch(IndexOutOfBoundsException e){System.out.println(line);}

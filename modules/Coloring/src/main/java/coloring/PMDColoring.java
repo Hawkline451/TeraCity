@@ -1,5 +1,6 @@
 package coloring;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,10 @@ public class PMDColoring extends AbstractColoring{
 	Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
 	
 	//String rootPath = CoreRegistry.get(CodeRepresentation.class).getPath();//Modify once we have the path
-	String rootPath = "./modules/WorldCodecity/src/main/java/org/terasology/codecity/world";
-	
+	String rootPath = "."+ File.separator+"modules"+ File.separator+"WorldCodecity"+ File.separator+"src"
+				+ File.separator+"main"+ File.separator+"java"+ File.separator+"org"+ File.separator+"terasology"
+			+ File.separator+"codecity"+ File.separator+"world";
+
 	
 	@Override
 	public String getColor(String path) {
