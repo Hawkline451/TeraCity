@@ -2,6 +2,7 @@ package coloring;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import GitHub.gitMetrics.GitMetric;
 
 public class GitColoring extends AbstractColoring{
 	Hashtable<String, Integer> data;
@@ -26,10 +27,11 @@ public class GitColoring extends AbstractColoring{
 		String url = params[1];
 		String metricString = params[0];
 		String projectName = param[2];
-		String output = "modules/GitHub/temp";
+		String output = "modules/GitHub/tempRepo/";
 		
-		metric = GitMetric.createMetric(metricString, url, output, projectName);
+		metric = new GitMetric(metricString, url, projectName, output, null);
 		metric.execute();
+		metric.setData();
 		try {
 			data = metric.getData();
 		} catch (InterruptedException e) {
