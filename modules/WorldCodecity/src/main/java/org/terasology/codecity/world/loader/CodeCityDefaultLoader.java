@@ -11,11 +11,11 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
 
     @Override
     public CodeRepresentation loadCodeRepresentation() {
-        CodePackage facet = new CodePackage("facet", "", "");
-        CodePackage generator = new CodePackage("generator", "", "");
-        CodePackage map = new CodePackage("map", "", "");
-        CodePackage structure = new CodePackage("structure", "", "");
-        CodePackage scale = new CodePackage("scale", "", "");
+        CodePackage facet = new CodePackage("facet", "facet", "");
+        CodePackage generator = new CodePackage("generator", "generator", "");
+        CodePackage map = new CodePackage("map", "map", "");
+        CodePackage structure = new CodePackage("structure", "structure", "");
+        CodePackage scale = new CodePackage("scale", "scale", "");
         CodePackage terasology = new CodePackage("terasology", "terasology", "");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
