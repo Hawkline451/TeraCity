@@ -57,6 +57,6 @@ public class JeditCommand  extends BaseComponentSystem {
         }
 	   
 	   CodeRepresentation code = obj.getObject().getBase();
-	   return code.getPath() +" "+totalHeight+" "+z+" "+(int)9.5;
+	   return code.getPath() +" "+totalHeight+" "+z+" "+(int)9.6;
 	 }
 }
