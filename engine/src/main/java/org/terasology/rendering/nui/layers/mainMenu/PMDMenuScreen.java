@@ -15,11 +15,17 @@
  */
 package org.terasology.rendering.nui.layers.mainMenu;
 
+import java.util.ArrayList;
+
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.config.Config;
-import org.terasology.logic.console.commands.CoreCommands;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.console.Console;
+import org.terasology.logic.console.commandSystem.ConsoleCommand;
+import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
+import org.terasology.naming.Name;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
@@ -29,12 +35,15 @@ import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 
-public class ColoringMenuScreen extends CoreScreenLayer {
+public class PMDMenuScreen extends CoreScreenLayer {
 
     private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
 
     @In
     private Config config;
+    
+    @In
+    private Console console;
 
     @Override
     public void initialise() {
@@ -42,31 +51,20 @@ public class ColoringMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        WidgetUtil.trySubscribe(this, "checkStyle", new ActivateEventListener() {
-        	  @Override
-              public void onActivated(UIWidget button) {
-                  getManager().pushScreen("engine:checkStyleMenuScreen");
-              }
-        });
-        WidgetUtil.trySubscribe(this, "pmd", new ActivateEventListener() {
+         
+        WidgetUtil.trySubscribe(this, "comments", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	getManager().pushScreen("engine:pMDMenuScreen");
+            	executeCommad("comments");
             }
         });
-        WidgetUtil.trySubscribe(this, "cobertura", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "codesize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	getManager().pushScreen("engine:coberturaMenuScreen");
+            	executeCommad("codesize");
             }
         });
-        WidgetUtil.trySubscribe(this, "git", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
-            }
-        });
+        
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
@@ -74,6 +72,16 @@ public class ColoringMenuScreen extends CoreScreenLayer {
                 getManager().popScreen();
             }
         });
+    }
+    
+    private void executeCommad(String metric) {
+    	ConsoleCommand ca = console.getCommand(new Name("paintWithPMD"));
+    	ArrayList<String> params = new ArrayList<String>();
+    	params.add(metric);
+    	try {
+			ca.execute(params, EntityRef.NULL);
+		} catch (CommandExecutionException e1) {
+		}
     }
 
     @Override

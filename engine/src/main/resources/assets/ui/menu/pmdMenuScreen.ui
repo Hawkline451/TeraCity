@@ -1,0 +1,82 @@
+{
+    "type" : "engine:PMDMenuScreen",
+    "skin" : "mainmenu",
+    "contents" : {
+        "type" : "relativeLayout",
+        "contents" : [
+            {
+                "type" : "UIImage",
+                "image" : "engine:pmd",
+                "id" : "title",
+                "layoutInfo" : {
+                    "width" : 360,
+                    "height" : 264,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "TOP",
+                        "offset" : 48
+                    }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Métricas para aplicar: ",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 48,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title",
+                        "offset": 30
+                    }
+                }
+            },
+            {
+                "type" : "columnLayout",
+                "id" : "metrics",
+                "verticalSpacing" : 8,
+                "horizontalSpacing" : 8,
+                "columns": 1,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 250,
+                    "height" : 200,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "BOTTON",
+                        "offset" : 50,
+                        "widget" : "subtitle"
+                    }
+                },
+                "contents" : [
+                    {
+                        "type" : "UIButton",
+                        "id" : "comments",
+                        "text" : "Comments"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "codesize",
+                        "text" : "CodeSize"
+                    }
+                ]
+            },
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            }
+        ]
+    }
+}
