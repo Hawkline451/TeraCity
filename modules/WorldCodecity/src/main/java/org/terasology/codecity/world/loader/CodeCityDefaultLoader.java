@@ -1,5 +1,7 @@
 package org.terasology.codecity.world.loader;
 
+import java.io.File;
+
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -16,7 +18,9 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodePackage map = new CodePackage("map", "", "");
         CodePackage structure = new CodePackage("structure", "", "");
         CodePackage scale = new CodePackage("scale", "", "");
-        CodePackage terasology = new CodePackage("terasology", "", "");
+        CodePackage terasology = new CodePackage("terasology", "."+ File.separator+"modules"+ File.separator+"WorldCodecity"+ File.separator+"src"
+				+ File.separator+"main"+ File.separator+"java"+ File.separator+"org"+ File.separator+"terasology"
+			+ File.separator+"codecity"+ File.separator+"world", "");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
         facet.addCodeContent(fac);
