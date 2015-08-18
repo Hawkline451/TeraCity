@@ -1,6 +1,5 @@
 package coloring;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import processor.PMDProcessor;
 
 public class PMDColoring extends AbstractColoring{
 	Map<String,String> colors = new HashMap<String,String>();
-	Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
+	static Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
 	
 	String rootPath = getRootPath();
 		
@@ -31,8 +30,11 @@ public class PMDColoring extends AbstractColoring{
 	private PMDProcessor getProcessor() {
 		System.out.println("ROOT: "+rootPath);
 		String rule = params[0];
-		if (!rulesApplied.keySet().contains(rule)) //|| !rootPath.equals(CoreRegistry.get(CodeRepresentation.class)))
+		if (!rulesApplied.keySet().contains(rule) || !rootPath.equals(getRootPath()))
+		{
 			rulesApplied.put(rule, new PMDProcessor(rootPath, rule));
+			rootPath = getRootPath();
+		}
 		return rulesApplied.get(rule);
 		
 	}
