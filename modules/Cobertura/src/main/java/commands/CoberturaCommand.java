@@ -69,7 +69,7 @@ public class CoberturaCommand extends BaseComponentSystem{
     
     public static String getColor(String classpath){
     	DataNode d = classData.get(classpath);
-    	if (d == null){ return "Core:stone"; }
+    	if (d == null){ return "Coloring:notfound"; }
     	
     	double metric = d.getLineRate();
     	if (metric < 0){ return "Core:stone"; }
