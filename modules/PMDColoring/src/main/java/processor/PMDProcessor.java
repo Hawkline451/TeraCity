@@ -86,16 +86,13 @@ public class PMDProcessor {
 			while ((line = br.readLine()) != null) 
 			{
 				if (line.indexOf(':') != -1) {	
-					/*
-					String classPath = line.substring(0, line.indexOf(':'));
-					if (!counters.containsKey(classPath)) counters.put(classPath, 0);
-					counters.put(classPath, counters.get(classPath)+1);
-					*/
-					//System.out.println(line);
 					try{
 					String className = line.substring(line.lastIndexOf(File.separator)+1, line.indexOf(".java"));
+					String pathClass = line.substring(0, line.lastIndexOf(".java"));
 					if (!counters.containsKey(className)) counters.put(className, 0);
+					if (!counters.containsKey(pathClass)) counters.put(pathClass, 0);
 					counters.put(className, counters.get(className)+1);
+					counters.put(pathClass, counters.get(pathClass)+1);
 					}catch(IndexOutOfBoundsException e){System.out.println(line);}
 				}
 			}
