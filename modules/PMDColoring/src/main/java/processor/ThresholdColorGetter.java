@@ -1,4 +1,4 @@
-package metrics;
+package processor;
 
 
 public enum ThresholdColorGetter {
