@@ -4,65 +4,169 @@
     "contents" : {
         "type" : "relativeLayout",
         "contents" : [
-            {
-                "type" : "UIImage",
-                "image" : "engine:pmd",
-                "id" : "title",
-                "layoutInfo" : {
-                    "width" : 360,
-                    "height" : 264,
-                    "position-horizontal-center" : {},
-                    "position-top" : {
-                        "target" : "TOP",
-                        "offset" : 48
-                    }
-                }
-            },
-            {
-                "type": "UILabel",
-                "family": "title",
-                "text": "Métricas para aplicar: ",
-                "id": "subtitle",
-                "layoutInfo": {
-                    "height": 48,
-                    "position-horizontal-center": {},
-                    "position-top": {
-                        "target": "BOTTOM",
-                        "widget": "title",
-                        "offset": 30
-                    }
-                }
-            },
-            {
+        		{
+	                "type" : "UIImage",
+	                "image" : "engine:pmd",
+	                "id" : "title",
+	                "layoutInfo" : {
+	                    "width" : 197,
+	                    "height" : 144,
+	                    "position-horizontal-center" : {},
+	                    "position-top" : {
+	                        "target" : "TOP",
+	                        "offset" : 48
+	                    }
+	                }
+	            },
+	            {
+	                "type": "UILabel",
+	                "family": "title",
+	                "text": "Métricas para aplicar: ",
+	                "id": "subtitle",
+	                "layoutInfo": {
+	                    "height": 48,
+	                    "position-horizontal-center": {},
+	                    "position-top": {
+	                        "target": "BOTTOM",
+	                        "widget": "title",
+	                        "offset": 30
+	                    }
+	                }
+	            },
+             {
                 "type" : "columnLayout",
                 "id" : "metrics",
-                "verticalSpacing" : 8,
+                "verticalSpacing" : 40,
                 "horizontalSpacing" : 8,
                 "columns": 1,
                 "family" : "menu-options",
                 "layoutInfo" : {
-                    "width" : 250,
-                    "height" : 200,
+                    "width" : 600,
+                    "height" : 260,
                     "position-horizontal-center" : {},
                     "position-top" : {
-                        "target" : "BOTTON",
+                        "target" : "BOTTOM",
                         "offset" : 50,
                         "widget" : "subtitle"
                     }
                 },
                 "contents" : [
-                    {
-                        "type" : "UIButton",
-                        "id" : "comments",
-                        "text" : "Comments"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "codesize",
-                        "text" : "CodeSize"
-                    }
-                ]
+	                {
+	            		"type" : "columnLayout",
+		                "id" : "columnComments",
+		                "verticalSpacing" : 10,
+		                "horizontalSpacing" : 8,
+		                "columns": 1,
+		                "family" : "menu-options",
+		                "contents" : [
+		                	{
+				                "type" : "UIButton",
+				                "id" : "comments",
+				                "text" : "Comments"
+				            },
+				            {
+				                "type" : "columnLayout",
+				                "id" : "commentsmetrics",
+				                "verticalSpacing" : 8,
+				                "horizontalSpacing" : 8,
+				                "columns": 3,
+				                "family" : "menu-options",
+				                "contents" : [
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "CommentRequired"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "CommentSize"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "CommentContent"
+				                	}
+				            	]
+				            }
+		            	]
+					},
+                	
+                	{
+	            		"type" : "columnLayout",
+		                "id" : "columnCodesize",
+		                "verticalSpacing" : 10,
+		                "horizontalSpacing" : 8,
+		                "columns": 1,
+		                "family" : "menu-options",
+		                "contents" : [
+		                	{
+				                "type" : "UIButton",
+				                "id" : "codesize",
+				                "text" : "CodeSize"
+				            },
+				            {
+				                "type" : "columnLayout",
+				                "id" : "codesizemetrics",
+				                "verticalSpacing" : 8,
+				                "horizontalSpacing" : 8,
+				                "columns": 3,
+				                "family" : "menu-options",
+				                "contents" : [
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "NPathComplexity"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "CyclomaticComplexity"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "TooManyMethods"
+				                	}
+				            	]
+				            }
+		            	]
+					},
+					{
+	            		"type" : "columnLayout",
+		                "id" : "columnCoupling",
+		                "verticalSpacing" : 8,
+		                "horizontalSpacing" : 8,
+		                "columns": 1,
+		                "family" : "menu-options",
+		                "contents" : [
+		                	{
+				                "type" : "UIButton",
+				                "id" : "coupling",
+				                "text" : "Coupling"
+				            },
+				            {
+				                "type" : "columnLayout",
+				                "id" : "couplingmetrics",
+				                "verticalSpacing" : 8,
+				                "horizontalSpacing" : 8,
+				                "columns": 3,
+				                "family" : "menu-options",
+				                "contents" : [
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "CouplingBetweenObjects"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "ExcessiveImports"
+				                	},
+				                	{
+				                		"type" : "UIButton",
+				                		"text" : "LawOfDemeter"
+				                	}
+				            	]
+				            }
+		            	]
+					}
+				]
+		        	
             },
+            
             {
                 "type": "UIButton",
                 "text": "Back",
