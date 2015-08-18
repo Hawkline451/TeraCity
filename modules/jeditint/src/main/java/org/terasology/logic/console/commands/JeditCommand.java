@@ -1,27 +1,36 @@
 package org.terasology.logic.console.commands;
 
+import org.terasology.codecity.world.map.CodeMap;
+import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.map.NullMapObject;
+import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.input.cameraTarget.CameraTargetSystem;
+import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.utilities.jedit.JeditManager;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
-import org.terasology.codecity.world.map.CodeMap;
-import org.terasology.codecity.world.map.CodeMapFactory;
-import org.terasology.codecity.world.map.MapObject;
-import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 
 
 @RegisterSystem
 public class JeditCommand  extends BaseComponentSystem {
+	 @In
+	 private Console console;   
+	 @In
+	 private CameraTargetSystem cameraTarget;
+	 CodeScale scale = new SquareRootCodeScale();
+     CodeMapFactory factory = new CodeMapFactory(scale);
+	 
 	 @Command( shortDescription = "Open jedit", helpText = "Open jedit in the class of the selected structure" )
      public String jedit(@CommandParam("Class") String className) {
 		return JeditManager.openJedit(className);
@@ -37,26 +46,30 @@ public class JeditCommand  extends BaseComponentSystem {
 	    offset.scale(3);
 	    objectPos.add(offset);
 	    
-	    int x = (int)objectPos.x;
-        int y = (int)objectPos.z;
-        int z = (int)objectPos.y;
-	    
-	    MapObject obj = Map.getMapObject(x, y);
-
-        CodeScale scale = new SquareRootCodeScale();
-        CodeMapFactory factory = new CodeMapFactory(scale);
-        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+	    int x = cameraTarget.getTargetBlockPosition().getX();
+        int y = cameraTarget.getTargetBlockPosition().getZ();
+        int z= cameraTarget.getTargetBlockPosition().getY();
         
-        int base = 9;
-        int totalHeight = base + obj.getHeight(scale, factory);
+	    int base = 9;
+	    MapObject obj = getMapObject(Map, Vector2i.zero(),base,x,y,z);
+	    CodeRepresentation code = obj.getObject().getBase();
+	    
        
-        while (totalHeight<z && obj!=null){
-        	Map = obj.getObject().getSubmap(scale, factory);
-        	obj = Map.getMapObject(x, y);
-        	totalHeight += obj.getHeight(scale, factory);
-        }
-	   
-	   CodeRepresentation code = obj.getObject().getBase();
-	   return code.getPath() +" "+totalHeight+" "+z+" "+(int)9.6;
+        
+	   return code.getPath();
+	 }
+	 private MapObject getMapObject(CodeMap map, Vector2i offset, int bottom, int x1, int y1, int z1) {
+	        for (MapObject obj : map.getMapObjects()) {
+	            int x = obj.getPositionX() + offset.getX();
+	            int y = obj.getPositionZ() + offset.getY();
+	            System.out.println(x+","+y+","+bottom);
+	            int top = obj.getHeight(scale, factory) + bottom;
+	            if(x1==x && y1==y && z1>bottom && z1<=top) return obj;
+	            if (obj.isOrigin()){
+	                MapObject mo = getMapObject(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), top, x1, y1, z1);
+	                if (mo!=null) return mo;
+	            }
+	        }
+	        return null;
 	 }
 }
