@@ -63,7 +63,7 @@ public class ColoringCommands extends BaseComponentSystem{
             helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(@CommandParam("Ruta") String path,
-    		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {
+    		@CommandParam("Metrica") String metric, @CommandParam("Valor Maximo") String max) {
 		if (path.equals("default")) path = "modules/WorldCodecity/src/main/java";
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();

@@ -41,7 +41,6 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass cMapF = new CodeClass("CodeMapFactory", 1, 102, "CodeMapFactory", "");
         CodeClass cMapH = new CodeClass("CodeMapHash", 3, 148, "CodeMapHash", "");
         CodeClass cMapN = new CodeClass("CodeMapNull", 0, 57, "CodeMapNull", "");
-        CodeClass cMapCP = new CodeClass("CodePackage", 2, 37, "CodePackage", "");
         CodeClass cMapO = new CodeClass("MapObject", 4, 67, "MapObject", "");
         CodeClass cMapDCP = new CodeClass("DrawableCodePackage", 2, 54, "DrawableCodePackage", "");
         CodeClass cMapCF = new CodeClass("DrawableCodeFactory", 0, 24, "DrawableCodeFactory", "");
@@ -51,7 +50,6 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         map.addCodeContent(cMapF);
         map.addCodeContent(cMapH);
         map.addCodeContent(cMapN);
-        map.addCodeContent(cMapCP);
         map.addCodeContent(cMapO);
         map.addCodeContent(cMapDCP);
         map.addCodeContent(cMapCF);

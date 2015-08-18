@@ -107,14 +107,14 @@ public abstract class Metric{
 		String commandJar = createJarCommand(pathFile);
 		me = new MetricExecution(commandJar, pathFile, console);
 		thread = new Thread(me);
-		if (console != null) console.addMessage("Comenzó el análisis....");
-		else System.out.println("Comenzó el análisis....");
+		if (console != null) console.addMessage("Comenzo el analisis....");
+		else System.out.println("Comenzo el analisis....");
 		thread.start();
 	}
 	
 	public HashMap<String, DataColour> getData() throws InterruptedException {
-		if (console != null) console.addMessage("Esperando termino del análisis...");
-		else System.out.println("Esperando termino del análisis...");
+		if (console != null) console.addMessage("Esperando termino del analisis...");
+		else System.out.println("Esperando termino del analisis...");
 		thread.join();
 		return me.data;
 	}

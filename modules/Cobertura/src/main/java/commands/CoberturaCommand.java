@@ -14,6 +14,7 @@ import coberturaRunners.*;
 public class CoberturaCommand extends BaseComponentSystem{
     
 	public static HashMap<String, DataNode> classData;
+	private Thread thread;
 	
     @Command(shortDescription = "Analisis usando Cobertura",
             helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
@@ -36,39 +37,34 @@ public class CoberturaCommand extends BaseComponentSystem{
     	analyze(type, firstArg, secondArg);
         return "Esperando por resultados del analisis ...";
     }
-    
+    public void waitForAnalysis(){
+    	try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
     public void analyze(String type, String s1, String s2){
     	classData = new HashMap<String, DataNode>();
-    	Thread t = new Thread(new ThreadCoberturaExecution(getRunner(type, s1, s2)));
-    	t.start();
+    	thread = new Thread(new ThreadCoberturaExecution(getRunner(type, s1, s2)));
+    	thread.start();
     }
     
     private Runner getRunner(String type, String s1, String s2){
     	Runner ret = new NullRunner();
-    	String message = "NullRunner =I";
     	if (type.equals("-s")){
-    		message = "SingleFolder woo!";
     		ret = new CLSingleFolderRunner(s1);
     	}
     	else if (type.equals("-t")){
-    		if (s1 == null){
-    			message = "Missing second argument :C";
-    		}
-    		else{
-    			message = "TwoFolder says hi~.";
-    			ret = new CLTwoFoldersRunner(s1, s2);
-    		}
+    		if (s1 == null){System.out.println("Missing second argument!");}
+    		else{ret = new CLTwoFoldersRunner(s1, s2);}
     	}
-    	else if (type.equals("-r")){
-    		message = "ReportRunner is the bestest!";
-    		ret = new ReportRunner(s1);
-    	}
-    	System.out.println(message);
+    	else if (type.equals("-r")){ret = new ReportRunner(s1);}
     	return ret;
     }
     
     public static String getColor(String classpath){
-    	DataNode d = classData.get(classpath);
+    	DataNode d = classData.get(classpath+".java");
     	if (d == null){ return "Coloring:notfound"; }
     	
     	double metric = d.getLineRate();

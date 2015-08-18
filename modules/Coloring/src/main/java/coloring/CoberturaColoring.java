@@ -18,5 +18,6 @@ public class CoberturaColoring extends AbstractColoring{
 	@Override
 	public void getDataColoring() throws IOException {
 		cobby.analyze(params[0], params[1], params[2]);
+		cobby.waitForAnalysis();
 	}
 }

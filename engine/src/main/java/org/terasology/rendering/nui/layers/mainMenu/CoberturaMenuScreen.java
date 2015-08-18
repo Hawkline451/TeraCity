@@ -106,8 +106,8 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
     	try {
     		ca.execute(pars, e);
     		System.out.println("\n C: \n");
-    	} catch (CommandExecutionException e1) {
-    		System.out.println("\n :C \n");
+    	} catch (Exception e1) {
+    		System.out.println("\n Falla paintWithCobertura :C \n");
     	}
     }
     @Override
