@@ -58,12 +58,73 @@ public class PMDMenuScreen extends CoreScreenLayer {
             	executeCommad("comments");
             }
         });
+        WidgetUtil.trySubscribe(this, "commentrequired", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("commentrequired");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "commentsize", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("commentsize");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "commentcontent", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("commentcontent");
+            }
+        });
         WidgetUtil.trySubscribe(this, "codesize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	executeCommad("codesize");
             }
         });
+        WidgetUtil.trySubscribe(this, "npathcomplexity", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("npathcomplexity");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "cyclomaticcomplexity", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("cyclomaticcomplexity");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "toomanymethods", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("toomanymethods");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "coupling", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("coupling");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "couplingbetweenobjects", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("couplingbetweenobjects");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "excessiveimports", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("excessiveimports");
+            }
+        });
+        WidgetUtil.trySubscribe(this, "lawofdemeter", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	executeCommad("lawofdemeter");
+            }
+        });
+        
         
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override

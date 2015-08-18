@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import metrics.*;
+
 public class PMDProcessor {
 
 	private String rootPath;
@@ -30,38 +32,36 @@ public class PMDProcessor {
 	
 	private String buildInputString() {
 		
-		String OS = System.getProperty("os.name");
 		String beforePath = File.pathSeparator;
 		String separator = File.separator;
-		/*if (OS.startsWith("Linux"))
-		{
-			beforePath = ":";
-		}
-		else if (OS.startsWith("Windows"))
-		{
-			beforePath = "";
-		}
-*/
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("java -cp ");
 		sb.append(beforePath);
-		sb.append('.');
-		sb.append(separator);
-		sb.append("modules");
-		sb.append(separator);
-		sb.append("PMDColoring");
-		sb.append(separator);
-		sb.append("libs");
-		sb.append(separator);
-		sb.append("pmd");
-		sb.append(separator);
+		
+		StringBuilder pmdRoute = new StringBuilder();
+		pmdRoute.append('.');
+		pmdRoute.append(separator);
+		pmdRoute.append("modules");
+		pmdRoute.append(separator);
+		pmdRoute.append("PMDColoring");
+		pmdRoute.append(separator);
+		pmdRoute.append("libs");
+		pmdRoute.append(separator);
+		pmdRoute.append("pmd");
+		pmdRoute.append(separator);
+		
+		sb.append(pmdRoute);
 		sb.append("lib");
 		sb.append(separator);
 		sb.append("* net.sourceforge.pmd.PMD -d ");
 		sb.append(rootPath);
 		sb.append(" -f ");
 		sb.append(outPutType);
-		sb.append(" -R rulesets/java/");
+		sb.append(" -R ");
+		sb.append(pmdRoute);
+		sb.append("Metrics");
+		sb.append(separator);
 		sb.append(rule);
 		sb.append(".xml");
 		return sb.toString();
@@ -120,11 +120,34 @@ public class PMDProcessor {
 			result.put(classPath, metric.getColor(classPath));
 	}
 
-	private Metric processMetric() {//Metric need the counter
+	private Metric processMetric() {
 		if (rule.equals("comments"))
 			return new CommentsCounterMetric(counters);
+		else if (rule.equals("commentcontent"))
+			return new CCCounterMetric(counters);
+		else if (rule.equals("commentrequired"))
+			return new CRCounterMetric(counters);
+		else if (rule.equals("commentsize"))
+			return new CSCounterMetric(counters);
+		
 		else if (rule.equals("codesize"))
 			return new CodesizeCounterMetric(counters);
+		else if (rule.equals("cyclomaticcomplexity"))
+			return new CycloCCounterMetric(counters);
+		else if (rule.equals("npathcomplexity"))
+			return new NPathCounterMetric(counters);
+		else if (rule.equals("toomanymethods"))
+			return new TMMCounterMetric(counters);
+		
+		else if (rule.equals("coupling"))
+			return new CouplingCounterMetric(counters);
+		else if (rule.equals("couplingbetweenobjects"))
+			return new CBOCounterMetric(counters);
+		else if (rule.equals("excessiveimports"))
+			return new EICounterMetric(counters);
+		else if (rule.equals("lawofdemeter"))
+			return new LODCounterMetric(counters);
+		
 		return new DefaultMetric();
 	}
 	

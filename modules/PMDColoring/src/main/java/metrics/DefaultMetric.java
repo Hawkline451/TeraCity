@@ -1,4 +1,4 @@
-package processor;
+package metrics;
 
 public class DefaultMetric implements Metric {
 

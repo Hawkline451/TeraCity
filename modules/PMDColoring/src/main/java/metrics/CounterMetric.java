@@ -1,4 +1,4 @@
-package processor;
+package metrics;
 
 import java.util.Map;
 

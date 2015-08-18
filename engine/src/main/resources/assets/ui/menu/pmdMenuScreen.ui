@@ -73,14 +73,17 @@
 				                "family" : "menu-options",
 				                "contents" : [
 				                	{
+				                		"id" : "commentrequired",
 				                		"type" : "UIButton",
 				                		"text" : "CommentRequired"
 				                	},
 				                	{
+				                		"id" : "commentsize",
 				                		"type" : "UIButton",
 				                		"text" : "CommentSize"
 				                	},
 				                	{
+				                		"id" : "commentcontent",
 				                		"type" : "UIButton",
 				                		"text" : "CommentContent"
 				                	}
@@ -111,14 +114,17 @@
 				                "family" : "menu-options",
 				                "contents" : [
 				                	{
+				                		"id" : "npathcomplexity",
 				                		"type" : "UIButton",
 				                		"text" : "NPathComplexity"
 				                	},
 				                	{
+				                		"id" : "cyclomaticcomplexity",
 				                		"type" : "UIButton",
 				                		"text" : "CyclomaticComplexity"
 				                	},
 				                	{
+				                		"id" : "toomanymethods",
 				                		"type" : "UIButton",
 				                		"text" : "TooManyMethods"
 				                	}
@@ -148,14 +154,17 @@
 				                "family" : "menu-options",
 				                "contents" : [
 				                	{
+				                		"id" : "couplingbetweenobjects",
 				                		"type" : "UIButton",
 				                		"text" : "CouplingBetweenObjects"
 				                	},
 				                	{
+				                		"id" : "excessiveimports",
 				                		"type" : "UIButton",
 				                		"text" : "ExcessiveImports"
 				                	},
 				                	{
+				                		"id" : "lawofdemeter",
 				                		"type" : "UIButton",
 				                		"text" : "LawOfDemeter"
 				                	}

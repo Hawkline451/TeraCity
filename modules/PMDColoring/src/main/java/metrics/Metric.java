@@ -1,4 +1,4 @@
-package processor;
+package metrics;
 interface Metric
 {
 	public String getColor(String classPath);
