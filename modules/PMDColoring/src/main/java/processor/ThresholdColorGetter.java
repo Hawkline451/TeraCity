@@ -1,10 +1,10 @@
 package processor;
 
-import java.util.Map;
 
 public enum ThresholdColorGetter {
 	COMMENTS_METRIC (3, 7),
-	CODESIZE_METRIC (3, 7);
+	CODESIZE_METRIC (3, 7),
+	COUPLING_METRIC (3, 7);
 	private int [] WARNING_LIMITS;
 	private static final String[] colors = {"Green","Yellow","Red"};
 	private ThresholdColorGetter(int... thresholds){

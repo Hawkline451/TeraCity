@@ -1,5 +1,7 @@
 package org.terasology.codecity.world.loader;
 
+import java.io.File;
+
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -16,7 +18,9 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodePackage map = new CodePackage("map", "", "");
         CodePackage structure = new CodePackage("structure", "", "");
         CodePackage scale = new CodePackage("scale", "", "");
-        CodePackage terasology = new CodePackage("terasology", "", "");
+        CodePackage terasology = new CodePackage("terasology", "."+ File.separator+"modules"+ File.separator+"WorldCodecity"+ File.separator+"src"
+				+ File.separator+"main"+ File.separator+"java"+ File.separator+"org"+ File.separator+"terasology"
+			+ File.separator+"codecity"+ File.separator+"world", "");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
         facet.addCodeContent(fac);
@@ -37,7 +41,6 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass cMapF = new CodeClass("CodeMapFactory", 1, 102, "CodeMapFactory", "");
         CodeClass cMapH = new CodeClass("CodeMapHash", 3, 148, "CodeMapHash", "");
         CodeClass cMapN = new CodeClass("CodeMapNull", 0, 57, "CodeMapNull", "");
-        CodeClass cMapCP = new CodeClass("CodePackage", 2, 37, "CodePackage", "");
         CodeClass cMapO = new CodeClass("MapObject", 4, 67, "MapObject", "");
         CodeClass cMapDCP = new CodeClass("DrawableCodePackage", 2, 54, "DrawableCodePackage", "");
         CodeClass cMapCF = new CodeClass("DrawableCodeFactory", 0, 24, "DrawableCodeFactory", "");
@@ -47,7 +50,6 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         map.addCodeContent(cMapF);
         map.addCodeContent(cMapH);
         map.addCodeContent(cMapN);
-        map.addCodeContent(cMapCP);
         map.addCodeContent(cMapO);
         map.addCodeContent(cMapDCP);
         map.addCodeContent(cMapCF);

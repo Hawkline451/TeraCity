@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<ruleset name="CommentContent"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+  <description>
+Rule CommentContent
+  </description>
+  <rule name="CommentContent"
+    		  since="5.0"
+     message="Invalid words or phrases found"
+     class="net.sourceforge.pmd.lang.java.rule.comments.CommentContentRule"
+          externalInfoUrl="https://pmd.github.io/pmd-5.3.3/pmd-java/rules/java/comments.html#CommentContent">
+     <description>
+A rule for the politically correct... we don't want to offend anyone.
+  </description>
+  <priority>3</priority>
+  <example>
+      <![CDATA[
+//	OMG, this is horrible, Bob is an idiot !!!
+      ]]>
+  </example>
+   </rule>
+ </ruleset>

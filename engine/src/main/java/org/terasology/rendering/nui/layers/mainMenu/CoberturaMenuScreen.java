@@ -52,43 +52,64 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        
         final UIText testClass = find("testClasses", UIText.class);
         final UIText testedClass = find("testedClasses", UIText.class);
+        final UIText sourceFolder = find("sourceFolder", UIText.class);
+        final UIText xmlReport = find("xmlReport", UIText.class);
         
-        /* Esto hace un binding entre el texto del textArea y el valor del parámetro "name" en Config
-         * y lo guarda el metodo q maneja el boton Close (config.save()).
-         * Podrían crearse nuevos parámetros en Config para la ruta de las carpetas de tests y clases 
-         * a la hora de crear el mundo (en lugar de pedirlas al usuario) y asi automatizar el proceso
-        if (testedText != null) {
-            testedText.bindText(BindHelper.bindBeanProperty("name", config.getPlayer(), String.class));
-        }*/
-        
-        WidgetUtil.trySubscribe(this, "analizar", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "analizar1", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 1 (Dos Carpetas)
             	String testee = testedClass.getText();
             	String tests = testClass.getText();
-            	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
             	List<String> params = new ArrayList<String>();
-            	params.add(testee); params.add(tests);
-            	EntityRef e = null;
-            	try {
-            		ca.execute(params, e);
-            		System.out.println("\n C: \n");
-            	} catch (CommandExecutionException e1) {
-            		System.out.println("\n:C You prolly don't have the Cobertura module, yo\n");
-            	}
+            	params.add("-s");
+            	params.add(testee);
+            	params.add(tests);
+            	executeCob(params);
            }
         });
+        WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 2 (Una Carpeta)
+            	String source = sourceFolder.getText();
+            	List<String> params = new ArrayList<String>();
+            	params.add("-t"); params.add(source);
+            	executeCob(params);
+           }
+        });
+        
+        WidgetUtil.trySubscribe(this, "analizar3", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 3 (Reporte)
+            	String report = xmlReport.getText();
+            	List<String> params = new ArrayList<String>();
+            	params.add("-r"); params.add(report);
+            	executeCob(params);
+           }
+        });
+        
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
                 getManager().popScreen();
             }
         });
+        
     }
-
+    private void executeCob(List<String> pars){
+    	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
+    	EntityRef e = null;
+    	try {
+    		ca.execute(pars, e);
+    		System.out.println("\n C: \n");
+    	} catch (Exception e1) {
+    		System.out.println("\n Falla paintWithCobertura :C \n");
+    	}
+    }
     @Override
     public boolean isLowerLayerVisible() {
         return false;

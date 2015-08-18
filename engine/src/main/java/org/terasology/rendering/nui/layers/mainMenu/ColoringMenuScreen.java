@@ -51,8 +51,7 @@ public class ColoringMenuScreen extends CoreScreenLayer {
         WidgetUtil.trySubscribe(this, "pmd", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
+            	getManager().pushScreen("engine:pMDMenuScreen");
             }
         });
         WidgetUtil.trySubscribe(this, "cobertura", new ActivateEventListener() {

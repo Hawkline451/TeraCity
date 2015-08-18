@@ -1,49 +1,71 @@
 package commands;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
-import org.terasology.registry.In;
 
-import coberturaRunners.CLSingleFolderRunner;
-import coberturaRunners.CommandLineRunner;
-import coberturaRunners.NullRunner;
-
+import coberturaRunners.*;
 @RegisterSystem
 public class CoberturaCommand extends BaseComponentSystem{
     
 	public static HashMap<String, DataNode> classData;
-    @In
-    private Console console;
+	private Thread thread;
+	
     @Command(shortDescription = "Analisis usando Cobertura",
-            helpText = "Ejecuta el análisis de Cobertura sobre los archivos especificados\n"
-                    + "<filesFolder>: Archivos que son testeados\n"
-                    + "<testsFolder>: Archivos de test\n",
+            helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
+            		+ "sobre los archivos especificados\n"
+                    + "type: Formato de input a utilizar: \n"
+                    + " - \"-t\": Archivos testeados y de tests en dos carpetas separadas\n"
+                    + " - \"-s\": Todos los archivos en una sola carpeta (ayuda a no hacer procesos "
+                    + "en archivos donde no sean necesarios).\n"
+                    + " - \"-r\": Se entrega un path directamente a un reporte de Cobertura a analizar ("
+                    + "al reporte en si mismo no solo a la carpeta que lo contiene).\n"
+                    + "firstArg: Primer argumento. Si se elige el tipo 1, son los archivos a testear.\n"
+                    + "secondArg: Segundo argumento. Si se elige el tipo 2, son los archivos de tests,"
+                    + "no se usa para los otros dos tipos.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String CoberturaAnalysis(
-            @CommandParam(value = "filesFolder",required = true) String filesFolder,
-            @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
+    		@CommandParam(value="type",required=true) String type,
+            @CommandParam(value="firstArg",required=true) String firstArg,
+            @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
         
-    	analyze(filesFolder, testsFolder);
+    	analyze(type, firstArg, secondArg);
         return "Esperando por resultados del analisis ...";
     }
-    
-    public void analyze(String filesFolder, String testsFolder){
+    public void waitForAnalysis(){
+    	try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    }
+    public void analyze(String type, String s1, String s2){
     	classData = new HashMap<String, DataNode>();
-        Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
-        t.start();
+    	thread = new Thread(new ThreadCoberturaExecution(getRunner(type, s1, s2)));
+    	thread.start();
+    }
+    
+    private Runner getRunner(String type, String s1, String s2){
+    	Runner ret = new NullRunner();
+    	if (type.equals("-s")){
+    		ret = new CLSingleFolderRunner(s1);
+    	}
+    	else if (type.equals("-t")){
+    		if (s1 == null){System.out.println("Missing second argument!");}
+    		else{ret = new CLTwoFoldersRunner(s1, s2);}
+    	}
+    	else if (type.equals("-r")){ret = new ReportRunner(s1);}
+    	return ret;
     }
     
     public static String getColor(String classpath){
-    	DataNode d = classData.get(classpath);
-    	if (d == null){ return "Core:stone"; }
+    	DataNode d = classData.get(classpath+".java");
+    	if (d == null){ return "Coloring:notfound"; }
     	
     	double metric = d.getLineRate();
     	if (metric < 0){ return "Core:stone"; }
@@ -60,127 +82,21 @@ public class CoberturaCommand extends BaseComponentSystem{
 }
 
 class ThreadCoberturaExecution implements Runnable {
-    private static final String BASE = "modules/Cobertura/cobertura-2.1.1";
-    private static final String CLASSES_PATH = "/analysis/classes";
-    private static final String TEST_CLASSES_PATH = "/analysis/testClasses";
-    private static final String INSTRUMENTED_PATH = "/analysis/instrumented";
-    private static final String REPORTS_PATH = "/analysis/reports";
+
+	private Runner runner;
     
-    // TODO: Move some of these to Runners.
-    private Console console;
-    private String filesFolder;
-    private String testsFolder;
-    public String extension;
-    
-    public ThreadCoberturaExecution(String files, String tests, Console console) {
-        this.console = console;
-        this.filesFolder = files;
-        this.testsFolder = tests;
-        chooseExtension();
-    }
-    // TODO: Move to CommandLineRunner
-    private void chooseExtension(){
-        String OS = System.getProperty("os.name");
-        if (OS.startsWith("Windows")){
-            extension = ".bat";
-        }
-        else{
-            extension = ".sh";
-        }
+    public ThreadCoberturaExecution(Runner r) {
+    	this.runner = r;
     }
     
-//    private String buildCompileTesteeCommand(String src){
-//        String res;
-//        res = "javac -g -d " + BASE + CLASSES_PATH + " " + src + "/*.java";
-//        return res;
-//    }
-//    
-//    
-//    private String buildCompileTestsCommand(String testSrc){
-//        String res;
-//        res = "javac -g "
-//                + "-d " + BASE + TEST_CLASSES_PATH +" " 
-//                + "-cp " + BASE + CLASSES_PATH + pathSep
-//                + BASE + "/lib/* "
-//                + testSrc+ "/*.java ";
-//        return res;
-//    }
-//
-//    private String buildInstrumentCommand(){
-//        String res;
-//        res = BASE + "/cobertura-instrument" + extension + " "
-//                + "--datafile " + BASE + "/analysis/datafile.ser " 
-//                + "--destination "+ BASE + INSTRUMENTED_PATH + " "
-//                + BASE + CLASSES_PATH;
-//        return res;
-//    }
-//
-//    private String buildRunTestCommand(){
-//        String testClasses = BASE + TEST_CLASSES_PATH;
-//        File folder = new File(testClasses);
-//        File[] files = folder.listFiles();
-//        StringBuilder testList = new StringBuilder();
-//        for (int i = 0; i < files.length; i++){
-//            if (files[i].isFile() && !files[i].getName().equals(".gitignore")){
-//                testList.append(" ");
-//                testList.append(files[i].getName());
-//            }
-//        }
-//        String sList = testList.toString();
-//        sList = sList.replace(".class", "");
-//        String res;
-//        res = "java -cp " + BASE + "/cobertura-2.1.1.jar" + pathSep
-//                + BASE + INSTRUMENTED_PATH + pathSep
-//                + BASE + CLASSES_PATH + pathSep
-//                + BASE + TEST_CLASSES_PATH + pathSep
-//                + BASE + "/lib/*" + pathSep + " "
-//                + "-Dnet.sourceforge.cobertura.datafile=" + BASE + "/analysis/datafile.ser "
-//                + "org.junit.runner.JUnitCore " + sList;
-//        return res;
-//    }
-//            
-//    private String buildReportingCommand(){
-//        String res;
-//        res = BASE + "/cobertura-report" + extension + " --format xml "
-//                + "--datafile " + BASE + "/analysis/datafile.ser "
-//                + "--destination " + BASE + REPORTS_PATH + " " + filesFolder;
-//        return res;
-//    }
     @Override
     public void run(){
-    	CLSingleFolderRunner foldy = new CLSingleFolderRunner(console, filesFolder);
-    	foldy.runCobertura();
-    	console.addMessage("Fin del Analisis:\n");
-    	console.addMessage(XMLParser.getResults(BASE + "/analysis/reports/coverage.xml"));
-    	CoberturaCommand.classData = XMLParser.getDataNodes(BASE + "/analysis/reports/coverage.xml");
-    	foldy.cleanEverythingUp();
-    	
-//        try {
-//            Process process;
-//            String commands = buildCompileTesteeCommand(filesFolder) + "&&"
-//                    + buildCompileTestsCommand(testsFolder) + "&&"
-//                    + buildInstrumentCommand();
-//            
-//            for (String input : commands.split("&&")){
-//                console.addMessage(input+"\n");
-//                process = Runtime.getRuntime().exec(input);
-//                process.waitFor();
-//            }
-//            
-//            commands = buildRunTestCommand() + "&&" + buildReportingCommand();
-//            for (String input : commands.split("&&")){
-//                console.addMessage(input+"\n");
-//                process = Runtime.getRuntime().exec(input);
-//                process.waitFor();
-//            }
-//            console.addMessage("Fin del Analisis:\n");
-//            console.addMessage(XMLParser.getResults(BASE + "/analysis/reports/coverage.xml"));
-//            CoberturaCommand.classData = XMLParser.getDataNodes(BASE + "/analysis/reports/coverage.xml");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("\nError de conexion\n");
-//        } finally{
-//            cleanEverythingUp();
-//        }
+    	runner.runCobertura();
+    	System.out.println(XMLParser.getResults(CLSingleFolderRunner.BASE + 
+    			CLSingleFolderRunner.REPORTS_PATH + "/coverage.xml"));
+    	CoberturaCommand.classData = XMLParser.getDataNodes(CLSingleFolderRunner.BASE + 
+    			CLSingleFolderRunner.REPORTS_PATH + "/coverage.xml");
+    	System.out.println("Fin del Analisis:\n");
+    	runner.cleanEverythingUp();
     }
 }

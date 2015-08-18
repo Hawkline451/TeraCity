@@ -34,17 +34,27 @@ public class ColoringCommands extends BaseComponentSystem{
 	public static String STATE = "Esperando An�lisis";
 	
 	@Command(shortDescription = "Coloreo usando Cobertura",
-            helpText = "Ejecuta colore usando Cobertura sobre los archivos especificados\n"
-                    + "<filesFolder>: Archivos que son testeados\n"
-                    + "<testsFolder>: Archivos de test\n",
+            helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
+            		+ "sobre los archivos especificados\n"
+                    + "type: Formato de input a utilizar:\n"
+                    + " - \"-t\": Archivos testeados y de tests en dos carpetas separadas\n"
+                    + " - \"-s\": Todos los archivos en una sola carpeta (ayuda a no hacer procesos "
+                    + "en archivos donde no sean necesarios).\n"
+                    + " - \"-r\": Se entrega un path directamente a un reporte de Cobertura a analizar ("
+                    + "al reporte en si mismo no solo a la carpeta que lo contiene).\n"
+                    + "firstArg: Primer argumento. Si se elige el tipo 1, son los archivos a testear.\n"
+                    + "secondArg: Segundo argumento. Si se elige el tipo 2, son los archivos de tests,"
+                    + "no se usa para los otros dos tipos.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCobertura(
-            @CommandParam(value = "filesFolder",required = true) String filesFolder,
-            @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
+    		@CommandParam(value="type",required=true) String type,
+            @CommandParam(value="firstArg",required=true) String firstArg,
+            @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
 		CoberturaColoring cob = new CoberturaColoring();
-		String[] pars = new String[2];
-		pars[0] = filesFolder;
-		pars[1] = testsFolder;
+		String[] pars = new String[3];
+		pars[0] = type;
+		pars[1] = firstArg;
+		pars[2] = secondArg;
 		cob.execute(pars);
 		return "Loading ...";
     }
@@ -53,7 +63,7 @@ public class ColoringCommands extends BaseComponentSystem{
             helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(@CommandParam("Ruta") String path,
-    		@CommandParam("Métrica") String metric, @CommandParam("Valor Máximo") String max) {
+    		@CommandParam("Metrica") String metric, @CommandParam("Valor Maximo") String max) {
 		if (path.equals("default")) path = "modules/WorldCodecity/src/main/java";
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();
