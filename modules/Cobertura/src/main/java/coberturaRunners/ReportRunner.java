@@ -39,7 +39,7 @@ public class ReportRunner extends Runner {
 	}
 	@Override
 	public void cleanEverythingUp() {
-		File datafile = new File(BASE + "/analysis/datafile.ser");
-        datafile.delete();
+		File report = new File(BASE + REPORTS_PATH + "/coverage.xml");
+        report.delete();
 	}
 }

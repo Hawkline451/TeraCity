@@ -52,7 +52,6 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        
         final UIText testClass = find("testClasses", UIText.class);
         final UIText testedClass = find("testedClasses", UIText.class);
         final UIText sourceFolder = find("sourceFolder", UIText.class);
@@ -62,12 +61,23 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             @Override
             public void onActivated(UIWidget widget) {
             	// Analisis Tipo 1 (Dos Carpetas)
+            	String testee = testedClass.getText();
+            	String tests = testClass.getText();
+            	List<String> params = new ArrayList<String>();
+            	params.add("-s");
+            	params.add(testee);
+            	params.add(tests);
+            	executeCob(params);
            }
         });
         WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	// Analisis Tipo 2 (Una Carpeta)
+            	String source = sourceFolder.getText();
+            	List<String> params = new ArrayList<String>();
+            	params.add("-t"); params.add(source);
+            	executeCob(params);
            }
         });
         
@@ -75,6 +85,10 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             @Override
             public void onActivated(UIWidget widget) {
             	// Analisis Tipo 3 (Reporte)
+            	String report = xmlReport.getText();
+            	List<String> params = new ArrayList<String>();
+            	params.add("-r"); params.add(report);
+            	executeCob(params);
            }
         });
         
@@ -85,27 +99,17 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             }
         });
         
-        /*
-        WidgetUtil.trySubscribe(this, "analizar", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	String testee = testedClass.getText();
-            	String tests = testClass.getText();
-            	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
-            	List<String> params = new ArrayList<String>();
-            	params.add(testee); params.add(tests);
-            	EntityRef e = null;
-            	try {
-            		ca.execute(params, e);
-            		System.out.println("\n C: \n");
-            	} catch (CommandExecutionException e1) {
-            		System.out.println("\n:C You prolly don't have the Cobertura module, yo\n");
-            	}
-           }
-        });
-        */
     }
-
+    private void executeCob(List<String> pars){
+    	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
+    	EntityRef e = null;
+    	try {
+    		ca.execute(pars, e);
+    		System.out.println("\n C: \n");
+    	} catch (CommandExecutionException e1) {
+    		System.out.println("\n :C \n");
+    	}
+    }
     @Override
     public boolean isLowerLayerVisible() {
         return false;
