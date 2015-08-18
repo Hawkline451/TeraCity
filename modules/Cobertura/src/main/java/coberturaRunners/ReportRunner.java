@@ -1,8 +1,10 @@
 package coberturaRunners;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
@@ -12,9 +14,9 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * copia local (en REPORTS_PATH) para que esta pueda luego ser an analizada.
  *
  */
-public class ReportMovingRunner extends AbstractRunner {
+public class ReportRunner extends Runner {
 	String reportPath;
-	public ReportMovingRunner(String report){
+	public ReportRunner(String report){
 		reportPath = report;
 	}
 	@Override
@@ -35,5 +37,9 @@ public class ReportMovingRunner extends AbstractRunner {
 			System.out.println("Fallo proceso de copia del reporte");
 		}
 	}
-
+	@Override
+	public void cleanEverythingUp() {
+		File datafile = new File(BASE + "/analysis/datafile.ser");
+        datafile.delete();
+	}
 }

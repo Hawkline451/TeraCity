@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import org.terasology.logic.console.Console;
 /**
  * El subgrupo de Runners representado por esta clase corren
  * Cobertura en la consola de comandos del sistema.
@@ -15,18 +14,18 @@ import org.terasology.logic.console.Console;
  * 
  *
  */
-public abstract class CommandLineRunner extends AbstractRunner{
+public abstract class CommandLineRunner extends Runner{
 	/**
 	 * Utility variable.
 	 */
     protected ArrayList<File> files;
-    protected Console console;
     protected String progExtension;
     
-    public CommandLineRunner(Console console){
-    	this.console = console;
+    
+    public CommandLineRunner(){
     	this.chooseExtension();
     }
+    
 	@Override
 	protected void instrument() {
 		String command = BASE + "/cobertura-instrument" + progExtension + " "
@@ -34,7 +33,7 @@ public abstract class CommandLineRunner extends AbstractRunner{
     			+ "--destination " + BASE + INSTRUMENTED_PATH + " "
     			+ BASE + CLASSES_PATH;
     	executeCommand(command);
-    	console.addMessage("Done Instrumenting\n");
+    	System.out.println("Done Instrumenting");
 	}
     public void setFiles(String folder){
     	files = new ArrayList<File>();
@@ -92,7 +91,7 @@ public abstract class CommandLineRunner extends AbstractRunner{
         return sList;
     }
     protected void executeCommand(String command){
-    	console.addMessage(command+"\n");
+    	System.out.println(command);
         try
         {            
             Runtime rt = Runtime.getRuntime();
@@ -118,7 +117,6 @@ public abstract class CommandLineRunner extends AbstractRunner{
             }
         }
     }
-    // Deberia estar mas arriba en la jerarquia?
     public void cleanEverythingUp(){
         cleanFolderUp(BASE+CLASSES_PATH);
         cleanFolderUp(BASE+TEST_CLASSES_PATH);

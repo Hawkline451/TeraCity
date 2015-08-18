@@ -1,6 +1,5 @@
 package coberturaRunners;
 
-import org.terasology.logic.console.Console;
 /**
  * Esta clase asume que los archivos de tests y los archivos testeados
  * se encuentran en carpetas separadas.
@@ -11,11 +10,12 @@ import org.terasology.logic.console.Console;
 public class CLTwoFoldersRunner extends CommandLineRunner {
 	private String testedFolder;
 	private String testsFolder;
-	public CLTwoFoldersRunner(Console con, String testedFolder, String testsFolder){
-		super(con);
+	
+	public CLTwoFoldersRunner(String testedFolder, String testsFolder){
 		this.testedFolder = testedFolder;
 		this.testsFolder = testsFolder;
 	}
+	
 	protected String buildCompileTestedCmd(){
 		this.setFiles(testedFolder);
 		String toCompile = this.allFilesPaths("java");
@@ -41,10 +41,10 @@ public class CLTwoFoldersRunner extends CommandLineRunner {
 		String commands;
 		commands = buildCompileTestedCmd();
 		executeCommand(commands);
-		console.addMessage("Done compiling tested files \n");
+		System.out.println("Done compiling tested files");
 		commands = buildCompileTestsCmd();
 		executeCommand(commands);
-		console.addMessage("Done compiling tests\n");
+		System.out.println("Done compiling tests");
 	}
 	@Override
 	protected void runTests() {
@@ -61,7 +61,7 @@ public class CLTwoFoldersRunner extends CommandLineRunner {
 				+ BASE + "/analysis/datafile.ser "
 				+ "org.junit.runner.JUnitCore " + testList;
 		executeCommand(res);
-		console.addMessage("Done running tests\n");
+		System.out.println("Done running tests");
 	}
 
 	@Override
@@ -72,6 +72,6 @@ public class CLTwoFoldersRunner extends CommandLineRunner {
 		+ "--destination " + BASE + REPORTS_PATH + " "
 		+ testedFolder;
     	executeCommand(command);
-    	console.addMessage("Done building report\n");
+    	System.out.println("Done building report");
 	}
 }

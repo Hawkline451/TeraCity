@@ -5,36 +5,46 @@ import java.util.HashMap;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
-import org.terasology.registry.In;
 
 import coberturaRunners.*;
 @RegisterSystem
 public class CoberturaCommand extends BaseComponentSystem{
     
 	public static HashMap<String, DataNode> classData;
-    @In
-    private Console console;
+	public static Runner run;
+	
     @Command(shortDescription = "Analisis usando Cobertura",
             helpText = "Ejecuta el analisis de Cobertura sobre los archivos especificados\n"
                     + "<filesFolder>: Archivos que son testeados\n"
                     + "<testsFolder>: Archivos de test\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String CoberturaAnalysis(
-            @CommandParam(value = "filesFolder",required = true) String filesFolder,
-            @CommandParam(value="testsFolder",required=true) String testsFolder) throws IOException{
+    		@CommandParam(value="type",required=true) String type,
+            @CommandParam(value="firstArg",required=true) String firstArg,
+            @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
         
-    	analyze(filesFolder, testsFolder);
+    	analyze(type, firstArg, secondArg);
         return "Esperando por resultados del analisis ...";
     }
     
-    public void analyze(String filesFolder, String testsFolder){
+    public void analyze(String type, String s1, String s2){
     	classData = new HashMap<String, DataNode>();
-        Thread t = new Thread(new ThreadCoberturaExecution(filesFolder, testsFolder, console));
-        t.start();
+    	run = new NullRunner();
+    	getRunner(type, s1, s2);
+    	Thread t = new Thread(new ThreadCoberturaExecution(run));
+    	t.start();
+    }
+    
+    private void getRunner(String type, String s1, String s2){
+    	if (type.equals("-s")){ run = new CLSingleFolderRunner(s1); }
+    	else if (type.equals("-t")){
+    		if (s1 == null){ System.out.println("Missing second argument"); }
+    		run = new CLTwoFoldersRunner(s1, s2);
+    	}
+    	else if (type.equals("-r")){ run = new ReportRunner(s1); }
     }
     
     public static String getColor(String classpath){
@@ -56,28 +66,21 @@ public class CoberturaCommand extends BaseComponentSystem{
 }
 
 class ThreadCoberturaExecution implements Runnable {
-    private Console console;
-    /* TODO: Move some of these to Runners?
-     *       Or maybe turn them into a List, since different runners
-     *       might need different number of arguments? 
-     */
-    private String filesFolder;
-    private String testsFolder;
+
+	private Runner runner;
     
-    public ThreadCoberturaExecution(String files, String tests, Console console) {
-        this.console = console;
-        this.filesFolder = files;
-        this.testsFolder = tests;
+    public ThreadCoberturaExecution(Runner r) {
+    	this.runner = r;
     }
+    
     @Override
     public void run(){
-    	CLSingleFolderRunner foldy = new CLSingleFolderRunner(console, filesFolder);
-    	foldy.runCobertura();
-    	console.addMessage("Fin del Analisis:\n");
-    	console.addMessage(XMLParser.getResults(CLSingleFolderRunner.BASE + 
+    	runner.runCobertura();
+    	System.out.println("Fin del Analisis:\n");
+    	System.out.println(XMLParser.getResults(CLSingleFolderRunner.BASE + 
     			CLSingleFolderRunner.REPORTS_PATH + "/coverage.xml"));
     	CoberturaCommand.classData = XMLParser.getDataNodes(CLSingleFolderRunner.BASE + 
     			CLSingleFolderRunner.REPORTS_PATH + "/coverage.xml");
-    	foldy.cleanEverythingUp();
+    	runner.cleanEverythingUp();
     }
 }

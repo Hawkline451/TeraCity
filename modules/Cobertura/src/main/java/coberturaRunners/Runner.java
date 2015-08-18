@@ -27,7 +27,7 @@ import java.io.File;
  * sobre la forma en la que el codigo del usuario esta organizado o los pasos
  * que el usuario ya ha hecho.
  */
-public abstract class AbstractRunner {
+public abstract class Runner {
     public static final String BASE = "modules/Cobertura/cobertura-2.1.1";
     public static final String CLASSES_PATH = "/analysis/classes";
     public static final String TEST_CLASSES_PATH = "/analysis/testClasses";
@@ -45,5 +45,6 @@ public abstract class AbstractRunner {
     protected abstract void instrument();
     protected abstract void runTests();
     protected abstract void makeReport();
+    public abstract void cleanEverythingUp();
     
 }

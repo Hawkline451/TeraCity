@@ -1,7 +1,6 @@
 package coberturaRunners;
 
 
-import org.terasology.logic.console.Console;
 /**
  * Esta clase asume que todos los archivos (tanto de test como los testeados)
  * estan en una misma carpeta.
@@ -11,10 +10,11 @@ import org.terasology.logic.console.Console;
  */
 public class CLSingleFolderRunner extends CommandLineRunner{
 	private String srcFolder;
-	public CLSingleFolderRunner(Console console, String folder) {
-		super(console);
+	
+	public CLSingleFolderRunner(String folder) {
 		srcFolder = folder;
 	}
+	
 	@Override
 	protected void compile() {
 		this.setFiles(srcFolder);
@@ -24,7 +24,7 @@ public class CLSingleFolderRunner extends CommandLineRunner{
     			+ "-cp "+ BASE + "/lib/junit-4.11.jar "
     			+ toCompile;
     	executeCommand(command);
-    	console.addMessage("Done compiling\n");
+    	System.out.println("Done compiling");
 	}
 	@Override
 	protected void runTests() {
@@ -39,7 +39,7 @@ public class CLSingleFolderRunner extends CommandLineRunner{
     			+ BASE + "/analysis/datafile.ser "
     			+ "org.junit.runner.JUnitCore " + testsList;
     	executeCommand(commands);
-    	console.addMessage("Done running tests\n");
+    	System.out.println("Done running tests");
 	}
 	@Override
 	protected void makeReport() {
@@ -49,6 +49,6 @@ public class CLSingleFolderRunner extends CommandLineRunner{
 		+ "--destination " + BASE + REPORTS_PATH + " "
 		+ srcFolder;
     	executeCommand(command);
-    	console.addMessage("Done building report\n");
+    	System.out.println("Done building report");
 	}
 }

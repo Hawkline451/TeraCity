@@ -6,7 +6,7 @@ package coberturaRunners;
  * un objeto de esta clase tendria sentido.
  *
  */
-public class NullRunner extends AbstractRunner{
+public class NullRunner extends Runner{
 
 	@Override
 	protected void compile() {}
@@ -19,5 +19,8 @@ public class NullRunner extends AbstractRunner{
 
 	@Override
 	protected void makeReport() {}
+
+	@Override
+	public void cleanEverythingUp() {}
 
 }
