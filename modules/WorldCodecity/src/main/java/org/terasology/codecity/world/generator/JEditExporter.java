@@ -1,8 +1,11 @@
 package org.terasology.codecity.world.generator;
 
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -29,22 +32,21 @@ public class JEditExporter {
      
     public static void export(CodeRepresentation code){
         try (
-          OutputStream file = new FileOutputStream(getSavePath());
-          OutputStream buffer = new BufferedOutputStream(file);
-          ObjectOutput output = new ObjectOutputStream(buffer);
+        	    OutputStream file = new FileOutputStream(getSavePath());
+        	    OutputStream buffer = new BufferedOutputStream(file);
+        	    ObjectOutput output = new ObjectOutputStream(buffer);
         ){
             output.writeObject(code);
         }catch(IOException ex){
             logger.error("JEdit information couldn't be saved.");
         }
-    }
-     
+    } 
     
-    private static String getSavePath(){
-    	//Path savePath = PathManager.getInstance().getSavePath(gameManifest.getTitle());
-    	Path savePath = CoreRegistry.get(Path.class);
-    	StoragePathProvider storagePathProvider = new StoragePathProvider(savePath);
-    	return storagePathProvider.getJEditMapInfoPath().toString();
+    public static String getSavePath(){
+        //Path savePath = PathManager.getInstance().getSavePath(gameManifest.getTitle());
+        Path savePath = CoreRegistry.get(Path.class);
+        StoragePathProvider storagePathProvider = new StoragePathProvider(savePath);
+        return storagePathProvider.getJEditMapInfoPath().toString();
     }
      
  
