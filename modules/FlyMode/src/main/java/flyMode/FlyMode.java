@@ -106,6 +106,8 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
         if (move == MovementMode.FLYING) {
         	// We must save the position before the fly mode was toggled
         	saveOldPosition(clientComp);
+        	// We place a mark, in the place we start flying
+        	placeTorchMarks(clientComp.character.getComponent(LocationComponent.class));
         	// Calling of the method that calculates the speed
             newMove.speedMultiplier = newSpeed.getCalculatedSpeed();
             clientComp.character.saveComponent(newMove);
@@ -114,7 +116,6 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
         }
         else{
         	// In this case we're toggling the walking mode. We need to get back to the old position.
-        	placeTorchMarks(clientComp.character.getComponent(LocationComponent.class));
         	goBack(clientComp);
         	newMove.speedMultiplier = 1.0f;
         	clientComp.character.saveComponent(newMove);
