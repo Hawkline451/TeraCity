@@ -1,5 +1,6 @@
 package commands;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -64,19 +65,22 @@ public class CoberturaCommand extends BaseComponentSystem{
     }
     
     public static String getColor(String classpath){
-    	DataNode d = classData.get(classpath+".java");
-    	if (d == null){ return "Coloring:notfound"; }
+    	File fi = new File(classpath);
+    	DataNode d = classData.get(fi.getName());
+    	String color = "IDK";
+    	if (d == null){ color = "Coloring:notfound"; return color;}
     	
     	double metric = d.getLineRate();
-    	if (metric < 0){ return "Core:stone"; }
-    	else if (metric == 0){ return "Coloring:morado"; }
-    	else if (metric <= 0.2){ return "Coloring:rojo"; }
-    	else if (metric <= 0.4){ return "Coloring:naranjo"; }
-    	else if (metric <= 0.6){ return "Coloring:amarillo"; }
-    	else if (metric <= 0.8){ return "Coloring:lime"; }
-    	else if (metric < 1){ return "Coloring:verde"; }
-    	else if (metric == 1){ return "Coloring:azul"; }
-    	else { return "Core:stone"; }
+    	if (metric < 0){ color = "Core:stone"; }
+    	else if (metric == 0){ color = "Coloring:morado"; }
+    	else if (metric <= 0.2){ color ="Coloring:rojo"; }
+    	else if (metric <= 0.4){ color ="Coloring:naranjo"; }
+    	else if (metric <= 0.6){ color ="Coloring:amarillo"; }
+    	else if (metric <= 0.8){ color ="Coloring:lime"; }
+    	else if (metric < 1){ color ="Coloring:verde"; }
+    	else if (metric == 1){ color = "Coloring:azul"; }
+    	else { color ="Core:stone"; }
+    	return color;
     }
     
 }

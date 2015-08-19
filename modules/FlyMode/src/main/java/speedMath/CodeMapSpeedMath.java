@@ -17,7 +17,7 @@ public class CodeMapSpeedMath implements SpeedMath{
 	}
 	
 	public float getResult() {
-		return (float) ((float) Math.log(Math.sqrt( (float)(xDimension*xDimension + yDimension*yDimension) / (Math.log(2)*2*zDimension) )));
+		return (float) ((float) Math.log(Math.sqrt( (float)(xDimension*xDimension + yDimension*yDimension + zDimension*zDimension) / Math.log(2) )));
 	}
 
 }
