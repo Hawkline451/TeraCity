@@ -20,7 +20,12 @@ public abstract class CodeRepresentation implements Serializable {
         this.path = path;
         this.github = github;
     }
-
+    
+    /**
+     * Create CodeRepresentation without parameters
+     */
+    public CodeRepresentation(){
+    }
     /**
      * @return Github link to the document
      */

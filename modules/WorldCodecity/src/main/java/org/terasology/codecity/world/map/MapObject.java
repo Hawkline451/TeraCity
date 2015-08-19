@@ -5,7 +5,7 @@ import org.terasology.codecity.world.structure.scale.CodeScale;
 /**
  * This class represent a object in the map
  */
-public class MapObject {
+public class MapObject implements IMapObject {
     private DrawableCode object;
     private int x;
     private int z;
@@ -28,9 +28,10 @@ public class MapObject {
         this.isOrigin = isOrigin;
     }
 
-    /**
+	/**
      * @return The position of the object in the x coordinate
      */
+    @Override
     public int getPositionX() {
         return x;
     }
@@ -38,6 +39,7 @@ public class MapObject {
     /**
      * @return The position of the object in the z coordinate
      */
+    @Override
     public int getPositionZ() {
         return z;
     }
@@ -49,6 +51,7 @@ public class MapObject {
      * @param factory
      * @return
      */
+    @Override
     public int getHeight(CodeScale scale, CodeMapFactory factory) {
         return object.getHeight(scale, factory);
     }
@@ -67,10 +70,11 @@ public class MapObject {
     /**
      * @return The object that is represented
      */
+    @Override
     public DrawableCode getObject() {
         return object;
     }
-    
+    @Override
     public boolean isOrigin() {
         return isOrigin;
     }
