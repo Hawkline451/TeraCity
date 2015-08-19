@@ -58,8 +58,9 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
-			System.out.print("clase: |" + path + "| : ");
-			System.out.println(pbc.ColorBuild(path, getColor(path)));
+//			System.out.print("clase: |" + path + "| : ");
+//			System.out.println(pbc.ColorBuild(path, getColor(path)));
+			pbc.ColorBuild(path, getColor(path));
 		}
 		ColoringCommands.STATE = "Esperando Análisis";
 	}

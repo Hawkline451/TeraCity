@@ -24,6 +24,9 @@ public class CheckStyleColoring extends AbstractColoring{
 		}
 	}
 
+//
+//	String def = System.getProperty("user.dir");
+//	def = def.substring(0, def.lastIndexOf("\\"));
 	@Override
 	public String getColor(String path) {
 		DataColour dc = data.get(path);

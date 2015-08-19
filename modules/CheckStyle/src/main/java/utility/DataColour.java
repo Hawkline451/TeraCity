@@ -8,8 +8,10 @@ public class DataColour {
 	ArrayList<DataWarning> data;
 	
 	public DataColour(String path) {
+		path = path.replace("./", "");
+		path = path.replace(".\\", "");
 		this.path = path;
-		pathToClassName();
+		//pathToClassName();
 		data = new ArrayList<DataWarning>();
 	}
 	
@@ -51,6 +53,8 @@ public class DataColour {
 	}
 	
 	public String getPath() {
+		//String def = System.getProperty("user.dir");
+		//def = def.substring(0, def.lastIndexOf("\\"));
 		return path;
 	}
 	
@@ -65,7 +69,6 @@ public class DataColour {
 	
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
-		
 		strBuilder.append("ruta archivo: " + path + "\n" + "warnings:\n");
 		for (DataWarning dataWarning : data) {
 			strBuilder.append("\t" + dataWarning + "\n");
