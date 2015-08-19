@@ -124,6 +124,8 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
+	
+	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         return blockManager.getBlockFamily(colorBlock);
@@ -190,6 +192,31 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 		return "Class doesn't exists";
 		
 	}
+	
+	@Command(shortDescription = "give Color to a Build to some percentage and left the rest of another color")
+	public String ColorPartialBuild(@CommandParam("Name") String name,
+								@CommandParam("Color") String color, @CommandParam("ColorDelResto") String restColor, @CommandParam("PorcentacePrimerColor") int n){
+		n = Math.min(100, n);
+		if (color.equals("normal")) return "Nothing";
+		ArrayList <BuildInformation> builds = getInfo();
+		for (BuildInformation element:builds){
+			if (element.getName().equals(name)){
+				int width = element.getWidth();
+				for (int i = 0;i < width;i++){
+					for(int j = 0;j < width;j++){
+						placeColorBuilding(restColor, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
+						int firstColor = (int) (Math.ceil(1.0*n/100 *(element.getHeight()-element.getZ())));
+						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,firstColor);
+					}
+				}
+				return "Succes";
+				
+			}
+		}
+		return "Class doesn't exists";
+		
+	}
+	
 	
     private ArrayList <BuildInformation> getInfo() {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
