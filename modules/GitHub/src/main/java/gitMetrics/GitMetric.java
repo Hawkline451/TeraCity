@@ -69,8 +69,8 @@ public class GitMetric {
 			e.printStackTrace();
 		}
 		data=new Hashtable<String,Integer>();
-		if(tipo_metrica.equals("bugs")){ readTsvFile(/*outPath.concat(projectName.concat("_Bugs.tsv"))*/"modules//GitHub//Metrics//ciudadEjemplo_Versions.tsv");}
-		else if(tipo_metrica.equals("versions")){readTsvFile(/* outPath.concat(projectName.concat("_Versions.tsv"))*/"modules//GitHub//Metrics//ciudadEjemplo_Versions.tsv");}
+		if(tipo_metrica.equals("bugs")){ readTsvFile(outPath.concat(projectName.concat("_Bugs.tsv")));}
+		else if(tipo_metrica.equals("versions")){readTsvFile(outPath.concat(projectName.concat("_Versions.tsv")));}
 		else{System.err.println("it has'nt seted data of GitMetric's object, due to param named 'tipo_metrica' is wrong...");}
 	}
 	private void readTsvFile(String tsvPath){

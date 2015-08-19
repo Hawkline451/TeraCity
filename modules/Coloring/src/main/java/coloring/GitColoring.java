@@ -17,9 +17,9 @@ public class GitColoring extends AbstractColoring{
 
 	@Override
 	public String getColor(String path) {
-		File f = new File(path);
-		System.out.print("snaiofnaklf");
-		int classData = data.get(f.getPath());
+		System.out.println(path);
+		Integer classData = data.get(path);
+		if (classData==null) return "yellow";
 		if (metric.toString() == "bug") {
 			if (classData == 1) return "red";
 			return "green";
