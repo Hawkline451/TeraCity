@@ -2,12 +2,8 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
-public class NullMapObject extends MapObject {
+public class NullMapObject implements IMapObject {
 
-	public NullMapObject() {
-		super();
-	}
-	
 	@Override
 	public int getPositionX() {
         return 0;

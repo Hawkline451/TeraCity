@@ -22,7 +22,7 @@ public class NullDrawableCode implements DrawableCode {
 
 	@Override
 	public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
-		return null;
+		return new CodeMapNull();
 	}
 
 }

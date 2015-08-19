@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.IMapObject;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.NullMapObject;
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -69,7 +70,7 @@ public class JeditManager {
 	}
 	
 	
-	private MapObject getMapObject(CodeMap map, Vector2i offset, int bottom, int x1, int y1, int z1) {
+	private IMapObject getMapObject(CodeMap map, Vector2i offset, int bottom, int x1, int y1, int z1) {
 
 		for (MapObject obj : map.getMapObjects()) {
 	            int x = obj.getPositionX() + offset.getX();
@@ -79,7 +80,7 @@ public class JeditManager {
 	            if(x1==x && y1==y && z1>bottom && z1<=top) return obj;
 	            
 	            if (obj.isOrigin()){
-	                MapObject mo = getMapObject(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), top, x1, y1, z1);
+	                IMapObject mo = getMapObject(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), top, x1, y1, z1);
 	                if (mo.getHeight(scale, factory) != 0) return mo;
 	            }
 	        }
@@ -93,7 +94,7 @@ public class JeditManager {
 	     int z= cameraTarget.getTargetBlockPosition().getY();
 	     int base = 9;
 	     
-		 MapObject obj = getMapObject(map, Vector2i.zero(),base,x,y,z);
+		 IMapObject obj = getMapObject(map, Vector2i.zero(),base,x,y,z);
 		 CodeRepresentation code = obj.getObject().getBase();   
 		 return code;
 	}
