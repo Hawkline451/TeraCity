@@ -13,18 +13,17 @@ import org.terasology.utilities.jedit.JeditManager;
 
 @RegisterSystem
 public class JeditCommand  extends BaseComponentSystem {
-	 JeditManager manager = new JeditManager();
 	 
 	 @In
 	 private CameraTargetSystem cameraTarget;
 	 
 	 @Command( shortDescription = "Open jedit", helpText = "Open jedit in the class of the selected structure" )
      public String jedit(@CommandParam("Class") String className) {
-		return manager.openClass(className);
+		return JeditManager.openClasses(className.split(" "));
 	 }
 	 @Command( shortDescription = "Get Path", helpText = "Get path of an object" )
      public String getPath() {
 		CodeMap map = CoreRegistry.get(CodeMap.class);
-	    return manager.getPath(cameraTarget,map);
+	    return JeditManager.getPath(cameraTarget,map);
 	 }
 }

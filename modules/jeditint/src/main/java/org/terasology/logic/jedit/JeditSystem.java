@@ -23,14 +23,16 @@ public class JeditSystem extends BaseComponentSystem {
 	 @In
 	 private CameraTargetSystem cameraTarget;
 	
-	JeditManager manager = new JeditManager();
-	
-			
+	 /**
+	  * Open jEdit of the TargetBlock MapObject		
+	  * @param event
+	  * @param entity
+	  */
 	 @ReceiveEvent(components = ClientComponent.class)
 	 public void openJedit(JeditButton event, EntityRef entity) {
 		 if (event.getState() == ButtonState.DOWN) {
 			 CodeMap map = CoreRegistry.get(CodeMap.class);
-			 manager.openJedit(cameraTarget,map);
+			 JeditManager.openJeditWhenPressed(cameraTarget,map);
 	         event.consume();
 	    }
 	 }
