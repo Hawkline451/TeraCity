@@ -178,18 +178,18 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 		if (color.equals("normal")) return "Nothing";
 		ArrayList <BuildInformation> builds = getInfo();
 		for (BuildInformation element:builds){
-			if (element.getName().equals(name)){
+			if (element.getPath().equals(name)){
 				int width = element.getWidth();
 				for (int i = 0;i < width;i++){
 					for(int j = 0;j < width;j++){
 						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
 					}
 				}
-				return "Succes";
+				return "Success";
 				
 			}
 		}
-		return "Class doesn't exists";
+		return "Class doesn't exist";
 		
 	}
 	
