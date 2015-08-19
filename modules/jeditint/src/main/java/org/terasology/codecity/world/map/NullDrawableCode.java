@@ -25,4 +25,9 @@ public class NullDrawableCode implements DrawableCode {
 		return new CodeMapNull();
 	}
 
+	@Override
+	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+		return 0;
+	}
+
 }
