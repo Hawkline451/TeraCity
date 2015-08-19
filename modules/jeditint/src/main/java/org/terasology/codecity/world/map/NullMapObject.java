@@ -1,10 +1,42 @@
 package org.terasology.codecity.world.map;
 
+import org.terasology.codecity.world.structure.scale.CodeScale;
+
 public class NullMapObject extends MapObject {
 
-	public NullMapObject(DrawableCode object, int x, int z, boolean isOrigin) {
-		super(object, x, z, isOrigin);
-		// TODO Auto-generated constructor stub
+	public NullMapObject() {
+		super();
 	}
+	
+	@Override
+	public int getPositionX() {
+        return 0;
+    }
+	
+	@Override
+	public int getPositionZ() {
+        return 0;
+    }
+	
+	@Override
+	 public int getHeight(CodeScale scale, CodeMapFactory factory) {
+        return 0;
+    }
+	
+	@Override
+	public boolean isOrigin() {
+        return false;
+	}
+	
+	@Override
+	public DrawableCode getObject(){
+		return new NullDrawableCode();
+	}
+	
+	
+	
+	
+
+
 
 }

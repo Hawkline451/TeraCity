@@ -29,6 +29,12 @@ public class MapObject {
     }
 
     /**
+     * Create a new MapObject without parameters
+     */
+    public MapObject() {
+	}
+
+	/**
      * @return The position of the object in the x coordinate
      */
     public int getPositionX() {
