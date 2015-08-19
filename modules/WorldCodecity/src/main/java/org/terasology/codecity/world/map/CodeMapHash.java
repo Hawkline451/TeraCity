@@ -14,12 +14,14 @@ public class CodeMapHash implements CodeMap {
     private HashMap<DrawableCode, Vector2i> codePosition;
     private int size;
 
+    private HashSet<Vector2i> positionCache;
     /**
      * Create a new map representation of a set of CodeContent
      */
     public CodeMapHash() {
         contentMap = new HashMap<String, MapObject>();
         codePosition = new HashMap<DrawableCode, Vector2i>();
+        positionCache = new HashSet<Vector2i>();
         size = 0;
     }
 
@@ -28,7 +30,7 @@ public class CodeMapHash implements CodeMap {
      */
     @Override
     public boolean isEmpty() {
-        return contentMap.isEmpty();
+    	return contentMap.isEmpty();
     }
 
     /**
@@ -44,7 +46,7 @@ public class CodeMapHash implements CodeMap {
      */
     @Override
     public boolean isUsed(int x, int z) {
-        return contentMap.containsKey(x + "," + z);
+    	return positionCache.contains(new Vector2i(x,z));
     }
 
     /**
@@ -69,6 +71,7 @@ public class CodeMapHash implements CodeMap {
                 int y = j + y0;
                 boolean isOrigin = (i == 0 && j == 0);
                 contentMap.put(x + "," + y, new MapObject(content, x, y, isOrigin));
+                positionCache.add(new Vector2i(x,y));
             }
         }
     }
