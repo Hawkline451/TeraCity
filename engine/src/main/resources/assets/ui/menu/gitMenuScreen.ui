@@ -1,0 +1,81 @@
+{
+    "type" : "engine:GitMenuScreen",
+    "skin" : "mainmenu",
+    "contents" : {
+        "type" : "relativeLayout",
+        "contents" : [
+            {
+                "type" : "UIImage",
+                "image" : "engine:terasology",
+                "id" : "title",
+                "layoutInfo" : {
+                    "width" : 512,
+                    "height" : 128,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "TOP",
+                        "offset" : 48
+                    }
+                }
+            },
+            {
+                "type" : "UILabel",
+                "text" : "Metricas de GitHub",
+                "family" : "title",
+                "id" : "subtitle",
+                "layoutInfo" : {
+                    "height" : 48,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "BOTTOM",
+                        "widget" : "title"
+                    }
+                }
+            },
+            {
+                "type" : "columnLayout",
+                "verticalSpacing" : 8,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 280,
+                    "height" : 288,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "BOTTOM",
+                        "offset" : 16,
+                        "widget" : "subtitle"
+                    },
+                    "position-bottom" : {
+                        "offset" : 32
+                    }
+                },
+                "contents" : [
+                    {
+                        "type" : "UIButton",
+                        "id" : "bugs",
+                        "text" : "Bugs Metrics"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "versions",
+                        "text" : "Version Metrics"
+                    }                    
+                ]
+            },
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            }
+        ]
+    }
+}

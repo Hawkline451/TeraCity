@@ -20,7 +20,7 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodePackage scale = new CodePackage("scale", "", "");
         CodePackage terasology = new CodePackage("terasology", "."+ File.separator+"modules"+ File.separator+"WorldCodecity"+ File.separator+"src"
 				+ File.separator+"main"+ File.separator+"java"+ File.separator+"org"+ File.separator+"terasology"
-			+ File.separator+"codecity"+ File.separator+"world", "");
+			+ File.separator+"codecity"+ File.separator+"world", "https://github.com/mperalta92/codecity.git");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
         facet.addCodeContent(fac);

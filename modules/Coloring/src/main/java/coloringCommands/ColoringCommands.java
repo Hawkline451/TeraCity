@@ -15,6 +15,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import coloring.AbstractColoring;
 import coloring.CheckStyleColoring;
 import coloring.CoberturaColoring;
+import coloring.GitColoring;
 import coloring.IColoring;
 import coloring.PMDColoring;
 
@@ -67,6 +68,17 @@ public class ColoringCommands extends BaseComponentSystem{
 		if (path.equals("default")) path = "modules/WorldCodecity/src/main/java";
 		String[] params = {path, metric, max};
     	IColoring c = new CheckStyleColoring();
+    	c.execute(params);
+    	return "";
+    }
+	@Command(shortDescription = "Coloreo usando Git",
+            helpText = "Ejecuta coloreo usando Git\n",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public String paintWithGit(@CommandParam("metric") String metric,
+    		@CommandParam("url") String url, @CommandParam("Project Name") String projectName) {
+		
+		String[] params = {metric, url, projectName};
+    	IColoring c = new GitColoring();
     	c.execute(params);
     	return "";
     }
