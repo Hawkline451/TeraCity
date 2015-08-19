@@ -1,7 +1,6 @@
 package coloringCommands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.terasology.codecity.world.map.CodeMap;
@@ -20,6 +19,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
@@ -105,8 +105,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Y") int ypos,
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
-    	if(!isImplementedColor(colorBlock))
-    		return "Put an implemented color in {Red, Blue, Green}";
+
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
@@ -125,11 +124,11 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
+	
+	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        List<BlockUri> matchingUris = blockManager.resolveAllBlockFamilyUri(colorBlock);
-        BlockFamily blockFamily = blockManager.getBlockFamily(matchingUris.get(0));
-        return blockFamily;
+        return blockManager.getBlockFamily(colorBlock);
 	}
 
 	@Command(shortDescription = "Colors the entire city of the color specified({Red,Blue,Green} implemented)")
@@ -141,22 +140,22 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	processMap(map, Vector2i.zero(), 10, world, blockFamily);//10 default ground level
+        	processMap(map, Vector2i.zero(), 10, world, blockFamily.getArchetypeBlock());//10 default ground level
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 
-	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, BlockFamily blockFamily) {
+	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world, Block block) {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(scale, factory) + level;
             for (int z = level; z < height; z++)
-            	world.setBlock(new Vector3i(x, z, y), blockFamily.getArchetypeBlock());
+            	world.setBlock(new Vector3i(x, z, y), block);
             if (obj.isOrigin()){
             	System.out.println(obj.getObject().getBase().getName());
-                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, blockFamily);
+                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, block);
             }
         }
     }
@@ -176,15 +175,48 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	@Command(shortDescription = "give Color to a Build")
 	public String ColorBuild(@CommandParam("Name") String name,
 								@CommandParam("Color") String color){
+		if (color.equals("normal")) return "Nothing";
+		ArrayList <BuildInformation> builds = getInfo();
+		for (BuildInformation element:builds){
+			if (element.getPath().equals(name)){
+				int width = element.getWidth();
+				for (int i = 0;i < width;i++){
+					for(int j = 0;j < width;j++){
+						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
+					}
+				}
+				return "Success";
+				
+			}
+		}
+		return "Class doesn't exist";
+		
+	}
+	
+	@Command(shortDescription = "give Color to a Build to some percentage and left the rest of another color")
+	public String ColorPartialBuild(@CommandParam("Name") String name,
+								@CommandParam("Color") String color, @CommandParam("ColorDelResto") String restColor, @CommandParam("PorcentacePrimerColor") int n){
+		n = Math.min(100, n);
+		if (color.equals("normal")) return "Nothing";
 		ArrayList <BuildInformation> builds = getInfo();
 		for (BuildInformation element:builds){
 			if (element.getName().equals(name)){
-				return placeColorBuilding(color, element.getX(),element.getZ(),element.getY(),element.getHeight()-element.getZ());
+				int width = element.getWidth();
+				for (int i = 0;i < width;i++){
+					for(int j = 0;j < width;j++){
+						placeColorBuilding(restColor, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
+						int firstColor = (int) (Math.ceil(1.0*n/100 *(element.getHeight()-element.getZ())));
+						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,firstColor);
+					}
+				}
+				return "Succes";
+				
 			}
 		}
 		return "Class doesn't exists";
 		
 	}
+	
 	
     private ArrayList <BuildInformation> getInfo() {
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
@@ -202,11 +234,23 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(scale, factory) + level;
+            int width = obj.getWidth(scale, factory);
             if (obj.isOrigin()){
-            	list.add(new BuildInformation(x,y,level,height,obj));
+            	list.add(new BuildInformation(x,y,level,height,width,obj));
             	list.addAll(processInfo(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world));
             }
         }
         return list;
+    }
+	@Command(shortDescription = "Restore city to default")
+    public String restoreCity() {    	
+		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	processMap(map, Vector2i.zero(), 10, world, block);//10 default ground level
+            return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 }

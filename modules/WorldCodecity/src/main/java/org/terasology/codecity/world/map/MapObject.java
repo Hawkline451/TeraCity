@@ -55,6 +55,17 @@ public class MapObject implements IMapObject {
     public int getHeight(CodeScale scale, CodeMapFactory factory) {
         return object.getHeight(scale, factory);
     }
+    
+    /**
+     * Get the width of the object
+     * 
+     * @param scale
+     * @param factory
+     * @return
+     */
+    public int getWidth(CodeScale scale, CodeMapFactory factory){
+    	return object.getWidth(scale, factory);
+    }
 
     /**
      * @return The object that is represented

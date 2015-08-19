@@ -1,5 +1,7 @@
 package org.terasology.codecity.world.loader;
 
+import java.io.File;
+
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -16,7 +18,9 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodePackage map = new CodePackage("map", "map", "");
         CodePackage structure = new CodePackage("structure", "structure", "");
         CodePackage scale = new CodePackage("scale", "scale", "");
-        CodePackage terasology = new CodePackage("terasology", "terasology", "");
+        CodePackage terasology = new CodePackage("terasology", "."+ File.separator+"modules"+ File.separator+"WorldCodecity"+ File.separator+"src"
+				+ File.separator+"main"+ File.separator+"java"+ File.separator+"org"+ File.separator+"terasology"
+			+ File.separator+"codecity"+ File.separator+"world", "");
         
         CodeClass fac = new CodeClass("CodeCityFacet", 2, 64, "", "");
         facet.addCodeContent(fac);
@@ -26,6 +30,7 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass gProv = new CodeClass("CodeCityGroundProvider", 0, 37, "CodeCityGroundProvider.java", "");
         CodeClass gRast = new CodeClass("CodeCityGroundRasterizer", 1, 34, "CodeCityGroundRasterizer.java", "");
         CodeClass wGen = new CodeClass("CodeCityWorldGenerator", 1, 164, "CodeCityWorldGenerator.java", "");
+
         generator.addCodeContent(bProv);
         generator.addCodeContent(bRast);
         generator.addCodeContent(gProv);
@@ -43,11 +48,11 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass cMapCF = new CodeClass("DrawableCodeFactory", 0, 24, "DrawableCodeFactory.java", "");
         CodeClass cMapCC = new CodeClass("DrawableCodeClass", 1, 42, "DrawableCodeClass.java", "");
         CodeClass cMapDC = new CodeClass("DrawableCode", 0, 36, "DrawableCode.java", "");
+
         map.addCodeContent(cMap);
         map.addCodeContent(cMapF);
         map.addCodeContent(cMapH);
         map.addCodeContent(cMapN);
-        map.addCodeContent(cMapCP);
         map.addCodeContent(cMapO);
         map.addCodeContent(cMapDCP);
         map.addCodeContent(cMapCF);
@@ -58,6 +63,7 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass cClas = new CodeClass("CodeClass", 3, 39, "CodeClass.java", "");
         CodeClass cPac = new CodeClass("CodePackage", 2, 37, "CodePackage.java", "");
         CodeClass cRep = new CodeClass("CodeRepresentation", 4, 42, "CodeRepresentation.java", "");
+
         structure.addCodeContent(cClas);
         structure.addCodeContent(cPac);
         structure.addCodeContent(cRep);
@@ -66,6 +72,7 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass cSca = new CodeClass("CodeScale", 0,28, "CodeScale.java", "");
         CodeClass cLin = new CodeClass("LinearCodeScale", 0,16, "LinearCodeScale.java", "");
         CodeClass cSqu = new CodeClass("SquareRootCodeScale", 0,21, "SquareRootCodeScale.java", "");
+        
         scale.addCodeContent(cSca);
         scale.addCodeContent(cLin);
         scale.addCodeContent(cSqu);

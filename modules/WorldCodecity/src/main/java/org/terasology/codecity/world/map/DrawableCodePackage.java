@@ -13,6 +13,8 @@ import org.terasology.codecity.world.structure.scale.CodeScale;
 public class DrawableCodePackage implements DrawableCode {
     private CodePackage base;
     private List<DrawableCode> contentList;
+    private int sizeCache = -1;
+    private CodeMap submapCache;
 
     /**
      * Create a new DrawableCodePackage
@@ -22,6 +24,7 @@ public class DrawableCodePackage implements DrawableCode {
      */
     public DrawableCodePackage(CodePackage base) {
         this.base = base;
+        submapCache = null;
         contentList = new ArrayList<DrawableCode>();
         DrawableCodeFactory factory = new DrawableCodeFactory();
         for (CodeRepresentation content : base.getContent())
@@ -38,8 +41,11 @@ public class DrawableCodePackage implements DrawableCode {
 
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {
-        CodeMap map = factory.generateMap(contentList);
-        return 2 + map.getSize();
+        if (sizeCache == -1) {
+        	CodeMap map = factory.generateMap(contentList);
+        	sizeCache = 2 + map.getSize();
+        }
+        return sizeCache;
     }
 
     @Override
@@ -49,6 +55,13 @@ public class DrawableCodePackage implements DrawableCode {
 
     @Override
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
-        return factory.generateMap(contentList);
+    	if (submapCache == null)
+    		submapCache = factory.generateMap(contentList);
+        return submapCache;
     }
+
+	@Override
+	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+		return 1;
+	}
 }

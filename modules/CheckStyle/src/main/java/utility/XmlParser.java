@@ -1,7 +1,7 @@
 package utility;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,10 +10,10 @@ import org.w3c.dom.Document;
 
 public abstract class XmlParser {
 	
-	ArrayList<DataColour> data;
+	HashMap<String, DataColour> data;
 	
 	public XmlParser() {
-		data = new ArrayList<DataColour>();
+		data = new HashMap<String, DataColour>();
 	}
 	
 	public void parse(String path) {
@@ -37,9 +37,13 @@ public abstract class XmlParser {
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		for (DataColour dataColour : data) {
+		for (DataColour dataColour : data.values()) {
 			str.append(dataColour + "\n");
 		}
 		return str.toString();
+	}
+	
+	public HashMap<String, DataColour> getData() {
+		return data;
 	}
 }

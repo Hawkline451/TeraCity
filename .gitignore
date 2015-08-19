@@ -66,6 +66,7 @@ extensions
 #/modules/*
 !/modules/Core
 !/modules/CoreSampleGameplay
+!/modules/GitHub
 !/modules/PMDColoring
 !/modules/jeditint
 !/modules/subprojects.gradle
@@ -79,4 +80,6 @@ extensions
 .DS_Store?
 .Spotlight-V100
 .Trashes
+modules/GitHub/src/main/java/console/BrowseTree.java
+modules/GitHub/src/main/java/console/ShowChangedFilesBetweenCommits.java
 modules/jeditint/src/main/java/org/terasology/logic/console/commands/JeditCommand.java

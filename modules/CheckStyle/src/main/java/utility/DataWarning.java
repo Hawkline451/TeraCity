@@ -23,8 +23,20 @@ public class DataWarning{
 		max = Integer.parseInt(matcher.group(2));
 		this.line = line;
 	}
-
+	
+	public int getLine() {
+		return line;
+	}
+	
 	public String toString() {
 		return "(linea: " + line + ", encontrado: " + find + ", max: " + max + ")";
+	}
+
+	public int getFind() {
+		return find;
+	}
+
+	public int getMax() {
+		return max;
 	}
 }

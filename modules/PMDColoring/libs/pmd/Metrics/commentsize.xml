@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<ruleset name="CommentSize"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+  <description>
+Rule CommentSize
+  </description>
+
+    <rule name="CommentSize"
+    		  since="5.0"
+        message="Comment is too large"
+        class="net.sourceforge.pmd.lang.java.rule.comments.CommentSizeRule"
+          externalInfoUrl="https://pmd.github.io/pmd-5.3.3/pmd-java/rules/java/comments.html#CommentSize">
+    <description>
+Determines whether the dimensions of non-header comments found are within the specified limits.
+    </description>
+    <priority>3</priority>
+    <example>
+<![CDATA[
+/**
+*
+*	too many lines!
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*/
+]]>
+    </example>
+  </rule>
+ </ruleset>
