@@ -19,7 +19,6 @@ import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.config.Config;
-import org.terasology.logic.console.commands.CoreCommands;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
@@ -63,8 +62,7 @@ public class ColoringMenuScreen extends CoreScreenLayer {
         WidgetUtil.trySubscribe(this, "git", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
+            	getManager().pushScreen("engine:gitMenuScreen");
             }
         });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {

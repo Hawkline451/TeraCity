@@ -1,6 +1,13 @@
 package coloring;
 
+import java.io.File;
 import java.util.Hashtable;
+
+import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.registry.CoreRegistry;
+
+
+
 
 import gitMetrics.GitMetric;
 
@@ -10,7 +17,9 @@ public class GitColoring extends AbstractColoring{
 
 	@Override
 	public String getColor(String path) {
-		int classData = data.get(path);
+		File f = new File(path);
+		System.out.print("snaiofnaklf");
+		int classData = data.get(f.getPath());
 		if (metric.toString() == "bug") {
 			if (classData == 1) return "red";
 			return "green";
@@ -25,7 +34,7 @@ public class GitColoring extends AbstractColoring{
 
 	@Override
 	public void getDataColoring(){
-		String url = params[1];
+		String url = CoreRegistry.get(CodeRepresentation.class).getGithubDir();
 		String metricString = params[0];
 		String projectName = params[2];
 		String output = "modules/GitHub/tempRepo/";
