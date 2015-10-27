@@ -34,10 +34,10 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     public void initialize() {
         
         //Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
-        CodeCityLoader loader = CodeCityLoaderManager.getLoader();
+        //CodeCityLoader loader = CodeCityLoaderManager.getLoader();
         
 
-        //CodeCityLoader loader = new CodeCityDefaultLoader();
+        CodeCityLoader loader = new CodeCityDefaultLoader();
 
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
         
