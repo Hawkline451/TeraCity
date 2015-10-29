@@ -6,7 +6,7 @@
             "contents" : [
                 {
                     "type" : "UIImage",
-                    "image" : "engine:terasology",
+                    "image" : "engine:teracity",
                     "id" : "title",
                     "layoutInfo" : {
                         "width" : 512,
