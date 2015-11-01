@@ -1,0 +1,14 @@
+{
+    "id" : "TeraCityGameplay",
+    "version" : "0.1.0",
+    "displayName" : "TeraCity Gameplay",
+    "description" : "This gameplay module includes all TeraCity modules",
+    "dependencies" :
+    [
+        {"id": "Core", "minVersion": "0.1.0"},
+        {"id": "Coloring", "minVersion": "0.1.0"},
+	{"id": "FlyMode", "minVersion": "0.1.0"}
+    ],
+    "isGameplay" : "true",
+    "defaultWorldGenerator" : "Core:WorldCodecity"
+}
