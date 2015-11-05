@@ -49,4 +49,10 @@ public abstract class CodeRepresentation implements Serializable {
      * @param visitor
      */
     public abstract void accept(CodeVisitor visitor);
+    
+    public boolean validCode(){
+    	return true;
+    }
+    
+    public abstract int size();
 }

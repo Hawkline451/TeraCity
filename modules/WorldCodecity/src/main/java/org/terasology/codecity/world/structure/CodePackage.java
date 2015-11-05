@@ -38,4 +38,13 @@ public class CodePackage extends CodeRepresentation implements Serializable {
     public void accept(CodeVisitor visitor) {
         visitor.visitCodePackage(this);
     }
+
+	@Override
+	public int size() {
+		int counter = 0;
+		for (CodeRepresentation c: contentList)
+			counter += c.size();
+		return counter;
+	}
+
 }
