@@ -1,27 +1,28 @@
 package coloringCommands;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.logic.health.DoDamageEvent;
+import org.terasology.logic.health.HealthComponent;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.world.WorldRenderer;
+import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
 
 @RegisterSystem
@@ -98,7 +99,6 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
-	
 	@Command(shortDescription = "Create a building  of the color specified({Red,Blue,Green} implemented)")
     public String placeColorBuilding(@CommandParam("colorBlock") String colorBlock,
     		                         @CommandParam("X") int xpos,
@@ -114,16 +114,46 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         offset.scale(3);
         spawnPos.add(offset);
 
-        BlockFamily blockFamily = getBlockFamily(colorBlock);
+        
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
+        
+        int metricMax = 12;
+        int metric    =  5;
+        
+        BlockFamily blockFamily = getBlockFamily(colorBlock);
+        Block block = blockFamily.getArchetypeBlock();
+        block.setHardness(metricMax);
+        
         if (world != null) {
-        	for(int y = 0; y< size; ++y)
-        		world.setBlock(new Vector3i(xpos, (ypos + y), zpos), blockFamily.getArchetypeBlock());
+        	for(int y = 0; y< size; ++y) {
+        		
+        		Vector3i blockPos = new Vector3i(xpos, (ypos + y), zpos);
+        		
+        		// delete previous block to override all functionalities
+        		blockEntityRegistry.getEntityAt(blockPos).destroy();
+        		
+        		// place new block
+        		world.setBlock(blockPos, block);
+        		
+        		// set health/damage properties
+        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
+        		HealthComponent health = entity.getComponent(HealthComponent.class);
+        		if (health == null) {
+        			health = new HealthComponent(metricMax,0,0);
+        			entity.addComponent(health);	
+        		} else {
+        			health.maxHealth = metricMax;
+        			health.regenRate = 0;
+        			entity.saveComponent(health);
+        		}
+        		entity.send(new DoDamageEvent(metricMax - metric));
+        		
+        	}
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
-	
 	
 	
 	private BlockFamily getBlockFamily(String colorBlock) {
