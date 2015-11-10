@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +35,12 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     public void initialize() {
         
         //Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
-        //CodeCityLoader loader = CodeCityLoaderManager.getLoader();
+    	String path = "C:"+File.separator+"DCC"+File.separator+"Primavera15"+File.separator+"Ingenieria"+File.separator+"TeraCity"+File.separator+"modules"+File.separator+"GitHub";
+        //CodeCityLoader loader = CodeCityLoaderManager.getLoader(path);
         
+    	CodeCityLoader loader = new CodeCityProjectLoader(path);
 
-        CodeCityLoader loader = new CodeCityDefaultLoader();
+        //CodeCityLoader loader = new CodeCityDefaultLoader();
 
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
         

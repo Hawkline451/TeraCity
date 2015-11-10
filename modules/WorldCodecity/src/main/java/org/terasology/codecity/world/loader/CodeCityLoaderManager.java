@@ -19,10 +19,10 @@ public class CodeCityLoaderManager {
         
     }
     
-    public static CodeCityLoader getLoader(){
+    public static CodeCityLoader getLoader(String path){
         CodeCityLoader loader = null;
         try {
-            FileInputStream file = new FileInputStream(JEditExporter.getSavePath());
+            FileInputStream file = new FileInputStream(path);
             loader = new CodeCityFileLoader(file);
             file.close();
         } catch (IOException e) {

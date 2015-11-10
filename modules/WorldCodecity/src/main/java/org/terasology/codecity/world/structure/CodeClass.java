@@ -40,4 +40,10 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     public void accept(CodeVisitor visitor) {
         visitor.visitCodeClass(this);
     }
+
+	@Override
+	public int size() {
+		return 1;
+	}
+
 }
