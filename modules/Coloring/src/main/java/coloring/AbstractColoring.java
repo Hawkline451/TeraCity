@@ -62,7 +62,7 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 //			System.out.println(pbc.ColorBuild(path, getColor(path)));
 			pbc.ColorBuild(path, getColor(path));
 		}
-		ColoringCommands.STATE = "Esperando Análisis";
+		ColoringCommands.STATE = "Awaiting analisys";
 	}
 
 	@Override
@@ -83,19 +83,19 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 	@Override
 	public void execute(String[] params) {
 		this.params = params;
-		ColoringCommands.STATE = "Analizando...";
+		ColoringCommands.STATE = "Analyzing...";
 		ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(1));
 		ListenableFuture<AbstractColoring> listenableFuture = executor.submit(this,this);
 	    CoreRegistry.put(ListenableFuture.class, listenableFuture);
 	    Futures.addCallback(listenableFuture, new FutureCallback<AbstractColoring>() {
 	        public void onSuccess(AbstractColoring result) {
-	        	ColoringCommands.STATE = "Coloreando...";
+	        	ColoringCommands.STATE = "Coloring...";
 	        	System.out.println("Listo para pintar");
 	        	
 	        }
 
 	        public void onFailure(Throwable thrown) {
-	        	ColoringCommands.STATE = "Analizando...";
+	        	ColoringCommands.STATE = "Analyzing...";
 	            System.err.println("Falla de Analisis");
 	        }
 	    });

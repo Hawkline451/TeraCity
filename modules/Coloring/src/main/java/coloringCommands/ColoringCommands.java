@@ -17,6 +17,7 @@ import coloring.CheckStyleColoring;
 import coloring.CoberturaColoring;
 import coloring.GitColoring;
 import coloring.IColoring;
+import coloring.MockColoring;
 import coloring.PMDColoring;
 
 @RegisterSystem
@@ -32,7 +33,7 @@ import coloring.PMDColoring;
  */
 public class ColoringCommands extends BaseComponentSystem{
 	
-	public static String STATE = "Esperando Análisis";
+	public static String STATE = "Awaiting analisys";
 	
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
@@ -93,6 +94,18 @@ public class ColoringCommands extends BaseComponentSystem{
     	return "";
     }
 	
+	@Command(shortDescription = "Mock coloring",
+			helpText = "Mock coloring based on MockColoring\n",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+	public String paintWithMockColoring(
+			@CommandParam(value="metric", required=true) String metric) {
+		
+		String[] params = new String[1];
+		params[0] = metric;
+		IColoring coloring = new MockColoring();
+		coloring.execute(params);
+		return "";
+	}
 	
 	@Command(shortDescription = "Aplica el coloreo",
             requiredPermission = PermissionManager.NO_PERMISSION)

@@ -1,5 +1,5 @@
 {
-    "type" : "engine:ColoringMenuScreen",
+    "type" : "engine:MockColoringMenuScreen",
     "skin" : "mainmenu",
     "contents" : {
         "type" : "relativeLayout",
@@ -20,7 +20,7 @@
             },
             {
                 "type" : "UILabel",
-                "text" : "Menu de Coloreo",
+                "text" : "MockColoring metrics",
                 "family" : "title",
                 "id" : "subtitle",
                 "layoutInfo" : {
@@ -52,39 +52,29 @@
                 "contents" : [
                     {
                         "type" : "UIButton",
-                        "id"   : "checkStyle",
-                        "text" : "CheckStyle"
+                        "id"   : "randomMetric",
+                        "text" : "Random values"
                     },
                     {
                         "type" : "UIButton",
-                        "id"   : "pmd",
-                        "text" : "PMD"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id"   : "cobertura",
-                        "text" : "Cobertura"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id"   : "git",
-                        "text" : "Git"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id"   : "mockColoring",
-                        "text" : "Mock"
-                    },
-                    {
-                        "type" : "UISpace",
-                        "size" : [1, 104]
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "close",
-                        "text" : "Back"
-                    }
+                        "id"   : "goodMetric",
+                        "text" : "Good values"
+                    }                    
                 ]
+            },
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
             }
         ]
     }
