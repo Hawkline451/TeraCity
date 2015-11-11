@@ -19,7 +19,10 @@ public class CountColoringMetric implements IColoringMetric {
 
 	@Override
 	public double getValue() {
-		return this.count;
+		
+		double limited = Math.min(this.limit, this.count);
+		double rate = 1 - limited/(double)limit;
+		return rate;
 	}
 
 	@Override
@@ -31,8 +34,7 @@ public class CountColoringMetric implements IColoringMetric {
 	@Override
 	public String getColor() {
 		
-		double limited = Math.min(this.limit, this.count);
-		double rate = 1 - limited/(double)limit;
+		double rate = getValue();
 		
 		if (rate <= 0.2) { return BlockColors.BLOCK_RED.toString();    }
 		if (rate <= 0.4) { return BlockColors.BLOCK_ORANGE.toString(); }

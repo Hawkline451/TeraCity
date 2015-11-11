@@ -59,8 +59,12 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
-			IColoringMetric class_metric = getMetric(path); 
-			pbc.ColorBuild(path, class_metric.getColor());
+			IColoringMetric classMetric = getMetric(path); 
+			int maxHealth = 10;
+			int damage = (int)((maxHealth - 1)*(1.0 - classMetric.getValue()));
+			damage = Math.min((maxHealth-1), damage);
+			
+			pbc.ColorBuildCommon(path, classMetric.getColor(), damage, maxHealth);
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}

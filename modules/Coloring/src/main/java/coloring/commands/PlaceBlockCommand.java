@@ -105,7 +105,12 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Y") int ypos,
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
-
+		
+		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size, 0, 12);
+    }
+	
+    public String placeColorBuildingCommon(String blockColor, int xpos, int ypos, int zpos, int size, int damage, int maxHealth) {
+    	
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
     	
@@ -117,13 +122,10 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
-        
-        int metricMax = 12;
-        int metric    =  5;
-        
-        BlockFamily blockFamily = getBlockFamily(colorBlock);
+                
+        BlockFamily blockFamily = getBlockFamily(blockColor);
         Block block = blockFamily.getArchetypeBlock();
-        block.setHardness(metricMax);
+        block.setHardness(maxHealth);
         
         if (world != null) {
         	for(int y = 0; y< size; ++y) {
@@ -140,21 +142,20 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
         		HealthComponent health = entity.getComponent(HealthComponent.class);
         		if (health == null) {
-        			health = new HealthComponent(metricMax,0,0);
+        			health = new HealthComponent(maxHealth,0,0);
         			entity.addComponent(health);	
         		} else {
-        			health.maxHealth = metricMax;
+        			health.maxHealth = maxHealth;
         			health.regenRate = 0;
         			entity.saveComponent(health);
         		}
-        		entity.send(new DoDamageEvent(metricMax - metric));
+        		entity.send(new DoDamageEvent(damage));
         		
         	}
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
-	
 	
 	private BlockFamily getBlockFamily(String colorBlock) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
@@ -189,6 +190,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             }
         }
     }
+	
 	@Command(shortDescription = "Get the name of the clases")
 	public String getInfoClass(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
@@ -203,31 +205,48 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	}
 	
 	@Command(shortDescription = "give Color to a Build")
-	public String ColorBuild(@CommandParam("Name") String name,
-								@CommandParam("Color") String color){
-		if (color.equals("normal")) return "Nothing";
+	public String ColorBuild(
+			@CommandParam("Name") String name,
+			@CommandParam("Color") String color)
+	{
+		return ColorBuildCommon(name, color, 0, 12);
+	}
+	
+	public String ColorBuildCommon(String name, String color, int damage, int maxHealth) {
+		
 		ArrayList <BuildInformation> builds = getInfo();
-		for (BuildInformation element:builds){
-			if (element.getPath().equals(name)){
+		
+		for (BuildInformation element:builds) {
+			
+			if (element.getPath().equals(name)) {
+				
 				int width = element.getWidth();
 				for (int i = 0;i < width;i++){
 					for(int j = 0;j < width;j++){
-						placeColorBuilding(color, element.getX() + i,element.getZ(),element.getY() + j,element.getHeight()-element.getZ());
+						
+						placeColorBuildingCommon(color,
+								element.getX() + i,
+								element.getZ(),
+								element.getY() + j,
+								element.getHeight()-element.getZ(),
+								damage,
+								maxHealth
+						);
 					}
 				}
 				return "Success";
-				
 			}
+			
 		}
 		return "Class doesn't exist";
-		
 	}
+	
 	
 	@Command(shortDescription = "give Color to a Build to some percentage and left the rest of another color")
 	public String ColorPartialBuild(@CommandParam("Name") String name,
 								@CommandParam("Color") String color, @CommandParam("ColorDelResto") String restColor, @CommandParam("PorcentacePrimerColor") int n){
 		n = Math.min(100, n);
-		if (color.equals("normal")) return "Nothing";
+		
 		ArrayList <BuildInformation> builds = getInfo();
 		for (BuildInformation element:builds){
 			if (element.getName().equals(name)){

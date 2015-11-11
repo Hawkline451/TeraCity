@@ -1,4 +1,4 @@
-package commandRunner;
+package coloring.runner;
 
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;

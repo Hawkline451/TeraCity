@@ -1,4 +1,4 @@
-package commandRunner;
+package coloring.runner;
 
 
 import org.terasology.logic.console.Console;

@@ -84,10 +84,8 @@ public class PMDProcessor {
 					try{
 						// get filename only
 						String pathClass = line.substring(0, line.lastIndexOf(".java")+5);
-						System.out.print("pre: " + pathClass);
 						File fi = new File(pathClass);
 						pathClass = fi.getName();
-						System.out.println(", post: " + pathClass);
 						
 						if (!counters.containsKey(pathClass)) {
 							counters.put(pathClass, 0);
