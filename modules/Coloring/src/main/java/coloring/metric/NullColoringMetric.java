@@ -1,5 +1,7 @@
 package coloring.metric;
 
+import coloring.BlockColors;
+
 public class NullColoringMetric implements IColoringMetric {
 	
 	public NullColoringMetric() {
@@ -18,7 +20,7 @@ public class NullColoringMetric implements IColoringMetric {
 
 	@Override
 	public String getColor() {
-		return "Core:stone";
+		return BlockColors.BLOCK_NOTFOUND.toString();
 	}
 	
 }

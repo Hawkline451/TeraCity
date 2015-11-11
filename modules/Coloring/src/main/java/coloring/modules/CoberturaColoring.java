@@ -1,13 +1,15 @@
-package coloring;
+package coloring.modules;
 
 import java.io.IOException;
 
+import coloring.AbstractColoring;
 import coloring.metric.IColoringMetric;
 import coloring.metric.NullColoringMetric;
 import coloring.metric.RateColoringMetric;
 import commands.CoberturaCommand;
 
-public class CoberturaColoring extends AbstractColoring{
+public class CoberturaColoring extends AbstractColoring {
+	
 	CoberturaCommand cobby;
 	
 	public CoberturaColoring(){

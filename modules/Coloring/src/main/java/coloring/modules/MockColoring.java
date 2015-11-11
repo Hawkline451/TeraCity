@@ -1,13 +1,14 @@
-package coloring;
+package coloring.modules;
 
 import java.util.Hashtable;
 import java.util.Random;
 
+import coloring.AbstractColoring;
 import coloring.metric.IColoringMetric;
 import coloring.metric.NullColoringMetric;
 import coloring.metric.RateColoringMetric;
 
-public class MockColoring extends AbstractColoring{
+public class MockColoring extends AbstractColoring {
 	Hashtable<String, Integer> data;
 	String metricType;
 

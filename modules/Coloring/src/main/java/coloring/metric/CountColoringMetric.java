@@ -1,9 +1,11 @@
 package coloring.metric;
 
+import coloring.BlockColors;
+
 public class CountColoringMetric implements IColoringMetric {
 	
 	private int count = 0;
-	private int limit = 100;
+	private int limit = 10;
 	
 	public CountColoringMetric(int count, int limit) {
 		setValue(count);
@@ -32,11 +34,11 @@ public class CountColoringMetric implements IColoringMetric {
 		double limited = Math.min(this.limit, this.count);
 		double rate = 1 - limited/(double)limit;
 		
-		if (rate <= 0.2) { return "red";    }
-    	if (rate <= 0.4) { return "orange"; }
-    	if (rate <= 0.6) { return "yellow"; }
-    	if (rate <= 0.8) { return "blue";   }
-    	return "green";
+		if (rate <= 0.2) { return BlockColors.BLOCK_RED.toString();    }
+		if (rate <= 0.4) { return BlockColors.BLOCK_ORANGE.toString(); }
+    	if (rate <= 0.6) { return BlockColors.BLOCK_YELLOW.toString(); }
+    	if (rate <= 0.8) { return BlockColors.BLOCK_BLUE.toString();   }
+    	return BlockColors.BLOCK_GREEN.toString();
 	}
 
 	public int getLimit() {

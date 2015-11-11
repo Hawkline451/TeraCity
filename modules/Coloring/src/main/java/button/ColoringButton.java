@@ -5,7 +5,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.registry.In;
 
-import coloringCommands.ColoringCommands;
+import coloring.commands.ColoringCommands;
 
 @RegisterSystem
 public class ColoringButton extends BaseComponentSystem implements HUDToggleButtonsClientSystem.HUDToggleButtonState{

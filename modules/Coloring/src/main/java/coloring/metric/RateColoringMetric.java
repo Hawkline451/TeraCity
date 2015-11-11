@@ -1,5 +1,7 @@
 package coloring.metric;
 
+import coloring.BlockColors;
+
 public class RateColoringMetric implements IColoringMetric {
 	
 	private double rate = 0.0;
@@ -25,11 +27,11 @@ public class RateColoringMetric implements IColoringMetric {
 	@Override
 	public String getColor() {
 		
-		if (rate <= 0.2) { return "red";    }
-    	if (rate <= 0.4) { return "orange"; }
-    	if (rate <= 0.6) { return "yellow"; }
-    	if (rate <= 0.8) { return "blue";   }
-    	return "green";
+		if (rate <= 0.2) { return BlockColors.BLOCK_RED.toString();    }
+    	if (rate <= 0.4) { return BlockColors.BLOCK_ORANGE.toString(); }
+    	if (rate <= 0.6) { return BlockColors.BLOCK_YELLOW.toString(); }
+    	if (rate <= 0.8) { return BlockColors.BLOCK_BLUE.toString();   }
+    	return BlockColors.BLOCK_GREEN.toString();
 	}
 	
 }

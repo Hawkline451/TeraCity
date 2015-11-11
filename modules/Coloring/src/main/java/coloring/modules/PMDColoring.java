@@ -1,15 +1,16 @@
-package coloring;
+package coloring.modules;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import coloring.AbstractColoring;
 import coloring.metric.CountColoringMetric;
 import coloring.metric.IColoringMetric;
 import coloring.metric.NullColoringMetric;
 import processor.PMDProcessor;
 
-public class PMDColoring extends AbstractColoring{
+public class PMDColoring extends AbstractColoring {
 	
 	Map<String, Integer> warningCounterMap = new HashMap<String, Integer>();
 	static Map<String, PMDProcessor> rulesApplied = new HashMap<String, PMDProcessor>();
@@ -36,9 +37,6 @@ public class PMDColoring extends AbstractColoring{
 	public void getDataColoring() throws IOException {
 		PMDProcessor pmd = getProcessor();
 		warningCounterMap = pmd.getCounterMap();
-		for (String key : warningCounterMap.keySet()) {
-			Integer i = warningCounterMap.get(key);	
-		}
 	}
 
 	private PMDProcessor getProcessor() {

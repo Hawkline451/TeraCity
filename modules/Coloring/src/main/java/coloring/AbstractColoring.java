@@ -20,11 +20,12 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import coloring.metric.IColoringMetric;
-import coloringCommands.ColoringCommands;
-import coloringCommands.PlaceBlockCommand;
+import coloring.commands.ColoringCommands;
+import coloring.commands.PlaceBlockCommand;
 
-public abstract class AbstractColoring implements IColoring, Runnable{
-	String[] params;
+public abstract class AbstractColoring implements IColoring, Runnable {
+	
+	protected String[] params;
 		
 	public ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);

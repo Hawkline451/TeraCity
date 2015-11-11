@@ -1,3 +1,4 @@
 {
-	"tile":"Coloring:Green"
+	"basedOn": "coloring:template",
+	"tile"   : "coloring:green"
 }

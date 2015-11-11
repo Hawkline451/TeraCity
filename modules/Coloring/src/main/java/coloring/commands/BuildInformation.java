@@ -1,4 +1,4 @@
-package coloringCommands;
+package coloring.commands;
 
 import org.terasology.codecity.world.map.MapObject;
 

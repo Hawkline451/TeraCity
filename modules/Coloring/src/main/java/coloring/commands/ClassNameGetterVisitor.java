@@ -1,4 +1,4 @@
-package coloringCommands;
+package coloring.commands;
 
 import java.util.ArrayList;
 

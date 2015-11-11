@@ -1,19 +1,20 @@
-package coloring;
+package coloring.modules;
 
 import java.io.IOException;
 import java.util.HashMap;
 
+import coloring.AbstractColoring;
 import coloring.metric.CountColoringMetric;
 import coloring.metric.IColoringMetric;
 import coloring.metric.NullColoringMetric;
 import metrics.Metric;
 import utility.DataColour;
 
-public class CheckStyleColoring extends AbstractColoring{
+public class CheckStyleColoring extends AbstractColoring {
 	HashMap<String, DataColour> datamap;
 
 	@Override
-	public void getDataColoring() throws IOException{
+	public void getDataColoring() throws IOException {
 		String path = params[0];
 		String metricString = params[1];
 		int max = Integer.parseInt(params[2]);

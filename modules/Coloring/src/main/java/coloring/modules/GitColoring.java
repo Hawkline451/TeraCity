@@ -1,10 +1,11 @@
-package coloring;
+package coloring.modules;
 
 import java.util.Hashtable;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.registry.CoreRegistry;
 
+import coloring.AbstractColoring;
 import coloring.metric.CountColoringMetric;
 import coloring.metric.IColoringMetric;
 import coloring.metric.NullColoringMetric;
