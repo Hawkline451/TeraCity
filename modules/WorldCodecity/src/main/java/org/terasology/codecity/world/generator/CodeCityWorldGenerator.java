@@ -38,9 +38,9 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     	String path = "C:"+File.separator+"DCC"+File.separator+"Primavera15"+File.separator+"Ingenieria"+File.separator+"TeraCity"+File.separator+"modules"+File.separator+"GitHub";
         //CodeCityLoader loader = CodeCityLoaderManager.getLoader(path);
         
-    	CodeCityLoader loader = new CodeCityProjectLoader(path);
+    	//CodeCityLoader loader = new CodeCityProjectLoader(path);
 
-        //CodeCityLoader loader = new CodeCityDefaultLoader();
+        CodeCityLoader loader = new CodeCityDefaultLoader();
 
         //CodeCityLoader loader = new CodeCitySocketLoader(25778);
         

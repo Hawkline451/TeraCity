@@ -65,6 +65,12 @@ public class ColoringMenuScreen extends CoreScreenLayer {
             	getManager().pushScreen("engine:gitMenuScreen");
             }
         });
+        WidgetUtil.trySubscribe(this, "mockColoring", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	getManager().pushScreen("engine:mockColoringMenuScreen");
+            }
+        });
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
