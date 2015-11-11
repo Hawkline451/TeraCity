@@ -1,6 +1,5 @@
 package processor;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,17 +14,15 @@ public class PMDProcessor {
 	private String rule;
 	private final String outPutType = "text";
 	private Map<String, Integer> counters;
-	private Metric metric;
-	private Map<String, String> result;
 	
 	public PMDProcessor(String rootPath, String rule) {
 		this.rootPath = rootPath;
 		this.rule = rule;
 		process();
 	}
-
-	public Map<String, String> getMap() {
-		return result;
+	
+	public Map<String, Integer> getCounterMap() {
+		return counters;
 	}
 	
 	private String buildInputString() {
@@ -69,7 +66,6 @@ public class PMDProcessor {
 		counters = new HashMap<String, Integer>();
 		String inputString = buildInputString();
 		invokePMD(inputString);
-		buildColoring();
 	}
 
 	private void invokePMD(String inputString) {
@@ -86,58 +82,24 @@ public class PMDProcessor {
 			{
 				if (line.indexOf(':') != -1) {	
 					try{
-					String pathClass = line.substring(0, line.lastIndexOf(".java")+5);
-					if (!counters.containsKey(pathClass)) counters.put(pathClass, 0);
-					counters.put(pathClass, counters.get(pathClass)+1);
-					}catch(IndexOutOfBoundsException e){}
+						// get filename only
+						String pathClass = line.substring(0, line.lastIndexOf(".java")+5);
+						System.out.print("pre: " + pathClass);
+						File fi = new File(pathClass);
+						pathClass = fi.getName();
+						System.out.println(", post: " + pathClass);
+						
+						if (!counters.containsKey(pathClass)) {
+							counters.put(pathClass, 0);
+						}
+						counters.put(pathClass, counters.get(pathClass)+1);
+						
+					} catch(IndexOutOfBoundsException e){}
 				}
 			}
 		}catch (IOException e) {
 			System.out.println("Error al llamar a comando pmd desde consola");
 		}
 	}
-
-
-	private void buildColoring() {
-		metric = processMetric();
-		result = new HashMap<String, String>();
-		
-		for (String classPath : counters.keySet())
-			result.put(classPath, metric.getColor(classPath));
-	}
-
-	private Metric processMetric() {
-		if (rule.equals("comments"))
-			return new CommentsCounterMetric(counters);
-		else if (rule.equals("commentcontent"))
-			return new CCCounterMetric(counters);
-		else if (rule.equals("commentrequired"))
-			return new CRCounterMetric(counters);
-		else if (rule.equals("commentsize"))
-			return new CSCounterMetric(counters);
-		
-		else if (rule.equals("codesize"))
-			return new CodesizeCounterMetric(counters);
-		else if (rule.equals("cyclomaticcomplexity"))
-			return new CycloCCounterMetric(counters);
-		else if (rule.equals("npathcomplexity"))
-			return new NPathCounterMetric(counters);
-		else if (rule.equals("toomanymethods"))
-			return new TMMCounterMetric(counters);
-		
-		else if (rule.equals("coupling"))
-			return new CouplingCounterMetric(counters);
-		else if (rule.equals("couplingbetweenobjects"))
-			return new CBOCounterMetric(counters);
-		else if (rule.equals("excessiveimports"))
-			return new EICounterMetric(counters);
-		else if (rule.equals("lawofdemeter"))
-			return new LODCounterMetric(counters);
-		
-		return new DefaultMetric();
-	}
 	
-	public static void main(String[] args) {
-		
-	}
 }

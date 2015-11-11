@@ -3,11 +3,14 @@ package coloring;
 import java.io.IOException;
 import java.util.HashMap;
 
+import coloring.metric.CountColoringMetric;
+import coloring.metric.IColoringMetric;
+import coloring.metric.NullColoringMetric;
 import metrics.Metric;
 import utility.DataColour;
 
 public class CheckStyleColoring extends AbstractColoring{
-	HashMap<String, DataColour> data;
+	HashMap<String, DataColour> datamap;
 
 	@Override
 	public void getDataColoring() throws IOException{
@@ -18,19 +21,21 @@ public class CheckStyleColoring extends AbstractColoring{
 		Metric metric = Metric.createMetric(metricString, max, null);
 		metric.execute(path);
 		try {
-			data = metric.getData();
+			datamap = metric.getData();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-//
-//	String def = System.getProperty("user.dir");
-//	def = def.substring(0, def.lastIndexOf("\\"));
 	@Override
-	public String getColor(String path) {
-		DataColour dc = data.get(path);
-		if (dc == null) return "Coloring:verde";
-		return dc.getColor();
+	public IColoringMetric getMetric(String path) {
+		
+		DataColour item = datamap.get(path);
+		double nProblems;
+		if (item == null || (nProblems = item.getMetricValue()) < 0 ) {
+			return new NullColoringMetric();
+		}
+		// at most 5 
+		return new CountColoringMetric(Math.ceil(nProblems), 5);
 	}
 }

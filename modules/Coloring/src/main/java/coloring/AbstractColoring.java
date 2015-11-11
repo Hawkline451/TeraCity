@@ -19,13 +19,13 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
+import coloring.metric.IColoringMetric;
 import coloringCommands.ColoringCommands;
 import coloringCommands.PlaceBlockCommand;
 
 public abstract class AbstractColoring implements IColoring, Runnable{
 	String[] params;
-	
-	
+		
 	public ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
@@ -58,16 +58,16 @@ public abstract class AbstractColoring implements IColoring, Runnable{
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
-//			System.out.print("clase: |" + path + "| : ");
-//			System.out.println(pbc.ColorBuild(path, getColor(path)));
-			pbc.ColorBuild(path, getColor(path));
+			IColoringMetric class_metric = getMetric(path); 
+			pbc.ColorBuild(path, class_metric.getColor());
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}
 
 	@Override
-	public abstract String getColor(String path);
+	public abstract IColoringMetric getMetric(String path);
 	
+	@Override
 	public abstract void getDataColoring()  throws IOException;
 	
 	@Override

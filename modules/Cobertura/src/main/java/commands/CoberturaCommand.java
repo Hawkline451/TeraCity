@@ -64,23 +64,15 @@ public class CoberturaCommand extends BaseComponentSystem{
     	return ret;
     }
     
-    public static String getColor(String classpath){
-    	File fi = new File(classpath);
-    	DataNode d = classData.get(fi.getName());
-    	String color = "IDK";
-    	if (d == null){ color = "Coloring:notfound"; return color;}
+    public static double getMetricValue(String classpath){
     	
-    	double metric = d.getLineRate();
-    	if (metric < 0){ color = "Core:stone"; }
-    	else if (metric == 0){ color = "Coloring:morado"; }
-    	else if (metric <= 0.2){ color ="Coloring:rojo"; }
-    	else if (metric <= 0.4){ color ="Coloring:naranjo"; }
-    	else if (metric <= 0.6){ color ="Coloring:amarillo"; }
-    	else if (metric <= 0.8){ color ="Coloring:lime"; }
-    	else if (metric < 1){ color ="Coloring:verde"; }
-    	else if (metric == 1){ color = "Coloring:azul"; }
-    	else { color ="Core:stone"; }
-    	return color;
+    	File fi = new File(classpath);
+    	DataNode data = classData.get(fi.getName());
+    	
+    	if (data == null) {
+    		return -1;
+    	}
+    	return data.getLineRate();
     }
     
 }

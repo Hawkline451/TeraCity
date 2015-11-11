@@ -1,35 +1,39 @@
 package coloring;
 
-import java.io.File;
 import java.util.Hashtable;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.registry.CoreRegistry;
 
-
-
-
+import coloring.metric.CountColoringMetric;
+import coloring.metric.IColoringMetric;
+import coloring.metric.NullColoringMetric;
+import coloring.metric.RateColoringMetric;
 import gitMetrics.GitMetric;
 
-public class GitColoring extends AbstractColoring{
+public class GitColoring extends AbstractColoring {
 	Hashtable<String, Integer> data;
-	GitMetric metric;
+	GitMetric metricType;
 
 	@Override
-	public String getColor(String path) {
-		System.out.println(path);
-		Integer classData = data.get(path);
-		if (classData==null) return "yellow";
-		if (metric.toString() == "bug") {
-			if (classData == 1) return "red";
-			return "green";
+	public IColoringMetric getMetric(String path) {
+		
+		Integer problems = data.get(path);
+		if (problems == null) { return new NullColoringMetric(); }
+		
+		if (metricType.toString() == "bug") {
+			if (problems > 0) {
+				return new RateColoringMetric(RateColoringMetric.WORST_RATE);
+			}
+			return new RateColoringMetric(RateColoringMetric.BEST_RATE);
+			
+		} else if (metricType.toString() == "version") {
+			// we don't mind getting 50 or more errors
+			return new CountColoringMetric(problems.intValue(), 50);
 		}
-		else if (metric.toString() == "version") {
-			if (classData > 50) return "red";
-			else if (classData > 20) return "yellow";
-			else return "green";
-		}
-		return "normal";
+		
+		// invalid metric by default
+		return new NullColoringMetric();
 	}
 
 	@Override
@@ -39,9 +43,10 @@ public class GitColoring extends AbstractColoring{
 		String projectName = params[2];
 		String output = "modules/GitHub/tempRepo/";
 		
-		metric = new GitMetric(metricString, url, projectName, output, null);
-		metric.execute();
-		metric.setData();
-		data = metric.getData();
+		metricType = new GitMetric(metricString, url, projectName, output, null);
+		metricType.execute();
+		metricType.setData();
+		data = metricType.getData();
 	}
+
 }
