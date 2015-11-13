@@ -217,8 +217,8 @@ public class TerasologyEngine implements GameEngine {
         } else {
             config = new Config();
         }
-        if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
-            config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
+        if (!config.getDefaultModSelection().hasModule(TerasologyConstants.TERACITY_GAMEPLAY_MODULE)) {
+            config.getDefaultModSelection().addModule(TerasologyConstants.TERACITY_GAMEPLAY_MODULE);
         }
 
         if (!validateServerIdentity()) {

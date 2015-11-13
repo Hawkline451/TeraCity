@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.terasology.config.Config;
 import org.terasology.crashreporter.CrashReporter;
+import org.terasology.engine.modes.StateInitTeracity;
 import org.terasology.engine.modes.StateLoading;
 import org.terasology.engine.modes.StateMainMenu;
 import org.terasology.engine.paths.PathManager;
@@ -149,7 +150,7 @@ public final class Terasology {
                 }
 
                 SplashScreen.getInstance().close();
-                engine.run(new StateMainMenu());
+                engine.run(new StateInitTeracity());
             }
         } catch (Throwable e) {
             // also catch Errors such as UnsatisfiedLink, NoSuchMethodError, etc.

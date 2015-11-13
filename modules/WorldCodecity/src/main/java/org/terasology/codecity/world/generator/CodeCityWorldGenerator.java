@@ -52,7 +52,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
         super.initialize();
         
-        storeCodeRepresentation(code);
+       // storeCodeRepresentation(code);
     }
 
     private void storeCodeRepresentation(CodeRepresentation code) {
