@@ -15,5 +15,9 @@ public class NullCodeRepresentation extends CodeRepresentation {
 	@Override
 	public void accept(CodeVisitor visitor) {		
 	}
-	
+
+	@Override
+	public int size() {
+		return 0;
+	}
 }
