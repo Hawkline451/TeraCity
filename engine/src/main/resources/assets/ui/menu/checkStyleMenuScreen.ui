@@ -75,6 +75,11 @@
                         "type" : "UIButton",
                         "id" : "dataAbstractionCoupling",
                         "text" : "Abstract Coupling"
+                    },
+                    {
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
                     }
                 ]
             },
@@ -84,10 +89,10 @@
                 "verticalSpacing" : 8,
                 "horizontalSpacing" : 8,
                 "columns": 2,
-                "family" : "menu-options",
+                "family" : "option-grid",
                 "layoutInfo" : {
                     "width" : 400,
-                    "height" : 80,
+                    "height" : 100,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target": "BOTTOM",
@@ -96,22 +101,30 @@
                     }
                 },
                 "contents" : [
-                	{
-                		"type" : "UILabel",
-                		"text" : "Valor máximo\n(dejar vacío para default): "
-                	},
-                	{
-                		"type" : "UIText",
-                		"id" : "maxValue"
-                	},
-                	{
-                		"type" : "UILabel",
-                		"text" : "Ruta Proyecto\n(dejar vacío para default): "
-                	},
-                	{
-                		"type" : "UIText",
-                		"id" : "pathProject"
-                	}
+                    {
+                        "type" : "UILabel",
+                        "text" : "Max value \n(empty means default): "
+                    },
+                    {
+                        "type" : "UIText",
+                        "id" : "maxValue"
+                    },
+                    {
+                        "type" : "UILabel",
+                        "text" : "Ruta Proyecto\n(empty means default): "
+                    },
+                    {
+                        "type" : "UIText",
+                        "id" : "pathProject"
+                    },
+                    {
+                        "type": "UILabel",
+                        "text": "Face to paint: "
+                    },
+                    {
+                        "type": "UIDropdown",
+                        "id": "faceToPaint"
+                    }
                 ]
             },
             {

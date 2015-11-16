@@ -9,7 +9,6 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.registry.CoreRegistry;
-
 import com.google.common.util.concurrent.ListenableFuture;
 
 import coloring.AbstractColoring;
@@ -30,7 +29,7 @@ import coloring.modules.*;
 public class ColoringCommands extends BaseComponentSystem{
 	
 	public static String STATE = "Awaiting analisys";
-	
+
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
             		+ "sobre los archivos especificados\n"
@@ -45,48 +44,65 @@ public class ColoringCommands extends BaseComponentSystem{
                     + "no se usa para los otros dos tipos.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCobertura(
-    		@CommandParam(value="type",required=true) String type,
-            @CommandParam(value="firstArg",required=true) String firstArg,
+    		@CommandParam(value="face"     ,required=true) String face,
+    		@CommandParam(value="type"     ,required=true) String type,
+            @CommandParam(value="firstArg" ,required=true) String firstArg,
             @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
-		CoberturaColoring cob = new CoberturaColoring();
+		
 		String[] pars = new String[3];
 		pars[0] = type;
 		pars[1] = firstArg;
 		pars[2] = secondArg;
-		cob.execute(pars);
+		
+		IColoring coloring = new CoberturaColoring();
+		coloring.setFaceToPaint(face);
+		coloring.execute(pars);
 		return "Loading ...";
     }
 	
 	@Command(shortDescription = "Coloreo usando CheckStyle",
             helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String paintWithCheckStyle(@CommandParam("Ruta") String path,
-    		@CommandParam("Metrica") String metric, @CommandParam("Valor Maximo") String max) {
+    public String paintWithCheckStyle(
+    		@CommandParam("Ruta")         String path,
+    		@CommandParam("Metrica")      String metric,
+    		@CommandParam("Valor Maximo") String max,
+    		@CommandParam(value="face"  , required=true) String face) 
+	{	
 		if (path.equals("default")) path = "./";
 		String[] params = {path, metric, max};
-    	IColoring c = new CheckStyleColoring();
-    	c.execute(params);
+    	IColoring coloring = new CheckStyleColoring();
+    	coloring.setFaceToPaint(face);
+    	coloring.execute(params);
     	return "";
     }
 	@Command(shortDescription = "Coloreo usando Git",
             helpText = "Ejecuta coloreo usando Git\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String paintWithGit(@CommandParam("metric") String metric,
-    		@CommandParam("url") String url, @CommandParam("Project Name") String projectName) {
+    public String paintWithGit(
+    		@CommandParam("metric") String metric,
+    		@CommandParam("url") String url,
+    		@CommandParam("Project Name") String projectName,
+    		@CommandParam(value="face"  , required=true) String face) {
 		
 		String[] params = {metric, url, projectName};
-    	IColoring c = new GitColoring();
-    	c.execute(params);
+    	IColoring coloring = new GitColoring();
+    	coloring.setFaceToPaint(face);
+    	coloring.execute(params);
     	return "";
     }
 	
 	@Command(shortDescription = "Coloreo usando PMD",
             helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String paintWithPMD(@CommandParam(value = "rule",required = true) String rule) {
+    public String paintWithPMD(
+    		@CommandParam(value="rule", required = true) String rule,
+    		@CommandParam(value="face", required=true)   String face) {
+		
 		String[] params = {rule};
-    	IColoring c = new PMDColoring();
-    	c.execute(params);
+    	IColoring coloring = new PMDColoring();
+    	coloring.setFaceToPaint(face);
+    	coloring.execute(params);
     	return "";
     }
 	
@@ -94,18 +110,21 @@ public class ColoringCommands extends BaseComponentSystem{
 			helpText = "Mock coloring based on MockColoring\n",
 			requiredPermission = PermissionManager.NO_PERMISSION)
 	public String paintWithMockColoring(
-			@CommandParam(value="metric", required=true) String metric) {
+			@CommandParam(value="metric", required=true) String metric,
+			@CommandParam(value="face"  , required=true) String face){
 		
 		String[] params = new String[1];
 		params[0] = metric;
 		IColoring coloring = new MockColoring();
+		coloring.setFaceToPaint(face);
 		coloring.execute(params);
 		return "";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Command(shortDescription = "Aplica el coloreo",
-            requiredPermission = PermissionManager.NO_PERMISSION)
-    public String applyColoring() {
+			requiredPermission = PermissionManager.NO_PERMISSION)
+	public String applyColoring() {
 		ListenableFuture<AbstractColoring> listeneableFuture = CoreRegistry.get(ListenableFuture.class);
 		if (listeneableFuture == null || !listeneableFuture.isDone()) return "Analisis no terminado";
 		try {

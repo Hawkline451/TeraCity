@@ -34,7 +34,11 @@ import org.terasology.rendering.nui.asset.UIData;
 import org.terasology.rendering.nui.asset.UIElement;
 import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UIDropdown;
+import org.terasology.rendering.nui.widgets.UILabel;
 import org.terasology.rendering.nui.widgets.UIText;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Immortius
@@ -47,6 +51,7 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
     private Console console;
     
     @Override
+    @SuppressWarnings("unchecked")
     public void initialise() {
         CoreScreenLayer inputScreen = new InputSettingsScreen();
         inputScreen.setSkin(getSkin());
@@ -54,20 +59,32 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
         final UIText testClass = find("testClasses", UIText.class);
         final UIText testedClass = find("testedClasses", UIText.class);
-        final UIText sourceFolder = find("sourceFolder", UIText.class);
+        final UIText sourceFolder = find("singleFolder", UIText.class);
         final UIText xmlReport = find("xmlReport", UIText.class);
+        
+        UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
+        if (faceToPaint != null) {
+            faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
+        }
+        
+        // displays info to the user: warnings, errors, ...
+        final UILabel infoField = find("infoField", UILabel.class);
         
         WidgetUtil.trySubscribe(this, "analizar1", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
+            	
             	// Analisis Tipo 1 (Dos Carpetas)
             	String testee = testedClass.getText();
             	String tests = testClass.getText();
+            	
             	List<String> params = new ArrayList<String>();
             	params.add("-s");
             	params.add(testee);
             	params.add(tests);
-            	executeCob(params);
+            	
+            	FaceToPaint face = faceToPaint.getSelection();
+            	executeCommand(params, face);
            }
         });
         WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
@@ -75,9 +92,13 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             public void onActivated(UIWidget widget) {
             	// Analisis Tipo 2 (Una Carpeta)
             	String source = sourceFolder.getText();
+            	
             	List<String> params = new ArrayList<String>();
-            	params.add("-t"); params.add(source);
-            	executeCob(params);
+            	params.add("-t");
+            	params.add(source);
+            	
+            	FaceToPaint face = faceToPaint.getSelection();
+            	executeCommand(params, face);
            }
         });
         
@@ -86,28 +107,45 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             public void onActivated(UIWidget widget) {
             	// Analisis Tipo 3 (Reporte)
             	String report = xmlReport.getText();
+            	
             	List<String> params = new ArrayList<String>();
-            	params.add("-r"); params.add(report);
-            	executeCob(params);
+            	params.add("-r");
+            	params.add(report);
+            	
+            	FaceToPaint face = faceToPaint.getSelection();
+            	executeCommand(params, face);
            }
         });
         
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
-                getManager().popScreen();
+            	infoField.setText("");
+            	getManager().popScreen();
             }
         });
         
     }
-    private void executeCob(List<String> pars){
+    private void executeCommand(List<String> params, FaceToPaint face){
+    	
+    	// manage invalid face selections
+    	final UILabel infoField = find("infoField", UILabel.class);
+    	if (face == null) {
+    		infoField.setText("waning: please choose a face to paint!");
+    		return;
+    	}
+    	infoField.setText("");
+    	
+    	ArrayList<String> cparams = new ArrayList<String>();
+    	cparams.add(face.toString());
+    	cparams.addAll(params);
+    	
+    	// send paint command
     	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
     	EntityRef e = null;
     	try {
-    		ca.execute(pars, e);
-    		System.out.println("\n C: \n");
-    	} catch (Exception e1) {
-    		System.out.println("\n Falla paintWithCobertura :C \n");
+    		ca.execute(cparams, e);
+    	} catch (CommandExecutionException e1) {
     	}
     }
     @Override

@@ -59,7 +59,39 @@
                         "type" : "UIButton",
                         "id"   : "goodMetric",
                         "text" : "Good values"
-                    }                    
+                    },
+                    {
+                        "type" : "columnLayout",
+                        "verticalSpacing" : 8,
+                        "horizontalSpacing" : 8,
+                        "columns": 2,
+                        "family" : "option-grid",
+                        "layoutInfo" : {
+                            "width" : 400,
+                            "height" : 80,
+                            "position-horizontal-center" : {},
+                            "position-top" : {
+                                "target": "BOTTOM",
+                                "offset": 20,
+                                "widget" : "subtitle"
+                            }
+                        },
+                        "contents" : [
+                            {
+                                "type": "UILabel",
+                                "text": "Face to paint: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "faceToPaint"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
+                    }
                 ]
             },
             {
