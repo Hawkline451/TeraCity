@@ -18,7 +18,7 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
-import org.terasology.rendering.nui.layers.mainMenu.FaceToPaint;
+import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;

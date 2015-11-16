@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.rendering.nui.layers.mainMenu;
+package org.terasology.rendering.nui.layers.ingame.coloring;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
-import org.terasology.config.Config;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.ConsoleCommand;
@@ -40,26 +40,27 @@ import org.terasology.rendering.nui.widgets.UIText;
 
 import com.google.common.collect.Lists;
 
-public class CheckStyleMenuScreen extends CoreScreenLayer {
+/**
+ * @author Immortius
+ */
+public class CoberturaMenuScreen extends CoreScreenLayer {
 
     private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
 
     @In
-    private Config config;
-    
-    @In
     private Console console;
-
+    
+    @Override
     @SuppressWarnings("unchecked")
-	@Override
     public void initialise() {
         CoreScreenLayer inputScreen = new InputSettingsScreen();
         inputScreen.setSkin(getSkin());
         UIData inputScreenData = new UIData(inputScreen);
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        
-        final UIText maxValue = find("maxValue", UIText.class);
-        final UIText pathProject = find("pathProject", UIText.class);
+        final UIText testClass = find("testClasses", UIText.class);
+        final UIText testedClass = find("testedClasses", UIText.class);
+        final UIText sourceFolder = find("singleFolder", UIText.class);
+        final UIText xmlReport = find("xmlReport", UIText.class);
         
         UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
@@ -69,57 +70,63 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
         // displays info to the user: warnings, errors, ...
         final UILabel infoField = find("infoField", UILabel.class);
         
-        WidgetUtil.trySubscribe(this, "ciclomatica", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "analizar1", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	
-            	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(maxValue, pathProject, "-c", face);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "booleana", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 1 (Dos Carpetas)
+            	String testee = testedClass.getText();
+            	String tests = testClass.getText();
+            	
+            	List<String> params = new ArrayList<String>();
+            	params.add("-s");
+            	params.add(testee);
+            	params.add(tests);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(maxValue, pathProject,  "-b", face);
-            }
+            	executeCommand(params, face);
+           }
         });
-        WidgetUtil.trySubscribe(this, "fanOut", new ActivateEventListener() {
+        WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 2 (Una Carpeta)
+            	String source = sourceFolder.getText();
+            	
+            	List<String> params = new ArrayList<String>();
+            	params.add("-t");
+            	params.add(source);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(maxValue, pathProject,  "-f", face);
-            }
+            	executeCommand(params, face);
+           }
         });
-        WidgetUtil.trySubscribe(this, "nPath", new ActivateEventListener() {
+        
+        WidgetUtil.trySubscribe(this, "analizar3", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
+            	// Analisis Tipo 3 (Reporte)
+            	String report = xmlReport.getText();
+            	
+            	List<String> params = new ArrayList<String>();
+            	params.add("-r");
+            	params.add(report);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(maxValue, pathProject,  "-n", face);
-            }
+            	executeCommand(params, face);
+           }
         });
-        WidgetUtil.trySubscribe(this, "dataAbstractionCoupling", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	
-            	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(maxValue, pathProject, "-d", face);
-            }
-        });
+        
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
             	infoField.setText("");
-                config.save();
-                getManager().popScreen();
+            	getManager().popScreen();
             }
         });
+        
     }
-    
-    private void executeCommand(UIText maxValueWindow, UIText pathWindow, String metric, FaceToPaint face) {
+    private void executeCommand(List<String> params, FaceToPaint face){
     	
     	// manage invalid face selections
     	final UILabel infoField = find("infoField", UILabel.class);
@@ -129,40 +136,18 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
     	}
     	infoField.setText("");
     	
+    	ArrayList<String> cparams = new ArrayList<String>();
+    	cparams.add(face.toString());
+    	cparams.addAll(params);
+    	
     	// send paint command
-    	ConsoleCommand ca = console.getCommand(new Name("paintWithCheckStyle"));
-    	String maxValue = maxValueWindow.getText();
-    	String path = pathWindow.getText();
-    	ArrayList<String> params = new ArrayList<String>();
-    	if (path.equals("")) params.add("default");
-    	else params.add(path);
-    	if (metric.equals("-c")) {
-    		params.add("-c");
-        	params.add("10");
-    	} else if (metric.equals("-b")) {
-    		params.add("-b");
-        	params.add("3");
-    	} else if (metric.equals("-f")) {
-        	params.add("-f");
-        	params.add("20");
-    	} else if (metric.equals("-n")) { 
-        	params.add("-n");
-        	params.add("200");
-    	} else {
-    		params.add("-d");
-        	params.add("7");
-    	}
-    	if (!maxValue.equals("")) {
-    		params.set(2, maxValue);
-    	}
-    	params.add(face.toString());
+    	ConsoleCommand ca = console.getCommand(new Name("paintWithCobertura"));
     	EntityRef e = null;
     	try {
-			ca.execute(params, e);
-		} catch (CommandExecutionException e1) {
-		}
+    		ca.execute(cparams, e);
+    	} catch (CommandExecutionException e1) {
+    	}
     }
-
     @Override
     public boolean isLowerLayerVisible() {
         return false;

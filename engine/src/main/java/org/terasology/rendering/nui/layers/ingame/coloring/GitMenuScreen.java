@@ -1,4 +1,4 @@
-package org.terasology.rendering.nui.layers.mainMenu;
+package org.terasology.rendering.nui.layers.ingame.coloring;
 
 import java.util.ArrayList;
 

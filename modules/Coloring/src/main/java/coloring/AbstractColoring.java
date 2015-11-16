@@ -11,7 +11,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.rendering.nui.layers.mainMenu.FaceToPaint;
+import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.world.WorldProvider;
 
 import com.google.common.util.concurrent.FutureCallback;
