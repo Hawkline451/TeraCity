@@ -15,5 +15,11 @@ public class NullCodeRepresentation extends CodeRepresentation {
 	@Override
 	public void accept(CodeVisitor visitor) {		
 	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }
