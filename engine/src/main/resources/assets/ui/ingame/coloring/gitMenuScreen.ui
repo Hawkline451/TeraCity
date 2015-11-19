@@ -1,5 +1,5 @@
 {
-    "type" : "engine:MockColoringMenuScreen",
+    "type" : "engine:GitMenuScreen",
     "skin" : "mainmenu",
     "contents" : {
         "type" : "relativeLayout",
@@ -20,7 +20,7 @@
             },
             {
                 "type" : "UILabel",
-                "text" : "MockColoring metrics",
+                "text" : "Metricas de GitHub",
                 "family" : "title",
                 "id" : "subtitle",
                 "layoutInfo" : {
@@ -35,7 +35,7 @@
             {
                 "type" : "columnLayout",
                 "verticalSpacing" : 8,
-                "family" : "menu-options",
+                "family" : "subtitle",
                 "layoutInfo" : {
                     "width" : 280,
                     "height" : 288,
@@ -52,14 +52,46 @@
                 "contents" : [
                     {
                         "type" : "UIButton",
-                        "id"   : "randomMetric",
-                        "text" : "Random values"
+                        "id" : "bugs",
+                        "text" : "Bugs Metrics"
                     },
                     {
                         "type" : "UIButton",
-                        "id"   : "goodMetric",
-                        "text" : "Good values"
-                    }                    
+                        "id" : "versions",
+                        "text" : "Version Metrics"
+                    },
+                    {
+                        "type" : "columnLayout",
+                        "verticalSpacing" : 8,
+                        "horizontalSpacing" : 8,
+                        "columns": 2,
+                        "family" : "option-grid",
+                        "layoutInfo" : {
+                            "width" : 400,
+                            "height" : 80,
+                            "position-horizontal-center" : {},
+                            "position-top" : {
+                                "target": "BOTTOM",
+                                "offset": 20,
+                                "widget" : "subtitle"
+                            }
+                        },
+                        "contents" : [
+                            {
+                                "type": "UILabel",
+                                "text": "Face to paint: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "faceToPaint"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
+                    }     
                 ]
             },
             {

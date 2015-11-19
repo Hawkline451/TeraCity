@@ -11,6 +11,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.world.WorldProvider;
 
 import com.google.common.util.concurrent.FutureCallback;
@@ -26,7 +27,12 @@ import coloring.commands.PlaceBlockCommand;
 public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	protected String[] params;
-		
+	private String faceToPaint = FaceToPaint.ALL.toString();	
+	
+	public void setFaceToPaint(String face) {
+		this.faceToPaint = face;
+	}
+	
 	public ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
@@ -56,6 +62,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	@Override
 	public void executeColoring() {
+		System.out.println("Painting face: " + faceToPaint);
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
@@ -64,7 +71,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 			int damage = (int)((maxHealth - 1)*(1.0 - classMetric.getValue()));
 			damage = Math.min((maxHealth-1), damage);
 			
-			pbc.ColorBuildCommon(path, classMetric.getColor(), damage, maxHealth);
+			pbc.ColorBuildCommon(path, classMetric.getColor(), faceToPaint, damage, maxHealth);
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}

@@ -14,4 +14,6 @@ public interface IColoring{
 	
 	public void execute(String[] params);
 	
+	public void setFaceToPaint(String face);
+	
 }
