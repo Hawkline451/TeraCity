@@ -45,4 +45,9 @@ public interface DrawableCode {
      */
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory);
     
+    /**
+     * @param className the class name
+     * @return whether the class is contained 
+     */
+    public boolean containsClass(String className);
 }

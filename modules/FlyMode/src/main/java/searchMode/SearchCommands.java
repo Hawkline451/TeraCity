@@ -25,8 +25,7 @@ import org.terasology.registry.In;
  * @author mrgcl
  */
 @RegisterSystem
-public class SearchCommands extends BaseComponentSystem{
-	
+public class SearchCommands extends BaseComponentSystem{	
 	@In
 	private Console console;
 	@In
@@ -39,42 +38,34 @@ public class SearchCommands extends BaseComponentSystem{
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
-    public String search(@CommandParam("className") String className) {
+    public String search(@CommandParam(value="className", required=true)  String className) {
+		console.addMessage("Starting search...");
 		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		List<MapObject> possibleResults = searchForClassName(codeMap.getMapObjects(), className);
+		List<MapObject> possibleResults = new ArrayList<>();
+		Set<MapObject> mapObjects = codeMap.getMapObjects();
+		int i = 0;
+		for(MapObject object : mapObjects){
+			//TODO: BUG! 440 objects iguales.
+			if(object.containsClass(className)){
+				possibleResults.add(object);
+				break;
+			}			
+			i++;
+		}
 		String message = "Class not found.";
 		if(possibleResults.size() == 1){
 			MapObject result = possibleResults.get(0);
 			EntityRef character = getLocalCharacterEntity();
 			CodeScale codeScale = CoreRegistry.get(CodeScale.class);
 			CodeMapFactory codeMapFactory = CoreRegistry.get(CodeMapFactory.class);
-			playerSystem.teleportCommand(character, result.getPositionX(), result.getHeight(codeScale, codeMapFactory), result.getPositionZ());
+			//playerSystem.teleportCommand(character, result.getPositionX(), result.getHeight(codeScale, codeMapFactory), result.getPositionZ());
 			message = "Class found, teleporting!";
 		}
 		else if(possibleResults.size() > 1){
 			message = "Too many results, try refining your search.";
 		}
-		console.addMessage(message);
         return message;
     }
-	
-	/**
-	 * Searches for all MapObjects which start with the given className.
-	 * 
-	 * @param allObjects the set with all the MapObjects.
-	 * @param className the search query.
-	 * @return a subset of allObjects which may meet the query.
-	 */
-	private List<MapObject> searchForClassName(Set<MapObject> allObjects, String className){
-		List<MapObject> possibleResults = new ArrayList<MapObject>();
-		for(MapObject object : allObjects){
-			String objectClass = object.getObject().getBase().getName().toLowerCase();
-			if(objectClass.startsWith(className.toLowerCase())){
-				possibleResults.add(object);
-			}
-		}
-		return possibleResults;		
-	}
 	
 	/**
 	 * Get the current local client entity.

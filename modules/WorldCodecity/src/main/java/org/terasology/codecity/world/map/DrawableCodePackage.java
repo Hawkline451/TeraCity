@@ -64,4 +64,12 @@ public class DrawableCodePackage implements DrawableCode {
 	public int getWidth(CodeScale scale, CodeMapFactory factory) {
 		return 1;
 	}
+
+	@Override
+	public boolean containsClass(String className) {
+		for(DrawableCode code : contentList){
+			if(code.containsClass(className)) return true;
+		}
+		return false;
+	}
 }

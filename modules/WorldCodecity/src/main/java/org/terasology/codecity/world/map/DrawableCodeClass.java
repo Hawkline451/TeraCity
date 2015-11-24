@@ -43,4 +43,9 @@ public class DrawableCodeClass implements DrawableCode {
 	public int getWidth(CodeScale scale, CodeMapFactory factory) {
 		return scale.getScaledSize(base.getVariableNumber(),1);
 	}
+
+	@Override
+	public boolean containsClass(String className) {
+		return base.getName().equals(className);
+	}
 }

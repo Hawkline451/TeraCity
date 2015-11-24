@@ -78,4 +78,13 @@ public class MapObject implements IMapObject {
     public boolean isOrigin() {
         return isOrigin;
     }
+    
+    /**
+     * Returns true if this map object contains the class searched for.
+     * @param className the name of the class.
+     * @return whether the class is contained in this object.
+     */
+    public boolean containsClass(String className){
+    	return object.containsClass(className);
+    }
 }

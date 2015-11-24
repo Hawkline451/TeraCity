@@ -30,4 +30,9 @@ public class NullDrawableCode implements DrawableCode {
 		return 0;
 	}
 
+	@Override
+	public boolean containsClass(String className) {
+		return false;
+	}
+
 }
