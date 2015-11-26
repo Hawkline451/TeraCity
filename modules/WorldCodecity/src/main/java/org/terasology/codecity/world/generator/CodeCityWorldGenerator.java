@@ -15,6 +15,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
+import org.terasology.engine.paths.PathSingleton;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
@@ -26,6 +27,7 @@ import org.terasology.world.generator.RegisterWorldGenerator;
 @RegisterWorldGenerator(id = "codecity", displayName = "CodeCity", description = "Generates the world using a CodeCity structure")
 public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     private final CodeScale cScale = new SquareRootCodeScale();
+    private String path = "";
 
     public CodeCityWorldGenerator(SimpleUri uri) {
         super(uri);
@@ -33,16 +35,15 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize() {
-        
-        //Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
-    	String path = "C:"+File.separator+"DCC"+File.separator+"Primavera15"+File.separator+"Ingenieria"+File.separator+"TeraCity"+File.separator+"modules"+File.separator+"GitHub";
-        //CodeCityLoader loader = CodeCityLoaderManager.getLoader(path);
-        
-    	CodeCityLoader loader = new CodeCityProjectLoader(path);
 
-        //CodeCityLoader loader = new CodeCityDefaultLoader();
-
-        //CodeCityLoader loader = new CodeCitySocketLoader(25778);
+        this.path = PathSingleton.getInstance("").getPath();
+    	
+    	CodeCityLoader loader;
+        
+    	if (this.path != "")
+    		loader = new CodeCityProjectLoader(this.path);
+    	else
+    		loader = new CodeCityDefaultLoader();
         
         CodeRepresentation code = loader.loadCodeRepresentation();
 

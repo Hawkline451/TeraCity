@@ -83,7 +83,7 @@ public class StateInitTeracity implements GameState {
 	private void createGame() {
 		GameManifest gameManifest = new GameManifest();
 		Config config = CoreRegistry.get(Config.class);
-		Preset videoPreset = Preset.EPIC;
+		Preset videoPreset = Preset.MINIMAL;
 		videoPreset.apply(config.getRendering());
 		ModuleManager moduleManager = CoreRegistry.get(ModuleManager.class);
 		for (Name moduleName : config.getDefaultModSelection().listModules()) {

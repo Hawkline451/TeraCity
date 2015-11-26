@@ -25,12 +25,14 @@ import java.util.List;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
 import org.terasology.config.Config;
 import org.terasology.crashreporter.CrashReporter;
 import org.terasology.engine.modes.StateInitTeracity;
 import org.terasology.engine.modes.StateLoading;
 import org.terasology.engine.modes.StateMainMenu;
 import org.terasology.engine.paths.PathManager;
+import org.terasology.engine.paths.PathSingleton;
 import org.terasology.engine.splash.SplashScreen;
 import org.terasology.engine.subsystem.EngineSubsystem;
 import org.terasology.engine.subsystem.headless.HeadlessAudio;
@@ -114,6 +116,11 @@ public final class Terasology {
         //
         // as JVM argument (not program argument!)
 
+    	if (args.length == 1){
+    		String path = args[0];
+    		PathSingleton.getInstance(path);
+    	}
+    	
         SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
 
         handlePrintUsageRequest(args);
