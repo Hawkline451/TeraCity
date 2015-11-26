@@ -16,6 +16,7 @@
 
 package org.terasology.weatherManager.clouds;
 
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -31,7 +32,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 public class CloudRasterizer implements WorldRasterizerPlugin {
 
     @In
-    BlockManager blockManager;
+    BlockManager blockManager = CoreRegistry.get(BlockManager.class);
 
     private Block cloudBlock;
 
@@ -72,12 +73,12 @@ public class CloudRasterizer implements WorldRasterizerPlugin {
      */
     public Block getBlock(boolean isClouded, Block oldBlock) {
 
-        if (isClouded && oldBlock.equals(blockManager.getBlock(BlockManager.AIR_ID))) {
+        if (isClouded && oldBlock.equals(blockManager.getBlock("engine:air"))) {
             return cloudBlock;
         }
 
         if (!isClouded && oldBlock.equals(cloudBlock)) {
-            return blockManager.getBlock(BlockManager.AIR_ID);
+            return blockManager.getBlock("engine:air");
         }
 
         return oldBlock;
