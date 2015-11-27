@@ -32,11 +32,6 @@
                     },
                     {
                         "type" : "UIButton",
-                        "id" : "mainMenu",
-                        "text" : "Return to Menu"
-                    },
-                    {
-                        "type" : "UIButton",
                         "id" : "fullscreen",
                         "text" : "FullScreen"
                     },
