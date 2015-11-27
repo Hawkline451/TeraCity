@@ -62,7 +62,7 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         final UIText sourceFolder = find("singleFolder", UIText.class);
         final UIText xmlReport = find("xmlReport", UIText.class);
         
-        UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
+        final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }

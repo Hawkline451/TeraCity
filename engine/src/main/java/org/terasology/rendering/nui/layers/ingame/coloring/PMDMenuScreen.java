@@ -58,7 +58,7 @@ public class PMDMenuScreen extends CoreScreenLayer {
         Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
         
         
-        UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
+        final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }

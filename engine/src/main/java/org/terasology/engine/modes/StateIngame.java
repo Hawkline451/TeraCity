@@ -120,11 +120,12 @@ public class StateIngame implements GameState {
             logger.info("Shutting down Oculus SDK...");
             TeraOVR.clear();
         }
-
-        boolean save = networkSystem.getMode().isAuthority();
-        if (save) {
-            storageManager.waitForCompletionOfPreviousSaveAndStartSaving();
-        }
+        
+        // We don't want to save the game in TeraCity
+        // boolean save = networkSystem.getMode().isAuthority();
+        // if (save) {
+        //     storageManager.waitForCompletionOfPreviousSaveAndStartSaving();
+        // }
 
         networkSystem.shutdown();
         // TODO: Shutdown background threads

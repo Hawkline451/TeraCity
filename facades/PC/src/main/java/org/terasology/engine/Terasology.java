@@ -144,18 +144,6 @@ public final class Terasology {
                 engine.subscribeToStateChange(new HeadlessStateChangeListener());
                 engine.run(new StateHeadlessSetup());
             } else {
-                if (loadLastGame) {
-                    engine.submitTask("loadGame", new Runnable() {
-                        @Override
-                        public void run() {
-                            GameManifest gameManifest = getLatestGameManifest();
-                            if (gameManifest != null) {
-                                engine.changeState(new StateLoading(gameManifest, NetworkMode.NONE));
-                            }
-                        }
-                    });
-                }
-
                 SplashScreen.getInstance().close();
                 engine.run(new StateInitTeracity());
             }

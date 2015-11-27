@@ -62,7 +62,7 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
         final UIText maxValue = find("maxValue", UIText.class);
         final UIText pathProject = find("pathProject", UIText.class);
         
-        UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
+        final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }
