@@ -45,7 +45,7 @@ public class SearchCommands extends BaseComponentSystem{
 		Set<MapObject> mapObjects = codeMap.getMapObjects();
 		int i = 0;
 		for(MapObject object : mapObjects){
-			//TODO: BUG! 440 objects iguales.
+			//TODO: BUG!? ~440 objects iguales.
 			if(object.containsClass(className)){
 				possibleResults.add(object);
 				break;
@@ -55,10 +55,10 @@ public class SearchCommands extends BaseComponentSystem{
 		String message = "Class not found.";
 		if(possibleResults.size() == 1){
 			MapObject result = possibleResults.get(0);
-			EntityRef character = getLocalCharacterEntity();
 			CodeScale codeScale = CoreRegistry.get(CodeScale.class);
 			CodeMapFactory codeMapFactory = CoreRegistry.get(CodeMapFactory.class);
-			//playerSystem.teleportCommand(character, result.getPositionX(), result.getHeight(codeScale, codeMapFactory), result.getPositionZ());
+			String command = String.format("teleport %d %d %d", result.getPositionX(), result.getHeight(codeScale, codeMapFactory)+20, result.getPositionZ());
+			boolean commandExecuted = console.execute(command, getLocalClientEntity());
 			message = "Class found, teleporting!";
 		}
 		else if(possibleResults.size() > 1){
@@ -83,16 +83,5 @@ public class SearchCommands extends BaseComponentSystem{
             }
         }
         return localClientEntity;
-    }
-
-    /**
-     * Get the current local character entity
-     * 
-     * @return EntityRef A reference to the local character Entity
-     */
-    private EntityRef getLocalCharacterEntity() {
-        EntityRef clientEntity = getLocalClientEntity();
-        ClientComponent clientComponent = clientEntity.getComponent(ClientComponent.class);
-        return clientComponent.character;
     }
 }
