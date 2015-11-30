@@ -23,6 +23,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonObject;
+
 import gnu.trove.iterator.TObjectShortIterator;
 import gnu.trove.map.TObjectShortMap;
 import gnu.trove.map.TShortObjectMap;
@@ -31,6 +33,7 @@ import gnu.trove.map.hash.TShortObjectHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.asset.AssetManager;
+import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.engine.module.ModuleManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -41,6 +44,7 @@ import org.terasology.persistence.ModuleContext;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockPart;
 import org.terasology.world.block.BlockSounds;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
@@ -199,6 +203,10 @@ public class BlockManagerImpl extends BlockManager {
         }
     }
 
+    public BlockFamily createBlockFamily(AssetUri templateUri, String familyName, Map<BlockPart, AssetUri> tileUris) {
+    	return blockLoader.createColoringBlockFamily(templateUri, familyName, tileUris); 
+    }
+    
     /**
      * @param family
      * @param andRegister Immediately registers the family - it is expected that the blocks have been given ids.
@@ -214,6 +222,7 @@ public class BlockManagerImpl extends BlockManager {
         }
     }
 
+    
     @VisibleForTesting
     public void addFreeformBlockFamily(BlockUri family, Iterable<String> categories) {
         freeformBlockUris.add(family);

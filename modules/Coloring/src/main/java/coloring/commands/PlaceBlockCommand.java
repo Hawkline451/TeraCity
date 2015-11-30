@@ -1,6 +1,20 @@
 package coloring.commands;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.terasology.asset.AssetManager;
+import org.terasology.asset.AssetType;
+import org.terasology.asset.AssetUri;
+import org.terasology.asset.Assets;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
@@ -13,18 +27,42 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.health.DoDamageEvent;
 import org.terasology.logic.health.HealthComponent;
+import org.terasology.math.Side;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.math.geom.Vector4f;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.rendering.world.WorldRenderer;
+import org.terasology.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
+import org.terasology.utilities.gson.JsonMergeUtil;
+import org.terasology.utilities.gson.Vector3fTypeAdapter;
+import org.terasology.utilities.gson.Vector4fTypeAdapter;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockPart;
+import org.terasology.world.block.BlockUri;
+import org.terasology.world.block.DefaultColorSource;
 import org.terasology.world.block.family.BlockFamily;
+import org.terasology.world.block.family.BlockFamilyFactory;
+import org.terasology.world.block.family.BlockFamilyFactoryRegistry;
+import org.terasology.world.block.internal.BlockManagerImpl;
+import org.terasology.world.block.loader.BlockDefinition;
+import org.terasology.world.block.loader.FreeformFamily;
+
+import com.google.common.base.Charsets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 @RegisterSystem
 public class PlaceBlockCommand extends BaseComponentSystem {
@@ -113,8 +151,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	public String placeColorBuildingCommon(String blockColor, int xpos, int ypos, int zpos, int size) {
 		return placeColorBuildingCommon(blockColor, FaceToPaint.ALL.toString(), xpos, ypos, zpos, size, 0, 12);
 	}
-	
-	
+    
     public String placeColorBuildingCommon(String blockColor, String face, int xpos, int ypos, int zpos, int size, int damage, int maxHealth) {
     	
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
@@ -124,13 +161,29 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         Vector3f offset = camera.getViewingDirection();
         offset.scale(3);
         spawnPos.add(offset);
-
+        
         
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
-                
+        
+        
+        // ..........................................................................................
+        BlockManagerImpl blockManager = (BlockManagerImpl)CoreRegistry.get(BlockManager.class);
+        AssetUri templateUri = new AssetUri(AssetType.BLOCK_DEFINITION, "coloring", "baseline");
+        Map<BlockPart, AssetUri> tileUris = new HashMap<>();
+        tileUris.put(BlockPart.FRONT , new AssetUri(AssetType.BLOCK_TILE, "coloring", "red"));
+        tileUris.put(BlockPart.BACK  , new AssetUri(AssetType.BLOCK_TILE, "coloring", "yellow"));
+        tileUris.put(BlockPart.RIGHT , new AssetUri(AssetType.BLOCK_TILE, "coloring", "green"));
+        tileUris.put(BlockPart.LEFT  , new AssetUri(AssetType.BLOCK_TILE, "coloring", "blue"));
+        String newFamilyName = "holaMundo";
+        
+        BlockFamily newFamily = blockManager.createBlockFamily(templateUri, newFamilyName, tileUris);
+        //blockManager.addBlockFamily(newFamily, true);
+        // ..........................................................................................
+        
         BlockFamily blockFamily = getBlockFamily(blockColor);
         Block block = blockFamily.getArchetypeBlock();
+        //Block block = newFamily.getArchetypeBlock();
         block.setHardness(maxHealth);
         
         if (world != null) {

@@ -116,7 +116,22 @@ public class BlockLoader implements BlockBuilderHelper {
         trimmedLoweredShape = (BlockShape) Assets.get(AssetType.SHAPE, "engine:trimmedLoweredCube");
         this.blockFamilyFactoryRegistry = blockFamilyFactoryRegistry;
     }
-
+    
+    public BlockFamily createColoringBlockFamily(AssetUri templateUri, String familyName, Map<BlockPart, AssetUri> tileUris) {
+    	
+    	AssetUri familyUri = new AssetUri(AssetType.BLOCK_DEFINITION, templateUri.getAssetName().toString(), familyName);
+    		
+    	logger.debug("Creating Coloring Family {}", familyUri);
+        
+        //BlockDefinition blockDef = createBlockDefinition(inheritData(blockDefUri, blockDefJson));
+        
+        //BlockFamilyFactory familyFactory = blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation);
+        
+        //BlockFamily family = familyFactory.createBlockFamily(this, blockDefUri, blockDef, blockDefJson);
+        
+    	return null;
+    }
+    
     public LoadBlockDefinitionResults loadBlockDefinitions() {
         logger.info("Loading Blocks...");
 
@@ -126,7 +141,7 @@ public class BlockLoader implements BlockBuilderHelper {
                 JsonElement rawJson = readJson(blockDefUri);
                 if (rawJson != null) {
                     JsonObject blockDefJson = rawJson.getAsJsonObject();
-
+                    
                     // Don't process templates
                     if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
                         continue;
