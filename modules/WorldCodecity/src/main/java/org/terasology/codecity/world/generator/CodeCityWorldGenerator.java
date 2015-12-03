@@ -1,12 +1,10 @@
 package org.terasology.codecity.world.generator;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.terasology.codecity.world.loader.CodeCityDefaultLoader;
 import org.terasology.codecity.world.loader.CodeCityLoader;
-import org.terasology.codecity.world.loader.CodeCityLoaderManager;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
@@ -26,23 +24,23 @@ import org.terasology.world.generator.RegisterWorldGenerator;
 @RegisterWorldGenerator(id = "codecity", displayName = "CodeCity", description = "Generates the world using a CodeCity structure")
 public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     private final CodeScale cScale = new SquareRootCodeScale();
+    private String path = "";
 
     public CodeCityWorldGenerator(SimpleUri uri) {
         super(uri);
     }
 
     @Override
-    public void initialize() {
-        
-        //Retorna en loader por fichero  en caso de que este exista, si no, el por socket.
-    	String path = "C:"+File.separator+"DCC"+File.separator+"Primavera15"+File.separator+"Ingenieria"+File.separator+"TeraCity"+File.separator+"modules"+File.separator+"GitHub";
-        //CodeCityLoader loader = CodeCityLoaderManager.getLoader(path);
-        
-    	//CodeCityLoader loader = new CodeCityProjectLoader(path);
+    public void initialize(String s) {
 
-        CodeCityLoader loader = new CodeCityDefaultLoader();
-
-        //CodeCityLoader loader = new CodeCitySocketLoader(25778);
+        this.path = s;
+    	
+    	CodeCityLoader loader;
+        
+    	if (this.path != "")
+    		loader = new CodeCityProjectLoader(this.path);
+    	else
+    		loader = new CodeCityDefaultLoader();
         
         CodeRepresentation code = loader.loadCodeRepresentation();
 
@@ -50,9 +48,9 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         CoreRegistry.put(CodeMap.class, codeMap);
         CoreRegistry.put(CodeRepresentation.class, code);
 
-        super.initialize();
+        super.initialize(s);
         
-        storeCodeRepresentation(code);
+       // storeCodeRepresentation(code);
     }
 
     private void storeCodeRepresentation(CodeRepresentation code) {

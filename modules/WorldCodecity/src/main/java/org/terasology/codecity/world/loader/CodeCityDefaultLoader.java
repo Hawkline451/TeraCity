@@ -30,7 +30,7 @@ public class CodeCityDefaultLoader implements CodeCityLoader {
         CodeClass gProv = new CodeClass("CodeCityGroundProvider", 0, 37, "CodeCityGroundProvider.java", "");
         CodeClass gRast = new CodeClass("CodeCityGroundRasterizer", 1, 34, "CodeCityGroundRasterizer.java", "");
         CodeClass wGen = new CodeClass("CodeCityWorldGenerator", 1, 164, "CodeCityWorldGenerator.java", "");
-        //CodeClass LOADER = new CodeClass("CodeCityProjectLoader", 1, 164, "CodeCityProjectLoader.java", "");
+        CodeClass LOADER = new CodeClass("CodeCityProjectLoader", 1, 164, "CodeCityProjectLoader.java", "");
 
         generator.addCodeContent(bProv);
         generator.addCodeContent(bRast);

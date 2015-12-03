@@ -18,6 +18,7 @@ public class NullCodeRepresentation extends CodeRepresentation {
 
 	@Override
 	public int size() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 }

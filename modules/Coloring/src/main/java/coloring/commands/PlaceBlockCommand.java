@@ -18,6 +18,7 @@ import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
+import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
@@ -106,10 +107,15 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
 		
-		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size, 0, 12);
+		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size);
     }
 	
-    public String placeColorBuildingCommon(String blockColor, int xpos, int ypos, int zpos, int size, int damage, int maxHealth) {
+	public String placeColorBuildingCommon(String blockColor, int xpos, int ypos, int zpos, int size) {
+		return placeColorBuildingCommon(blockColor, FaceToPaint.ALL.toString(), xpos, ypos, zpos, size, 0, 12);
+	}
+	
+	
+    public String placeColorBuildingCommon(String blockColor, String face, int xpos, int ypos, int zpos, int size, int damage, int maxHealth) {
     	
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
@@ -209,10 +215,14 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 			@CommandParam("Name") String name,
 			@CommandParam("Color") String color)
 	{
-		return ColorBuildCommon(name, color, 0, 12);
+		return ColorBuildCommon(name, color);
 	}
 	
-	public String ColorBuildCommon(String name, String color, int damage, int maxHealth) {
+	public String ColorBuildCommon(String name, String color) {
+		return ColorBuildCommon(name, color, FaceToPaint.ALL.toString(), 0, 12);
+	}
+	
+	public String ColorBuildCommon(String name, String color, String face, int damage, int maxHealth) {
 		
 		ArrayList <BuildInformation> builds = getInfo();
 		
@@ -225,6 +235,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 					for(int j = 0;j < width;j++){
 						
 						placeColorBuildingCommon(color,
+								face,
 								element.getX() + i,
 								element.getZ(),
 								element.getY() + j,
