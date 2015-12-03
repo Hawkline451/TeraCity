@@ -16,6 +16,9 @@
 
 package org.terasology.engine.modes.loadProcesses;
 
+import java.nio.file.Path;
+
+import org.terasology.engine.paths.PathManager;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.generator.WorldGenerator;
@@ -38,7 +41,13 @@ public class InitialiseWorldGenerator extends SingleStepLoadProcess {
     public boolean step() {
 
         WorldGenerator worldGenerator = CoreRegistry.get(WorldGenerator.class);
-        worldGenerator.initialize();
+        
+        PathManager m = PathManager.getInstance();
+    	Path p = m.getProjectPath();
+
+        String path = p.toString();
+        
+        worldGenerator.initialize(path);
 
         WorldRenderer worldRenderer = CoreRegistry.get(WorldRenderer.class);
         worldRenderer.getActiveCamera().setReflectionHeight(worldGenerator.getWorld().getSeaLevel());

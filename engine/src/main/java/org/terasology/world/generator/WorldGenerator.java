@@ -32,7 +32,7 @@ public interface WorldGenerator {
 
     void createChunk(CoreChunk chunk);
 
-    void initialize();
+    void initialize(String s);
 
     Optional<WorldConfigurator> getConfigurator();
 

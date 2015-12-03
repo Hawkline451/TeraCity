@@ -51,6 +51,7 @@ public final class PathManager {
     private Path logPath;
     private Path shaderLogPath;
     private Path currentWorldPath;
+    private Path projectPath;
 
     private ImmutableList<Path> modPaths = ImmutableList.of();
     private Path screenshotPath;
@@ -127,6 +128,10 @@ public final class PathManager {
         this.homePath = rootPath;
         updateDirs();
     }
+    
+    public void setWorldPath(Path projectPath){
+    	this.projectPath = projectPath;
+    }
 
     public void useDefaultHomePath() throws IOException {
         switch (LWJGLUtil.getPlatform()) {
@@ -158,6 +163,10 @@ public final class PathManager {
 
     public Path getHomePath() {
         return homePath;
+    }
+    
+    public Path getProjectPath(){
+    	return this.projectPath;
     }
 
     public Path getInstallPath() {
