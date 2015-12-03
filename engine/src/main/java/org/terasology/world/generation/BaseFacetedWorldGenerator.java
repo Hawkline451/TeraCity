@@ -63,7 +63,7 @@ public abstract class BaseFacetedWorldGenerator implements WorldGenerator, World
     protected abstract WorldBuilder createWorld(long seed);
 
     @Override
-    public void initialize() {
+    public void initialize(String s) {
         getWorld().initialize();
     }
 

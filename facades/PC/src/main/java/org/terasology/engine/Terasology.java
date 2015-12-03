@@ -96,6 +96,7 @@ public final class Terasology {
     private static final String NO_SAVE_GAMES = "-noSaveGames";
     private static final String NO_SOUND = "-noSound";
     private static final String SERVER_PORT = "-serverPort=";
+    private static final String PROJECT_PATH = "-path=";
 
     private static boolean isHeadless;
     private static boolean crashReportEnabled = true;
@@ -115,12 +116,6 @@ public final class Terasology {
         //   IntelliJ: -splash:facades/PC/src/main/resources/splash.jpg (root project is the working dir.)
         //
         // as JVM argument (not program argument!)
-
-    	if (args.length == 1){
-    		String path = args[0];
-    		PathSingleton.getInstance(path);
-    	}
-    	
         SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
 
         handlePrintUsageRequest(args);
@@ -253,6 +248,7 @@ public final class Terasology {
     private static void handleLaunchArguments(String[] args) {
 
         Path homePath = null;
+        Path projectPath = null;
 
         for (String arg : args) {
             boolean recognized = true;
@@ -261,6 +257,9 @@ public final class Terasology {
                 homePath = Paths.get(arg.substring(USE_SPECIFIED_DIR_AS_HOME.length()));
             } else if (arg.equals(USE_CURRENT_DIR_AS_HOME)) {
                 homePath = Paths.get("");
+            } else if(arg.startsWith(PROJECT_PATH)){
+            	projectPath = Paths.get(arg.substring(PROJECT_PATH.length()));
+            
             } else if (arg.equals(START_HEADLESS)) {
                 isHeadless = true;
                 crashReportEnabled = false;
@@ -282,6 +281,9 @@ public final class Terasology {
         }
 
         try {
+        	if (projectPath != null){
+        		PathManager.getInstance().setWorldPath(projectPath);
+        	}
             if (homePath != null) {
                 PathManager.getInstance().useOverrideHomePath(homePath);
             } else {

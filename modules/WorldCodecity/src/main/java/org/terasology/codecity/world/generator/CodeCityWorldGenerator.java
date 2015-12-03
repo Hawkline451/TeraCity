@@ -1,12 +1,10 @@
 package org.terasology.codecity.world.generator;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.terasology.codecity.world.loader.CodeCityDefaultLoader;
 import org.terasology.codecity.world.loader.CodeCityLoader;
-import org.terasology.codecity.world.loader.CodeCityLoaderManager;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
@@ -15,7 +13,6 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
-import org.terasology.engine.paths.PathSingleton;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
@@ -34,9 +31,9 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     }
 
     @Override
-    public void initialize() {
+    public void initialize(String s) {
 
-        this.path = PathSingleton.getInstance("").getPath();
+        this.path = s;
     	
     	CodeCityLoader loader;
         
@@ -51,7 +48,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         CoreRegistry.put(CodeMap.class, codeMap);
         CoreRegistry.put(CodeRepresentation.class, code);
 
-        super.initialize();
+        super.initialize(s);
         
        // storeCodeRepresentation(code);
     }
