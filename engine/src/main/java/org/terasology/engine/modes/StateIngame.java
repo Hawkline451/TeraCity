@@ -121,11 +121,10 @@ public class StateIngame implements GameState {
             TeraOVR.clear();
         }
         
-        // We don't want to save the game in TeraCity
-        // boolean save = networkSystem.getMode().isAuthority();
-        // if (save) {
-        //     storageManager.waitForCompletionOfPreviousSaveAndStartSaving();
-        // }
+        boolean save = networkSystem.getMode().isAuthority();
+        if (save) {
+            storageManager.waitForCompletionOfPreviousSaveAndStartSaving();
+        }
 
         networkSystem.shutdown();
         // TODO: Shutdown background threads
