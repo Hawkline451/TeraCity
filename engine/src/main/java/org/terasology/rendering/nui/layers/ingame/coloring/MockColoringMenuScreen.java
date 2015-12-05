@@ -46,6 +46,11 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	            faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
 	        }
 	        
+	        UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
+	        if (colorScale != null) {
+	        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
+	        }
+	        
 	        // displays info to the user: warnings, errors, ...
 	        final UILabel infoField = find("infoField", UILabel.class);
 	        
@@ -55,7 +60,8 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            		
 	            	FaceToPaint face = faceToPaint.getSelection();
-	            	executeCommand("random", face);
+	            	ColorScale color = colorScale.getSelection(); 
+	            	executeCommand("random", face, color);
 	            }
 	        });
 	        
@@ -64,7 +70,8 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	
 	            	FaceToPaint face = faceToPaint.getSelection();
-	            	executeCommand("good", face);
+	            	ColorScale color = colorScale.getSelection();
+	            	executeCommand("good", face, color);
 	            }
 	        });
 	        
@@ -81,12 +88,12 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	    }
 	    
 	    
-	    private void executeCommand(String metric, FaceToPaint face) {
+	    private void executeCommand(String metric, FaceToPaint face, ColorScale color) {
 	    	
 	    	// manage invalid face selections
 	    	final UILabel infoField = find("infoField", UILabel.class);
-        	if (face == null) {
-        		infoField.setText("waning: please choose a face to paint!");
+        	if (face == null || color == null) {
+        		infoField.setText("waning: please choose a face and a color to paint!");
         		return;
         	}
         	infoField.setText("");
@@ -96,6 +103,7 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	    	ArrayList<String> params = new ArrayList<String>();
 	    	params.add(metric);
 	    	params.add(face.toString());
+	    	params.add(color.toString());
 	    	EntityRef e = null;
 	    	try {
 	    		ca.execute(params, e);

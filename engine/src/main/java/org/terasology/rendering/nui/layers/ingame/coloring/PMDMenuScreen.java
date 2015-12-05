@@ -63,6 +63,11 @@ public class PMDMenuScreen extends CoreScreenLayer {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }
         
+        UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
+        if (colorScale != null) {
+        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
+        }
+        
         // displays info to the user: warnings, errors, ...
         final UILabel infoField = find("infoField", UILabel.class);
         
@@ -70,84 +75,96 @@ public class PMDMenuScreen extends CoreScreenLayer {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("comments", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("comments", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentrequired", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentrequired", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentrequired", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentsize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentsize", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentsize", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentcontent", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentcontent", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentcontent", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "codesize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("codesize", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("codesize", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "npathcomplexity", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("npathcomplexity", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("npathcomplexity", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "cyclomaticcomplexity", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("cyclomaticcomplexity", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("cyclomaticcomplexity", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "toomanymethods", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("toomanymethods", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("toomanymethods", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "coupling", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("coupling", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("coupling", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "couplingbetweenobjects", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("couplingbetweenobjects", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("couplingbetweenobjects", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "excessiveimports", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("excessiveimports", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("excessiveimports", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "lawofdemeter", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("lawofdemeter", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("lawofdemeter", face, color);
             }
         });
         
@@ -162,12 +179,12 @@ public class PMDMenuScreen extends CoreScreenLayer {
         });
     }
     
-    private void executeCommand(String metric, FaceToPaint face) {
+    private void executeCommand(String metric, FaceToPaint face, ColorScale color) {
     	
     	// manage invalid face selections
     	final UILabel infoField = find("infoField", UILabel.class);
-    	if (face == null) {
-    		infoField.setText("waning: please choose a face to paint!");
+    	if (face == null || color == null) {
+    		infoField.setText("waning: please choose a face and a color to paint!");
     		return;
     	}
     	infoField.setText("");
@@ -177,6 +194,7 @@ public class PMDMenuScreen extends CoreScreenLayer {
     	ArrayList<String> params = new ArrayList<String>();
     	params.add(metric);
     	params.add(face.toString());
+    	params.add(color.toString());
     	try {
 			ca.execute(params, EntityRef.NULL);
 		} catch (CommandExecutionException e1) {

@@ -67,6 +67,11 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }
         
+        UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
+        if (colorScale != null) {
+        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
+        }
+        
         // displays info to the user: warnings, errors, ...
         final UILabel infoField = find("infoField", UILabel.class);
         
@@ -84,7 +89,8 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             	params.add(tests);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(params, face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand(params, face, color);
            }
         });
         WidgetUtil.trySubscribe(this, "analizar2", new ActivateEventListener() {
@@ -98,7 +104,8 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             	params.add(source);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(params, face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand(params, face, color);
            }
         });
         
@@ -113,7 +120,8 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
             	params.add(report);
             	
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand(params, face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand(params, face, color);
            }
         });
         
@@ -126,18 +134,19 @@ public class CoberturaMenuScreen extends CoreScreenLayer {
         });
         
     }
-    private void executeCommand(List<String> params, FaceToPaint face){
+    private void executeCommand(List<String> params, FaceToPaint face, ColorScale color) {
     	
     	// manage invalid face selections
     	final UILabel infoField = find("infoField", UILabel.class);
-    	if (face == null) {
-    		infoField.setText("waning: please choose a face to paint!");
+    	if (face == null || color == null) {
+    		infoField.setText("waning: please choose a face and a color to paint!");
     		return;
     	}
     	infoField.setText("");
     	
     	ArrayList<String> cparams = new ArrayList<String>();
     	cparams.add(face.toString());
+    	cparams.add(color.toString());
     	cparams.addAll(params);
     	
     	// send paint command

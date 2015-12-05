@@ -44,10 +44,11 @@ public class ColoringCommands extends BaseComponentSystem{
                     + "no se usa para los otros dos tipos.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCobertura(
-    		@CommandParam(value="face"     ,required=true) String face,
-    		@CommandParam(value="type"     ,required=true) String type,
-            @CommandParam(value="firstArg" ,required=true) String firstArg,
-            @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
+    		@CommandParam(value="face"     , required=true) String face,
+			@CommandParam(value="color"    , required=true) String color,
+    		@CommandParam(value="type"     , required=true) String type,
+            @CommandParam(value="firstArg" , required=true) String firstArg,
+            @CommandParam(value="secondArg", required=false) String secondArg) throws IOException{
 		
 		String[] pars = new String[3];
 		pars[0] = type;
@@ -56,6 +57,7 @@ public class ColoringCommands extends BaseComponentSystem{
 		
 		IColoring coloring = new CoberturaColoring();
 		coloring.setFaceToPaint(face);
+		coloring.setColorScale(color);
 		coloring.execute(pars);
 		return "Loading ...";
     }
@@ -67,12 +69,16 @@ public class ColoringCommands extends BaseComponentSystem{
     		@CommandParam("Ruta")         String path,
     		@CommandParam("Metrica")      String metric,
     		@CommandParam("Valor Maximo") String max,
-    		@CommandParam(value="face"  , required=true) String face) 
-	{	
-		if (path.equals("default")) path = "./";
+    		@CommandParam(value="face"  , required=true) String face,
+			@CommandParam(value="color" , required=true) String color) { 
+
+		if (path.equals("default")) {
+			path = "./";
+		}
 		String[] params = {path, metric, max};
     	IColoring coloring = new CheckStyleColoring();
     	coloring.setFaceToPaint(face);
+    	coloring.setColorScale(color);
     	coloring.execute(params);
     	return "";
     }
@@ -81,13 +87,15 @@ public class ColoringCommands extends BaseComponentSystem{
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithGit(
     		@CommandParam("metric") String metric,
-    		@CommandParam("url") String url,
+    		@CommandParam("url"   ) String url,
     		@CommandParam("Project Name") String projectName,
-    		@CommandParam(value="face"  , required=true) String face) {
+    		@CommandParam(value="face"  , required=true) String face,
+			@CommandParam(value="color" , required=true) String color) {
 		
 		String[] params = {metric, url, projectName};
     	IColoring coloring = new GitColoring();
     	coloring.setFaceToPaint(face);
+    	coloring.setColorScale(color);
     	coloring.execute(params);
     	return "";
     }
@@ -96,12 +104,14 @@ public class ColoringCommands extends BaseComponentSystem{
             helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithPMD(
-    		@CommandParam(value="rule", required = true) String rule,
-    		@CommandParam(value="face", required=true)   String face) {
+    		@CommandParam(value="rule" , required=true) String rule,
+    		@CommandParam(value="face" , required=true) String face,
+			@CommandParam(value="color", required=true) String color) {
 		
 		String[] params = {rule};
     	IColoring coloring = new PMDColoring();
     	coloring.setFaceToPaint(face);
+    	coloring.setColorScale(color);
     	coloring.execute(params);
     	return "";
     }
@@ -111,12 +121,14 @@ public class ColoringCommands extends BaseComponentSystem{
 			requiredPermission = PermissionManager.NO_PERMISSION)
 	public String paintWithMockColoring(
 			@CommandParam(value="metric", required=true) String metric,
-			@CommandParam(value="face"  , required=true) String face){
+			@CommandParam(value="face"  , required=true) String face,
+			@CommandParam(value="color" , required=true) String color) {
 		
 		String[] params = new String[1];
 		params[0] = metric;
 		IColoring coloring = new MockColoring();
 		coloring.setFaceToPaint(face);
+		coloring.setColorScale(color);
 		coloring.execute(params);
 		return "";
 	}

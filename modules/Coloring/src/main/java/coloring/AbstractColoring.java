@@ -11,6 +11,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.layers.ingame.coloring.ColorScale;
 import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.world.WorldProvider;
 
@@ -27,10 +28,15 @@ import coloring.commands.PlaceBlockCommand;
 public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	protected String[] params;
-	private String faceToPaint = FaceToPaint.ALL.toString();	
+	private String faceToPaint = FaceToPaint.ALL.toString();
+	private String colorScale  = ColorScale.RAINBOW.toString();
 	
 	public void setFaceToPaint(String face) {
 		this.faceToPaint = face;
+	}
+	
+	public void setColorScale(String color) {
+		this.colorScale = color;
 	}
 	
 	public ArrayList<String> getClassPaths(){
@@ -53,7 +59,6 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 			}
 		}
 		return result;
-	
 	}
 	public String getRootPath(){
 		CodeRepresentation code =  CoreRegistry.get(CodeRepresentation.class);
@@ -62,7 +67,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	@Override
 	public void executeColoring() {
-		System.out.println("Painting face: " + faceToPaint);
+		System.out.println("Painting face: " + faceToPaint + " with color scale: " + colorScale);
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
@@ -71,7 +76,11 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 			int damage = (int)((maxHealth - 1)*(1.0 - classMetric.getValue()));
 			damage = Math.min((maxHealth-1), damage);
 			
-			pbc.ColorBuildCommon(path, classMetric.getColor(), faceToPaint, damage, maxHealth);
+			String color = colorScale;
+			if (colorScale == ColorScale.RAINBOW.toString()) {
+				color = classMetric.getColor();
+			}
+			pbc.ColorBuildCommon(path, color, faceToPaint, damage, maxHealth);
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}

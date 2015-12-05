@@ -16,4 +16,6 @@ public interface IColoring{
 	
 	public void setFaceToPaint(String face);
 	
+	public void setColorScale(String color);
+	
 }

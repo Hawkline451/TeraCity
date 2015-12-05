@@ -20,7 +20,7 @@
             },
             {
                 "type" : "UILabel",
-                "text" : "Menu de Coloreo",
+                "text" : "Coloring Menu",
                 "family" : "title",
                 "id" : "subtitle",
                 "layoutInfo" : {
