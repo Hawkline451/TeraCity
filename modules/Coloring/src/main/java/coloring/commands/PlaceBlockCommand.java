@@ -119,7 +119,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     }
 	
 	public String placeColorBuildingCommon(String family, int xpos, int ypos, int zpos, int height, int width) {
-		return placeColorBuildingCommon(family, family, FaceToPaint.ALL.toString(), xpos, ypos, zpos, height, width, 0, 12);
+		return placeColorBuildingCommon(family, family, FaceToPaint.ALL.toString(), xpos, ypos, zpos, height, width, 0, 10);
 	}
     
     public String placeColorBuildingCommon(String familyName, String color, String face, int xpos, int ypos, int zpos, int height, int width, int damage, int maxHealth) {
@@ -157,14 +157,18 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         	}
         }
         
-		// dummy tiles! <REPLACE HERE!>
+        // paint with the desired color
+        double hueValue = Math.floor((maxHealth - damage)*6.0/maxHealth);
+        hueValue = Math.min(6, hueValue);
+        hueValue = Math.max(1, hueValue);
+        String colorHUE = color + (int)hueValue;
         if (face == FaceToPaint.ALL.toString()) {
         	for (BlockPart part : BlockPart.values()) {
-        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Coloring", color));
+        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Coloring", colorHUE));
         	}
         } else {
         	BlockPart part = FaceToPaint.fromString(face).getBlockPart();
-        	tileUris.put(part, new AssetUri(AssetType.BLOCK_TILE, "Coloring", color));
+        	tileUris.put(part, new AssetUri(AssetType.BLOCK_TILE, "Coloring", colorHUE));
         }
         
         // save new coloring scheme
