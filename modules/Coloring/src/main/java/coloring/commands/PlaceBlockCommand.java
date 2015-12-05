@@ -1,9 +1,8 @@
 package coloring.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.Arrays;
+import java.util.List;
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.codecity.world.map.CodeMap;
@@ -32,6 +31,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockPart;
 import org.terasology.world.block.family.BlockFamily;
 
+import coloring.BuildRegister;
 import coloring.ColoringRegistry;
 
 @RegisterSystem
@@ -86,23 +86,19 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	
 	@Command(shortDescription = "Puts the floor of the constant city of the color specified({Red,Blue,Green} implemented)")
     public String placeColorFloor(@CommandParam("colorBlock") String colorBlock) {
-    	if(!isImplementedColor(colorBlock))
+    	if(!isImplementedColor(colorBlock)) {
     		return "Put an implemented color in {Red, Blue, Green, Yellow}";
-    	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
-    	Camera camera= renderer.getActiveCamera();
+    	}
     	
-    	Vector3f spawnPos = camera.getPosition();
-        Vector3f offset = camera.getViewingDirection();
-        offset.scale(3);
-        spawnPos.add(offset);
-
         BlockFamily blockFamily = getBlockFamily(colorBlock);
         
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
-        	for(int x = 0; x<=19; ++x)
-        		for(int z = 0; z<=19; ++z)
+        	for(int x = 0; x<=19; ++x) {
+        		for(int z = 0; z<=19; ++z) {
         			world.setBlock(new Vector3i(x, 10, z), blockFamily.getArchetypeBlock());
+        		}
+        	}
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
@@ -118,103 +114,88 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size, 1);
     }
 	
+	private String getColorName(String color, int damage, int maxHealth) {
+	
+		double hueValue = Math.floor((maxHealth - damage)*6.0/maxHealth);
+        hueValue = Math.min(6, hueValue);
+        hueValue = Math.max(1, hueValue);
+        
+        return  color + (int)hueValue;
+	}
+	
 	public String placeColorBuildingCommon(String family, int xpos, int ypos, int zpos, int height, int width) {
 		return placeColorBuildingCommon(family, family, FaceToPaint.ALL.toString(), xpos, ypos, zpos, height, width, 0, 10);
 	}
     
     public String placeColorBuildingCommon(String familyName, String color, String face, int xpos, int ypos, int zpos, int height, int width, int damage, int maxHealth) {
-    	
-    	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
-    	Camera camera= renderer.getActiveCamera();
-    	
-    	Vector3f spawnPos = camera.getPosition();
-        Vector3f offset = camera.getViewingDirection();
-        offset.scale(3);
-        spawnPos.add(offset);
         
-        
-        WorldProvider world = CoreRegistry.get(WorldProvider.class);
-        BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
+    	// Engine registers
+    	WorldProvider world = CoreRegistry.get(WorldProvider.class);
+    	ColoringRegistry coloringRegistry = ColoringRegistry.getRegister();
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        
-        
-        // -- prepare coloring --
-        ColoringRegistry coloringRegistry = CoreRegistry.get(ColoringRegistry.class);
-        if (coloringRegistry == null) {
-        	coloringRegistry = new ColoringRegistry();
-        	CoreRegistry.put(ColoringRegistry.class, coloringRegistry);
-        }
-        Map<String, Map<BlockPart, AssetUri> > coloringMap = coloringRegistry.coloringMap;
-    	 
-    	
-        // old colors
-        Map<BlockPart, AssetUri> tileUris = new HashMap<>();
-        if (coloringMap.containsKey(familyName)) {
-        	tileUris = coloringMap.get(familyName);
-        } else {
-        	for (BlockPart part : BlockPart.values()) {
-        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Core", "stone"));
-        	}
+        BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
+        if (world == null) {
+        	throw new IllegalArgumentException("Sorry, something went wrong!");
         }
         
-        // paint with the desired color
-        double hueValue = Math.floor((maxHealth - damage)*6.0/maxHealth);
-        hueValue = Math.min(6, hueValue);
-        hueValue = Math.max(1, hueValue);
-        String colorHUE = color + (int)hueValue;
-        if (face == FaceToPaint.ALL.toString()) {
-        	for (BlockPart part : BlockPart.values()) {
-        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Coloring", colorHUE));
-        	}
-        } else {
+        // update build data
+        BuildRegister build = coloringRegistry.getBuild(familyName);
+        List<BlockPart> faces = BuildRegister.getValidSides();
+        if (face != FaceToPaint.ALL.toString()) {
         	BlockPart part = FaceToPaint.fromString(face).getBlockPart();
-        	tileUris.put(part, new AssetUri(AssetType.BLOCK_TILE, "Coloring", colorHUE));
+        	faces = Arrays.asList(part);
         }
-        
-        // save new coloring scheme
-        coloringRegistry.coloringMap.put(familyName, tileUris);
+        AssetUri tileuri = new AssetUri(AssetType.BLOCK_TILE, "Coloring", getColorName(color, damage, maxHealth));
+        build.updateRegister(faces, tileuri, damage);
+        coloringRegistry.updateRegistry(build);
         
         // create custom family
         AssetUri templateUri = new AssetUri(AssetType.BLOCK_DEFINITION, "Coloring", "baseline");
         AssetUri familyUri   = new AssetUri(AssetType.BLOCK_DEFINITION, "Coloring", familyName);
-        BlockFamily blockFamily = blockManager.createBlockFamily(templateUri, familyUri, tileUris);    
-        Block block = blockFamily.getArchetypeBlock();
+        BlockFamily blockFamily = blockManager.createBlockFamily(templateUri, familyUri, build.tiles);    
+        
+                
+        // max build damage. this will be drawn
+        int maxDamage = 0;
+        for (BlockPart part : BuildRegister.getValidSides() ) {
+        	int partDamage = build.damage.get(part).intValue();
+        	maxDamage = Math.max(maxDamage, partDamage);
+        }
         
         // modify block
+        Block block = blockFamily.getArchetypeBlock();
         block.setHardness(maxHealth);
-        
-        if (world != null) {
-        	
-			for (int i = 0; i < width;i++) {
-				for(int j = 0; j < width;j++) {
-		        	for(int y = 0; y < height; ++y) {
-		        		
-		        		Vector3i blockPos = new Vector3i((xpos + i), (ypos + y), (zpos + j));
-		        		
-		        		// delete previous block to override all functionalities
-		        		blockEntityRegistry.getEntityAt(blockPos).destroy();
-		        		
-		        		// place new block
-		        		world.setBlock(blockPos, block);
-		        		
-		        		// set health/damage properties
-		        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
-		        		HealthComponent health = entity.getComponent(HealthComponent.class);
-		        		if (health == null) {
-		        			health = new HealthComponent(maxHealth,0,0);
-		        			entity.addComponent(health);	
-		        		} else {
-		        			health.maxHealth = maxHealth;
-		        			health.regenRate = 0;
-		        			entity.saveComponent(health);
-		        		}
-		        		entity.send(new DoDamageEvent(damage));
-		        	}
-				}
+
+        // update world	
+		for (int i = 0; i < width;i++) {
+			for(int j = 0; j < width;j++) {
+	        	for(int y = 0; y < height; ++y) {
+	        		
+	        		Vector3i blockPos = new Vector3i((xpos + i), (ypos + y), (zpos + j));
+	        		
+	        		// delete previous block to override all functionalities
+	        		blockEntityRegistry.getEntityAt(blockPos).destroy();
+	        		
+	        		// place new block
+	        		world.setBlock(blockPos, block);
+	        		
+	        		// set health/damage properties
+	        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
+	        		HealthComponent health;
+	        		if (entity.hasComponent(HealthComponent.class)) {
+	        			health = entity.getComponent(HealthComponent.class);
+	        			health.maxHealth = maxHealth;
+	        			health.regenRate = 0;
+	        			entity.saveComponent(health);
+	        		} else {
+	        			health = new HealthComponent(maxHealth,0,0);
+	        			entity.addComponent(health);
+	        		}
+	        		entity.send(new DoDamageEvent(maxDamage));
+	        	}
 			}
-            return "Success";
-        }
-        throw new IllegalArgumentException("Sorry, something went wrong!");
+		}
+        return "Success";
     }
 	
 	private BlockFamily getBlockFamily(String familyUri) {
