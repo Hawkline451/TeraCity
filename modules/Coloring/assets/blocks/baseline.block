@@ -11,6 +11,6 @@
     // - all, sides, topBottom, 
     // - top, bottom, front, back, left, right, center 
     "tiles" : {
-        "all": "core:stone"
+        "all": "Core:stone"
     }
 }

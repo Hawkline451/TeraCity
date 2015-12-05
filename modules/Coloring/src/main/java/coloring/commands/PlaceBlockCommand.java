@@ -1,20 +1,11 @@
 package coloring.commands;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.terasology.asset.AssetManager;
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
@@ -27,48 +18,27 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.health.DoDamageEvent;
 import org.terasology.logic.health.HealthComponent;
-import org.terasology.math.Side;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.math.geom.Vector4f;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.cameras.Camera;
 import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.rendering.world.WorldRenderer;
-import org.terasology.utilities.gson.CaseInsensitiveEnumTypeAdapterFactory;
-import org.terasology.utilities.gson.JsonMergeUtil;
-import org.terasology.utilities.gson.Vector3fTypeAdapter;
-import org.terasology.utilities.gson.Vector4fTypeAdapter;
 import org.terasology.world.BlockEntityRegistry;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockPart;
-import org.terasology.world.block.BlockUri;
-import org.terasology.world.block.DefaultColorSource;
 import org.terasology.world.block.family.BlockFamily;
-import org.terasology.world.block.family.BlockFamilyFactory;
-import org.terasology.world.block.family.BlockFamilyFactoryRegistry;
-import org.terasology.world.block.internal.BlockManagerImpl;
-import org.terasology.world.block.loader.BlockDefinition;
-import org.terasology.world.block.loader.FreeformFamily;
 
-import com.google.common.base.Charsets;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import coloring.ColoringRegistry;
 
 @RegisterSystem
 public class PlaceBlockCommand extends BaseComponentSystem {
 
     private String[] colors = {"Red", "Blue", "Green", "Yellow"};
-    
+        
     //Same that in CodeCityBuildingProvider
     private final CodeScale scale = new SquareRootCodeScale();
     private final CodeMapFactory factory = new CodeMapFactory(scale);
@@ -145,14 +115,14 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     		                         @CommandParam("Z") int zpos,
     		                         @CommandParam("size") int size) {
 		
-		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size);
+		return placeColorBuildingCommon(colorBlock, xpos, ypos, zpos, size, 1);
     }
 	
-	public String placeColorBuildingCommon(String blockColor, int xpos, int ypos, int zpos, int size) {
-		return placeColorBuildingCommon(blockColor, FaceToPaint.ALL.toString(), xpos, ypos, zpos, size, 0, 12);
+	public String placeColorBuildingCommon(String family, int xpos, int ypos, int zpos, int height, int width) {
+		return placeColorBuildingCommon(family, family, FaceToPaint.ALL.toString(), xpos, ypos, zpos, height, width, 0, 12);
 	}
     
-    public String placeColorBuildingCommon(String blockColor, String face, int xpos, int ypos, int zpos, int size, int damage, int maxHealth) {
+    public String placeColorBuildingCommon(String familyName, String color, String face, int xpos, int ypos, int zpos, int height, int width, int damage, int maxHealth) {
     	
     	WorldRenderer renderer = CoreRegistry.get(WorldRenderer.class);
     	Camera camera= renderer.getActiveCamera();
@@ -165,60 +135,87 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
+        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         
         
-        // ..........................................................................................
-        BlockManagerImpl blockManager = (BlockManagerImpl)CoreRegistry.get(BlockManager.class);
-        AssetUri templateUri = new AssetUri(AssetType.BLOCK_DEFINITION, "coloring", "baseline");
+        // -- prepare coloring --
+        ColoringRegistry coloringRegistry = CoreRegistry.get(ColoringRegistry.class);
+        if (coloringRegistry == null) {
+        	coloringRegistry = new ColoringRegistry();
+        	CoreRegistry.put(ColoringRegistry.class, coloringRegistry);
+        }
+        Map<String, Map<BlockPart, AssetUri> > coloringMap = coloringRegistry.coloringMap;
+    	 
+    	
+        // old colors
         Map<BlockPart, AssetUri> tileUris = new HashMap<>();
-        tileUris.put(BlockPart.FRONT , new AssetUri(AssetType.BLOCK_TILE, "coloring", "red"));
-        tileUris.put(BlockPart.BACK  , new AssetUri(AssetType.BLOCK_TILE, "coloring", "yellow"));
-        tileUris.put(BlockPart.RIGHT , new AssetUri(AssetType.BLOCK_TILE, "coloring", "green"));
-        tileUris.put(BlockPart.LEFT  , new AssetUri(AssetType.BLOCK_TILE, "coloring", "blue"));
-        String newFamilyName = "holaMundo";
+        if (coloringMap.containsKey(familyName)) {
+        	tileUris = coloringMap.get(familyName);
+        } else {
+        	for (BlockPart part : BlockPart.values()) {
+        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Core", "stone"));
+        	}
+        }
         
-        BlockFamily newFamily = blockManager.createBlockFamily(templateUri, newFamilyName, tileUris);
-        //blockManager.addBlockFamily(newFamily, true);
-        // ..........................................................................................
+		// dummy tiles! <REPLACE HERE!>
+        if (face == FaceToPaint.ALL.toString()) {
+        	for (BlockPart part : BlockPart.values()) {
+        		tileUris.put(part , new AssetUri(AssetType.BLOCK_TILE, "Coloring", color));
+        	}
+        } else {
+        	BlockPart part = FaceToPaint.fromString(face).getBlockPart();
+        	tileUris.put(part, new AssetUri(AssetType.BLOCK_TILE, "Coloring", color));
+        }
         
-        BlockFamily blockFamily = getBlockFamily(blockColor);
+        // save new coloring scheme
+        coloringRegistry.coloringMap.put(familyName, tileUris);
+        
+        // create custom family
+        AssetUri templateUri = new AssetUri(AssetType.BLOCK_DEFINITION, "Coloring", "baseline");
+        AssetUri familyUri   = new AssetUri(AssetType.BLOCK_DEFINITION, "Coloring", familyName);
+        BlockFamily blockFamily = blockManager.createBlockFamily(templateUri, familyUri, tileUris);    
         Block block = blockFamily.getArchetypeBlock();
-        //Block block = newFamily.getArchetypeBlock();
+        
+        // modify block
         block.setHardness(maxHealth);
         
         if (world != null) {
-        	for(int y = 0; y< size; ++y) {
-        		
-        		Vector3i blockPos = new Vector3i(xpos, (ypos + y), zpos);
-        		
-        		// delete previous block to override all functionalities
-        		blockEntityRegistry.getEntityAt(blockPos).destroy();
-        		
-        		// place new block
-        		world.setBlock(blockPos, block);
-        		
-        		// set health/damage properties
-        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
-        		HealthComponent health = entity.getComponent(HealthComponent.class);
-        		if (health == null) {
-        			health = new HealthComponent(maxHealth,0,0);
-        			entity.addComponent(health);	
-        		} else {
-        			health.maxHealth = maxHealth;
-        			health.regenRate = 0;
-        			entity.saveComponent(health);
-        		}
-        		entity.send(new DoDamageEvent(damage));
-        		
-        	}
+        	
+			for (int i = 0; i < width;i++) {
+				for(int j = 0; j < width;j++) {
+		        	for(int y = 0; y < height; ++y) {
+		        		
+		        		Vector3i blockPos = new Vector3i((xpos + i), (ypos + y), (zpos + j));
+		        		
+		        		// delete previous block to override all functionalities
+		        		blockEntityRegistry.getEntityAt(blockPos).destroy();
+		        		
+		        		// place new block
+		        		world.setBlock(blockPos, block);
+		        		
+		        		// set health/damage properties
+		        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
+		        		HealthComponent health = entity.getComponent(HealthComponent.class);
+		        		if (health == null) {
+		        			health = new HealthComponent(maxHealth,0,0);
+		        			entity.addComponent(health);	
+		        		} else {
+		        			health.maxHealth = maxHealth;
+		        			health.regenRate = 0;
+		        			entity.saveComponent(health);
+		        		}
+		        		entity.send(new DoDamageEvent(damage));
+		        	}
+				}
+			}
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
-	private BlockFamily getBlockFamily(String colorBlock) {
+	private BlockFamily getBlockFamily(String familyUri) {
 		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        return blockManager.getBlockFamily(colorBlock);
+        return blockManager.getBlockFamily(familyUri);
 	}
 
 	@Command(shortDescription = "Colors the entire city of the color specified({Red,Blue,Green} implemented)")
@@ -283,21 +280,16 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 			
 			if (element.getPath().equals(name)) {
 				
-				int width = element.getWidth();
-				for (int i = 0;i < width;i++){
-					for(int j = 0;j < width;j++){
-						
-						placeColorBuildingCommon(color,
-								face,
-								element.getX() + i,
-								element.getZ(),
-								element.getY() + j,
-								element.getHeight()-element.getZ(),
-								damage,
-								maxHealth
-						);
-					}
-				}
+				placeColorBuildingCommon(name,
+						color,
+						face,
+						element.getX(),
+						element.getZ(),
+						element.getY(),
+						element.getHeight() - element.getZ(),
+						element.getWidth(),
+						damage, maxHealth
+				);
 				return "Success";
 			}
 			

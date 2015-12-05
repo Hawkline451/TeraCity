@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonObject;
 
 import gnu.trove.iterator.TObjectShortIterator;
 import gnu.trove.map.TObjectShortMap;
@@ -203,8 +202,21 @@ public class BlockManagerImpl extends BlockManager {
         }
     }
 
-    public BlockFamily createBlockFamily(AssetUri templateUri, String familyName, Map<BlockPart, AssetUri> tileUris) {
-    	return blockLoader.createColoringBlockFamily(templateUri, familyName, tileUris); 
+    public BlockFamily createBlockFamily(AssetUri templateUri, AssetUri familyUri, Map<BlockPart, AssetUri> tileUris) {
+    	BlockFamily family = blockLoader.createBlockFamilyFromTemplate(templateUri, familyUri, tileUris);
+    	addBlockFamily(family, false);
+    	
+    	// register family and blocks
+        for (Block block : family.getBlocks()) {
+            if (generateNewIds) {
+                block.setId(getNextId());
+            } else {
+                block.setId(UNKNOWN_ID);
+            }
+        }
+        registerFamily(family);
+        
+    	return family; 
     }
     
     /**
