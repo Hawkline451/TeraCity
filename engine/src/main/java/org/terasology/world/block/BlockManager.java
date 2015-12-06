@@ -15,6 +15,7 @@
  */
 package org.terasology.world.block;
 
+import org.terasology.asset.AssetUri;
 import org.terasology.engine.TerasologyConstants;
 import org.terasology.naming.Name;
 import org.terasology.world.BlockSoundsRegistry;
@@ -166,5 +167,7 @@ public abstract class BlockManager implements BlockSoundsRegistry {
     public abstract boolean hasBlockFamily(BlockUri uri);
 
     public abstract Iterable<Block> listRegisteredBlocks();
+    
+    public abstract BlockFamily createBlockFamily(AssetUri templateUri, AssetUri familyUri, Map<BlockPart, AssetUri> tileUris);
 
 }

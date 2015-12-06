@@ -20,7 +20,7 @@
             },
             {
                 "type" : "UILabel",
-                "text" : "Metricas de GitHub",
+                "text" : "GitHub Metrics",
                 "family" : "title",
                 "id" : "subtitle",
                 "layoutInfo" : {
@@ -84,6 +84,14 @@
                             {
                                 "type": "UIDropdown",
                                 "id": "faceToPaint"
+                            },
+                            {
+                                "type": "UILabel",
+                                "text": "Color Scale: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "colorScale"
                             }
                         ]
                     },

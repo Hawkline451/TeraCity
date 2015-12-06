@@ -17,9 +17,6 @@ package org.terasology.rendering.nui.layers.ingame.coloring;
 
 import java.util.ArrayList;
 
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
 import org.terasology.config.Config;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.console.Console;
@@ -30,9 +27,6 @@ import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
-import org.terasology.rendering.nui.asset.UIData;
-import org.terasology.rendering.nui.asset.UIElement;
-import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UILabel;
@@ -40,8 +34,6 @@ import org.terasology.rendering.nui.widgets.UILabel;
 import com.google.common.collect.Lists;
 
 public class PMDMenuScreen extends CoreScreenLayer {
-
-    private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
 
     @In
     private Config config;
@@ -52,15 +44,15 @@ public class PMDMenuScreen extends CoreScreenLayer {
     @Override
     @SuppressWarnings("unchecked")
     public void initialise() {
-        CoreScreenLayer inputScreen = new InputSettingsScreen();
-        inputScreen.setSkin(getSkin());
-        UIData inputScreenData = new UIData(inputScreen);
-        Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        
         
         UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
+        }
+        
+        UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
+        if (colorScale != null) {
+        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
         }
         
         // displays info to the user: warnings, errors, ...
@@ -70,84 +62,96 @@ public class PMDMenuScreen extends CoreScreenLayer {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("comments", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("comments", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentrequired", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentrequired", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentrequired", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentsize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentsize", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentsize", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "commentcontent", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("commentcontent", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("commentcontent", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "codesize", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("codesize", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("codesize", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "npathcomplexity", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("npathcomplexity", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("npathcomplexity", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "cyclomaticcomplexity", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("cyclomaticcomplexity", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("cyclomaticcomplexity", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "toomanymethods", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("toomanymethods", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("toomanymethods", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "coupling", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("coupling", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("coupling", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "couplingbetweenobjects", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("couplingbetweenobjects", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("couplingbetweenobjects", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "excessiveimports", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("excessiveimports", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("excessiveimports", face, color);
             }
         });
         WidgetUtil.trySubscribe(this, "lawofdemeter", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
             	FaceToPaint face = faceToPaint.getSelection();
-            	executeCommand("lawofdemeter", face);
+            	ColorScale color = colorScale.getSelection();
+            	executeCommand("lawofdemeter", face, color);
             }
         });
         
@@ -162,12 +166,12 @@ public class PMDMenuScreen extends CoreScreenLayer {
         });
     }
     
-    private void executeCommand(String metric, FaceToPaint face) {
+    private void executeCommand(String metric, FaceToPaint face, ColorScale color) {
     	
     	// manage invalid face selections
     	final UILabel infoField = find("infoField", UILabel.class);
-    	if (face == null) {
-    		infoField.setText("waning: please choose a face to paint!");
+    	if (face == null || color == null) {
+    		infoField.setText("waning: please choose a face and a color to paint!");
     		return;
     	}
     	infoField.setText("");
@@ -177,6 +181,7 @@ public class PMDMenuScreen extends CoreScreenLayer {
     	ArrayList<String> params = new ArrayList<String>();
     	params.add(metric);
     	params.add(face.toString());
+    	params.add(color.toString());
     	try {
 			ca.execute(params, EntityRef.NULL);
 		} catch (CommandExecutionException e1) {
