@@ -39,7 +39,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		this.colorScale = color;
 	}
 	
-	public ArrayList<String> getClassPaths(){
+	public static ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
@@ -48,7 +48,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
 	}
-	public ArrayList <String> getPathInfo(CodeMap map, CodeScale scale){
+	public static ArrayList <String> getPathInfo(CodeMap map, CodeScale scale){
 		CodeMapFactory factory = new CodeMapFactory(scale);
 		ArrayList<String> result = new ArrayList<String>();
 		for (MapObject obj: map.getMapObjects()){
@@ -60,6 +60,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		}
 		return result;
 	}
+	
 	public String getRootPath(){
 		CodeRepresentation code =  CoreRegistry.get(CodeRepresentation.class);
 		return code.getPath();
@@ -72,15 +73,15 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
 			IColoringMetric classMetric = getMetric(path); 
-			int maxHealth = 10;
+			int maxHealth = ColoringState.MAX_HEALTH;
 			int damage = (int)((maxHealth - 1)*(1.0 - classMetric.getValue()));
 			damage = Math.min((maxHealth-1), damage);
 			
 			String color = colorScale;
-			if (colorScale == ColorScale.RAINBOW.toString()) {
+			if (colorScale.equals( ColorScale.RAINBOW.toString() )) {
 				color = classMetric.getColor();
 			}
-			pbc.ColorBuildCommon(path, color, faceToPaint, damage, maxHealth);
+			pbc.ColorBuildCommon(path, color, faceToPaint, damage);
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}

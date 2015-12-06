@@ -15,32 +15,54 @@
  */
 package org.terasology.rendering.nui.layers.ingame.coloring;
 
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
+import java.util.ArrayList;
+
 import org.terasology.config.Config;
+import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.logic.console.Console;
+import org.terasology.logic.console.commandSystem.ConsoleCommand;
+import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
+import org.terasology.naming.Name;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
-import org.terasology.rendering.nui.asset.UIData;
-import org.terasology.rendering.nui.asset.UIElement;
-import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
+import org.terasology.rendering.nui.databinding.Binding;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UICheckbox;
 
 public class ColoringMenuScreen extends CoreScreenLayer {
 
-    private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
-
     @In
     private Config config;
+    
+    @In
+    private Console console;
 
     @Override
     public void initialise() {
-        CoreScreenLayer inputScreen = new InputSettingsScreen();
-        inputScreen.setSkin(getSkin());
-        UIData inputScreenData = new UIData(inputScreen);
-        Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
+    	
+    	UICheckbox renderQuakes = find("renderQuakes", UICheckbox.class);
+    	if (renderQuakes != null) {
+    		renderQuakes.setChecked(true);
+    	}
+    	
+    	WidgetUtil.tryBindCheckbox(this, "renderQuakes", new Binding<Boolean>() {
+
+    		private Boolean isChecked = new Boolean(true);
+    		
+			@Override
+			public void set(Boolean value) {
+				isChecked = value;
+                sendUpdateRegistryCommand(value);
+			}
+			
+			@Override
+			public Boolean get() {
+				return isChecked;
+			}
+		});
+    	
         WidgetUtil.trySubscribe(this, "checkStyle", new ActivateEventListener() {
         	  @Override
               public void onActivated(UIWidget button) {
@@ -78,6 +100,19 @@ public class ColoringMenuScreen extends CoreScreenLayer {
                 getManager().popScreen();
             }
         });
+    }
+    
+    private void sendUpdateRegistryCommand(Boolean renderQuakes) {
+
+    	ConsoleCommand command = console.getCommand(new Name("updateColoringState"));
+    	ArrayList<String> params = new ArrayList<String>();
+    	params.add(renderQuakes.toString());
+
+    	EntityRef e = null;
+    	try {
+    		command.execute(params, e);
+    	} catch (CommandExecutionException e1) {
+    	}
     }
 
     @Override

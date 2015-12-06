@@ -7,10 +7,12 @@ import org.terasology.registry.CoreRegistry;
 
 public class ColoringRegistry {
 
-    public Map<String, BuildRegister> buildMap;
+    private Map<String, BuildRegister> buildMap;
+    private ColoringState state;
     
     public ColoringRegistry() {
     	buildMap = new HashMap<>();
+    	state = new ColoringState();
     }
  
     public void updateRegistry(BuildRegister build) {
@@ -37,5 +39,13 @@ public class ColoringRegistry {
         	CoreRegistry.put(ColoringRegistry.class, coloringRegistry);
         }
         return coloringRegistry;
+    }
+    
+    public ColoringState getState() {
+    	return this.state;
+    }
+    
+    public void updateState(boolean renderQuakes) {
+    	this.state.setRenderQuakes(renderQuakes);
     }
 }

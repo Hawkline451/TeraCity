@@ -9,7 +9,7 @@
                 "image" : "engine:teracity",
                 "id" : "title",
                 "layoutInfo" : {
-                    "width" : 512,
+                    "width" :600,
                     "height" : 128,
                     "position-horizontal-center" : {},
                     "position-top" : {
@@ -33,20 +33,21 @@
                 }
             },
             {
-                "type" : "columnLayout",
-                "verticalSpacing" : 8,
+                "type"   : "columnLayout",
+                "verticalSpacing" : 20,
                 "family" : "menu-options",
+                "id"     : "coloring-metrics",
                 "layoutInfo" : {
-                    "width" : 280,
-                    "height" : 288,
+                    "width" : 300,
+                    "height" : 250,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "BOTTOM",
-                        "offset" : 16,
+                        "offset" : 0,
                         "widget" : "subtitle"
                     },
                     "position-bottom" : {
-                        "offset" : 32
+                        "offset" : 200
                     }
                 },
                 "contents" : [
@@ -74,18 +75,68 @@
                         "type" : "UIButton",
                         "id"   : "mockColoring",
                         "text" : "Mock"
+                    }
+                ]
+            },
+            {
+                "type" : "columnLayout",
+                "verticalSpacing" : 8,
+                "horizontalSpacing": 8,
+                "family" : "option-grid",
+                "id"     : "coloring-options",
+                "columns": 1,
+                "layoutInfo" : {
+                    "use-content-width" : true,
+                    "use-content-height" : true,
+                    "position-horizontal-center" : {
+                        "target" : "CENTER",
+                        "widget" : "coloring-metrics"
+                    },
+                    "position-top" : {
+                        "target" : "BOTTOM",
+                        "offset" : 10,
+                        "widget" : "coloring-metrics"
+                    },
+                    "position-bottom" : {
+                        "offset" : 80
+                    }
+                },
+                "contents" : [
+                    {
+                        "type": "UILabel",
+                        "text": "Render Quakes: "
                     },
                     {
-                        "type" : "UISpace",
-                        "size" : [1, 104]
+                        "type": "UICheckbox",
+                        "id": "renderQuakes"
+                    }
+                ]
+            },
+            {
+                "type"   : "columnLayout",
+                "verticalSpacing" : 20,
+                "family" : "menu-options",
+                "layoutInfo" : {
+                    "width" : 200,
+                    "height" : 20,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "BOTTOM",
+                        "offset" : 16,
+                        "widget" : "coloring-options"
                     },
+                    "position-bottom" : {
+                        "offset" : 48
+                    }
+                },
+                "contents" : [
                     {
                         "type" : "UIButton",
                         "id" : "close",
                         "text" : "Back"
                     }
                 ]
-            }
+            },
         ]
     }
 }

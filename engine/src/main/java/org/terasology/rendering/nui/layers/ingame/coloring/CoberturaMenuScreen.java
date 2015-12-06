@@ -18,9 +18,6 @@ package org.terasology.rendering.nui.layers.ingame.coloring;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.ConsoleCommand;
@@ -30,9 +27,6 @@ import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
-import org.terasology.rendering.nui.asset.UIData;
-import org.terasology.rendering.nui.asset.UIElement;
-import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UILabel;
@@ -45,19 +39,14 @@ import com.google.common.collect.Lists;
  */
 public class CoberturaMenuScreen extends CoreScreenLayer {
 
-    private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
-
     @In
     private Console console;
     
     @Override
     @SuppressWarnings("unchecked")
     public void initialise() {
-        CoreScreenLayer inputScreen = new InputSettingsScreen();
-        inputScreen.setSkin(getSkin());
-        UIData inputScreenData = new UIData(inputScreen);
-        Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
-        final UIText testClass = find("testClasses", UIText.class);
+        
+    	final UIText testClass = find("testClasses", UIText.class);
         final UIText testedClass = find("testedClasses", UIText.class);
         final UIText sourceFolder = find("singleFolder", UIText.class);
         final UIText xmlReport = find("xmlReport", UIText.class);

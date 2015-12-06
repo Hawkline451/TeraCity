@@ -12,6 +12,7 @@ import org.terasology.registry.CoreRegistry;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import coloring.AbstractColoring;
+import coloring.ColoringRegistry;
 import coloring.IColoring;
 import coloring.modules.*;
 
@@ -145,5 +146,25 @@ public class ColoringCommands extends BaseComponentSystem{
 			System.out.println("Error de Pintado");
 		}
 		return "Pintado";
+    }
+	
+	@Command(
+			shortDescription  = "actualiza registro con estado del coloreo",
+            helpText           = "TODO\n",
+            requiredPermission = PermissionManager.NO_PERMISSION
+	)
+    public String updateColoringState(
+    		@CommandParam(value="renderQuakes" , required=true) String renderQuakes)
+	{
+		// update register
+		boolean doRenderQuakes = new Boolean(renderQuakes).booleanValue();
+		ColoringRegistry registry = ColoringRegistry.getRegister();
+		registry.updateState(doRenderQuakes);
+		CoreRegistry.put(ColoringRegistry.class, registry);
+		
+		// refresh
+		new PlaceBlockCommand().refreshCity();
+		
+		return "";
     }
 }

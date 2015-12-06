@@ -2,9 +2,6 @@ package org.terasology.rendering.nui.layers.ingame.coloring;
 
 import java.util.ArrayList;
 
-import org.terasology.asset.AssetType;
-import org.terasology.asset.AssetUri;
-import org.terasology.asset.Assets;
 import org.terasology.config.Config;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.logic.console.Console;
@@ -15,9 +12,6 @@ import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
-import org.terasology.rendering.nui.asset.UIData;
-import org.terasology.rendering.nui.asset.UIElement;
-import org.terasology.rendering.nui.layers.mainMenu.inputSettings.InputSettingsScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UILabel;
@@ -26,7 +20,6 @@ import com.google.common.collect.Lists;
 
 
 public class GitMenuScreen extends CoreScreenLayer{
-	 private static final AssetUri INPUT_SCREEN_URI = new AssetUri(AssetType.UI_ELEMENT, "engine:inputScreen");
 
 	    @In
 	    private Config config;
@@ -37,10 +30,6 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    @Override
 	    @SuppressWarnings("unchecked")
 	    public void initialise() {
-	        CoreScreenLayer inputScreen = new InputSettingsScreen();
-	        inputScreen.setSkin(getSkin());
-	        UIData inputScreenData = new UIData(inputScreen);
-	        Assets.generateAsset(INPUT_SCREEN_URI, inputScreenData, UIElement.class);
 	        
 	        UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
 	        if (faceToPaint != null) {

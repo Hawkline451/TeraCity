@@ -245,7 +245,14 @@ public class BlockManagerImpl extends BlockManager {
 
     @VisibleForTesting
     protected void registerFamily(BlockFamily family) {
-        logger.info("Registered {}", family);
+    	
+    	// TODO: parche para coloreo
+    	String modulename = family.getURI().getModuleName().toString();
+    	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+    	if (!modulename.toLowerCase().equals("coloring")) {
+    		logger.info("Registered {}", family);
+    	}
+        
         lock.lock();
         try {
             RegisteredState newState = new RegisteredState(registeredBlockInfo.get());
@@ -264,7 +271,14 @@ public class BlockManagerImpl extends BlockManager {
 
     private void registerBlock(Block block, RegisteredState newState) {
         if (block.getId() != UNKNOWN_ID) {
-            logger.info("Registered Block {} with id {}", block, block.getId());
+        
+        	// TODO: parche para coloreo
+        	String modulename = block.getBlockFamily().getURI().getModuleName().toString();
+        	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+        	if (!modulename.toLowerCase().equals("coloring")) {
+        		logger.info("Registered Block {} with id {}", block, block.getId());
+        	}
+            
             newState.blocksById.put(block.getId(), block);
             newState.idByUri.put(block.getURI(), block.getId());
         } else {
@@ -397,7 +411,16 @@ public class BlockManagerImpl extends BlockManager {
                     lock.unlock();
                 }
             } else {
-                logger.warn("Unable to resolve block family {}", uri);
+                
+                // TODO: parche para coloreo!
+            	String modulename = uri.getModuleName().toString();
+            	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+            	if (modulename.toLowerCase().equals("coloring")) {
+            		family = getBlockFamily(new BlockUri("Core", "stone"));
+                } else {
+                	logger.warn("Unable to resolve block family {}", uri);
+                }
+                
             }
         }
         return family;

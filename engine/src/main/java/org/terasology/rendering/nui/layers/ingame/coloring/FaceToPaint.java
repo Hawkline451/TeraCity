@@ -45,19 +45,19 @@ public enum FaceToPaint {
     }
     
     public static FaceToPaint fromString(String face) {
-    	if (face == "all") {
+    	if (face.equals("all")) {
     		return FaceToPaint.ALL;
     	}
-    	if (face == "east") {
+    	if (face.equals("east")) {
     		return FaceToPaint.EAST;
     	}
-    	if (face == "west") {
+    	if (face.equals("west")) {
     		return FaceToPaint.WEST;
     	}
-    	if (face == "north") {
+    	if (face.equals("north")) {
     		return FaceToPaint.NORTH;
     	}
-    	if (face == "south") {
+    	if (face.equals("south")) {
     		return FaceToPaint.SOUTH;
     	}
     	return null;
