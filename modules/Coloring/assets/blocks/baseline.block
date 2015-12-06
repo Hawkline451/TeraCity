@@ -1,0 +1,16 @@
+/**
+ * this block is intended to be used as a template for coloring purposes
+ * the implementation should replace the 'tiles' parameter when loading. 
+ */
+{
+    "categories" : ["mineral"],
+    "hardness"   : 12,
+    "mass"       : 50,
+    "sounds"     : "Core:stone",
+    // available 'tiles' values: 
+    // - all, sides, topBottom, 
+    // - top, bottom, front, back, left, right, center 
+    "tiles" : {
+        "all": "Core:stone"
+    }
+}

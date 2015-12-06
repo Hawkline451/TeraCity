@@ -16,18 +16,14 @@
 
 package org.terasology.world.block.loader;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,14 +59,18 @@ import org.terasology.world.block.family.SymmetricFamily;
 import org.terasology.world.block.shapes.BlockMeshPart;
 import org.terasology.world.block.shapes.BlockShape;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 /**
  * Block Loader processes all the block assets, creating a set of Block Families and Freeform block uris.
@@ -116,7 +116,28 @@ public class BlockLoader implements BlockBuilderHelper {
         trimmedLoweredShape = (BlockShape) Assets.get(AssetType.SHAPE, "engine:trimmedLoweredCube");
         this.blockFamilyFactoryRegistry = blockFamilyFactoryRegistry;
     }
-
+    
+    public BlockFamily createBlockFamilyFromTemplate(AssetUri templateUri, AssetUri familyUri, Map<BlockPart, AssetUri> tileUris) {
+    	
+    	//logger.info("Creating Block Family: {}", familyUri.toSimpleString());
+    	
+    	JsonElement rawJson = readJson(templateUri);
+    	JsonObject blockDefJson = rawJson.getAsJsonObject();
+        BlockDefinition blockDef = createBlockDefinition(inheritData(templateUri, blockDefJson));
+        
+        // replace and load tiles
+        AssetManager assetManager = CoreRegistry.get(AssetManager.class);
+        for (BlockPart part : tileUris.keySet()) {
+        	String uri = tileUris.get(part).toSimpleString();
+        	blockDef.tiles.map.put(part, uri);
+        	assetManager.loadAssetData(new AssetUri(AssetType.BLOCK_TILE, uri),  TileData.class);
+        }
+                
+        BlockFamilyFactory familyFactory = blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation);
+        BlockFamily family = familyFactory.createBlockFamily(this, familyUri, blockDef, blockDefJson);
+    	return family;
+    }
+    
     public LoadBlockDefinitionResults loadBlockDefinitions() {
         logger.info("Loading Blocks...");
 
@@ -126,7 +147,7 @@ public class BlockLoader implements BlockBuilderHelper {
                 JsonElement rawJson = readJson(blockDefUri);
                 if (rawJson != null) {
                     JsonObject blockDefJson = rawJson.getAsJsonObject();
-
+                    
                     // Don't process templates
                     if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
                         continue;

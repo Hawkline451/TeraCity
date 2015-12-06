@@ -4,36 +4,36 @@
     "contents" : {
         "type" : "relativeLayout",
         "contents" : [
-                {
-                    "type" : "UIImage",
-                    "image" : "engine:pmd",
-                    "id" : "title",
-                    "layoutInfo" : {
-                        "width" : 197,
-                        "height" : 100,
-                        "position-horizontal-center" : {},
-                        "position-top" : {
-                            "target" : "TOP",
-                            "offset" : 48
-                        }
+            {
+                "type" : "UIImage",
+                "image" : "engine:pmd",
+                "id" : "title",
+                "layoutInfo" : {
+                    "width" : 197,
+                    "height" : 100,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "TOP",
+                        "offset" : 48
                     }
-                },
-                {
-                    "type": "UILabel",
-                    "family": "title",
-                    "text": "Métricas para aplicar: ",
-                    "id": "subtitle",
-                    "layoutInfo": {
-                        "height": 48,
-                        "position-horizontal-center": {},
-                        "position-top": {
-                            "target": "BOTTOM",
-                            "widget": "title",
-                            "offset": 30
-                        }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Available Metrics: ",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 20,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title",
+                        "offset": 0
                     }
-                },
-             {
+                }
+            },
+            {
                 "type" : "columnLayout",
                 "id" : "metrics",
                 "verticalSpacing" : 40,
@@ -91,7 +91,6 @@
                             }
                         ]
                     },
-                    
                     {
                         "type" : "columnLayout",
                         "id" : "columnCodesize",
@@ -186,16 +185,15 @@
                             {
                                 "type": "UIDropdown",
                                 "id": "faceToPaint"
-                            }
-                        ]
-                    },
-                    {
-                        "type" : "columnLayout",
-                        "verticalSpacing" : 8,
-                        "horizontalSpacing" : 8,
-                        "columns": 1,
-                        "family" : "option-grid",
-                        "contents" : [
+                            },
+                            {
+                                "type": "UILabel",
+                                "text": "Color Scale: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "colorScale"
+                            },
                             {
                                 "type": "UILabel",
                                 "id"  : "infoField",
@@ -222,3 +220,4 @@
         ]
     }
 }
+

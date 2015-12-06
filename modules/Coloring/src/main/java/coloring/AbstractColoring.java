@@ -11,6 +11,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.layers.ingame.coloring.ColorScale;
 import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.world.WorldProvider;
 
@@ -27,13 +28,18 @@ import coloring.commands.PlaceBlockCommand;
 public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	protected String[] params;
-	private String faceToPaint = FaceToPaint.ALL.toString();	
+	private String faceToPaint = FaceToPaint.ALL.toString();
+	private String colorScale  = ColorScale.RAINBOW.toString();
 	
 	public void setFaceToPaint(String face) {
 		this.faceToPaint = face;
 	}
 	
-	public ArrayList<String> getClassPaths(){
+	public void setColorScale(String color) {
+		this.colorScale = color;
+	}
+	
+	public static ArrayList<String> getClassPaths(){
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
@@ -42,7 +48,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
 	}
-	public ArrayList <String> getPathInfo(CodeMap map, CodeScale scale){
+	public static ArrayList <String> getPathInfo(CodeMap map, CodeScale scale){
 		CodeMapFactory factory = new CodeMapFactory(scale);
 		ArrayList<String> result = new ArrayList<String>();
 		for (MapObject obj: map.getMapObjects()){
@@ -53,8 +59,8 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 			}
 		}
 		return result;
-	
 	}
+	
 	public String getRootPath(){
 		CodeRepresentation code =  CoreRegistry.get(CodeRepresentation.class);
 		return code.getPath();
@@ -62,16 +68,20 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 	
 	@Override
 	public void executeColoring() {
-		System.out.println("Painting face: " + faceToPaint);
+		System.out.println("Painting face: " + faceToPaint + " with color scale: " + colorScale);
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
 		for (String path : paths) {
 			IColoringMetric classMetric = getMetric(path); 
-			int maxHealth = 10;
+			int maxHealth = ColoringState.MAX_HEALTH;
 			int damage = (int)((maxHealth - 1)*(1.0 - classMetric.getValue()));
 			damage = Math.min((maxHealth-1), damage);
 			
-			pbc.ColorBuildCommon(path, classMetric.getColor(), faceToPaint, damage, maxHealth);
+			String color = colorScale;
+			if (colorScale.equals( ColorScale.RAINBOW.toString() )) {
+				color = classMetric.getColor();
+			}
+			pbc.ColorBuildCommon(path, color, faceToPaint, damage);
 		}
 		ColoringCommands.STATE = "Awaiting analisys";
 	}
