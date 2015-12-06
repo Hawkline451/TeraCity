@@ -99,7 +99,7 @@ public class StateInitTeracity implements GameState {
 
         gameManifest.setTitle(worldGenConfig.getWorldTitle());
         gameManifest.setSeed(worldGenConfig.getDefaultSeed());
-        float timeOffset = 0.25f + 0.025f;  // Time at dawn + little offset to spawn in a brighter env.
+        float timeOffset = 0.5f;  // Time fixated on noon.
         WorldInfo worldInfo = new WorldInfo(TerasologyConstants.MAIN_WORLD, gameManifest.getSeed(),
                 (long) (WorldTime.DAY_LENGTH * timeOffset), worldGeneratorUri);
         gameManifest.addWorld(worldInfo);

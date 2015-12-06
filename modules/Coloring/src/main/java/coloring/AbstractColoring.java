@@ -14,6 +14,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.coloring.ColorScale;
 import org.terasology.rendering.nui.layers.ingame.coloring.FaceToPaint;
 import org.terasology.world.WorldProvider;
+import org.terasology.world.time.WorldTime;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -71,6 +72,13 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		System.out.println("Painting face: " + faceToPaint + " with color scale: " + colorScale);
 		ArrayList<String> paths = getClassPaths();
 		PlaceBlockCommand pbc = new PlaceBlockCommand();
+		if (paths.isEmpty())
+			return;
+		IColoringMetric generalMetric = getMetric(paths.get(0));
+		WorldTime worldTime = CoreRegistry.get(WorldTime.class);
+		long initTime = (long) (0.5f * WorldTime.DAY_LENGTH);
+		long deltaTime = (long) (0.35f * WorldTime.DAY_LENGTH * (1.0 - generalMetric.getValue()));
+		worldTime.setMilliseconds(initTime + deltaTime); //Time ranges from noon to night.
 		for (String path : paths) {
 			IColoringMetric classMetric = getMetric(path); 
 			int maxHealth = ColoringState.MAX_HEALTH;
