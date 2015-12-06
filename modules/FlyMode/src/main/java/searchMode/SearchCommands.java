@@ -42,7 +42,7 @@ public class SearchCommands extends BaseComponentSystem{
 		console.addMessage("Starting search...");
 		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		List<MapObject> possibleResults = new ArrayList<>();
-		Set<MapObject> mapObjects = codeMap.getMapObjects();
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		int i = 0;
 		for(MapObject object : mapObjects){
 			//TODO: BUG!? ~440 objects iguales.

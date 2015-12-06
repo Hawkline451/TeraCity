@@ -67,6 +67,10 @@ public interface CodeMap {
     public Set<MapObject> getMapObjects();
     
     /**
+     * @return The set of MapObjects for teleport purpose.
+     */
+    public Set<MapObject> getPosMapObjects();
+    /**
      * @param x Coordinate x of the map
      * @param y Coordinate y of the map
      * @return The MaṕObject in the indicated position

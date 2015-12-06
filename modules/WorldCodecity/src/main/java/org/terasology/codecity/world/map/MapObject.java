@@ -27,6 +27,11 @@ public class MapObject implements IMapObject {
         this.z = z;
         this.isOrigin = isOrigin;
     }
+    
+    @Override
+    public String toString(){
+    	return this.object.getBase().getName();
+    }
 
 	/**
      * @return The position of the object in the x coordinate

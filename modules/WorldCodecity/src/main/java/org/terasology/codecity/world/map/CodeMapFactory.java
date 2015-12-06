@@ -49,7 +49,7 @@ public class CodeMapFactory {
 
         for (DrawableCode content : sortedContent)
             insertInMap(map, content);
-
+            
         return map;
     }
 

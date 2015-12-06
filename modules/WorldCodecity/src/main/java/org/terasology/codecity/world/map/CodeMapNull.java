@@ -53,4 +53,10 @@ public class CodeMapNull implements CodeMap {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public Set<MapObject> getPosMapObjects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,7 +1,9 @@
 package org.terasology.codecity.world.map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
@@ -101,6 +103,24 @@ public class CodeMapHash implements CodeMap {
         return objects;
     }
     
+    @Override
+	public Set<MapObject> getPosMapObjects() {
+		Set<MapObject> objects = new HashSet<MapObject>();
+		List<DrawableCode> codes = new ArrayList<DrawableCode>(codePosition.keySet());
+		List<Vector2i> pos = new ArrayList<Vector2i>(codePosition.values());
+		Vector2i tmp;
+		int x, y;
+		for (int i = 0; i < codes.size(); i++){
+			tmp = pos.get(i);
+			x = tmp.getX();
+			y = tmp.getY();
+			objects.add(new MapObject(codes.get(i), x, y, (x == 0 && y == 0)));
+		}
+		
+		
+		return objects;
+	}	
+    
     /**
      * {@inheritDoc}
      */
@@ -147,4 +167,6 @@ public class CodeMapHash implements CodeMap {
     public Vector2i getCodePosition(DrawableCode code) {
         return codePosition.get(code);
     }
+
+	
 }
