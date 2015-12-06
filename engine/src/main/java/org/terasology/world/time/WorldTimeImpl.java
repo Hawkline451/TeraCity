@@ -24,6 +24,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.WorldComponent;
 
@@ -48,6 +49,7 @@ public class WorldTimeImpl extends BaseComponentSystem implements WorldTime, Upd
     
     public WorldTimeImpl(long initialTime) {
     	this.setTime(initialTime);
+    	CoreRegistry.put(WorldTime.class, this);
     }
     
     @Override
