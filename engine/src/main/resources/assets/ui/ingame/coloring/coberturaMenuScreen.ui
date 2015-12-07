@@ -41,7 +41,6 @@
                     }
                 },
                 "contents" : [
-                    { "type" : "UILabel", "text" : "Type 1" },
                     {
                         "type" : "UIBox",
                         "content" : {
@@ -65,7 +64,6 @@
                             "position-horizontal-center" : {}
                         }
                     },
-                    { "type" : "UILabel", "text" : "Type 2" },
                     {
                         "type" : "UIBox",
                         "content" : {
@@ -99,7 +97,6 @@
                             }
                         }
                     },
-                    { "type" : "UILabel", "text" : "Type 3" },
                     {
                         "type" : "UIBox",
                         "content" : {
@@ -109,7 +106,6 @@
                             "column-widths" : [0.30, 0.70],
                             "verticalSpacing" : 8,
                             "horizontalSpacing" : 8,
-        
                             "contents" : [
                                 { "type" : "UILabel", "text" : "XML Report: " },
                                 { "type" : "UIText", "id"   : "xmlReport" },
@@ -150,6 +146,14 @@
                             }
                         },
                         "contents" : [
+                            {
+                                "type": "UILabel",
+                                "text": "Color Scale: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "colorScale"
+                            },
                             {
                                 "type": "UILabel",
                                 "text": "Face to paint: "

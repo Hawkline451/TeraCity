@@ -84,6 +84,14 @@
                             {
                                 "type": "UIDropdown",
                                 "id": "faceToPaint"
+                            },
+                            {
+                                "type": "UILabel",
+                                "text": "Color Scale: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "colorScale"
                             }
                         ]
                     },

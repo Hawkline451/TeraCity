@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+
 import gnu.trove.iterator.TObjectShortIterator;
 import gnu.trove.map.TObjectShortMap;
 import gnu.trove.map.TShortObjectMap;
@@ -31,6 +32,7 @@ import gnu.trove.map.hash.TShortObjectHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.asset.AssetManager;
+import org.terasology.asset.AssetUri;
 import org.terasology.asset.Assets;
 import org.terasology.engine.module.ModuleManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -41,6 +43,7 @@ import org.terasology.persistence.ModuleContext;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockPart;
 import org.terasology.world.block.BlockSounds;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
@@ -199,6 +202,23 @@ public class BlockManagerImpl extends BlockManager {
         }
     }
 
+    public BlockFamily createBlockFamily(AssetUri templateUri, AssetUri familyUri, Map<BlockPart, AssetUri> tileUris) {
+    	BlockFamily family = blockLoader.createBlockFamilyFromTemplate(templateUri, familyUri, tileUris);
+    	addBlockFamily(family, false);
+    	
+    	// register family and blocks
+        for (Block block : family.getBlocks()) {
+            if (generateNewIds) {
+                block.setId(getNextId());
+            } else {
+                block.setId(UNKNOWN_ID);
+            }
+        }
+        registerFamily(family);
+        
+    	return family; 
+    }
+    
     /**
      * @param family
      * @param andRegister Immediately registers the family - it is expected that the blocks have been given ids.
@@ -214,6 +234,7 @@ public class BlockManagerImpl extends BlockManager {
         }
     }
 
+    
     @VisibleForTesting
     public void addFreeformBlockFamily(BlockUri family, Iterable<String> categories) {
         freeformBlockUris.add(family);
@@ -224,7 +245,14 @@ public class BlockManagerImpl extends BlockManager {
 
     @VisibleForTesting
     protected void registerFamily(BlockFamily family) {
-        logger.info("Registered {}", family);
+    	
+    	// TODO: parche para coloreo
+    	String modulename = family.getURI().getModuleName().toString();
+    	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+    	if (!modulename.toLowerCase().equals("coloring")) {
+    		logger.info("Registered {}", family);
+    	}
+        
         lock.lock();
         try {
             RegisteredState newState = new RegisteredState(registeredBlockInfo.get());
@@ -243,7 +271,14 @@ public class BlockManagerImpl extends BlockManager {
 
     private void registerBlock(Block block, RegisteredState newState) {
         if (block.getId() != UNKNOWN_ID) {
-            logger.info("Registered Block {} with id {}", block, block.getId());
+        
+        	// TODO: parche para coloreo
+        	String modulename = block.getBlockFamily().getURI().getModuleName().toString();
+        	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+        	if (!modulename.toLowerCase().equals("coloring")) {
+        		logger.info("Registered Block {} with id {}", block, block.getId());
+        	}
+            
             newState.blocksById.put(block.getId(), block);
             newState.idByUri.put(block.getURI(), block.getId());
         } else {
@@ -376,7 +411,16 @@ public class BlockManagerImpl extends BlockManager {
                     lock.unlock();
                 }
             } else {
-                logger.warn("Unable to resolve block family {}", uri);
+                
+                // TODO: parche para coloreo!
+            	String modulename = uri.getModuleName().toString();
+            	//System.out.println("- " + modulename + ", " + modulename.toLowerCase());
+            	if (modulename.toLowerCase().equals("coloring")) {
+            		family = getBlockFamily(new BlockUri("Core", "stone"));
+                } else {
+                	logger.warn("Unable to resolve block family {}", uri);
+                }
+                
             }
         }
         return family;

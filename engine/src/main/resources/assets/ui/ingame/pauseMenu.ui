@@ -38,7 +38,7 @@
                     {
                         "type" : "UIButton",
                         "id" : "colorear",
-                        "text" : "Colorear"
+                        "text" : "Coloring"
                     },
                     {
                         "type" : "UIButton",

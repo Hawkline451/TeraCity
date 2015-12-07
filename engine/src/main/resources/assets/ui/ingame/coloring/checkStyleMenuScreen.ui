@@ -21,7 +21,7 @@
             {
                 "type": "UILabel",
                 "family": "title",
-                "text": "Métricas para aplicar: ",
+                "text": "Available Metrics: ",
                 "id": "subtitle",
                 "layoutInfo": {
                     "height": 48,
@@ -38,14 +38,14 @@
                 "id" : "metrics",
                 "verticalSpacing" : 8,
                 "horizontalSpacing" : 8,
-                "columns": 1,
+                "columns": 2,
                 "family" : "menu-options",
                 "layoutInfo" : {
-                    "width" : 250,
-                    "height" : 200,
+                    "width" : 600,
+                    "height" : 120,
                     "position-horizontal-center" : {},
                     "position-top" : {
-                        "target" : "BOTTON",
+                        "target" : "BOTTOM",
                         "offset" : 50,
                         "widget" : "subtitle"
                     }
@@ -75,11 +75,6 @@
                         "type" : "UIButton",
                         "id" : "dataAbstractionCoupling",
                         "text" : "Abstract Coupling"
-                    },
-                    {
-                        "type": "UILabel",
-                        "id"  : "infoField",
-                        "text": ""
                     }
                 ]
             },
@@ -91,8 +86,8 @@
                 "columns": 2,
                 "family" : "option-grid",
                 "layoutInfo" : {
-                    "width" : 400,
-                    "height" : 100,
+                    "width" : 700,
+                    "height" : 170,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target": "BOTTOM",
@@ -103,7 +98,7 @@
                 "contents" : [
                     {
                         "type" : "UILabel",
-                        "text" : "Max value \n(empty means default): "
+                        "text" : "Max value (empty means default): "
                     },
                     {
                         "type" : "UIText",
@@ -111,7 +106,7 @@
                     },
                     {
                         "type" : "UILabel",
-                        "text" : "Ruta Proyecto\n(empty means default): "
+                        "text" : "Proyect Path (empty means default): "
                     },
                     {
                         "type" : "UIText",
@@ -124,6 +119,19 @@
                     {
                         "type": "UIDropdown",
                         "id": "faceToPaint"
+                    },
+                    {   
+                        "type": "UILabel",
+                        "text": "Color Scale: "
+                    },
+                    {
+                        "type": "UIDropdown",
+                        "id": "colorScale"
+                    },
+                    {
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
                     }
                 ]
             },
@@ -144,3 +152,4 @@
         ]
     }
 }
+

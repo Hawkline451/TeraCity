@@ -1,0 +1,6 @@
+<color>6.png  255
+<color>5.png  215
+<color>4.png  175
+<color>3.png  135
+<color>2.png   95
+<color>1.png   55

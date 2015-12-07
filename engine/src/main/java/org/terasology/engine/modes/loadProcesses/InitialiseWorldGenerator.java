@@ -44,8 +44,11 @@ public class InitialiseWorldGenerator extends SingleStepLoadProcess {
         
         PathManager m = PathManager.getInstance();
     	Path p = m.getProjectPath();
-
-        String path = p.toString();
+    	String path;
+    	if(p != null)
+    		path = p.toString();
+    	else
+    		path = "";
         
         worldGenerator.initialize(path);
 
