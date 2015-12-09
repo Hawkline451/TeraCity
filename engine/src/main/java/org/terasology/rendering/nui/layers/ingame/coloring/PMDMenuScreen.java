@@ -50,7 +50,7 @@ public class PMDMenuScreen extends CoreScreenLayer {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
         }
         
-        UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
+        final UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
         if (colorScale != null) {
         	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
         }

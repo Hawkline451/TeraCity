@@ -8,6 +8,7 @@ public class BuildInformation {
 	private int z;
 	private int height;
 	private int width;
+	private int[] lineLength;
 	private MapObject info;
 	
 	public BuildInformation(int x,int y, int z, int height, int width, MapObject object){
@@ -17,6 +18,11 @@ public class BuildInformation {
 		this.height = height;
 		this.info = object;
 		this.width = width;
+		this.lineLength = object.getObject().getLineLength();
+	}
+	
+	public int[] getLineLength() {
+		return lineLength;
 	}
 	public int getX(){
 		return x;

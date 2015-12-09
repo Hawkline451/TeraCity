@@ -11,6 +11,7 @@ import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeFactory;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.CoreRegistry;
@@ -23,7 +24,7 @@ import org.terasology.world.generator.RegisterWorldGenerator;
  */
 @RegisterWorldGenerator(id = "codecity", displayName = "CodeCity", description = "Generates the world using a CodeCity structure")
 public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
-    private final CodeScale cScale = new SquareRootCodeScale();
+    private final CodeScale cScale = new HalfLinearCodeScale();
     private String path = "";
 
     public CodeCityWorldGenerator(SimpleUri uri) {
