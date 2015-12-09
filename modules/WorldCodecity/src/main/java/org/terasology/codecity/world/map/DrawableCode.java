@@ -2,6 +2,7 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.world.block.Block;
 
 /**
  * This class represent a part of the code that can be drawed in the map
@@ -45,4 +46,5 @@ public interface DrawableCode {
      */
     public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory);
     
+	public int[] getLineLength();    
 }

@@ -40,7 +40,7 @@ public class MainMenuScreen extends CoreScreenLayer {
         WidgetUtil.trySubscribe(this, "singleplayer", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
-                getManager().pushScreen("engine:createGameScreen");
+                getManager().pushScreen("engine:selectGameScreen");
             }
         });
         WidgetUtil.trySubscribe(this, "multiplayer", new ActivateEventListener() {

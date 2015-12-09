@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.DummyArray;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.world.block.Block;
 
 /**
  * This class represent a Package that can be drawed in the map
@@ -64,4 +66,10 @@ public class DrawableCodePackage implements DrawableCode {
 	public int getWidth(CodeScale scale, CodeMapFactory factory) {
 		return 1;
 	}
+
+	@Override
+	public int[] getLineLength() {
+		return null;
+	}
+	
 }

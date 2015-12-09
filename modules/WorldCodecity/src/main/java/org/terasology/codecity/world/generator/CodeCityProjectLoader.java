@@ -39,7 +39,7 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		if (!file.isDirectory()){
 			String name = file.getName();
 			if (isJava(name)){
-				return new CodeClass(name, 0 /* TODO Ver variables*/, countLines(file.getPath()) /*TODO ver largo archivo*/, file.getPath(), "");
+				return new CodeClass(name, 0 /* TODO Ver variables*/, countLines(file.getPath()) /*TODO ver largo archivo*/, file.getPath(), "", countLineLength(file.getPath()));
 			}
 			else
 				return new NullCodeClass();
@@ -64,6 +64,39 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		if(index > 0)
 			return true;
 		return false;
+	}
+	
+	public static int[] countLineLength(String filename) {
+		int[] result = null;
+		try {
+			InputStream in = new BufferedInputStream(new FileInputStream(filename));
+			int nLines = countLines(filename);
+			result = new int[nLines];
+		try {
+			byte[] c = new byte[1024];
+	        int readChars = 0;
+	        int line = 0;
+	        int count = 0;
+	        while ((readChars = in.read(c)) != -1) {
+	            for (int i = 0; i < readChars; ++i) {
+	            	count++;
+	                if (c[i] == '\n') {
+	                	result[line] = count;
+	                	line++;
+	                	count = 0;
+	                }
+	            }
+	            line++;
+	        }
+			return result;
+		}
+		finally {
+			in.close();
+		}
+		}
+		catch (Exception e) {
+			return result;
+		}
 	}
 	
 	/* From stackoverflow <3*/

@@ -409,10 +409,10 @@ public class TerasologyEngine implements GameEngine {
             // Only process rendering and updating once a second
             if (!display.isActive() && isHibernationAllowed()) {
                 time.setPaused(true);
-                Iterator<Float> updateCycles = time.tick();
-                while (updateCycles.hasNext()) {
-                    updateCycles.next();
-                }
+                //Iterator<Float> updateCycles = time.tick();
+                //while (updateCycles.hasNext()) {
+                //    updateCycles.next();
+                //}
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {

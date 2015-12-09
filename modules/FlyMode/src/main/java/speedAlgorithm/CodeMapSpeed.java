@@ -5,6 +5,7 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.math.Vector2i;
 import org.terasology.registry.CoreRegistry;
@@ -19,7 +20,7 @@ import speedMath.CodeMapSpeedMath;
 public class CodeMapSpeed extends Speed {
     
     private float calculatedSpeed;
-    private CodeScale scale = new SquareRootCodeScale();
+    private CodeScale scale = new HalfLinearCodeScale();
     private CodeMapFactory factory = new CodeMapFactory(scale);
     private int maxHeight;
     

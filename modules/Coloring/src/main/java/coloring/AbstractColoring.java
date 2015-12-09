@@ -9,6 +9,7 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.ingame.coloring.ColorScale;
@@ -44,7 +45,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	CodeScale scale = new SquareRootCodeScale();
+        	CodeScale scale = new HalfLinearCodeScale();
         	return getPathInfo(map,scale);
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");

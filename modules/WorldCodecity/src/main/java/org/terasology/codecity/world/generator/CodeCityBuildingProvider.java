@@ -5,6 +5,7 @@ import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
@@ -27,7 +28,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Requires(@Facet(SurfaceHeightFacet.class))
 public class CodeCityBuildingProvider implements FacetProvider {
 
-    private final CodeScale scale = new SquareRootCodeScale();
+    private final CodeScale scale = new HalfLinearCodeScale();
     private final CodeMapFactory factory = new CodeMapFactory(scale);
 
     @Override
