@@ -66,12 +66,15 @@ public class DrawableCodePackage implements DrawableCode {
 	}
 
 	@Override
-	public boolean containsClass(String className) {
-		return base.getName().equals(className);
-		/*
+	public boolean containsClass(String className) {		
 		for(DrawableCode code : contentList){
 			if(code.containsClass(className)) return true;
 		}
-		return false;*/
+		return false;
+	}
+	
+	@Override
+	public void accept(DrawableCodeVisitor visitor) {
+		visitor.visit(this);
 	}
 }

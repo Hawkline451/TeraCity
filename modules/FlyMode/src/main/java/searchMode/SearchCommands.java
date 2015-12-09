@@ -17,6 +17,7 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.PlayerSystem;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
@@ -25,7 +26,7 @@ import org.terasology.registry.In;
  * @author mrgcl
  */
 @RegisterSystem
-public class SearchCommands extends BaseComponentSystem{	
+public class SearchCommands extends BaseComponentSystem{
 	@In
 	private Console console;
 	@In
@@ -39,31 +40,26 @@ public class SearchCommands extends BaseComponentSystem{
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String search(@CommandParam(value="className", required=true)  String className) {
+		String message = "Class not found.";
 		console.addMessage("Starting search...");
 		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		List<MapObject> possibleResults = new ArrayList<>();
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		int i = 0;
 		for(MapObject object : mapObjects){
-			//TODO: BUG!? ~440 objects iguales.
 			if(object.containsClass(className)){
-				possibleResults.add(object);
+				DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
+				object.getObject().accept(visitor);
+				while(true){
+					if(visitor.resultReady()){
+						Vector3i pos = visitor.getPosition();
+						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
+						console.execute(command, getLocalClientEntity());
+						message = "Class found, teleporting!";
+						break;
+					}
+				}
 				break;
-			}			
-			i++;
-		}
-		String message = "Class not found.";
-		if(possibleResults.size() == 1){
-			MapObject result = possibleResults.get(0);
-			CodeScale codeScale = CoreRegistry.get(CodeScale.class);
-			CodeMapFactory codeMapFactory = CoreRegistry.get(CodeMapFactory.class);
-			String command = String.format("teleport %d %d %d", result.getPositionX(), result.getHeight(codeScale, codeMapFactory)+20, result.getPositionZ());
-			boolean commandExecuted = console.execute(command, getLocalClientEntity());
-			message = "Class found, teleporting!";
-		}
-		else if(possibleResults.size() > 1){
-			message = "Too many results, try refining your search.";
-		}
+			}	
+		}		
         return message;
     }
 	

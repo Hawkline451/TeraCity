@@ -48,4 +48,9 @@ public class DrawableCodeClass implements DrawableCode {
 	public boolean containsClass(String className) {
 		return base.getName().equals(className);
 	}
+
+	@Override
+	public void accept(DrawableCodeVisitor visitor) {
+		visitor.visit(this);
+	}
 }

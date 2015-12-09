@@ -50,4 +50,6 @@ public interface DrawableCode {
      * @return whether the class is contained 
      */
     public boolean containsClass(String className);
+    
+    public void accept(DrawableCodeVisitor visitor);
 }

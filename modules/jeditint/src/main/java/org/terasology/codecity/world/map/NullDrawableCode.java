@@ -35,4 +35,8 @@ public class NullDrawableCode implements DrawableCode {
 		return false;
 	}
 
+	@Override
+	public void accept(DrawableCodeVisitor visitor) {
+		//intentionally blank.
+	}
 }
