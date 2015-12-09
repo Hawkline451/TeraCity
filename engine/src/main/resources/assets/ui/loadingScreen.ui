@@ -5,6 +5,20 @@
         "type" : "RelativeLayout",
         "contents" : [
             {
+                "type" : "UIImage",
+                "image" : "engine:teracity",
+                "id" : "title",
+                "layoutInfo" : {
+                    "width" : 512,
+                    "height" : 128,
+                    "position-horizontal-center" : {},
+                    "position-top" : {
+                        "target" : "TOP",
+                        "offset" : 48
+                    }
+                }
+            },
+            {
                 "type" : "UILabel",
                 "id" : "statusLabel",
                 "layoutInfo" : {
