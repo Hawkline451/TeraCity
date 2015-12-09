@@ -1,14 +1,10 @@
 package searchMode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.map.CodeMap;
-import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
-import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -22,6 +18,11 @@ import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.world.WorldProvider;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockUri;
+import org.terasology.world.block.family.BlockFamily;
 
 /**
  * @author mrgcl
@@ -37,6 +38,9 @@ public class SearchCommands extends BaseComponentSystem{
 	
 	private EntityRef localClientEntity;
 	
+	private Vector3i lastHighlightPos;
+	private Block lastHighlightBlock;
+	
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
@@ -49,6 +53,7 @@ public class SearchCommands extends BaseComponentSystem{
 		
 		if(bookMarks.containsKey(className)){
 			Vector3i pos = bookMarks.get(className);
+			putHighlightBlockAt(new Vector3i(pos.getX(), pos.getY()+10, pos.getZ()));
 			String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
 			console.execute(command, getLocalClientEntity());
 			message = "Class found, teleporting!";
@@ -65,7 +70,9 @@ public class SearchCommands extends BaseComponentSystem{
 				while(true){
 					if(visitor.resultReady()){
 						Vector3i pos = visitor.getPosition();
-						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
+						pos.setY(pos.getY()+10); 
+						putHighlightBlockAt(pos);
+						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
 						console.execute(command, getLocalClientEntity());
 						message = "Class found, teleporting!";
 						break;
@@ -112,8 +119,21 @@ public class SearchCommands extends BaseComponentSystem{
 		Set<String> classNames = bookMarksName.keySet();
 		for(String s : classNames){
 			console.addMessage("Class "+this.bookMarksName.get(s)+" with Bookmark "+s);
-			return "";
+			message = "";
 		}
+        return message;
+    }
+	
+	@Command(shortDescription = "Remove highlights marker",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public String removeHighlight() {
+		String message = "There is no marker to remove";
+		console.addMessage("Removing Highlight marker");
+		if(lastHighlightBlock != null){
+			WorldProvider world = CoreRegistry.get(WorldProvider.class);
+    		world.setBlock(lastHighlightPos, BlockManager.getAir());
+    		message = "Marker removed";
+    	}
         return message;
     }
 	
@@ -133,5 +153,23 @@ public class SearchCommands extends BaseComponentSystem{
             }
         }
         return localClientEntity;
+    }
+    
+    /**
+    * Puts a highlight block at the given position.
+    * @param pos the position of the block
+    */
+    private void putHighlightBlockAt(Vector3i pos) {
+    	
+    	BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", "yellow")); //CHANGE TO PINK
+    	Block block = blockFamily.getArchetypeBlock();
+    	WorldProvider world = CoreRegistry.get(WorldProvider.class);
+    	if(lastHighlightBlock != null){
+    		world.setBlock(lastHighlightPos, BlockManager.getAir());
+    	}
+    	world.setBlock(pos, block);
+    	lastHighlightPos = pos;
+    	lastHighlightBlock = block;
     }
 }
