@@ -133,6 +133,8 @@ public class SearchCommands extends BaseComponentSystem{
 			WorldProvider world = CoreRegistry.get(WorldProvider.class);
     		world.setBlock(lastHighlightPos, BlockManager.getAir());
     		message = "Marker removed";
+    		lastHighlightBlock = null;
+    		lastHighlightPos = null;
     	}
         return message;
     }
