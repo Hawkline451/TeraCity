@@ -1,6 +1,7 @@
 package searchMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -36,12 +37,25 @@ public class SearchCommands extends BaseComponentSystem{
 	
 	private EntityRef localClientEntity;
 	
+	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
+	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
+	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String search(@CommandParam(value="className", required=true)  String className) {
 		String message = "Class not found.";
 		console.addMessage("Starting search...");
+		
+		if(bookMarks.containsKey(className)){
+			Vector3i pos = bookMarks.get(className);
+			String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
+			console.execute(command, getLocalClientEntity());
+			message = "Class found, teleporting!";
+			return message;				
+		}
+		
+		
 		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		for(MapObject object : mapObjects){
@@ -60,6 +74,46 @@ public class SearchCommands extends BaseComponentSystem{
 				break;
 			}	
 		}		
+        return message;
+    }
+	
+	@Command(shortDescription = "Add a bookmark to a specific Class in format: class bookmark",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public String addBookmark(@CommandParam(value="className", required=true)  String className, 
+    		@CommandParam(value="bookName", required=true)  String bookName) {
+		String message = "Class not found.";
+		console.addMessage("Searching class to mark....");
+		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+		for(MapObject object : mapObjects){
+			if(object.containsClass(className)){
+				DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
+				object.getObject().accept(visitor);
+				while(true){
+					if(visitor.resultReady()){
+						Vector3i pos = visitor.getPosition();
+						this.bookMarks.put(bookName, pos);
+						this.bookMarksName.put(bookName, className);
+						message = "Bookmarked!";
+						break;
+					}
+				}
+				break;
+			}	
+		}
+        return message;
+    }
+	
+	@Command(shortDescription = "Display all the bookmarks",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public String displayBookmarks() {
+		String message = "There is no bookmarks assigned";
+		console.addMessage("Displaying Bookmarks");
+		Set<String> classNames = bookMarksName.keySet();
+		for(String s : classNames){
+			console.addMessage("Class "+this.bookMarksName.get(s)+" with Bookmark "+s);
+			return "";
+		}
         return message;
     }
 	
