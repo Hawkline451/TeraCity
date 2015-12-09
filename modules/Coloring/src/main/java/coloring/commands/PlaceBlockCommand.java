@@ -9,6 +9,7 @@ import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -43,7 +44,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     private String[] colors = {"Red", "Blue", "Green", "Yellow"};
     
     //Same that in CodeCityBuildingProvider
-    private final CodeScale scale = new SquareRootCodeScale();
+    private final CodeScale scale = new HalfLinearCodeScale();
     private final CodeMapFactory factory = new CodeMapFactory(scale);
     
     

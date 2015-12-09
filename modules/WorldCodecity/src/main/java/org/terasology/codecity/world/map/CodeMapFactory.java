@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 
 /**
@@ -18,7 +19,7 @@ public class CodeMapFactory {
      * Create a new CodeMapFactory using a default scale
      */
     public CodeMapFactory() {
-        scale = new SquareRootCodeScale();
+        scale = new HalfLinearCodeScale();
     }
 
     /**

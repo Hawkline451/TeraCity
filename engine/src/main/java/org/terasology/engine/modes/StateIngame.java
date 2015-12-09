@@ -120,7 +120,7 @@ public class StateIngame implements GameState {
             logger.info("Shutting down Oculus SDK...");
             TeraOVR.clear();
         }
-
+        
         boolean save = networkSystem.getMode().isAuthority();
         if (save) {
             storageManager.waitForCompletionOfPreviousSaveAndStartSaving();
@@ -144,9 +144,9 @@ public class StateIngame implements GameState {
 
         entityManager.clear();
 
-        if (storageManager != null) {
-            storageManager.finishSavingAndShutdown();
-        }
+        //if (storageManager != null) {
+        //    storageManager.finishSavingAndShutdown();
+        //}
         ModuleEnvironment environment = CoreRegistry.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(), true);
         CoreRegistry.get(AssetManager.class).setEnvironment(environment);
         CoreRegistry.get(Console.class).dispose();

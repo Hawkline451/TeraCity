@@ -30,6 +30,7 @@ public class MockColoringMenuScreen extends CoreScreenLayer{
 	    @SuppressWarnings("unchecked")
 	    public void initialise() {
 	        
+
 	    	final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
 	        if (faceToPaint != null) {
 	            faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));

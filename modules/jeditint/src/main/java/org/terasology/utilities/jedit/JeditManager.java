@@ -11,6 +11,7 @@ import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.NullMapObject;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.math.Vector2i;
@@ -23,7 +24,7 @@ public class JeditManager {
 	
 	private static CodeMap map = CoreRegistry.get(CodeMap.class); ;
 	 
-    private static CodeScale scale = new SquareRootCodeScale();
+    private static CodeScale scale = new HalfLinearCodeScale();
     private  static CodeMapFactory factory = new CodeMapFactory(scale);
     
     /**

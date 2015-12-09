@@ -2,6 +2,7 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.world.block.Block;
 
 public class DrawableCodeClass implements DrawableCode {
     private CodeClass base;
@@ -52,5 +53,9 @@ public class DrawableCodeClass implements DrawableCode {
 	@Override
 	public void accept(DrawableCodeVisitor visitor) {
 		visitor.visit(this);
+	}
+	@Override
+	public int[] getLineLength() {
+		return getBase().getLineLengths();
 	}
 }
