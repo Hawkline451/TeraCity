@@ -44,6 +44,8 @@ public class SearchCommands extends BaseComponentSystem{
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
+	private static final String FLY = "flight";
+	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
@@ -56,6 +58,7 @@ public class SearchCommands extends BaseComponentSystem{
 			putHighlightBlockAt(new Vector3i(pos.getX(), pos.getY()+10, pos.getZ()));
 			String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
 			console.execute(command, getLocalClientEntity());
+			console.execute(FLY, getLocalClientEntity());
 			message = "Class found, teleporting!";
 			return message;				
 		}
@@ -74,6 +77,7 @@ public class SearchCommands extends BaseComponentSystem{
 						putHighlightBlockAt(pos);
 						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
 						console.execute(command, getLocalClientEntity());
+						console.execute(FLY, getLocalClientEntity());
 						message = "Class found, teleporting!";
 						break;
 					}
