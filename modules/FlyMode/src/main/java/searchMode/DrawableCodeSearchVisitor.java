@@ -9,6 +9,7 @@ import org.terasology.codecity.world.map.DrawableCodePackage;
 import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -27,7 +28,7 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 	private boolean resultReady;
 	
 	public DrawableCodeSearchVisitor(String className){
-		codeScale = new SquareRootCodeScale();                                                  
+		codeScale = new HalfLinearCodeScale();                                                  
 		codeMapFactory = new CodeMapFactory(codeScale);
 		query = className;
 		totalX = 0;
