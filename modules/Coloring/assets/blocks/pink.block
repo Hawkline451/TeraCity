@@ -1,0 +1,4 @@
+{
+	"basedOn": "coloring:template",
+	"tile"   : "coloring:pink"
+}

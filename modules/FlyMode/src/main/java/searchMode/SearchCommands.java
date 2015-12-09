@@ -164,7 +164,7 @@ public class SearchCommands extends BaseComponentSystem{
     private void putHighlightBlockAt(Vector3i pos) {
     	
     	BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", "yellow")); //CHANGE TO PINK
+    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", "pink")); //CHANGE TO PINK
     	Block block = blockFamily.getArchetypeBlock();
     	WorldProvider world = CoreRegistry.get(WorldProvider.class);
     	if(lastHighlightBlock != null){
