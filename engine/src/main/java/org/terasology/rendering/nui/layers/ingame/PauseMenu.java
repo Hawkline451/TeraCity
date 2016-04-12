@@ -62,6 +62,11 @@ public class PauseMenu extends CoreScreenLayer {
                 getManager().pushScreen("coloringMenuScreen");
             }
         });
+        WidgetUtil.trySubscribe(this, "bookmarks", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            }
+        });
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
