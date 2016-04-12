@@ -65,6 +65,7 @@ public class PauseMenu extends CoreScreenLayer {
         WidgetUtil.trySubscribe(this, "bookmarks", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
+            	getManager().pushScreen("bookmarksMenuScreen");
             }
         });
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {
