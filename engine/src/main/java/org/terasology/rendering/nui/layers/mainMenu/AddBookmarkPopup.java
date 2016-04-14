@@ -5,20 +5,14 @@ import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 
-public class BookmarksMenuScreen extends CoreScreenLayer {
+public class AddBookmarkPopup extends CoreScreenLayer {
 
 	@Override
 	protected void initialise() {
-        WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
+		WidgetUtil.trySubscribe(this, "cancel", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
                 getManager().popScreen();
-            }
-        });
-        WidgetUtil.trySubscribe(this, "addBookmark", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget button) {
-                getManager().pushScreen("addBookmarkPopup");
             }
         });
 	}

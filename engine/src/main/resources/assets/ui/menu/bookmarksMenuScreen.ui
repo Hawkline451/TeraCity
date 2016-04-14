@@ -128,7 +128,7 @@
 		            {
 		            	"type": "UIButton",
 		                "text": "Add Bookmark",
-		                "id": "add",
+		                "id": "addBookmark",
 		                "layoutInfo": {
 		                    "height": 32,
 		                    "width": 200
