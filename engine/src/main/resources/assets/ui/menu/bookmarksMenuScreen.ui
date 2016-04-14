@@ -102,19 +102,42 @@
                         "widget": "subtitle"
                     },
                     "position-bottom": {
-                        "target": "TOP",
-                        "offset": 32,
-                        "widget": "close"
+                        "target": "BOTTOM",
+                        "offset": 80,
+                        "widget": "buttons"
                     }
                 }
             },
             {
-                "type": "UIButton",
-                "text": "Back",
-                "id": "close",
-                "layoutInfo": {
+    	        "type": "ColumnLayout",
+                "id ": "buttons",
+                "columns": 2,
+                "verticalSpacing" : 0,
+                "horizontalSpacing" : 50,
+                "family": "option-grid",
+                "contents" : [
+		            {
+		                "type": "UIButton",
+		                "text": "Back",
+		                "id": "close",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            },
+		            {
+		            	"type": "UIButton",
+		                "text": "Add Bookmark",
+		                "id": "add",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            }
+	            ],
+	            "layoutInfo": {
                     "height": 32,
-                    "width": 200,
+                    "width": 450,
                     "position-horizontal-center": {},
                     "position-bottom": {
                         "target": "BOTTOM",
