@@ -8,6 +8,7 @@ import org.terasology.codecity.world.map.MapObject;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.ISearchCommands;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
@@ -28,7 +29,7 @@ import org.terasology.world.block.family.BlockFamily;
  * @author mrgcl
  */
 @RegisterSystem
-public class SearchCommands extends BaseComponentSystem{
+public class SearchCommands extends BaseComponentSystem implements ISearchCommands{
 	@In
 	private Console console;
 	@In
@@ -94,6 +95,13 @@ public class SearchCommands extends BaseComponentSystem{
     		@CommandParam(value="bookName", required=true)  String bookName) {
 		String message = "Class not found.";
 		console.addMessage("Searching class to mark....");
+		if(addBookmarkBool(className, bookName)){
+			message = "Bookmarked!";
+		}
+        return message;
+    }
+	
+	public boolean addBookmarkBool(String className, String bookName) {
 		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		for(MapObject object : mapObjects){
@@ -105,15 +113,13 @@ public class SearchCommands extends BaseComponentSystem{
 						Vector3i pos = visitor.getPosition();
 						this.bookMarks.put(bookName, pos);
 						this.bookMarksName.put(bookName, className);
-						message = "Bookmarked!";
-						break;
+						return true;
 					}
 				}
-				break;
 			}	
 		}
-        return message;
-    }
+		return false;
+	};
 	
 	@Command(shortDescription = "Display all the bookmarks",
 			requiredPermission = PermissionManager.NO_PERMISSION)
@@ -127,6 +133,10 @@ public class SearchCommands extends BaseComponentSystem{
 		}
         return message;
     }
+	
+	public HashMap<String, String> getBookmarks(){
+		return this.bookMarksName;
+	}
 	
 	@Command(shortDescription = "Remove highlights marker",
 			requiredPermission = PermissionManager.NO_PERMISSION)

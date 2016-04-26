@@ -23,6 +23,11 @@
                                 "family" : "title"
                             },
                             {
+                                "type" : "UILabel",
+                                "text" : "",
+                                "id" : "message"
+                            },
+                            {
                                 "type" : "RowLayout",
                                 "contents" : [
                                     {
