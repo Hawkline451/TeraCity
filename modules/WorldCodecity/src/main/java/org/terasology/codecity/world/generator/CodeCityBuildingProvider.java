@@ -45,7 +45,7 @@ public class CodeCityBuildingProvider implements FacetProvider {
         CodeCityFacet facet = new CodeCityFacet(region.getRegion(), border, base);
         Rect2i processRegion = facet.getWorldRegion();
 
-        processMap(facet, processRegion, codeMap, Vector2i.zero(), base);
+        processMap(facet, processRegion, codeMap, new Vector2i(20,20), base);
         // give our newly created and populated facet to the region
         region.setRegionFacet(CodeCityFacet.class, facet);
     }
@@ -65,8 +65,11 @@ public class CodeCityBuildingProvider implements FacetProvider {
             int height = obj.getHeight(scale, factory) + level;
 
             if (region.contains(x, y) && facet.getWorld(x, y) < height)
-                for (int z = level; z < height; z++)
+                for (int z = level; z < height; z++) {
                     facet.setMapObject(x, z, y, obj);
+                    facet.setMapObject(x, z, y+1, obj);
+                    facet.setMapObject(x, z, y+2, obj);
+                }
             if (obj.isOrigin())
                 processMap(facet, region, obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height);
         }
