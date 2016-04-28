@@ -23,7 +23,6 @@ public class JeditCommand  extends BaseComponentSystem {
 	 }
 	 @Command( shortDescription = "Get Path", helpText = "Get path of an object" )
      public String getPath() {
-		CodeMap map = CoreRegistry.get(CodeMap.class);
-	    return JeditManager.getPath(cameraTarget,map);
+	    return JeditManager.getPath(cameraTarget);
 	 }
 }

@@ -1,4 +1,4 @@
-package org.terasology.codecity.world.map;
+package org.terasology.codecity.world.structure;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.CodeVisitor;
