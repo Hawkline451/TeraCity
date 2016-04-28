@@ -27,6 +27,7 @@ public class DrawableCodeClass implements DrawableCode {
 
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {
+    	// Retorna ancho de edificio
         return scale.getScaledSize(base.getVariableNumber(), 1);
     }
 

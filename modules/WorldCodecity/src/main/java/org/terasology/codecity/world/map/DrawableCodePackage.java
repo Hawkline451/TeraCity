@@ -14,6 +14,7 @@ import org.terasology.world.block.Block;
  */
 public class DrawableCodePackage implements DrawableCode {
     private CodePackage base;
+    // Almacena las clases/paquetes que contiene el package
     private List<DrawableCode> contentList;
     private int sizeCache = -1;
     private CodeMap submapCache;

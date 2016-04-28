@@ -66,7 +66,6 @@ public class CodeCityBuildingProvider implements FacetProvider {
             if (region.contains(x, y) && facet.getWorld(x, y) < height)
                 for (int z = level; z < height; z++) {
                     facet.setMapObject(x, z, y, obj);
-                    facet.setMapObject(x, z, y+1, obj);
                 }
             if (obj.isOrigin())
                 processMap(facet, region, obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height);

@@ -27,11 +27,14 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		CodePackage pack = new CodePackage(folder.getName(), folder.getPath(), "");
 	    for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
+	        	// Genera recursión sobre la carpeta
 	            pack.addCodeContent(listFilesForFolder(fileEntry));
 	        } else {
+	        	// Almacena clase dentro de CodePackage
 	            pack.addCodeContent(new CodeClass(folder.getName(), 0 /* TODO */  , (int) folder.length(), folder.getPath(), ""));
 	        }
 	    }
+	    // Retorna la recursión, almacenando la carpeta como package
 	    return pack;
 	}
 	
