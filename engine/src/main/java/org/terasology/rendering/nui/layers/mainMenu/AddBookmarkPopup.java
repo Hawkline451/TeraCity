@@ -15,6 +15,7 @@ public class AddBookmarkPopup extends CoreScreenLayer {
 	private UILabel message;
 	private UIText bookmarkClass;
 	private UIText bookmarkName;
+	private BookmarksMenuScreen suscriber;
 	
 	
 	@Override
@@ -38,6 +39,7 @@ public class AddBookmarkPopup extends CoreScreenLayer {
                 	message.setText("Bookmarked!");
                 	bookmarkClass.setText("");
                 	bookmarkName.setText("");
+                	suscriber.updateBookmarks();
                 	message.setVisible(true);
                 } else {
                 	message.setText("Class not found.");
@@ -47,6 +49,11 @@ public class AddBookmarkPopup extends CoreScreenLayer {
         });
 		
 		
+	}
+
+
+	public void suscriber(BookmarksMenuScreen bookmarksMenuScreen) {
+		suscriber = bookmarksMenuScreen;
 	}
 
 }

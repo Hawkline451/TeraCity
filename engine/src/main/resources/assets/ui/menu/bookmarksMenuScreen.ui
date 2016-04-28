@@ -39,7 +39,7 @@
                     "content": {
                         "type": "ColumnLayout",
                         "id" : "bookmarksList",
-                        "columns": 4,
+                        "columns": 2,
                         "verticalSpacing": 8,
                         "horizontalSpacing": 8,
                         "family": "option-grid",
@@ -47,14 +47,6 @@
                             {
                                 "type": "UILabel",
                                 "text": "Saved Bookmarks: "
-                            },
-                            {
-                                "type": "UISpace",
-                                "size": [1, 13]
-                            },
-                            {
-                                "type": "UISpace",
-                                "size": [1, 13]
                             },
                             {
                                 "type": "UISpace",
