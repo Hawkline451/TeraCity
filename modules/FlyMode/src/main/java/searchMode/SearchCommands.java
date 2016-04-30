@@ -195,15 +195,22 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
      * Gets the name of the target in the center of the screen.
      * @return name of the target.
      */
-    @Command(shortDescription = "Get target's name in the screen center",
-        requiredPermission = PermissionManager.NO_PERMISSION)
     public String getTarget(){
       CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
       CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
-      console.addMessage("Getting target's class name");
-      String name = code.getName(); 
+      return code.getName();
+    }
+    
+    /**
+     * Similar to getTarget, but gives a message if there is no target.
+     * @return target's name or message if no target found.
+     */
+    @Command(shortDescription = "Get target's name in the screen center",
+        requiredPermission = PermissionManager.NO_PERMISSION)
+    public String getTargetName(){
+      String name = getTarget();
       if (name == null)
-        return "No target";
+        return "No target found";
       return name;
     }
 }
