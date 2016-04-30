@@ -5,11 +5,13 @@ import java.util.Set;
 
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.ISearchCommands;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
@@ -187,5 +189,21 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     	world.setBlock(pos, block);
     	lastHighlightPos = pos;
     	lastHighlightBlock = block;
+    }
+    
+    /**
+     * Gets the name of the target in the center of the screen.
+     * @return name of the target.
+     */
+    @Command(shortDescription = "Get target's name in the screen center",
+        requiredPermission = PermissionManager.NO_PERMISSION)
+    public String getTarget(){
+      CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
+      CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
+      console.addMessage("Getting target's class name");
+      String name = code.getName(); 
+      if (name == null)
+        return "No target";
+      return name;
     }
 }
