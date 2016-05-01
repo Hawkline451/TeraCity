@@ -89,11 +89,11 @@ public final class BlockTextureFactory {
     StringBuilder sb = new StringBuilder();
     sb.append(" \n");
     for (int i = 0; i < line1; i++) {
-      sb.append("=");
+      sb.append("·");
     }
     sb.append("\n \n");
     for (int i = 0; i < line2; i++) {
-      sb.append("=");
+      sb.append("·");
     }
     sb.append("\n ");
     return sb.toString();
