@@ -6,6 +6,7 @@ import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
+import org.terasology.codecity.world.structure.scale.LinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
@@ -28,8 +29,9 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Requires(@Facet(SurfaceHeightFacet.class))
 public class CodeCityBuildingProvider implements FacetProvider {
 
-    private final CodeScale scale = new HalfLinearCodeScale();
-    private final CodeMapFactory factory = new CodeMapFactory(scale);
+    private final CodeScale verticalScale = new HalfLinearCodeScale();
+    private final CodeScale horizontalScale = new SquareRootCodeScale();
+    private final CodeMapFactory factory = new CodeMapFactory(horizontalScale);
 
     @Override
     public void setSeed(long seed) {
@@ -62,13 +64,13 @@ public class CodeCityBuildingProvider implements FacetProvider {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int height = obj.getHeight(scale, factory) + level;
+            int height = obj.getHeight(verticalScale, factory) + level;
             if (region.contains(x, y) && facet.getWorld(x, y) < height)
                 for (int z = level; z < height; z++) {
                     facet.setMapObject(x, z, y, obj);
                 }
             if (obj.isOrigin())
-                processMap(facet, region, obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height);
+                processMap(facet, region, obj.getObject().getSubmap(verticalScale, factory), new Vector2i(x+1, y+1), height);
         }
     }
 }

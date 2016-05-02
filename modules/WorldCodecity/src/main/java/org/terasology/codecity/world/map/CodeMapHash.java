@@ -59,9 +59,10 @@ public class CodeMapHash implements CodeMap {
             CodeMapFactory factory, int x0, int y0) {
         Preconditions.checkArgument(
                 canPlaceContent(content, scale, factory, x0, y0),
-                "Content must be placed in a valida position");
+                "Content must be placed in a valid position");
 
         int buildingSize = content.getSize(scale, factory);
+        System.out.println("El tamaño del bloque "+x0+", "+y0+" es "+buildingSize);
         int xMax = x0 + buildingSize;
         int yMax = y0 + buildingSize;
         updateSize(xMax, yMax);

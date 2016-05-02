@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CodePackage extends CodeRepresentation implements Serializable {
     private static final long serialVersionUID = -8679763624498442725L;
-    // Almacena código representable, sea clases o packages
+    // Almacena cÃ³digo representable, sea clases o packages
     private List<CodeRepresentation> contentList;
 
     /**
