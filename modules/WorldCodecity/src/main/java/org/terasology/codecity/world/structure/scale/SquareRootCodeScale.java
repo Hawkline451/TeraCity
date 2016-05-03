@@ -3,7 +3,7 @@ package org.terasology.codecity.world.structure.scale;
 /**
  * This class implement a scale using a Square root
  */
-public class SquareRootCodeScale implements CodeScale {
+public class SquareRootCodeScale extends CodeScale {
 
     /**
      * {@inheritDoc}
@@ -11,10 +11,5 @@ public class SquareRootCodeScale implements CodeScale {
     @Override
     public int getScaledSize(int size) {
         return (int) Math.sqrt(size);
-    }
-
-    @Override
-    public int getScaledSize(int size, int min) {
-        return Math.max(getScaledSize(size), min);
     }
 }
