@@ -3,6 +3,7 @@ package org.terasology.world.block;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -22,8 +23,6 @@ public final class BlockTextureFactory {
   private BlockTextureFactory() {
     pics = new HashMap<String, BufferedImage>();
   }
-
-
 
   public static BlockTextureFactory getFactory() {
     if (fact == null)
@@ -67,7 +66,8 @@ public final class BlockTextureFactory {
     String text = generateImageText(line1, line2);
 
     Font font = new Font("Arial", Font.PLAIN, 3);
-    BufferedImage image = new BufferedImage(RESOLUTION, RESOLUTION, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage image = new BufferedImage(RESOLUTION, RESOLUTION,
+        BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = image.createGraphics();
     g2d.setFont(font);
     FontMetrics fm = g2d.getFontMetrics();
@@ -111,7 +111,7 @@ public final class BlockTextureFactory {
   }
 
   /**
-   * Paints the texture to the desired colour for metrics.
+   * Returns another texture with the given background colour.
    * 
    * @param pic
    *          Picture to paint.
@@ -120,7 +120,40 @@ public final class BlockTextureFactory {
    * @return Painted picture.
    */
   public BufferedImage paintTexture(BufferedImage pic, String colour) {
-    //TODO implement.
-    return null;
+    Color clr = null;
+    BufferedImage pic2 = new BufferedImage(pic.getWidth(), pic.getHeight(),
+        BufferedImage.TYPE_INT_RGB);
+    Graphics g = pic2.createGraphics();
+    g.drawImage(pic, 0, 0, null);
+    g.dispose();
+    switch (colour) {
+    case "red":
+      clr = new Color(255, 0, 0);
+      break;
+    case "blue":
+      clr = new Color(0, 0, 255);
+      break;
+    case "green":
+      clr = new Color(0, 255, 0);
+      break;
+    case "orange":
+      clr = new Color(255, 105, 0);
+      break;
+    case "yellow":
+      clr = new Color(0, 255, 255);
+      break;
+    case "white":
+      clr = new Color(255, 255, 255);
+      break;
+    }
+    int black = (new Color(0, 0, 0)).getRGB();
+    for (int x = 0; x < pic2.getWidth(); x++) {
+      for (int y = 0; y < pic2.getHeight(); y++) {
+        if (black != pic2.getRGB(x, y)) {
+          pic2.setRGB(x, y, clr.getRGB());
+        }
+      }
+    }
+    return pic2;
   }
 }
