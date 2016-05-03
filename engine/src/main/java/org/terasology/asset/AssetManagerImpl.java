@@ -21,6 +21,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
+import com.google.common.math.IntMath;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,15 @@ import org.terasology.module.Module;
 import org.terasology.module.ModuleEnvironment;
 import org.terasology.naming.Name;
 import org.terasology.persistence.ModuleContext;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.loader.TileData;
+import org.terasology.world.block.loader.WorldAtlas;
+import org.terasology.world.block.loader.WorldAtlasImpl;
 
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -51,6 +60,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 public class AssetManagerImpl implements AssetManager {
 
     private static final Logger logger = LoggerFactory.getLogger(AssetManager.class);
@@ -63,6 +77,10 @@ public class AssetManagerImpl implements AssetManager {
     private Map<AssetType, AssetFactory<?, ?>> factories = Maps.newHashMap();
     private Map<AssetType, Table<Name, Name, AssetUri>> uriLookup = Maps.newHashMap();
     private ListMultimap<AssetType, AssetResolver<?, ?>> resolvers = ArrayListMultimap.create();
+    
+    //SOLUCION PARCHE TEXTURAS DINAMICAS
+    private Map<AssetUri, AssetData> dynamicSource = Maps.newHashMap();
+    
 
     public AssetManagerImpl(ModuleEnvironment environment) {
         for (AssetType type : AssetType.values()) {
@@ -311,6 +329,12 @@ public class AssetManagerImpl implements AssetManager {
     private AssetData loadAssetData(AssetUri uri, boolean logErrors) {
         if (!uri.isValid()) {
             return null;
+        }
+        
+        
+        //SOLUCION PARCHE TEXTURAS DINAMICAS
+        if (uri.getModuleName().toString().equals("DYNAMIC")  ){
+        	return dynamicSource.get(uri);
         }
 
         List<URL> urls = getAssetURLs(uri);
@@ -664,4 +688,46 @@ public class AssetManagerImpl implements AssetManager {
             }
         }
     }
+    
+  //TODO Solamente para probar borrar y encontrar una mejor forma de hacerlo
+    public AssetUri generateDynamicAsset(AssetType type,AssetData data,String name){
+
+    	
+    	AssetUri uri = new AssetUri(type, "DYNAMIC", name+" "+UUID.randomUUID().toString());
+    	dynamicSource.put(uri, data);
+    	if (type == AssetType.BLOCK_TILE){
+    		((WorldAtlasImpl)CoreRegistry.get(WorldAtlas.class)).indexTileAndBuild(uri);
+    	}
+    	
+    	
+    	return uri;
+    }
+    
+    
+    public TileData parcheHorrendo(String pathToFile){
+    	
+    	File img = new File(pathToFile);
+
+    	BufferedImage buffImg = 
+    			new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+
+    	try { 
+    	    buffImg = ImageIO.read(img ); 
+    	} 
+    	catch (IOException e) { }
+    	
+
+    	
+        if (!IntMath.isPowerOfTwo(buffImg.getHeight()) || !(buffImg.getWidth() == buffImg.getHeight())) {
+            try {
+				throw new IOException("Invalid tile - must be square with power-of-two sides");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+    	
+    	return new TileData(buffImg);
+    }
+    
 }

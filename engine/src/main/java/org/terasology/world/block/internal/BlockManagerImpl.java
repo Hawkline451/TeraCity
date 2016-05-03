@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
+import com.google.common.math.IntMath;
 
 import gnu.trove.iterator.TObjectShortIterator;
 import gnu.trove.map.TObjectShortMap;
@@ -52,8 +53,12 @@ import org.terasology.world.block.loader.BlockLoader;
 import org.terasology.world.block.loader.BlockSoundsFactory;
 import org.terasology.world.block.loader.BlockSoundsLoader;
 import org.terasology.world.block.loader.FreeformFamily;
+import org.terasology.world.block.loader.TileData;
 import org.terasology.world.block.loader.WorldAtlas;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +66,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.imageio.ImageIO;
 
 /**
  * @author Immortius
@@ -393,6 +400,14 @@ public class BlockManagerImpl extends BlockManager {
 
     @Override
     public BlockFamily getBlockFamily(BlockUri uri) {
+    	
+    	//Test code delete after use
+    	String m2 = uri.getModuleName().toString();
+    	if (m2.toLowerCase().equals("coloring")) {
+    		System.out.println("stop here");
+        }
+    	//Test code delete after use
+    	
         BlockFamily family = registeredBlockInfo.get().registeredFamilyByUri.get(uri);
         if (family == null && generateNewIds) {
             if (isFreeformFamily(uri.getRootFamilyUri())) {
@@ -530,6 +545,13 @@ public class BlockManagerImpl extends BlockManager {
             this.blocksById = new TShortObjectHashMap<>(oldState.blocksById);
             this.idByUri = new TObjectShortHashMap<>(oldState.idByUri);
         }
+        
+        
+        
+        
+        
     }
+
+
 
 }

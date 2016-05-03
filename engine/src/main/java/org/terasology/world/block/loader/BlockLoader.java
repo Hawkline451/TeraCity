@@ -157,7 +157,10 @@ public class BlockLoader implements BlockBuilderHelper {
                     BlockDefinition blockDef = createBlockDefinition(inheritData(blockDefUri, blockDefJson));
 
                     if (isShapelessBlockFamily(blockDef)) {
-                        result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getModuleName(), blockDefUri.getAssetName()), blockDef.categories));
+                        result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(
+                        		blockDefUri.getModuleName(),
+                        		blockDefUri.getAssetName()),
+                        		blockDef.categories));
                     } else {
                         if (blockDef.liquid) {
                             blockDef.rotation = null;

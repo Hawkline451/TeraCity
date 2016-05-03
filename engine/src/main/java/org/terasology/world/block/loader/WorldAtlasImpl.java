@@ -128,6 +128,9 @@ public class WorldAtlasImpl implements WorldAtlas {
         int tilesPerDim = atlasSize / tileSize;
         return new Vector2f((id % tilesPerDim) * getRelativeTileSize(), (id / tilesPerDim) * getRelativeTileSize());
     }
+    
+    
+    
 
     private int getTileIndex(AssetUri uri, boolean warnOnError) {
         if (tileIndexes.containsKey(uri)) {
@@ -159,6 +162,12 @@ public class WorldAtlasImpl implements WorldAtlas {
             }
         }
         return 0;
+    }
+    
+    public int indexTileAndBuild(AssetUri uri){
+    	int res = indexTile( uri);
+//    	buildAtlas();
+    	return res;
     }
 
     private boolean checkTile(TileData tile) {

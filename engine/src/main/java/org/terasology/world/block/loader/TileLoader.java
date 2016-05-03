@@ -23,6 +23,11 @@ import org.terasology.asset.AssetLoader;
 import org.terasology.module.Module;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +52,7 @@ public class TileLoader implements AssetLoader<TileData> {
         if (!IntMath.isPowerOfTwo(image.getHeight()) || !(image.getWidth() == image.getHeight())) {
             throw new IOException("Invalid tile - must be square with power-of-two sides");
         }
+
         return new TileData(image);
     }
 }

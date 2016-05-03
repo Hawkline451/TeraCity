@@ -9,7 +9,10 @@ import org.terasology.world.block.BlockManager;
  */
 public class ReducedViewBlockFactory {
 	
+	
 	public static Block generate(int[] lineLength, int blockNum) {
+		
+		
 		if (lineLength == null) {
 			return CoreRegistry.get(BlockManager.class).getBlock("core:stone");
 		}
