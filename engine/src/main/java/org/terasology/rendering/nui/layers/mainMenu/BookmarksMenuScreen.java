@@ -45,6 +45,9 @@ public class BookmarksMenuScreen extends CoreScreenLayer{
             public void onActivated(UIWidget button) {
                 AddBookmarkPopup bp = (AddBookmarkPopup) getManager().pushScreen("addBookmarkPopup");
                 bp.suscriber(BookmarksMenuScreen.this);
+                String target = sc.getTarget();
+                if(target != null)
+                	bp.setClassTarget(target);
             }
         });
 	}

@@ -51,9 +51,13 @@ public class AddBookmarkPopup extends CoreScreenLayer {
 		
 	}
 
-
 	public void suscriber(BookmarksMenuScreen bookmarksMenuScreen) {
 		suscriber = bookmarksMenuScreen;
 	}
 
+	public void setClassTarget(String className){
+		if(bookmarkClass != null)
+			bookmarkClass.setText(className);
+	}
+	
 }
