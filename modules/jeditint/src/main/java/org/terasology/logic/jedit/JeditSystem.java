@@ -31,8 +31,7 @@ public class JeditSystem extends BaseComponentSystem {
 	 @ReceiveEvent(components = ClientComponent.class)
 	 public void openJedit(JeditButton event, EntityRef entity) {
 		 if (event.getState() == ButtonState.DOWN) {
-			 CodeMap map = CoreRegistry.get(CodeMap.class);
-			 JeditManager.openJeditWhenPressed(cameraTarget,map);
+			 JeditManager.openJeditWhenPressed(cameraTarget);
 	         event.consume();
 	    }
 	 }
