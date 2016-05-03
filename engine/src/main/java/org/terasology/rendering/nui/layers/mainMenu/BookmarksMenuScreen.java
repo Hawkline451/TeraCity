@@ -2,6 +2,7 @@ package org.terasology.rendering.nui.layers.mainMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.terasology.engine.ComponentSystemManager;
@@ -11,7 +12,6 @@ import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.layouts.ColumnLayout;
-import org.terasology.rendering.nui.layouts.RowLayout;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIButton;
 import org.terasology.rendering.nui.widgets.UILabel;
@@ -60,7 +60,7 @@ public class BookmarksMenuScreen extends CoreScreenLayer{
 
 	public void updateBookmarks(){
 		HashMap<String,String> bookmarks = sc.getBookmarks();
-		Set<String> newBookmarkNames = bookmarks.keySet();
+		Set<String> newBookmarkNames = new HashSet<String>(bookmarks.keySet());
 		newBookmarkNames.removeAll(bookmarkNames);
 		for(String bookmarkName : newBookmarkNames){
 			String className = bookmarks.get(bookmarkName);
