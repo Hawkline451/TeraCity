@@ -4,7 +4,7 @@ public class LinearCodeScale extends CodeScale {
 
     @Override
     public int getScaledSize(int size) {
-        return size;
+        return (int) Math.sqrt(size);
     }
 
 }

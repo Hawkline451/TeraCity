@@ -83,7 +83,7 @@ public class MapObject implements IMapObject {
     public boolean isOrigin() {
         return isOrigin;
     }
-    
+  //ww
     /**
      * Returns true if this map object contains the class searched for.
      * @param className the name of the class.

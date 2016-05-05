@@ -81,6 +81,10 @@ public class CodeMapFactory {
         }
 
     }
+    
+    public CodeScale getScale() {
+    	return scale;
+    }
 }
 
 /**
@@ -99,5 +103,4 @@ class DrawableCodeSizeComparator implements Comparator<DrawableCode> {
     public int compare(DrawableCode c1, DrawableCode c2) {
         return c1.getSize(scale, factory) - c2.getSize(scale, factory);
     }
-
 }
