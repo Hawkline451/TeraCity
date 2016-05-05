@@ -21,7 +21,7 @@ public interface CodeMap {
      * @return sum of sizes of scaled code.
      */
 
-    public int getScaledSize();
+//    public int getScaledSize();
     
     /**
      * Verify if in a given position a object exist
