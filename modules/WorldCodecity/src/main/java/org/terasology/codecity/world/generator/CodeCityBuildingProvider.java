@@ -47,7 +47,7 @@ public class CodeCityBuildingProvider implements FacetProvider {
         CodeCityFacet facet = new CodeCityFacet(region.getRegion(), border, base);
         Rect2i processRegion = facet.getWorldRegion();
 
-        processMap(facet, processRegion, codeMap, new Vector2i(20,20), base);
+        processMap(facet, processRegion, codeMap, Vector2i.zero(), base);
         // give our newly created and populated facet to the region
         region.setRegionFacet(CodeCityFacet.class, facet);
     }
