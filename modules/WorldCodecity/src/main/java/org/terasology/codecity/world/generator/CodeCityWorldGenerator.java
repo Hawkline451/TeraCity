@@ -24,7 +24,6 @@ import org.terasology.world.generator.RegisterWorldGenerator;
  */
 @RegisterWorldGenerator(id = "codecity", displayName = "CodeCity", description = "Generates the world using a CodeCity structure")
 public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
-    private final CodeScale cScale = new HalfLinearCodeScale();
     private String path = "";
 
     public CodeCityWorldGenerator(SimpleUri uri) {
@@ -78,7 +77,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));
 
-        CodeMapFactory factory = new CodeMapFactory(cScale);
+        CodeMapFactory factory = new CodeMapFactory();
         return factory.generateMap(list);
     }
 
