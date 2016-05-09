@@ -1,5 +1,8 @@
-package org.terasology.codecity.world.map;
+package org.terasology.codecity.world.structure;
 
+import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.IMapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
 public class NullMapObject implements IMapObject {
@@ -28,11 +31,4 @@ public class NullMapObject implements IMapObject {
 	public DrawableCode getObject(){
 		return new NullDrawableCode();
 	}
-	
-	
-	
-	
-
-
-
 }

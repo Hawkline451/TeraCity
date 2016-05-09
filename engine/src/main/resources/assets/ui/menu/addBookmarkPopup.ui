@@ -1,0 +1,85 @@
+{
+    "type" : "addBookmarkPopup",
+    "skin" : "popup",
+    "contents" : {
+        "type" : "relativeLayout",
+            "contents" : [
+                {
+                    "type" : "UIBox",
+                    "layoutInfo" : {
+                        "width" : 500,
+                        "use-content-height" : true,
+                        "position-horizontal-center" : {},
+                        "position-vertical-center" : {}
+                    },
+                    "content" : {
+                        "type" : "ColumnLayout",
+                        "columns" : 1,
+                        "verticalSpacing" : 8,
+                        "contents" : [
+                            {
+                                "type" : "UILabel",
+                                "text" : "Add Bookmark",
+                                "family" : "title"
+                            },
+                            {
+                                "type" : "UILabel",
+                                "text" : "",
+                                "id" : "message"
+                            },
+                            {
+                                "type" : "RowLayout",
+                                "contents" : [
+                                    {
+                                        "type" : "UILabel",
+                                        "text" : "Name: ",
+                                        "family" : "option-grid",
+                                        "layoutInfo" : {
+                                            "relativeWidth" : 0.3
+                                        }
+                                    },
+                                    {
+                                        "type" : "UIText",
+                                        "id" : "name"
+                                    }
+                                ]
+                            },
+                            {
+                                "type" : "RowLayout",
+                                "contents" : [
+                                    {
+                                        "type" : "UILabel",
+                                        "text" : "Class: ",
+                                        "family" : "option-grid",
+                                        "layoutInfo" : {
+                                            "relativeWidth" : 0.3
+                                        }
+                                    },
+                                    {
+                                        "type" : "UIText",
+                                        "id" : "class"
+                                    }
+                                ]
+                            },
+                            {
+                                "type" : "RowLayout",
+                                "horizontalSpacing" : 16,
+                                "contents" : [
+                                    {
+                                        "type" : "UIButton",
+                                        "text" : "Add",
+                                        "id" : "add"
+                                    },
+                                    {
+                                        "type" : "UIButton",
+                                        "text" : "Cancel",
+                                        "id" : "cancel"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+    }
+}

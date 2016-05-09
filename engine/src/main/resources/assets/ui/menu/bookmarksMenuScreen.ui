@@ -1,0 +1,145 @@
+{
+    "type": "bookmarksMenuScreen",
+    "skin": "mainmenu",
+    "contents": {
+        "type": "RelativeLayout",
+        "contents": [
+            {
+                "type": "UIImage",
+                "image": "engine:terasology",
+                "id": "title",
+                "layoutInfo": {
+                    "width": 512,
+                    "height": 128,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "TOP",
+                        "offset": 48
+                    }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Bookmarks Menu",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 48,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title"
+                    }
+                }
+            },
+            {
+                "type": "ScrollableArea",
+                "content": {
+                    "type": "UIBox",
+                    "content": {
+                        "type": "ColumnLayout",
+                        "id" : "bookmarksList",
+                        "columns": 3,
+                        "verticalSpacing": 8,
+                        "horizontalSpacing": 8,
+                        "family": "option-grid",
+                        "contents": [
+                            {
+                                "type": "UILabel",
+                                "text": "Saved Bookmarks: "
+                            },
+                            {
+                                "type": "UISpace",
+                                "size": [1, 13]
+                            },{
+                                "type": "UISpace",
+                                "size": [1, 13]
+                            }
+                        ],
+                        "layoutInfo": {
+                            "width": 720,
+                            "height": 240,
+                            "position-horizontal-center": {},
+                            "position-top": {
+                                "target": "BOTTOM",
+                                "offset": 16,
+                                "widget": "subtitle"
+                            },
+                            "position-bottom": {
+                                "target": "TOP",
+                                "offset": 32,
+                                "widget": "close"
+                            }
+                        }
+                    },
+                    "layoutInfo": {
+                        "width": 300,
+                        "position-horizontal-center": {},
+                        "position-top": {
+                            "target": "BOTTOM",
+                            "widget": "subtitle"
+                        },
+                        "position-bottom": {
+                            "target": "TOP",
+                            "widget": "actionButtons",
+                            "offset": 16
+                        }
+                    }
+                },
+                "layoutInfo": {
+                    "width": 740,
+                    "height": 364,
+                    "use-content-height": true,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "offset": 16,
+                        "widget": "subtitle"
+                    },
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 80,
+                        "widget": "buttons"
+                    }
+                }
+            },
+            {
+    	        "type": "ColumnLayout",
+                "id ": "buttons",
+                "columns": 2,
+                "verticalSpacing" : 0,
+                "horizontalSpacing" : 50,
+                "family": "option-grid",
+                "contents" : [
+		            {
+		                "type": "UIButton",
+		                "text": "Back",
+		                "id": "close",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            },
+		            {
+		            	"type": "UIButton",
+		                "text": "Add Bookmark",
+		                "id": "addBookmark",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            }
+	            ],
+	            "layoutInfo": {
+                    "height": 32,
+                    "width": 450,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -41,6 +41,11 @@
                         "text" : "Coloring"
                     },
                     {
+                    	"type" : "UIButton",
+                    	"id" : "bookmarks",
+                    	"text" : "Bookmarks"
+                    },
+                    {
                         "type" : "UIButton",
                         "id" : "exit",
                         "text" : "Exit Terasology"
