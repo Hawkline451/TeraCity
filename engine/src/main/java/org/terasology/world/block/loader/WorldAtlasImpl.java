@@ -24,6 +24,8 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 import gnu.trove.procedure.TObjectIntProcedure;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
+
+import org.lwjgl.opengl.GLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.asset.AssetManager;
@@ -45,12 +47,16 @@ import org.terasology.rendering.assets.texture.TextureData;
 import org.terasology.rendering.assets.texture.subtexture.SubtextureData;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -204,7 +210,7 @@ public class WorldAtlasImpl implements WorldAtlas {
         ByteBuffer[] dataHeight = createAtlasMipmaps(numMipMaps, BLACK_COLOR, tilesHeight, "tilesHeight.png");
 
         TextureData terrainTexData = new TextureData(atlasSize, atlasSize, data, Texture.WrapMode.CLAMP, Texture.FilterMode.NEAREST);
-        Texture terrainTex = Assets.generateAsset(new AssetUri(AssetType.TEXTURE, "engine:terrain"), terrainTexData, Texture.class);
+        Texture terrainTex = Assets.generateAsset(new AssetUri(AssetType.TEXTURE, "engine:terrain"), terrainTexData, Texture.class); //AQUI MUERE CON OPENGL
 
         TextureData terrainNormalData = new TextureData(atlasSize, atlasSize, dataNormal, Texture.WrapMode.CLAMP, Texture.FilterMode.NEAREST);
         Assets.generateAsset(new AssetUri(AssetType.TEXTURE, "engine:terrainNormal"), terrainNormalData, Texture.class);
@@ -251,6 +257,20 @@ public class WorldAtlasImpl implements WorldAtlas {
         ByteBuffer[] data = new ByteBuffer[numMipMaps];
         for (int i = 0; i < numMipMaps; ++i) {
             BufferedImage image = generateAtlas(i, tileImages, initialColor);
+            
+            JFrame frame = new JFrame();
+            frame.getContentPane().setLayout(new FlowLayout());
+            frame.getContentPane().add(new JLabel(new ImageIcon(image)));
+            frame.pack();
+            frame.setVisible(true);            
+//            File outputfile = new File("image"+i+".png");
+//            try {
+//				ImageIO.write(image, "png", outputfile);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+            
             if (i == 0) {
                 try (OutputStream stream = new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getScreenshotPath().resolve(screenshotName)))) {
                     ImageIO.write(image, "png", stream);
