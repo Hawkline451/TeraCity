@@ -1,4 +1,4 @@
-package org.terasology.world.block;
+package org.terasology.codecity.world.map;
 
 import java.awt.Color;
 import java.awt.Font;
