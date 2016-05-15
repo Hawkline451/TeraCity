@@ -10,7 +10,19 @@ public interface IMapObject {
 	
 	public int getHeight(CodeScale scale, CodeMapFactory factory);
 	
+	
+	/**
+	 * Determines if mapObject is the origin of class.
+	 * @return true if is the origin of class
+	 */
 	public boolean isOrigin();
+	
+	
+	/**
+	 * Determines if mapObject represents inner section of a class/package
+	 * @return
+	 */
+	public boolean isInner();
 	
 	public DrawableCode getObject();
 		

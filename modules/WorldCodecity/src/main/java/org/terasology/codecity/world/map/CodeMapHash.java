@@ -67,12 +67,20 @@ public class CodeMapHash implements CodeMap {
         updateSize(xMax, yMax);
 
         codePosition.put(content, new Vector2i(x0, y0));
+        
+        //We are going to create only the "shell" of each building
         for (int i = 0; i < buildingSize; i++) {
             for (int j = 0; j < buildingSize; j++) {
-                int x = i + x0;
+            	boolean isInner;
+            	if (content instanceof DrawableCodePackage || (i==0 || j==0 || i==buildingSize-1 || j==buildingSize-1)) {
+	                isInner = false;	             
+            	} else {
+            		isInner = true;
+            	}
+            	int x = i + x0;
                 int y = j + y0;
                 boolean isOrigin = (i == 0 && j == 0);
-                contentMap.put(x + "," + y, new MapObject(content, x, y, isOrigin));
+                contentMap.put(x + "," + y, new MapObject(content, x, y, isOrigin,isInner));
                 positionCache.add(new Vector2i(x,y));
             }
         }

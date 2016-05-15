@@ -10,6 +10,7 @@ public class MapObject implements IMapObject {
     private int x;
     private int z;
     private boolean isOrigin;
+    boolean isInner;
 
     /**
      * Create a new Object in map
@@ -26,6 +27,23 @@ public class MapObject implements IMapObject {
         this.x = x;
         this.z = z;
         this.isOrigin = isOrigin;
+        this.isInner = false;
+    }
+    
+    /**
+     * Creates a new Object in map, defining if the object represents inner section of a class.
+     * @param object
+     * @param x
+     * @param z
+     * @param isOrigin
+     * @param isInner
+     */
+    public MapObject(DrawableCode object, int x, int z, boolean isOrigin, boolean isInner) {
+        this.object = object;
+        this.x = x;
+        this.z = z;
+        this.isOrigin = isOrigin;
+        this.isInner = isInner;
     }
     
     @Override
@@ -82,6 +100,11 @@ public class MapObject implements IMapObject {
     @Override
     public boolean isOrigin() {
         return isOrigin;
+    }
+    
+    @Override
+    public boolean isInner() {
+        return isInner;
     }
   //ww
     /**
