@@ -41,6 +41,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
         				prev = Math.min(prev, position.y);
         			}
         		}
+        		//HERE NEW FACTORY
         		block = ReducedViewBlockFactory.generate(ll, position.y-prev);
         	    chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), block);
         	}
