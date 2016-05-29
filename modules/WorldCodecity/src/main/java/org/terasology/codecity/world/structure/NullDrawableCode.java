@@ -50,4 +50,10 @@ public class NullDrawableCode implements DrawableCode {
 		return null;
 	}
 
+	@Override
+	public int[][] getLowResFromLine(int row,int col) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

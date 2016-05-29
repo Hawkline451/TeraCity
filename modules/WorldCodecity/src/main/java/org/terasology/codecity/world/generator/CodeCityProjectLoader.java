@@ -42,7 +42,14 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		if (!file.isDirectory()){
 			String name = file.getName();
 			if (isJava(name)){
-				return new CodeClass(name, 0 /* TODO Ver variables*/, countLines(file.getPath()) /*TODO ver largo archivo*/, file.getPath(), "", countLineLength(file.getPath()));
+				return new CodeClass(name,
+						0 /* TODO Ver variables*/,
+						countLines(file.getPath()) /*TODO ver largo archivo*/,
+						file.getPath(),
+						"",
+						countLineLength(file.getPath()),
+						transformToCodeRepresentation(file.getPath())
+						);
 			}
 			else
 				return new NullCodeClass();
@@ -134,4 +141,91 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		return filesToRepresentation(folder);
 	}
 
+	//-------------------Auxiliar data funtions--------------------------
+	
+	static String readFile(String path){
+		  StringBuilder builder = new StringBuilder();
+		  File file = new File(path);
+		  FileInputStream fis = null;
+		  try {
+		   fis = new FileInputStream(file);
+		   int content;
+		   while ((content = fis.read()) != -1) {
+		    builder.append((char) content);
+		   }
+
+		  } catch (IOException e) {
+		   e.printStackTrace();
+		  } finally {
+		   try {
+		    if (fis != null)
+		     fis.close();
+		    } catch (IOException ex) {
+		    ex.printStackTrace();
+		   }
+		  }
+		  return builder.toString();
+		 }
+	
+	public static int[][] transformToCodeRepresentation(String filename){
+		  
+		  String content = readFile(filename);
+		  int maxLengthLine=0;
+		  int maxBlockLength=0;
+
+		  String lines[] = content.split("\\r?\\n");
+		   
+		  for (String line : lines){
+		   maxLengthLine = Math.max(maxLengthLine,line.length());
+//		   System.out.println(line);
+		   
+		  }
+		  
+		  maxBlockLength = (int) Math.sqrt(maxLengthLine);
+		  
+		//  System.out.println("maxLengthLine "+maxLengthLine);
+		//  System.out.println("maxBlockLength "+maxBlockLength);
+		  
+		  
+		  int[][] result = new int[lines.length][2*maxBlockLength];
+		  
+		  for (int i=0;i<lines.length;i++){
+		   result[i] = transformCodeLine(lines[i],maxBlockLength,maxLengthLine);
+//		   System.out.println(Arrays.toString(result[i]));
+		  }
+		  
+		  
+		  return result;
+		  
+		 }
+		 
+		 
+		 public static int[] transformCodeLine(String codeLine, int MaxBlockLength, int maxLineLength){
+		  
+		  //Set string line to maxChars fill with whitespace
+		  StringBuilder builder = new StringBuilder(codeLine);
+		  builder.setLength(maxLineLength);
+		  while(builder.length() < maxLineLength){
+		   builder.append(" ");
+		  }
+		  
+		  int[] resultRow = new int[2*MaxBlockLength];
+		  int step = maxLineLength/(2*MaxBlockLength);
+		  
+		  for (int i=0;i<2*MaxBlockLength;i++){
+		   String stepString = builder.substring(step*i,step*(i+1));
+		   String replaced = stepString.replaceAll("\\s+","");
+		   
+		   if (replaced.trim().length() > 0){
+		    resultRow[i] = 1;
+		   }
+		   else{
+		    resultRow[i] = 0;
+		   }
+		  }
+		  
+		  
+		  return resultRow;
+		 }
+ 
 }

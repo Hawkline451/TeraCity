@@ -54,4 +54,5 @@ public interface DrawableCode {
     
     public void accept(DrawableCodeVisitor visitor);
 	public int[] getLineLength();
+	public int[][] getLowResFromLine(int row,int col);
 }

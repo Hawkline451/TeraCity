@@ -65,6 +65,9 @@ public class CodeCityBuildingProvider implements FacetProvider {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(verticalScale, factory) + level;
+            
+            obj.setMaxY(height-1);
+            
             if (region.contains(x, y) && facet.getWorld(x, y) < height) {
                 for (int z = level; z < height; z++) {
                 	if (!obj.isInner() || z==height-1) {

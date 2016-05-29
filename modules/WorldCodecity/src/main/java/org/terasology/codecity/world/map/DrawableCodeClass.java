@@ -60,4 +60,9 @@ public class DrawableCodeClass implements DrawableCode {
 	public int[] getLineLength() {
 		return getBase().getLineLengths();
 	}
+
+	@Override
+	public int[][] getLowResFromLine(int row,int column) {
+		return getBase().getBinaryRow(row,column);
+	}
 }

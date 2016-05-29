@@ -11,6 +11,8 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     private int variables;
     private int length;
     private int[] lineLength;
+    
+    private int[][] binaryRepr;
 
     /**
      * Create a new CodeClass Object.
@@ -19,13 +21,16 @@ public class CodeClass extends CodeRepresentation implements Serializable {
      * @param length Number of lines in the class.
      */
     public CodeClass(String name, int variables, int length, String path, String github) {
-    	this(name, variables, length, path, github, DummyArray.getArray(length));
+    	this(name, variables, length, path, github, DummyArray.getArray(length),null);
     }
-    public CodeClass(String name, int variables, int length, String path, String github, int[] lineLength) {
+    public CodeClass(String name, int variables, int length, String path, String github, int[] lineLength,
+    		int[][] binaryRepr) {
         super(name, path, github);
         this.variables = variables;
         this.length = length;
         this.lineLength = lineLength;
+        
+        this.binaryRepr = binaryRepr;
     }
 
     /**
@@ -66,6 +71,15 @@ public class CodeClass extends CodeRepresentation implements Serializable {
 			max = Math.max(max, i);
 		}
 		return max;
+	}
+	public int[][] getBinaryRow(int row,int column) {
+		int[][] temp = new int[2][2];
+		temp[0][0] = this.binaryRepr[row][column];
+		temp[0][1] = this.binaryRepr[row][column+1];
+		temp[1][0] = this.binaryRepr[row+1][column];
+		temp[1][1] = this.binaryRepr[row+1][column+1];
+		
+		return temp;
 	}
 
 }
