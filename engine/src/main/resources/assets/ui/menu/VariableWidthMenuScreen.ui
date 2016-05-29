@@ -1,0 +1,144 @@
+{
+    "type": "variableWidthMenuScreen",
+    "skin": "mainmenu",
+    "contents": {
+        "type": "RelativeLayout",
+        "contents": [
+            {
+                "type": "UIImage",
+                "image": "engine:terasology",
+                "id": "title",
+                "layoutInfo": {
+                    "width": 512,
+                    "height": 128,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "TOP",
+                        "offset": 48
+                    }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Variable Width",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 48,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title"
+                    }
+                }
+            },
+            {
+    	        "type": "ColumnLayout",
+                "id ": "verticalWidth",
+                "columns": 2,
+                "verticalSpacing" : 20,
+                "horizontalSpacing" : 50,
+                "family": "option-grid",
+                "contents" : [
+		            {
+                                "type": "UILabel",
+                                "text": "Vertical Scale Parameter: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "verticalScaleParameter"
+                            },
+                            {
+                                "type": "UILabel",
+                                "text": "Vertical Scale Type: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "verticalScaleType"
+                            }
+	            ],
+	            "layoutInfo": {
+                    "height": 32,
+                    "width": 450,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "TOP",
+                        "offset": 250
+                    }
+                }
+            },
+                        {
+    	        "type": "ColumnLayout",
+                "id ": "horizontalWidth",
+                "columns": 2,
+                "verticalSpacing" : 20,
+                "horizontalSpacing" : 50,
+                "family": "option-grid",
+                "contents" : [
+		            {
+                                "type": "UILabel",
+                                "text": "Horizontal Scale Parameter: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "horizontalScaleParameter"
+                            },
+                            {
+                                "type": "UILabel",
+                                "text": "Horizontal Scale Type: "
+                            },
+                            {
+                                "type": "UIDropdown",
+                                "id": "HorizontalScaleType"
+                            }
+	            ],
+	            "layoutInfo": {
+                    "height": 32,
+                    "width": 450,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "TOP",
+                        "offset": 350
+                    }
+                }
+            },
+            {
+    	        "type": "ColumnLayout",
+                "id ": "buttons",
+                "columns": 2,
+                "verticalSpacing" : 0,
+                "horizontalSpacing" : 50,
+                "family": "option-grid",
+                "contents" : [
+		            {
+		                "type": "UIButton",
+		                "text": "Back",
+		                "id": "close",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            },
+		            {
+		            	"type": "UIButton",
+		                "text": "Apply Widths",
+		                "id": "applyWidths",
+		                "layoutInfo": {
+		                    "height": 32,
+		                    "width": 200
+		                }
+		            }
+	            ],
+	            "layoutInfo": {
+                    "height": 32,
+                    "width": 450,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            }
+        ]
+    }
+}

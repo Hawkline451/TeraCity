@@ -46,6 +46,11 @@
                     	"text" : "Bookmarks"
                     },
                     {
+                    	"type" : "UIButton",
+                    	"id" : "variableWidth",
+                    	"text" : "Building Width"
+                    },
+                    {
                         "type" : "UIButton",
                         "id" : "exit",
                         "text" : "Exit Terasology"
