@@ -13,8 +13,8 @@ public abstract class AbstractBuildingHighlight implements BuildingHighlight {
 	/*
 	 * blockManager and world manage the creation of highlighter cubes.
 	 */
-	static BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-	static WorldProvider world = CoreRegistry.get(WorldProvider.class);
+	protected BlockManager blockManager;
+	protected WorldProvider world;
 	
 	/*
 	 * The color of the highlight.
