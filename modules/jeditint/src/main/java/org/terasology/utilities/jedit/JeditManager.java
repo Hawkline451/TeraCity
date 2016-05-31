@@ -41,6 +41,26 @@ public class JeditManager {
 		 }
 	}
 	
+    /**
+     * Send path open the class inside of Minecraft.
+     * @param classesPath
+     * @return
+     */
+	public static String editClassInside(String[] classesPath){
+		
+		try{
+			String pathFile = classesPath[0];
+			System.out.println(pathFile);
+			String fileContent = EditClass.readFileAsString(pathFile);
+			System.out.println(fileContent);
+			return "Read "+pathFile;
+		 }
+		 catch(Exception e1) {
+			 return "No ClassPath found!";
+		 }
+	}		
+		
+	
 	/**
 	 * Open jEdit of the classes of the targetBlock
 	 * @param camera
@@ -58,6 +78,26 @@ public class JeditManager {
 		
 		openClasses(pathsS);
 	}
+
+	/**
+	 * Open edit class of the classes of the targetBlock
+	 * @param camera
+	 * @param codemap
+	 */	
+	public static void editClassWhenPressed(CameraTargetSystem camera){
+		
+		CodeRepresentation code = CodeRepresentation.getCodeRepresentation(camera);
+		ClassPathVisitor visitor = new ClassPathVisitor();
+		code.accept(visitor);
+		
+		ArrayList<String> paths = visitor.getPaths();
+		String [] pathsS = new String[paths.size()];
+		paths.toArray(pathsS);
+		
+		editClassInside(pathsS);
+	}
+		
+	
 	
 	/**
 	 * Get path of the mapObject targeted by the camera;
