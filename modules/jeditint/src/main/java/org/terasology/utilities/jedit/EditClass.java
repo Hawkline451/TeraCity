@@ -27,8 +27,7 @@ public class EditClass {
     List<String> records = new ArrayList<String>();
     BufferedReader reader = new BufferedReader(new FileReader(filename));
     String line;
-    while ((line = reader.readLine()) != null)
-    {
+    while ((line = reader.readLine()) != null){
       records.add(line);
     }
     reader.close();
@@ -95,8 +94,7 @@ public class EditClass {
     InputStream inputStream = new ByteArrayInputStream(bytes);
     int token = -1;
  
-    while((token = inputStream.read()) != -1)
-    {
+    while((token = inputStream.read()) != -1){
       bufferedOutputStream.write(token);
     }
     bufferedOutputStream.flush();
