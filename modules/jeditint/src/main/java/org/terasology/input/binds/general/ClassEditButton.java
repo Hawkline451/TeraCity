@@ -10,7 +10,7 @@ import org.terasology.input.RegisterBindButton;
  * Button to open a windows into Minecraft and edit a Class
  * @author Francisco Pulgar
  */
-@RegisterBindButton(id = "jedit", description = "Open jEdit", category = "general")
-@DefaultBinding(type = InputType.KEY, id = Keyboard.KeyId.J)
+@RegisterBindButton(id = "editclass", description = "Edit Class", category = "general")
+@DefaultBinding(type = InputType.KEY, id = Keyboard.KeyId.K)
 public class ClassEditButton extends BindButtonEvent {
 }
