@@ -2,6 +2,7 @@ package org.terasology.utilities.jedit;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.File;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
@@ -50,10 +51,20 @@ public class JeditManager {
 		
 		try{
 			String pathFile = classesPath[0];
-			System.out.println(pathFile);
-			String fileContent = EditClass.readFileAsString(pathFile);
-			System.out.println(fileContent);
-			return "Read "+pathFile;
+			
+			File f = new File(pathFile);
+			
+			if(f.exists() && !f.isDirectory()) { 
+				System.out.println(pathFile);
+				String fileContent = EditClass.readFileAsString(pathFile);
+				System.out.println(fileContent);
+				return "Read "+pathFile;
+				
+			}else if(f.isDirectory()){
+				return pathFile+" is a directory not a file!";
+			}else{
+				return "No ClassPath found!";
+			}
 		 }
 		 catch(Exception e1) {
 			 return "No ClassPath found!";
