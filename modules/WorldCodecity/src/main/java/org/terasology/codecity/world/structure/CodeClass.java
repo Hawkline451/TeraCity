@@ -74,10 +74,11 @@ public class CodeClass extends CodeRepresentation implements Serializable {
 	}
 	public int[][] getBinaryRow(int row,int column) {
 		int[][] temp = new int[2][2];
-		temp[0][0] = this.binaryRepr[row][column];
-		temp[0][1] = this.binaryRepr[row][column+1];
-		temp[1][0] = this.binaryRepr[row+1][column];
-		temp[1][1] = this.binaryRepr[row+1][column+1];
+
+			temp[0][0] = this.binaryRepr[row][column];
+			temp[0][1] = this.binaryRepr[row][column+1];
+			temp[1][0] = this.binaryRepr[row+1][column];
+			temp[1][1] = this.binaryRepr[row+1][column+1];
 		
 		return temp;
 	}

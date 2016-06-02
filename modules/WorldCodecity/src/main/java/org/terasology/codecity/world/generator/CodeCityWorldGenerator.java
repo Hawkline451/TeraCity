@@ -42,7 +42,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
     	}
     	else{
     		this.path = System.getProperty("user.dir")+File.separator+"modules"+File.separator+"WorldCodecity";
-    		loader = new CodeCityDefaultLoader();
+    		loader = new CodeCityProjectLoader(this.path);
     	}
     		
         
