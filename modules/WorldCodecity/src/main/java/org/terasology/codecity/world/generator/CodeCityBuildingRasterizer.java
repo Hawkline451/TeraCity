@@ -55,7 +55,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
             		int[][] bloque = code.getLowResFromLine(row,col);
             		
             		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
-            		block = ReducedViewBlockFactory.generate(ll,blockNum );
+            		block = ReducedViewBlockFactory.generate(bloque);
             		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
             	    
         		}

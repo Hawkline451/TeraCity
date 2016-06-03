@@ -9,6 +9,17 @@ import org.terasology.world.block.BlockManager;
  */
 public class ReducedViewBlockFactory {
 	
+/**
+ * Returns the block associated with a binary representation
+ * @param block      Binary representation of the code chunk
+ * @return           Block representing that chunk
+ */
+  public static Block generate(int[][] block) {
+    return CoreRegistry.get(BlockManager.class).getBlock("worldcodecity:Stone"+block[0][0]+""+block[0][1]+""+block[1][0]+""+block[1][1]+"");
+
+  }
+  
+  @Deprecated
 	public static Block generate(int[] lineLength, int blockNum) {
 		if (lineLength == null) {
 			return CoreRegistry.get(BlockManager.class).getBlock("core:stone");
