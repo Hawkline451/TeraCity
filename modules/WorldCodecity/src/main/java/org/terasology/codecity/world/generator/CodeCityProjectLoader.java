@@ -3,19 +3,18 @@ package org.terasology.codecity.world.generator;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.terasology.codecity.world.loader.CodeCityLoader;
+import org.terasology.codecity.world.metrics.FileMetrics;
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.NullCodeClass;
 
 public class CodeCityProjectLoader implements CodeCityLoader {
-	private CodeRepresentation code;
 	final File folder;
 	
 	public CodeCityProjectLoader(String path) {
@@ -42,7 +41,8 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		if (!file.isDirectory()){
 			String name = file.getName();
 			if (isJava(name)){
-				return new CodeClass(name, 0 /* TODO Ver variables*/, countLines(file.getPath()) /*TODO ver largo archivo*/, file.getPath(), "", countLineLength(file.getPath()));
+				FileMetrics metrics = getMetrics(file.getPath()); 
+				return new CodeClass(name, 0 /* TODO Ver variables*/, metrics.getNumbeOfLines() /*TODO ver largo archivo*/, file.getPath(), "", metrics.getLinesLength());
 			}
 			else
 				return new NullCodeClass();
@@ -68,64 +68,37 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 			return true;
 		return false;
 	}
-	
-	public static int[] countLineLength(String filename) {
-		int[] result = null;
-		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(filename));
-			int nLines = countLines(filename);
-			result = new int[nLines];
-		try {
-			byte[] c = new byte[1024];
-	        int readChars = 0;
-	        int line = 0;
-	        int count = 0;
-	        while ((readChars = in.read(c)) != -1) {
-	            for (int i = 0; i < readChars; ++i) {
-	            	count++;
-	                if (c[i] == '\n') {
-	                	result[line] = count;
-	                	line++;
-	                	count = 0;
-	                }
-	            }
-	            line++;
-	        }
-			return result;
-		}
-		finally {
-			in.close();
-		}
-		}
-		catch (Exception e) {
-			return result;
-		}
-	}
+
 	
 	/* From stackoverflow <3*/
-	public static int countLines(String filename) {
+	public static FileMetrics getMetrics(String filename) {
 		try{
 	    InputStream is = new BufferedInputStream(new FileInputStream(filename));
 	    try {
 	        byte[] c = new byte[1024];
 	        int count = 0;
+	        List<Integer> lengths = new ArrayList<Integer>();
 	        int readChars = 0;
 	        boolean empty = true;
 	        while ((readChars = is.read(c)) != -1) {
 	            empty = false;
 	            for (int i = 0; i < readChars; ++i) {
 	                if (c[i] == '\n') {
+	                	lengths.add(i);
 	                    ++count;
 	                }
 	            }
 	        }
-	        return (count == 0 && !empty) ? 1 : count;
+	        if (count == 0 && !empty) 
+	        	return new FileMetrics(1, null);
+	        else
+	        	return new FileMetrics(count, lengths);
 	    } finally {
 	        is.close();
 	    }
 		}
 		catch(Exception e){
-			return 0;
+			return new FileMetrics(0, null);
 		}
 	}
 
