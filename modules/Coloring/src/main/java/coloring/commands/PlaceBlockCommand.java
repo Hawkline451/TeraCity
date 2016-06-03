@@ -9,6 +9,7 @@ import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -408,6 +409,8 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	
 	@Command(shortDescription = "change height of buildings")
     public String changeHeight() {    	
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		man.setVerticalScale(new HalfLinearCodeScale());
 		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {

@@ -33,8 +33,8 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize(String s) {
-        this.path = s;
         CoreRegistry.put(CodeScaleManager.class, new CodeScaleManager());
+        this.path = s;
     	CodeCityLoader loader;
         
     	if (this.path != "")
