@@ -45,7 +45,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
     
     //Same that in CodeCityBuildingProvider
     private final CodeScale scale = new HalfLinearCodeScale();
-    private final CodeMapFactory factory = new CodeMapFactory(scale);
+    private final CodeMapFactory factory = new CodeMapFactory();
     
     
     @Command(shortDescription = "Places a block in front of the player of the color specified({Red,Blue,Green} implemented)")
@@ -257,7 +257,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int height = obj.getHeight(scale, factory) + level;
+            int height = obj.getHeight(factory) + level;
             for (int z = level; z < height; z++)
             	world.setBlock(new Vector3i(x, z, y), block);
             if (obj.isOrigin()){
@@ -383,8 +383,8 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int height = obj.getHeight(scale, factory) + level;
-            int width = obj.getWidth(scale, factory);
+            int height = obj.getHeight(factory) + level;
+            int width = obj.getWidth(factory);
             if (obj.isOrigin()){
             	list.add(new BuildInformation(x,y,level,height,width,obj));
             	list.addAll(processInfo(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world));
@@ -392,8 +392,22 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         }
         return list;
     }
+	
+	
 	@Command(shortDescription = "Restore city to default")
     public String restoreCity() {    	
+		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	processMap(map, Vector2i.zero(), 10, world, block);//10 default ground level
+            return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+	
+	@Command(shortDescription = "change height of buildings")
+    public String changeHeight() {    	
 		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {

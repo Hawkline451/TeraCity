@@ -17,12 +17,12 @@ public class NullDrawableCode implements DrawableCode {
 	}
 
 	@Override
-	public int getSize(CodeScale scale, CodeMapFactory factory) {
+	public int getSize(CodeMapFactory factory) {
 		return 0;
 	}
 
 	@Override
-	public int getHeight(CodeScale scale, CodeMapFactory factory) {
+	public int getHeight(CodeMapFactory factory) {
 		return 0;
 	}
 
@@ -32,7 +32,7 @@ public class NullDrawableCode implements DrawableCode {
 	}
 
 	@Override
-	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+	public int getWidth(CodeMapFactory factory) {
 		return 0;
 	}
 

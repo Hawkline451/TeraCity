@@ -61,7 +61,7 @@ public class CodeMapHash implements CodeMap {
                 canPlaceContent(content, scale, factory, x0, y0),
                 "Content must be placed in a valid position");
 
-        int buildingSize = content.getSize(scale, factory);
+        int buildingSize = content.getSize(factory);
         int xMax = x0 + buildingSize;
         int yMax = y0 + buildingSize;
         updateSize(xMax, yMax);
@@ -92,7 +92,7 @@ public class CodeMapHash implements CodeMap {
     @Override
     public boolean canPlaceContent(DrawableCode content, CodeScale scale,
             CodeMapFactory factory, int x, int y) {
-        int buildingSize = content.getSize(scale, factory);
+        int buildingSize = content.getSize(factory);
 
         for (int i = x; i < buildingSize+x; i++)
             for (int j = y; j < buildingSize+y; j++)

@@ -2,6 +2,8 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 
 public class DrawableCodeClass implements DrawableCode {
@@ -26,14 +28,15 @@ public class DrawableCodeClass implements DrawableCode {
     }
 
     @Override
-    public int getSize(CodeScale scale, CodeMapFactory factory) {
-    	// Retorna ancho de edificio. Haremos por ahora que sea el tamaño de línea.
-        return scale.getScaledSize(base.getLongestLineLength(), 1);
+    public int getSize(CodeMapFactory factory) {
+        CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+        return man.getHorizontalScale().getScaledSize(base.getLongestLineLength(), 1);
     }
 
     @Override
-    public int getHeight(CodeScale scale, CodeMapFactory factory) {
-        return scale.getScaledSize(base.getClassLength(), 1);
+    public int getHeight(CodeMapFactory factory) {
+    	CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+        return man.getVerticalScale().getScaledSize(base.getClassLength(), 1);
     }
 
     @Override
@@ -42,8 +45,7 @@ public class DrawableCodeClass implements DrawableCode {
     }
 
 	@Override
-	public int getWidth(CodeScale scale, CodeMapFactory factory) {
-		//Esto creo que lo cambié yo
+	public int getWidth(CodeMapFactory factory) {
 		return 1;
 	}
 

@@ -84,7 +84,7 @@ public abstract class CodeRepresentation implements Serializable {
       for (MapObject obj : map.getMapObjects()) {
         int x = obj.getPositionX() + offset.getX();
         int y = obj.getPositionZ() + offset.getY();
-        int top = obj.getHeight(scale, factory) + bottom;
+        int top = obj.getHeight(factory) + bottom;
   
         if (x1 == x && y1 == y && z1 > bottom && z1 <= top)
           return obj;
@@ -92,7 +92,7 @@ public abstract class CodeRepresentation implements Serializable {
         if (obj.isOrigin()) {
           IMapObject mo = getMapObject(obj.getObject().getSubmap(scale, factory),
               new Vector2i(x + 1, y + 1), top, x1, y1, z1);
-          if (mo.getHeight(scale, factory) != 0)
+          if (mo.getHeight(factory) != 0)
             return mo;
         }
       }

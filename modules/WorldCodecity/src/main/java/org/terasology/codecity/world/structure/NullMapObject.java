@@ -18,7 +18,7 @@ public class NullMapObject implements IMapObject {
     }
 	
 	@Override
-	 public int getHeight(CodeScale scale, CodeMapFactory factory) {
+	 public int getHeight(CodeMapFactory factory) {
         return 0;
     }
 	
@@ -30,5 +30,9 @@ public class NullMapObject implements IMapObject {
 	@Override
 	public DrawableCode getObject(){
 		return new NullDrawableCode();
+	}
+	
+	public boolean isInner() {
+		return false;
 	}
 }

@@ -5,6 +5,7 @@ import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.LinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
@@ -29,9 +30,11 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Requires(@Facet(SurfaceHeightFacet.class))
 public class CodeCityBuildingProvider implements FacetProvider {
 
-    private final CodeScale verticalScale = new HalfLinearCodeScale();
-    private final CodeScale horizontalScale = new SquareRootCodeScale();
-    private final CodeMapFactory factory = new CodeMapFactory(horizontalScale);
+    private CodeMapFactory factory;
+
+    public CodeCityBuildingProvider() {
+    	factory = new CodeMapFactory();
+    }
 
     @Override
     public void setSeed(long seed) {
@@ -61,10 +64,12 @@ public class CodeCityBuildingProvider implements FacetProvider {
      * @param level Current height
      */
     private void processMap(CodeCityFacet facet, Rect2i region, CodeMap map, Vector2i offset, int level) {
-        for (MapObject obj : map.getMapObjects()) {
+        CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+    	for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int height = obj.getHeight(verticalScale, factory) + level;
+            // consigo la escala vertical.
+            int height = obj.getHeight(factory) + level;
             if (region.contains(x, y) && facet.getWorld(x, y) < height) {
                 for (int z = level; z < height; z++) {
                 	if (!obj.isInner() || z==height-1) {
@@ -73,7 +78,7 @@ public class CodeCityBuildingProvider implements FacetProvider {
                 }
             }
             if (obj.isOrigin())
-                processMap(facet, region, obj.getObject().getSubmap(verticalScale, factory), new Vector2i(x+1, y+1), height);
+                processMap(facet, region, obj.getObject().getSubmap(man.getVerticalScale(), factory), new Vector2i(x+1, y+1), height);
         }
     }
 }

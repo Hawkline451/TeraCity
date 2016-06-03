@@ -8,7 +8,7 @@ public interface IMapObject {
 	
 	public int getPositionZ();
 	
-	public int getHeight(CodeScale scale, CodeMapFactory factory);
+	public int getHeight(CodeMapFactory factory);
 	
 	
 	/**

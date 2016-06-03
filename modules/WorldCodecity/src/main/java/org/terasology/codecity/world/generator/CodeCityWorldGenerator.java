@@ -11,6 +11,7 @@ import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeFactory;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
@@ -32,18 +33,15 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize(String s) {
-
         this.path = s;
-    	
+        CoreRegistry.put(CodeScaleManager.class, new CodeScaleManager());
     	CodeCityLoader loader;
         
     	if (this.path != "")
     		loader = new CodeCityProjectLoader(this.path);
     	else
     		loader = new CodeCityDefaultLoader();
-        
         CodeRepresentation code = loader.loadCodeRepresentation();
-
         CodeMap codeMap = generateCodeMap(code);
         CoreRegistry.put(CodeMap.class, codeMap);
         CoreRegistry.put(CodeRepresentation.class, code);
@@ -76,7 +74,6 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));
-
         CodeMapFactory factory = new CodeMapFactory();
         return factory.generateMap(list);
     }

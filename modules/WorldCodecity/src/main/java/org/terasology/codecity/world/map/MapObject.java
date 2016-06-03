@@ -75,8 +75,8 @@ public class MapObject implements IMapObject {
      * @return
      */
     @Override
-    public int getHeight(CodeScale scale, CodeMapFactory factory) {
-        return object.getHeight(scale, factory);
+    public int getHeight(CodeMapFactory factory) {
+        return object.getHeight(factory);
     }
     
     /**
@@ -86,8 +86,8 @@ public class MapObject implements IMapObject {
      * @param factory
      * @return
      */
-    public int getWidth(CodeScale scale, CodeMapFactory factory){
-    	return object.getWidth(scale, factory);
+    public int getWidth(CodeMapFactory factory){
+    	return object.getWidth(factory);
     }
 
     /**

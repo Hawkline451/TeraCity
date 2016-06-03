@@ -29,7 +29,7 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 	
 	public DrawableCodeSearchVisitor(String className){
 		codeScale = new HalfLinearCodeScale();                                                  
-		codeMapFactory = new CodeMapFactory(codeScale);
+		codeMapFactory = new CodeMapFactory();
 		query = className;
 		totalX = 0;
 		totalY = 0;
@@ -49,13 +49,13 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 		for(MapObject object : mapObjects){
 			if(object.toString().equals(query)){
 				resultReady = true;
-				totalY += object.getHeight(codeScale, codeMapFactory);
+				totalY += object.getHeight(codeMapFactory);
 				totalZ += (object.getPositionZ() + 1);
 				totalX += (object.getPositionX() + 1);
 				break;
 			}
 			else if(object.containsClass(query)){
-				totalY += object.getHeight(codeScale, codeMapFactory);
+				totalY += object.getHeight(codeMapFactory);
 				totalZ += (object.getPositionZ() + 1);
 				totalX += (object.getPositionX() + 1);
 				object.getObject().accept(this);
