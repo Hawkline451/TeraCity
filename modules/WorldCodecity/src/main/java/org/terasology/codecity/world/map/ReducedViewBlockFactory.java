@@ -15,6 +15,9 @@ public class ReducedViewBlockFactory {
  * @return           Block representing that chunk
  */
   public static Block generate(int[][] block) {
+	  if (block == null){
+			  return CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+		  }
     return CoreRegistry.get(BlockManager.class).getBlock("worldcodecity:Stone"+block[0][0]+""+block[0][1]+""+block[1][0]+""+block[1][1]+"");
 
   }
