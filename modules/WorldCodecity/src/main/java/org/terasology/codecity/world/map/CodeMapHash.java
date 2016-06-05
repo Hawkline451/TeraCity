@@ -86,15 +86,21 @@ public class CodeMapHash implements CodeMap {
                 //Set colummn to block
                 
                 //X axis column
-                if(i==0 || i==buildingSize-1){
+                if(i==0){
                 	map.setCodeColumn(j-1);
                 }
-                
+                if(i==buildingSize-1){
+                	map.setCodeColumn((buildingSize-2)-(j+1));
+                }  
                 //Y axis column
-                if(j==0 || j==buildingSize-1){
+                if(j==0){
+                	
+                	map.setCodeColumn((buildingSize-2)-(i+1));
+                	
+                }
+                if(j==buildingSize-1){
                 	map.setCodeColumn(i-1);
                 }
-                
                 
                 if( //Borders or corners (avoid X axis at the same as Y axis)
                 		(i==0 && j==buildingSize-1) ||  

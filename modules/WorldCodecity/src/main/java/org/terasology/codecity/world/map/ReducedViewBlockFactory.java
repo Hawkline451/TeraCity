@@ -18,7 +18,7 @@ public class ReducedViewBlockFactory {
 	  if (block == null){
 			  return CoreRegistry.get(BlockManager.class).getBlock("core:stone");
 		  }
-    return CoreRegistry.get(BlockManager.class).getBlock("worldcodecity:Stone"+block[0][0]+""+block[0][1]+""+block[1][0]+""+block[1][1]+"");
+    return CoreRegistry.get(BlockManager.class).getBlock("worldcodecity:Stone"+block[1][1]+""+block[1][0]+""+block[0][1]+""+block[0][0]+"");
 
   }
   
