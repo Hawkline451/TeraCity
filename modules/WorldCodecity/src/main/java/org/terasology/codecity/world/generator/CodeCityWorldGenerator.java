@@ -31,7 +31,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 	public void initialize(String s) {
 		this.path = s;
 		CodeCityLoader loader;
-		if (this.path != "") {
+		if (!this.path.equals("")) {
 			this.path = "C:/Users/Franco/Documents/GitHub/TeraCity/modules/WorldCodecity/src";
 		}
 		loader = new CodeCityProjectLoader(this.path);
