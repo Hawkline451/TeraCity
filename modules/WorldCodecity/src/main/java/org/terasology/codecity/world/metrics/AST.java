@@ -37,7 +37,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 		path = location;
 		methodCalls = new ArrayList<MethodCallExpr>();
 		fields = new ArrayList<FieldDeclaration>();
-		file = new File(path);
+		file = new File(location);
 		try {
 			CompilationUnit cu = JavaParser.parse(file);
 			this.setGeneralMetrics(cu);

@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.structure;
 
+import java.io.File;
 import java.io.Serializable;
 
 import org.terasology.codecity.world.metrics.AST;
@@ -14,13 +15,10 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     /**
      * Create a new CodeClass Object.
      * @param name Name of the class.
-     * @param variables Number of variables in the class.
-     * @param length Number of lines in the class.
+     * @param path Location of file
+     * @param github 
      */
-    public CodeClass(String name, int variables, int length, String path, String github) {
-    	this(name, variables, length, path, github, DummyArray.getArray(length));
-    }
-    public CodeClass(String name, int variables, int length, String path, String github, int[] lineLength) {
+    public CodeClass(String name, String path, String github) {
         super(name, path, github);
         this.ast = new AST(path);
     }
