@@ -87,7 +87,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
       temp[1][0] = this.binaryRepr[row * 2 + 1][column * 2];
       temp[1][1] = this.binaryRepr[row * 2 + 1][column * 2 + 1];
     } catch (IndexOutOfBoundsException e) {
-      System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+      System.err.println("Row col: " +row+" "+column+" "+e.getMessage());
       return null;
     }
 

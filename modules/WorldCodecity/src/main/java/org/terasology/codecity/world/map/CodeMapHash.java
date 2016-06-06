@@ -90,12 +90,12 @@ public class CodeMapHash implements CodeMap {
                 	map.setCodeColumn(j-1);
                 }
                 if(i==buildingSize-1){
-                	map.setCodeColumn((buildingSize-2)-(j+1));
+                	map.setCodeColumn((buildingSize-2)-(j));
                 }  
                 //Y axis column
                 if(j==0){
                 	
-                	map.setCodeColumn((buildingSize-2)-(i+1));
+                	map.setCodeColumn((buildingSize-2)-(i));
                 	
                 }
                 if(j==buildingSize-1){
