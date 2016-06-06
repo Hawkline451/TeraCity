@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +37,14 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
         CoreRegistry.put(CodeScaleManager.class, new CodeScaleManager());
         this.path = s;
     	CodeCityLoader loader;
-        
-    	if (this.path != "")
+    	if (this.path != ""){
     		loader = new CodeCityProjectLoader(this.path);
-    	else
-    		loader = new CodeCityDefaultLoader();
+    	}
+    	else{
+    		this.path = System.getProperty("user.dir")+File.separator+"modules"+File.separator+"WorldCodecity";
+    		loader = new CodeCityProjectLoader(this.path);
+    	}
+    		
         CodeRepresentation code = loader.loadCodeRepresentation();
         CodeMap codeMap = generateCodeMap(code);
         CoreRegistry.put(CodeMap.class, codeMap);

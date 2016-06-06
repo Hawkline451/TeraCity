@@ -11,6 +11,10 @@ public class MapObject implements IMapObject {
     private int z;
     private boolean isOrigin;
     boolean isInner;
+    
+    private int codeColumn; //What part of the code texture row is ? -1 means border
+    private int maxYCord; //This variable make possible to calculate the row given a Z coordinate
+
 
     /**
      * Create a new Object in map
@@ -115,4 +119,21 @@ public class MapObject implements IMapObject {
     public boolean containsClass(String className){
     	return object.containsClass(className);
     }
+    
+    
+    
+	public int getColumn(){
+		return this.codeColumn;
+	}
+	public void setCodeColumn(int column){
+		this.codeColumn = column;
+	}
+	public int getMaxY(){
+		return this.maxYCord;
+	}
+	public void setMaxY(int maxY){
+		this.maxYCord = maxY;
+	}
+
+
 }

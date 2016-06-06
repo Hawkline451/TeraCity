@@ -85,5 +85,11 @@ public class DrawableCodePackage implements DrawableCode {
 	public int[] getLineLength() {
 		return null;
 	}
+
+	@Override
+	public int[][] getLowResFromLine(int row,int col) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

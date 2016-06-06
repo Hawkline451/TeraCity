@@ -31,7 +31,8 @@ public class NullMapObject implements IMapObject {
 	public DrawableCode getObject(){
 		return new NullDrawableCode();
 	}
-	
+
+	@Override
 	public boolean isInner() {
 		return false;
 	}

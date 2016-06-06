@@ -69,6 +69,7 @@ public class CodeMapHash implements CodeMap {
         codePosition.put(content, new Vector2i(x0, y0));
         
         //We are going to create only the "shell" of each building
+        //buildingSize = buildingSize+2;
         for (int i = 0; i < buildingSize; i++) {
             for (int j = 0; j < buildingSize; j++) {
             	boolean isInner;
@@ -80,7 +81,36 @@ public class CodeMapHash implements CodeMap {
             	int x = i + x0;
                 int y = j + y0;
                 boolean isOrigin = (i == 0 && j == 0);
-                contentMap.put(x + "," + y, new MapObject(content, x, y, isOrigin,isInner));
+                MapObject map = new MapObject(content, x, y, isOrigin,isInner);
+                
+                //Set colummn to block
+                
+                //X axis column
+                if(i==0){
+                	map.setCodeColumn(j-1);
+                }
+                if(i==buildingSize-1){
+                	map.setCodeColumn((buildingSize-2)-(j));
+                }  
+                //Y axis column
+                if(j==0){
+                	
+                	map.setCodeColumn((buildingSize-2)-(i));
+                	
+                }
+                if(j==buildingSize-1){
+                	map.setCodeColumn(i-1);
+                }
+                
+                if( //Borders or corners (avoid X axis at the same as Y axis)
+                		(i==0 && j==buildingSize-1) ||  
+                		(i==0 && j==0) ||
+                		(i==buildingSize-1 && j==buildingSize-1) || 
+                		(i==buildingSize-1 && j==0) ){
+                	map.setCodeColumn(-1);
+                }
+                
+                contentMap.put(x + "," + y, map);
                 positionCache.add(new Vector2i(x,y));
             }
         }

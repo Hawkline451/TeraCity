@@ -70,6 +70,7 @@ public class CodeCityBuildingProvider implements FacetProvider {
             int y = obj.getPositionZ() + offset.getY();
             // consigo la escala vertical.
             int height = obj.getHeight(factory) + level;
+			obj.setMaxY(height-1);
             if (region.contains(x, y) && facet.getWorld(x, y) < height) {
                 for (int z = level; z < height; z++) {
                 	if (!obj.isInner() || z==height-1) {
