@@ -69,7 +69,7 @@ public class CodeMapHash implements CodeMap {
         codePosition.put(content, new Vector2i(x0, y0));
         
         //We are going to create only the "shell" of each building
-        buildingSize = buildingSize+2;
+        //buildingSize = buildingSize+2;
         for (int i = 0; i < buildingSize; i++) {
             for (int j = 0; j < buildingSize; j++) {
             	boolean isInner;
