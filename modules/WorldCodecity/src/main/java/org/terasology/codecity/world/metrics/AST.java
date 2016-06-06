@@ -31,6 +31,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	private int length;
 	private int[] linesLength;
 	private File file;
+	private CompilationUnit cu;
 
 	public AST(String location) {
 		super();
@@ -39,7 +40,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 		fields = new ArrayList<FieldDeclaration>();
 		file = new File(location);
 		try {
-			CompilationUnit cu = JavaParser.parse(file);
+			cu = JavaParser.parse(file);
 			this.setGeneralMetrics(cu);
 			this.visit(cu, null);
 		} catch (ParseException | IOException e) {
@@ -56,6 +57,21 @@ public class AST extends VoidVisitorAdapter<Object> {
 	@Override
 	public void visit(MethodDeclaration n, Object arg) {
 		super.visit(n, arg);
+	}
+
+	/**
+	 * @return Representation of Code
+	 */
+	public CompilationUnit getCu() {
+		return cu;
+	}
+	
+	/**
+	 * @param text String to search
+	 * @return if .java contains indicated text
+	 */
+	public boolean contains(String text) {
+		return cu.toString().contains(text);
 	}
 
 	/**
