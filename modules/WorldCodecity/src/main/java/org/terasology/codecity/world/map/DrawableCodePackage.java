@@ -59,7 +59,7 @@ public class DrawableCodePackage implements DrawableCode {
     }
 
     @Override
-    public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
+    public CodeMap getSubmap(CodeMapFactory factory) {
     	if (submapCache == null)
     		submapCache = factory.generateMap(contentList);
         return submapCache;

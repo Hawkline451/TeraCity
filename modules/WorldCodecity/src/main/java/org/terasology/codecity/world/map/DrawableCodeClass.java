@@ -40,7 +40,7 @@ public class DrawableCodeClass implements DrawableCode {
     }
 
     @Override
-    public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
+    public CodeMap getSubmap(CodeMapFactory factory) {
         return new CodeMapNull();
     }
 

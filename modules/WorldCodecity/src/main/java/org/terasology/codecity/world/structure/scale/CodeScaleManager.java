@@ -1,4 +1,11 @@
 package org.terasology.codecity.world.structure.scale;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * Manages the horizontal and vertical scales.
  * @author adderou
@@ -7,13 +14,20 @@ package org.terasology.codecity.world.structure.scale;
 public class CodeScaleManager {
 
 	private CodeScale horizontal, vertical;
+	private HashMap<String,CodeScale> scaleMap = new HashMap<>();
+	private ArrayList<String> scaleTypes = new ArrayList<>();
+
 	
 	/**
 	 * Default constructor.
 	 */
 	public CodeScaleManager() {
-		this.horizontal = new SquareRootCodeScale();
-		this.vertical = new HalfLinearCodeScale();
+		
+		registerCodeScale("linear",new LinearCodeScale());
+		registerCodeScale("square-root",new SquareRootCodeScale());
+		registerCodeScale("half-linear",new HalfLinearCodeScale());
+		this.horizontal = scaleMap.get("square-root");
+		this.vertical = scaleMap.get("linear");
 	}
 	
 	public CodeScaleManager(CodeScale horizontal, CodeScale vertical) {
@@ -35,5 +49,18 @@ public class CodeScaleManager {
 	
 	public CodeScale getHorizontalScale() {
 		return horizontal;
+	}
+
+	public CodeScale getScaleFromString(String scale) {
+		return scaleMap.get(scale);
+	}
+	
+	public ArrayList<String> getAvailableScaleNames() {
+	    return scaleTypes;
+	}
+	
+	private void registerCodeScale(String scaleName, CodeScale scale) {
+		scaleTypes.add(scaleName);
+		scaleMap.put(scaleName, scale);
 	}
 }

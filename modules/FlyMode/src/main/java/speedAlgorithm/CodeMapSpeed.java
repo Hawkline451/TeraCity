@@ -74,7 +74,7 @@ public class CodeMapSpeed extends Speed {
             	}
             }
             if (obj.isOrigin())
-                getHeightRecursive(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world);
+                getHeightRecursive(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world);
         }
     }
 	

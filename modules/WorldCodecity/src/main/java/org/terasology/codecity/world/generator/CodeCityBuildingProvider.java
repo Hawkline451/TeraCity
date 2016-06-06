@@ -78,7 +78,7 @@ public class CodeCityBuildingProvider implements FacetProvider {
                 }
             }
             if (obj.isOrigin())
-                processMap(facet, region, obj.getObject().getSubmap(man.getVerticalScale(), factory), new Vector2i(x+1, y+1), height);
+                processMap(facet, region, obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height);
         }
     }
 }

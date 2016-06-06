@@ -8,6 +8,7 @@ import org.terasology.asset.AssetUri;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
@@ -18,6 +19,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.health.DoDamageEvent;
+import org.terasology.logic.health.EngineDamageTypes;
 import org.terasology.logic.health.HealthComponent;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3f;
@@ -33,6 +35,8 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockPart;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
+
+import com.sun.org.glassfish.gmbal.ManagedAttribute;
 
 import coloring.AbstractColoring;
 import coloring.BuildRegister;
@@ -260,10 +264,49 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             int y = obj.getPositionZ() + offset.getY();
             int height = obj.getHeight(factory) + level;
             for (int z = level; z < height; z++)
-            	world.setBlock(new Vector3i(x, z, y), block);
+            	if (!obj.isInner() || z == height-1) {
+            		world.setBlock(new Vector3i(x, z, y), block);
+            	}
             if (obj.isOrigin()){
             	System.out.println(obj.getObject().getBase().getName());
-                processMap(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world, block);
+                processMap(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world, block);
+            }
+        }
+    }
+	
+	private void clearMap(CodeMap map, Vector2i offset, int level, WorldProvider world) {
+    	BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
+        for (MapObject obj : map.getMapObjects()) {
+            int x = obj.getPositionX() + offset.getX();
+            int y = obj.getPositionZ() + offset.getY();
+            int height = obj.getHeight(factory) + level;
+            for (int z = level; z < height; z++) {            		
+	            	Vector3i blockPos = new Vector3i(x, z, y);
+	            
+            		Block oldBlock = world.getBlock(blockPos);            		
+	        		EntityRef entity = blockEntityRegistry.getEntityAt(blockPos);
+            		
+            		oldBlock.getBlockFamily().getArchetypeBlock().setDebrisOnDestroy(false);
+            		oldBlock.setDebrisOnDestroy(false);
+            		            		
+	        		// set health/damage properties
+	        		HealthComponent health;
+	        		if (entity.hasComponent(HealthComponent.class)) {
+	        			health = entity.getComponent(HealthComponent.class);
+	        			health.maxHealth = 100;
+	        			health.regenRate = 0;
+	        			entity.saveComponent(health);
+	        		} else {
+	        			health = new HealthComponent(100,0,0);
+	        			entity.addComponent(health);
+	        		}
+	        		DoDamageEvent de = new DoDamageEvent(100,EngineDamageTypes.TOTAL.get());
+	    			entity.send(de);
+	        		entity.destroy();    
+    		}
+            if (obj.isOrigin()){
+            	System.out.println(obj.getObject().getBase().getName());
+                clearMap(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world);
             }
         }
     }
@@ -388,7 +431,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             int width = obj.getWidth(factory);
             if (obj.isOrigin()){
             	list.add(new BuildInformation(x,y,level,height,width,obj));
-            	list.addAll(processInfo(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world));
+            	list.addAll(processInfo(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world));
             }
         }
         return list;
@@ -407,16 +450,32 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
-	@Command(shortDescription = "change height of buildings")
-    public String changeHeight() {    	
-		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
-		man.setVerticalScale(new HalfLinearCodeScale());
-		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
-        WorldProvider world = CoreRegistry.get(WorldProvider.class);
+	@Command(shortDescription = "Remove all the buildings")
+    public String removeBuildings() {
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	processMap(map, Vector2i.zero(), 10, world, block);//10 default ground level
+        	clearMap(map, Vector2i.zero(), 10, world);//10 default ground level
             return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+	
+	@Command(shortDescription = "Change the Height scale of the buildings.")
+    public String changeHeightScale(@CommandParam("Type")String scale) {
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		CodeScale newScale = man.getScaleFromString(scale);
+		if (newScale==null) {
+	        throw new IllegalArgumentException("scale not found :(");
+		}
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	clearMap(map, Vector2i.zero(), 10, world);
+    		man.setVerticalScale(newScale);
+        	processMap(map, Vector2i.zero(), 10, world, block);
+        	return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }

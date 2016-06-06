@@ -31,6 +31,7 @@ public enum EngineDamageTypes {
     PHYSICAL("engine:physicalDamage"),
     EXPLOSIVE("engine:explosiveDamage"),
     DROWNING("engine:drowningDamage"),
+    TOTAL("engine:totalDamage"),
     /**
      * This is used if healing is flipped to damage (like the old healing hurts undead gimmick)
      */

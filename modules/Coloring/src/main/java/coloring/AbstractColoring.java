@@ -56,7 +56,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 		for (MapObject obj: map.getMapObjects()){
 			if (obj.isOrigin()){
 				result.add(obj.getObject().getBase().getPath());
-				CodeMap next = obj.getObject().getSubmap(scale, factory);
+				CodeMap next = obj.getObject().getSubmap(factory);
 				result.addAll(getPathInfo(next, scale));
 			}
 		}

@@ -38,7 +38,7 @@ public interface DrawableCode {
      *            The builder of the map
      * @return The submap inside the code
      */
-    public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory);
+    public CodeMap getSubmap(CodeMapFactory factory);
     
     /**
      * @param className the class name
