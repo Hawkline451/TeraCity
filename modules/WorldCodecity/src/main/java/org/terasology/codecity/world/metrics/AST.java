@@ -58,6 +58,9 @@ public class AST extends VoidVisitorAdapter<Object> {
 		super.visit(n, arg);
 	}
 
+	/**
+	 * @return Methods calls made in code
+	 */
 	public ArrayList<MethodCallExpr> getMethodCalls() {
 		return methodCalls;
 	}
