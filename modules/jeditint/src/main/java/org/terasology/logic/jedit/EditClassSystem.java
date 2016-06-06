@@ -6,7 +6,7 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.input.ButtonState;
-import org.terasology.input.binds.general.ClassEditButton;
+import org.terasology.input.binds.general.EditClassButton;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
@@ -29,7 +29,7 @@ public class EditClassSystem extends BaseComponentSystem {
 	  * @param entity
 	  */
 	 @ReceiveEvent(components = ClientComponent.class)
-	 public void openJedit(ClassEditButton event, EntityRef entity) {
+	 public void openJedit(EditClassButton event, EntityRef entity) {
 		 if (event.getState() == ButtonState.DOWN) {
 			 JeditManager.editClassWhenPressed(cameraTarget);
 	         event.consume();

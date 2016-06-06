@@ -12,5 +12,5 @@ import org.terasology.input.RegisterBindButton;
  */
 @RegisterBindButton(id = "editclass", description = "Edit Class", category = "general")
 @DefaultBinding(type = InputType.KEY, id = Keyboard.KeyId.K)
-public class ClassEditButton extends BindButtonEvent {
+public class EditClassButton extends BindButtonEvent {
 }
