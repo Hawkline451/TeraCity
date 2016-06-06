@@ -43,7 +43,7 @@ public class JeditManager {
 	}
 	
     /**
-     * Send path open the class inside of Minecraft.
+     * Send path to open the class inside of Minecraft.
      * @param classesPath
      * @return
      */
@@ -55,6 +55,7 @@ public class JeditManager {
 			File f = new File(pathFile);
 			
 			if(f.exists() && !f.isDirectory()) { 
+				
 				System.out.println(pathFile);
 				String fileContent = EditClass.readFileAsString(pathFile);
 				System.out.println(fileContent);
