@@ -7,6 +7,7 @@ import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.codecity.world.structure.scale.CodeScale;
@@ -273,6 +274,45 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             }
         }
     }
+	private void processMap(CodeMap map, Vector2i offset, int level, WorldProvider world) {
+
+        for (MapObject obj : map.getMapObjects()) {
+            int x = obj.getPositionX() + offset.getX();
+            int y = obj.getPositionZ() + offset.getY();
+            int height = obj.getHeight(factory) + level;
+            
+            
+    		DrawableCode code = obj.getObject();
+    		Block block = null;
+        	
+        	
+
+            for (int z = level; z < height; z++)
+            	if (!obj.isInner() || z == height-1) {
+            		
+            		if (obj.getColumn() != -1){
+                		int row = obj.getMaxY()-z;
+                		int col = obj.getColumn();
+                		int[][] bloque = code.getLowResFromLine(row,col);
+                		
+                		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
+                		block = ReducedViewBlockFactory.generate(bloque);
+                		world.setBlock(new Vector3i(x, z, y), block);
+            		}
+            		else{
+            			System.out.println("ERROR");
+            			block = ReducedViewBlockFactory.generate(null);
+            			world.setBlock(new Vector3i(x, z, y), block);
+            		}
+            		
+            		
+            	}
+            if (obj.isOrigin()){
+            	System.out.println(obj.getObject().getBase().getName());
+                processMap(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world);
+            }
+        }
+    }
 	
 	private void clearMap(CodeMap map, Vector2i offset, int level, WorldProvider world) {
     	BlockEntityRegistry blockEntityRegistry = CoreRegistry.get(BlockEntityRegistry.class);
@@ -440,11 +480,10 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	
 	@Command(shortDescription = "Restore city to default")
     public String restoreCity() {    	
-		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
-        	processMap(map, Vector2i.zero(), 10, world, block);//10 default ground level
+        	processMap(map, Vector2i.zero(), 10, world);//10 default ground level
             return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
@@ -469,12 +508,11 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	        throw new IllegalArgumentException("scale not found :(");
 		}
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
-		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
         	clearMap(map, Vector2i.zero(), 10, world);
     		man.setVerticalScale(newScale);
-        	processMap(map, Vector2i.zero(), 10, world, block);
+        	processMap(map, Vector2i.zero(), 10, world);
         	return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
@@ -488,12 +526,11 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 	        throw new IllegalArgumentException("scale not found :(");
 		}
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
-		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         if (world != null) {
         	CodeMap map = CoreRegistry.get(CodeMap.class);
         	clearMap(map, Vector2i.zero(), 10, world);
     		man.setHorizontalScale(newScale);
-        	processMap(map, Vector2i.zero(), 10, world, block);
+        	processMap(map, Vector2i.zero(), 10, world);
         	return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
