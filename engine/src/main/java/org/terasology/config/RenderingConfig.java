@@ -54,7 +54,7 @@ public class RenderingConfig {
     private boolean lightShafts = true;
     private boolean eyeAdaptation = true;
     private boolean bloom = true;
-    //private boolean dynamicShadows = false;
+    private boolean dynamicShadows = false;
     private boolean oculusVrSupport;
     private int maxTextureAtlasResolution = 4096;
     private int maxChunksUsedForShadowMapping = 1024;
