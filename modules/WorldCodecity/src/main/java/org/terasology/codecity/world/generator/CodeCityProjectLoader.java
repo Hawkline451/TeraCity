@@ -1,12 +1,6 @@
 package org.terasology.codecity.world.generator;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 
 import org.terasology.codecity.world.loader.CodeCityLoader;
 import org.terasology.codecity.world.structure.CodeClass;
@@ -15,7 +9,7 @@ import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.NullCodeClass;
 
 public class CodeCityProjectLoader implements CodeCityLoader {
-	private CodeRepresentation code;
+
 	final File folder;
 	
 	public CodeCityProjectLoader(String path) {
@@ -31,7 +25,6 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 	            pack.addCodeContent(listFilesForFolder(fileEntry));
 	        } else {
 	        	// Almacena clase dentro de CodePackage
-	            //pack.addCodeContent(new CodeClass(folder.getName(), 0 /* TODO */  , (int) folder.length(), folder.getPath(), ""));
 	            pack.addCodeContent(new CodeClass(folder.getName(), folder.getPath(), ""));
 	        }
 	    }
@@ -43,7 +36,6 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		if (!file.isDirectory()){
 			String name = file.getName();
 			if (isJava(name)){
-				//return new CodeClass(name, 0 /* TODO Ver variables*/, countLines(file.getPath()) /*TODO ver largo archivo*/, file.getPath(), "", countLineLength(file.getPath()));
 				return new CodeClass(file.getName(), file.getPath(), "");
 			}
 			else

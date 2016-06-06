@@ -1,8 +1,5 @@
 package org.terasology.codecity.world.generator;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;

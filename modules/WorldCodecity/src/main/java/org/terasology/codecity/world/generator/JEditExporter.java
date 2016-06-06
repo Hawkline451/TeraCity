@@ -1,11 +1,8 @@
 package org.terasology.codecity.world.generator;
 
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -15,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.engine.modes.StateLoading;
-import org.terasology.engine.paths.PathManager;
-import org.terasology.game.GameManifest;
 import org.terasology.persistence.internal.StoragePathProvider;
 import org.terasology.registry.CoreRegistry;
 /**

@@ -62,6 +62,11 @@ public class AST extends VoidVisitorAdapter<Object> {
 		return methodCalls;
 	}
 
+	/**
+	 * Sets general metrics for the class, such as
+	 * length, comments, packages, importations, etc
+	 * @param cu
+	 */
 	private void setGeneralMetrics(CompilationUnit cu) {
 		length = cu.getEndLine();
 		comments = cu.getComments();
@@ -83,6 +88,10 @@ public class AST extends VoidVisitorAdapter<Object> {
 		}
 	}
 
+	/**
+	 * Counts length for every line in code
+	 * @return Array with lengths
+	 */
 	private int[] countLineLength() {
 		BufferedReader br;
 		int[] resp = null;
@@ -102,26 +111,44 @@ public class AST extends VoidVisitorAdapter<Object> {
 		return resp;
 	}
 
+	/**
+	 * @return Length of code
+	 */
 	public int getLength() {
 		return length;
 	}
 
+	/**
+	 * @return ArrayList with comments included in code
+	 */
 	public List<Comment> getComments() {
 		return comments;
 	}
 
+	/**
+	 * @return ArrayList with imports made in code
+	 */
 	public List<ImportDeclaration> getImports() {
 		return imports;
 	}
 
+	/**
+	 * @return Package that contains code
+	 */
 	public PackageDeclaration getPackage() {
 		return pack;
 	}
 
+	/**
+	 * @return Variables/Fields of code
+	 */
 	public List<FieldDeclaration> getFields() {
 		return fields;
 	}
 
+	/**
+	 * @return Int[] with length of lines in the code
+	 */
 	public int[] getLinesLength() {
 		return linesLength;
 	}

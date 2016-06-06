@@ -1,6 +1,5 @@
 package org.terasology.codecity.world.structure;
 
-import java.io.File;
 import java.io.Serializable;
 
 import org.terasology.codecity.world.metrics.AST;
@@ -31,7 +30,6 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     }
     
     /**
-     * 
      * @return Array of line lengths
      */
     public int[] getLineLengths() {
@@ -50,11 +48,17 @@ public class CodeClass extends CodeRepresentation implements Serializable {
         visitor.visitCodeClass(this);
     }
 
+    /**
+     * @return Length of code
+     */
 	@Override
 	public int size() {
-		return 1;
+		return ast.getLength();
 	}
 
+	/**
+	 * @return Length of longest line in code
+	 */
 	public int getLongestLineLength() {
 		int max = 0;
 		for (Integer i : ast.getLinesLength()) {

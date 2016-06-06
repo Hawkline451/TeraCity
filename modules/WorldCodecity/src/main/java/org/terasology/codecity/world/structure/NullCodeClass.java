@@ -2,6 +2,8 @@ package org.terasology.codecity.world.structure;
 
 public class NullCodeClass extends CodeClass {
 	
+	private static final long serialVersionUID = 1L;
+
 	public NullCodeClass(){
 		this("","","");
 	}
