@@ -13,6 +13,8 @@ import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.NullCodeClass;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
+import org.terasology.registry.CoreRegistry;
 
 public class CodeCityProjectLoader implements CodeCityLoader {
 	private CodeRepresentation code;
@@ -180,11 +182,15 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 //		   System.out.println(line);
 		   
 		  }
-		  
-		  maxBlockLength = (int) Math.sqrt(maxLengthLine);
+		  CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		  maxBlockLength = man.getHorizontalScale().getScaledSize(maxLengthLine);
+		  //maxBlockLength = (int) Math.sqrt();
 		  
 		//  System.out.println("maxLengthLine "+maxLengthLine);
 		//  System.out.println("maxBlockLength "+maxBlockLength);
+		  
+		  //int maxBlockHeight = man.getHorizontalScale().getScaledSize(lines.length);
+		  //TODO: usar esto
 		  
 		  
 		  int[][] result = new int[lines.length][2*maxBlockLength];

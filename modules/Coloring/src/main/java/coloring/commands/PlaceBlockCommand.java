@@ -479,4 +479,23 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+	
+	@Command(shortDescription = "Change the Width scale of the buildings.")
+    public String changeWidthScale(@CommandParam("Type")String scale) {
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		CodeScale newScale = man.getScaleFromString(scale);
+		if (newScale==null) {
+	        throw new IllegalArgumentException("scale not found :(");
+		}
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+		Block block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	clearMap(map, Vector2i.zero(), 10, world);
+    		man.setHorizontalScale(newScale);
+        	processMap(map, Vector2i.zero(), 10, world, block);
+        	return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
 }
