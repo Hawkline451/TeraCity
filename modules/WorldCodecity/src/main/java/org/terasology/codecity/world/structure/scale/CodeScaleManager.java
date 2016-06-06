@@ -2,10 +2,6 @@ package org.terasology.codecity.world.structure.scale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 /**
  * Manages the horizontal and vertical scales.
  * @author adderou

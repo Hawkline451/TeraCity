@@ -44,7 +44,7 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 
 	@Override
 	public void visit(DrawableCodePackage code) {
-		CodeMap map = code.getSubmap(codeScale, codeMapFactory);
+		CodeMap map = code.getSubmap(codeMapFactory);
 		Set<MapObject> mapObjects = map.getPosMapObjects();
 		for(MapObject object : mapObjects){
 			if(object.toString().equals(query)){
