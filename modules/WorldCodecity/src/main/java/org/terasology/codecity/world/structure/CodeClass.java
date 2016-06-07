@@ -134,4 +134,8 @@ public class CodeClass extends CodeRepresentation implements Serializable {
       return binary;
     }
   }
+
+public int[][] getFullBinary() {
+	return this.binaryRepr;
+}
 }

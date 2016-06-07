@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 
 import org.terasology.codecity.world.loader.CodeCityLoader;
 import org.terasology.codecity.world.structure.CodeClass;
@@ -182,22 +183,12 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 //		   System.out.println(line);
 		   
 		  }
-		  CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
-		  maxBlockLength = man.getHorizontalScale().getScaledSize(maxLengthLine);
-		  //maxBlockLength = (int) Math.sqrt();
-		  
-		//  System.out.println("maxLengthLine "+maxLengthLine);
-		//  System.out.println("maxBlockLength "+maxBlockLength);
-		  
-		  //int maxBlockHeight = man.getHorizontalScale().getScaledSize(lines.length);
-		  //TODO: usar esto
-		  
 		  
 		  int[][] result = new int[lines.length][2*maxBlockLength];
 		  
 		  for (int i=0;i<lines.length;i++){
-		   result[i] = transformCodeLine(lines[i],maxBlockLength,maxLengthLine);
-//		   System.out.println(Arrays.toString(result[i]));
+		   result[i] = transformCodeLine(lines[i],maxLengthLine);
+		   System.out.println(Arrays.toString(result[i]));
 		  }
 		  
 		  
@@ -206,7 +197,7 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		 }
 		 
 		 
-		 public static int[] transformCodeLine(String codeLine, int MaxBlockLength, int maxLineLength){
+		 public static int[] transformCodeLine(String codeLine, int maxLineLength){
 		  
 		  //Set string line to maxChars fill with whitespace
 		  StringBuilder builder = new StringBuilder(codeLine);
@@ -215,10 +206,10 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		   builder.append(" ");
 		  }
 		  
-		  int[] resultRow = new int[2*MaxBlockLength];
-		  int step = maxLineLength/(2*MaxBlockLength);
+		  int[] resultRow = new int[maxLineLength];
+		  int step = 1;
 		  
-		  for (int i=0;i<2*MaxBlockLength;i++){
+		  for (int i=0;i<maxLineLength;i++){
 		   String stepString = builder.substring(step*i,step*(i+1));
 		   String replaced = stepString.replaceAll("\\s+","");
 		   

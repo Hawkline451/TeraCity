@@ -29,7 +29,6 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-    	int prev = -1;
         CodeCityFacet codeCityFacet = chunkRegion
                 .getFacet(CodeCityFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
@@ -37,25 +36,13 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
         		
         		MapObject map = codeCityFacet.getBlockType(position.x, position.y, position.z);
         		DrawableCode code = map.getObject();
-        		
-        		int[] ll = codeCityFacet.getBlockType(position.x, position.y, position.z).getObject().getLineLength();
-        		if (ll != null) {
-        			if (prev == -1) {
-        				prev = position.y;
-        			}
-        			else {
-        				prev = Math.min(prev, position.y);
-        			}
-        		}
-        		int blockNum = position.y-prev;
 
         		if (map.getColumn() != -1){
             		int row = map.getMaxY()-position.y;
             		int col = map.getColumn();
-            		int[][] bloque = code.getLowResFromLine(row,col);
             		
-            		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
-            		block = ReducedViewBlockFactory.generate(bloque);
+            		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
+            		block = ReducedViewBlockFactory.generate(sliceBin);
             		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
             	    
         		}

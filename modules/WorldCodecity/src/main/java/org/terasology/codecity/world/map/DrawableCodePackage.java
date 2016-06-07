@@ -91,5 +91,17 @@ public class DrawableCodePackage implements DrawableCode {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int[][] getFullRep() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean useTexture() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

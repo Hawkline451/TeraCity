@@ -67,4 +67,15 @@ public class DrawableCodeClass implements DrawableCode {
 	public int[][] getLowResFromLine(int row,int column) {
 		return getBase().getBinaryRow(row,column);
 	}
+
+	@Override
+	public int[][] getFullRep() {
+		// TODO Auto-generated method stub
+		return getBase().getFullBinary();
+	}
+
+	@Override
+	public boolean useTexture() {
+		return true;
+	}
 }
