@@ -54,7 +54,6 @@ public class EditClassSystem extends BaseComponentSystem {
 	 public void openEditClass(EditClassButton event, EntityRef entity) {
 		 if (event.getState() == ButtonState.DOWN) {
 			 JeditManager.editClassWhenPressed(cameraTarget, nuiManager);
-			 //nuiManager.toggleScreen("engine:editClassScreen");
 	         event.consume();
 	    } 
 	 }
