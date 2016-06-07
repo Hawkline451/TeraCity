@@ -1,5 +1,6 @@
 package org.terasology.rendering.nui.layers.ingame;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
@@ -32,21 +33,37 @@ public class EditClassScreen extends CoreScreenLayer{
 	
 	@Override
 	public void onOpened() { 
+		
 		path = JeditManager.getPath(cameraTarget);
-		pathClass = find("subtitle",UILabel.class);
-		pathClass.setText(path);
 		
-		textclass = find("textclass", UIText.class);
-		
-		String contentClass = "";
-		try {
-			contentClass = EditClass.readFileAsString(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		textclass.setText(contentClass);
-		initialise();
+		try{
+			File f = new File(path);
+			
+			if(f.exists() && !f.isDirectory()) { 
+				pathClass = find("subtitle",UILabel.class);
+				pathClass.setText(path);
+				
+				textclass = find("textclass", UIText.class);
+				
+				String contentClass = "";
+				try {
+					contentClass = EditClass.readFileAsString(path);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				textclass.setText(contentClass);
+				initialise();
+				System.out.println("Read "+path);
+			}else if(f.isDirectory()){
+				System.out.println(path+" is a directory not a file!");
+			}else{
+				System.out.println("No ClassPath found!");
+			}
+		 }
+		 catch(Exception e1) {
+			 System.out.println("No ClassPath found!");
+		 }
 	}	
 	
 	@Override
