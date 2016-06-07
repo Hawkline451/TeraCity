@@ -6,6 +6,7 @@ import java.io.File;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
+import org.terasology.rendering.nui.NUIManager;
 
 public class JeditManager {
   
@@ -47,7 +48,7 @@ public class JeditManager {
      * @param classesPath
      * @return
      */
-	public static String editClassInside(String pathFile){
+	public static String editClassInside(String pathFile, NUIManager nuiManager){
 		
 		try{
 			File f = new File(pathFile);
@@ -57,7 +58,9 @@ public class JeditManager {
 				System.out.println(pathFile);
 				String fileContent = EditClass.readFileAsString(pathFile);
 				System.out.println(fileContent);
+				nuiManager.toggleScreen("engine:editClassScreen");
 				return "Read "+pathFile;
+				
 				
 			}else if(f.isDirectory()){
 				return pathFile+" is a directory not a file!";
@@ -92,9 +95,10 @@ public class JeditManager {
 	/**
 	 * Open edit class of the classes of the targetBlock
 	 * @param camera
+	 * @param nuiManager 
 	 * @param codemap
 	 */	
-	public static void editClassWhenPressed(CameraTargetSystem camera){
+	public static void editClassWhenPressed(CameraTargetSystem camera, NUIManager nuiManager){
 		
 		CodeRepresentation code = CodeRepresentation.getCodeRepresentation(camera);
 		ClassPathVisitor visitor = new ClassPathVisitor();
@@ -102,7 +106,7 @@ public class JeditManager {
 		
 		String path = returnPath(visitor);
 		
-		editClassInside(path);
+		editClassInside(path, nuiManager);
 	}
 	
 	public static String returnPath(ClassPathVisitor visitor){

@@ -44,10 +44,12 @@
                         "family": "option-grid",
                         "contents": [
                             {
-                                "type": "UITextEntry",
+                                "type": "UIText",
                                 "id": "textclass",
                                 "text" : "path",
                                 "layoutInfo": {
+                                    "height" : 300, 
+                                    "width" : 500,
                                     "position-left": {},
                                     "position-right": {},
                                     "use-content-height": true,
