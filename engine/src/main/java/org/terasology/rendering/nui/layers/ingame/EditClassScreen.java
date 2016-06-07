@@ -1,59 +1,53 @@
 package org.terasology.rendering.nui.layers.ingame;
 
 import org.terasology.engine.GameEngine;
-import org.terasology.engine.modes.StateMainMenu;
-import org.terasology.logic.console.commands.CoreCommands;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
+import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.rendering.nui.widgets.UIText;
+import org.terasology.rendering.nui.widgets.UITextEntry;
+//import org.terasology.utilities.jedit.EditClass;
 
 /**
  * @author Francisco Pulgar Romero
  */
 
 public class EditClassScreen extends CoreScreenLayer{
-
-    @Override
+	
+	private UITextEntry textclass;
+	private UILabel pathClass;
+	
+	@Override
     public void initialise() {
+		
+		pathClass = find("subtitle",UILabel.class);
+		pathClass.setText("ruta de la clase");
+		
+		textclass = find("textclass", UITextEntry.class);
+		textclass.setText("contenido del archivo");
+    
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
                 getManager().closeScreen(EditClassScreen.this);
             }
         });
-        WidgetUtil.trySubscribe(this, "settings", new ActivateEventListener() {
+        
+        /**
+         * Send code in 
+         */ 
+        WidgetUtil.trySubscribe(this, "save", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
-                getManager().pushScreen("settingsMenuScreen");
+            	String editContent = textclass.getText();
+            	//EditClass.writeFile(pathClass.getText(), editContent);
+                getManager().closeScreen(EditClassScreen.this);
             }
-        });
-        WidgetUtil.trySubscribe(this, "mainMenu", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-                CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu());
-            }
-        });
-        WidgetUtil.trySubscribe(this, "fullscreen", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	CoreCommands c = new CoreCommands();
-            	c.fullscreen();
-            }
-        });
-        WidgetUtil.trySubscribe(this, "colorear", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-                getManager().pushScreen("coloringMenuScreen");
-            }
-        });
-        WidgetUtil.trySubscribe(this, "bookmarks", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	getManager().pushScreen("bookmarksMenuScreen");
-            }
-        });
+        });        
+        
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
