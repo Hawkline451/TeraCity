@@ -27,7 +27,8 @@ public class DrawableCodeClass implements DrawableCode {
 
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {
-        return scale.getScaledSize(base.getVariableNumber(), 1);
+    	// Retorna ancho de edificio. Haremos por ahora que sea el tamaño de línea.
+        return scale.getScaledSize(base.getLongestLineLength(), 1);
     }
 
     @Override
@@ -42,7 +43,8 @@ public class DrawableCodeClass implements DrawableCode {
 
 	@Override
 	public int getWidth(CodeScale scale, CodeMapFactory factory) {
-		return scale.getScaledSize(base.getVariableNumber(),1);
+		//Esto creo que lo cambié yo
+		return 1;
 	}
 
 	@Override

@@ -16,7 +16,13 @@ public interface CodeMap {
      * @return The current size of the map in World coordinates
      */
     public int getSize();
+    
+    /**
+     * @return sum of sizes of scaled code.
+     */
 
+//    public int getScaledSize();
+    
     /**
      * Verify if in a given position a object exist
      * 
@@ -82,4 +88,5 @@ public interface CodeMap {
      * @return Position where the code was added
      */
     public Vector2i getCodePosition(DrawableCode code);
+    
 }

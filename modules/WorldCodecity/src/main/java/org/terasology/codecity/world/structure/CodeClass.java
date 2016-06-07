@@ -60,4 +60,12 @@ public class CodeClass extends CodeRepresentation implements Serializable {
 		return 1;
 	}
 
+	public int getLongestLineLength() {
+		int max = 0;
+		for (Integer i : lineLength) {
+			max = Math.max(max, i);
+		}
+		return max;
+	}
+
 }

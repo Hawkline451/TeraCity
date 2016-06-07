@@ -14,6 +14,8 @@ import org.terasology.world.block.Block;
  */
 public class DrawableCodePackage implements DrawableCode {
     private CodePackage base;
+    
+    // Almacena las clases/paquetes que contiene el package
     private List<DrawableCode> contentList;
     private int sizeCache = -1;
     private CodeMap submapCache;
@@ -41,6 +43,7 @@ public class DrawableCodePackage implements DrawableCode {
         return base;
     }
 
+    
     @Override
     public int getSize(CodeScale scale, CodeMapFactory factory) {
         if (sizeCache == -1) {

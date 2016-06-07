@@ -39,7 +39,7 @@
                     "content": {
                         "type": "ColumnLayout",
                         "id" : "bookmarksList",
-                        "columns": 4,
+                        "columns": 3,
                         "verticalSpacing": 8,
                         "horizontalSpacing": 8,
                         "family": "option-grid",
@@ -51,12 +51,7 @@
                             {
                                 "type": "UISpace",
                                 "size": [1, 13]
-                            },
-                            {
-                                "type": "UISpace",
-                                "size": [1, 13]
-                            },
-                            {
+                            },{
                                 "type": "UISpace",
                                 "size": [1, 13]
                             }

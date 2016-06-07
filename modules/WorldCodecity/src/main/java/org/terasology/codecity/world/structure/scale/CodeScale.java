@@ -4,7 +4,7 @@ package org.terasology.codecity.world.structure.scale;
  * This class represent the scale applyed to the code to show it in a better
  * way.
  */
-public interface CodeScale {
+public abstract class CodeScale {
     /**
      * Get the scaled size of a number
      * 
@@ -12,7 +12,7 @@ public interface CodeScale {
      *            Number to be scaled
      * @return The scaled version of the number
      */
-    public int getScaledSize(int size);
+    public abstract int getScaledSize(int size);
 
     /**
      * Get the scaled size of a number
@@ -23,5 +23,7 @@ public interface CodeScale {
      *            Minimal value
      * @return The scaled version of the number
      */
-    public int getScaledSize(int size, int min);
+    public int getScaledSize(int size, int min) {
+        return Math.max(getScaledSize(size), min);
+    }
 }
