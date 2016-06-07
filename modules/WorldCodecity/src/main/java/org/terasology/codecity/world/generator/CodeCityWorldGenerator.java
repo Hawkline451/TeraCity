@@ -74,7 +74,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      * Insert into the CodeRegistry the DrawableCode, gen
      * @param code
      */
-    private CodeMap generateCodeMap(CodeRepresentation code) {
+    public static CodeMap generateCodeMap(CodeRepresentation code) {
         DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));

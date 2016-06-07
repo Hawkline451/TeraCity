@@ -5,11 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import org.terasology.asset.AssetType;
 import org.terasology.asset.AssetUri;
+import org.terasology.codecity.world.generator.CodeCityWorldGenerator;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
+import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
@@ -524,12 +526,20 @@ public class PlaceBlockCommand extends BaseComponentSystem {
 		}
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
+        	//Se limpia
         	CodeMap map = CoreRegistry.get(CodeMap.class);
         	clearMap(map, Vector2i.zero(), 10, world);
+        	// Nueva Escala
     		man.setHorizontalScale(newScale);
-        	processMap(map, Vector2i.zero(), 10, world);
+        	// Nuevo mapa
+        	CodeRepresentation code = CoreRegistry.get(CodeRepresentation.class);
+        	CodeMap newMap = CodeCityWorldGenerator.generateCodeMap(code);
+        	CoreRegistry.put(CodeMap.class,newMap);
+        	// Se procesa
+        	processMap(newMap, Vector2i.zero(), 10, world);
         	return "Success";
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+
 }
