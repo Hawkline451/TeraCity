@@ -299,7 +299,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
                 		world.setBlock(new Vector3i(x, z, y), block);
             		}
             		else{
-            			System.out.println("ERROR");
+//            			System.out.println("ERROR");
             			block = ReducedViewBlockFactory.generate(null);
             			world.setBlock(new Vector3i(x, z, y), block);
             		}

@@ -188,7 +188,7 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		  
 		  for (int i=0;i<lines.length;i++){
 		   result[i] = transformCodeLine(lines[i],maxLengthLine);
-		   System.out.println(Arrays.toString(result[i]));
+//		   System.out.println(Arrays.toString(result[i]));
 		  }
 		  
 		  
