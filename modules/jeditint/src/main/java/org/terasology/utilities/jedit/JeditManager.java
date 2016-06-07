@@ -47,11 +47,9 @@ public class JeditManager {
      * @param classesPath
      * @return
      */
-	public static String editClassInside(String[] classesPath){
+	public static String editClassInside(String pathFile){
 		
 		try{
-			String pathFile = classesPath[0];
-			
 			File f = new File(pathFile);
 			
 			if(f.exists() && !f.isDirectory()) { 
@@ -102,14 +100,17 @@ public class JeditManager {
 		ClassPathVisitor visitor = new ClassPathVisitor();
 		code.accept(visitor);
 		
+		String path = returnPath(visitor);
+		
+		editClassInside(path);
+	}
+	
+	public static String returnPath(ClassPathVisitor visitor){
 		ArrayList<String> paths = visitor.getPaths();
 		String [] pathsS = new String[paths.size()];
 		paths.toArray(pathsS);
-		
-		editClassInside(pathsS);
+		return pathsS[0];
 	}
-		
-	
 	
 	/**
 	 * Get path of the mapObject targeted by the camera;
