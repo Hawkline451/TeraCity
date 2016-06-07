@@ -1,62 +1,138 @@
 {
     "type" : "editClassScreen",
-    "skin" : "pauseMenu",
-    "contents" : {
-        "type" : "relativeLayout",
-        "contents" : [
+    "skin": "mainmenu",
+    "contents": {
+        "type": "RelativeLayout",
+        "contents": [
             {
-                "type" : "columnLayout",
-                "verticalSpacing" : 9,
+                "type": "UIImage",
+                "image": "engine:terasology",
+                "id": "title",
+                "layoutInfo": {
+                    "width": 256,
+                    "height": 64,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "TOP",
+                        "offset": 18
+                    }
+                }
+            },
+            {
+                "type": "UILabel",
+                "family": "title",
+                "text": "Edit Class",
+                "id": "subtitle",
+                "layoutInfo": {
+                    "height": 18,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "widget": "title"
+                    }
+                }
+            },
+            {
+                "type": "ScrollableArea",
+                "content": {
+                    "type": "UIBox",
+                    "content": {
+                        "type": "ColumnLayout",
+                        "columns": 1,
+                        "verticalSpacing": 2,
+                        "horizontalSpacing": 8,
+                        "family": "option-grid",
+                        "contents": [
+                            {
+                                "type": "UITextEntry",
+                                "id": "textclass",
+                                "text" : "path",
+                                "layoutInfo": {
+                                    "position-left": {},
+                                    "position-right": {},
+                                    "use-content-height": true,
+                                    "position-bottom": {}
+                                }
+                            }
+                        ]
+                    },
+                    "layoutInfo": {
+                        "width": 400,
+                        "position-horizontal-center": {},
+                        "position-top": {
+                            "target": "BOTTOM",
+                            "widget": "subtitle"
+                        },
+                        "position-bottom": {
+                            "target": "TOP",
+                            "widget": "actionButtons",
+                            "offset": 16
+                        }
+                    }
+                },
+                "layoutInfo": {
+                    "width": 840,
+                    "height": 512,
+                    "use-content-height": true,
+                    "position-horizontal-center": {},
+                    "position-top": {
+                        "target": "BOTTOM",
+                        "offset": 16,
+                        "widget": "subtitle"
+                    },
+                    "position-bottom": {
+                        "target": "TOP",
+                        "offset": 32,
+                        "widget": "close"
+                    }
+                }
+            },
+
+            {
+                "type" : "RowLayout",
+                "horizontalSpacing" : 16,
                 "contents" : [
                     {
-                        "type" : "UILabel",
-                        "text" : "Ingame Menu"
-                    },
-                    {
-                        "type" : "UISpace",
-                        "size" : [1, 8]
+                        "type" : "UIButton",
+                        "text" : "Save",
+                        "id" : "save"
                     },
                     {
                         "type" : "UIButton",
-                        "id" : "close",
-                        "text" : "Back"
-                    },
-                    {
-                        "type" : "UISpace",
-                        "size" : [1, 16]
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "settings",
-                        "text" : "Settings"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "fullscreen",
-                        "text" : "FullScreen"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "colorear",
-                        "text" : "Coloring"
-                    },
-                    {
-                    	"type" : "UIButton",
-                    	"id" : "bookmarks",
-                    	"text" : "Bookmarks"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "exit",
-                        "text" : "Exit Terasology"
+                        "text" : "Back",
+                        "id" : "close"
                     }
-                    
-                ],
-                "layoutInfo" : {
-                    "use-content-width" : true,
-                    "use-content-height" : true,
-                    "position-horizontal-center" : {},
-                    "position-vertical-center" : {}
+                ]
+            },
+
+
+            {
+                "type": "UIButton",
+                "text": "Back",
+                "id": "close",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 48
+                    }
+                }
+            },
+
+            {
+                "type": "UIButton",
+                "text": "Save",
+                "id": "save",
+                "layoutInfo": {
+                    "height": 32,
+                    "width": 200,
+                    "position-horizontal-center": {},
+                    "position-bottom": {
+                        "target": "BOTTOM",
+                        "offset": 18
+                    }
                 }
             }
         ]
