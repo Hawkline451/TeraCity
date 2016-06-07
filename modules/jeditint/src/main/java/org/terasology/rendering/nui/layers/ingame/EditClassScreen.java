@@ -38,7 +38,6 @@ public class EditClassScreen extends CoreScreenLayer{
 		
 		try{
 			File f = new File(path);
-			
 			if(f.exists() && !f.isDirectory()) { 
 				pathClass = find("subtitle",UILabel.class);
 				pathClass.setText(path);
@@ -51,7 +50,6 @@ public class EditClassScreen extends CoreScreenLayer{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 				textclass.setText(contentClass);
 				initialise();
 				System.out.println("Read "+path);
