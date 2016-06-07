@@ -54,14 +54,9 @@ public class JeditManager {
 			File f = new File(pathFile);
 			
 			if(f.exists() && !f.isDirectory()) { 
-				
-				System.out.println(pathFile);
-				String fileContent = EditClass.readFileAsString(pathFile);
-				System.out.println(fileContent);
 				nuiManager.toggleScreen("engine:editClassScreen");
 				return "Read "+pathFile;
-				
-				
+			
 			}else if(f.isDirectory()){
 				return pathFile+" is a directory not a file!";
 			}else{
@@ -111,9 +106,13 @@ public class JeditManager {
 	
 	public static String returnPath(ClassPathVisitor visitor){
 		ArrayList<String> paths = visitor.getPaths();
-		String [] pathsS = new String[paths.size()];
-		paths.toArray(pathsS);
-		return pathsS[0];
+		if(paths.size() == 0){
+			return null;
+		}else{
+			String [] pathsS = new String[paths.size()];
+			paths.toArray(pathsS);
+			return pathsS[0];
+		}
 	}
 	
 	/**
