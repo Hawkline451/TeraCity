@@ -46,17 +46,16 @@ public class JeditManager {
     /**
      * Send path to open the class inside of Minecraft.
      * @param classesPath
+     * @param nuiManager
      * @return
      */
 	public static String editClassInside(String pathFile, NUIManager nuiManager){
 		
 		try{
 			File f = new File(pathFile);
-			
 			if(f.exists() && !f.isDirectory()) { 
 				nuiManager.toggleScreen("engine:editClassScreen");
 				return "Read "+pathFile;
-			
 			}else if(f.isDirectory()){
 				return pathFile+" is a directory not a file!";
 			}else{
@@ -94,25 +93,8 @@ public class JeditManager {
 	 * @param codemap
 	 */	
 	public static void editClassWhenPressed(CameraTargetSystem camera, NUIManager nuiManager){
-		
-		CodeRepresentation code = CodeRepresentation.getCodeRepresentation(camera);
-		ClassPathVisitor visitor = new ClassPathVisitor();
-		code.accept(visitor);
-		
-		String path = returnPath(visitor);
-		
+		String path = getPath(camera);
 		editClassInside(path, nuiManager);
-	}
-	
-	public static String returnPath(ClassPathVisitor visitor){
-		ArrayList<String> paths = visitor.getPaths();
-		if(paths.size() == 0){
-			return null;
-		}else{
-			String [] pathsS = new String[paths.size()];
-			paths.toArray(pathsS);
-			return pathsS[0];
-		}
 	}
 	
 	/**
