@@ -292,7 +292,7 @@ public class PlaceBlockCommand extends BaseComponentSystem {
             for (int z = level; z < height; z++)
             	if (!obj.isInner() || z == height-1) {
             		if (obj.getColumn() != -1){
-                		int row = obj.getMaxY()-z;
+                		int row = height-1-z;
                 		int col = obj.getColumn();
                 		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
                 		block = ReducedViewBlockFactory.generate(sliceBin);
