@@ -89,7 +89,7 @@
                             },
                             {
                                 "type": "UIDropdown",
-                                "id": "HorizontalScaleType"
+                                "id": "horizontalScaleType"
                             }
 	            ],
 	            "layoutInfo": {
