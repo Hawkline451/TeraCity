@@ -10,6 +10,11 @@ public class MapObject implements IMapObject {
     private int x;
     private int z;
     private boolean isOrigin;
+    boolean isInner;
+    
+    private int codeColumn; //What part of the code texture row is ? -1 means border
+    private int maxYCord; //This variable make possible to calculate the row given a Z coordinate
+
 
     /**
      * Create a new Object in map
@@ -26,6 +31,23 @@ public class MapObject implements IMapObject {
         this.x = x;
         this.z = z;
         this.isOrigin = isOrigin;
+        this.isInner = false;
+    }
+    
+    /**
+     * Creates a new Object in map, defining if the object represents inner section of a class.
+     * @param object
+     * @param x
+     * @param z
+     * @param isOrigin
+     * @param isInner
+     */
+    public MapObject(DrawableCode object, int x, int z, boolean isOrigin, boolean isInner) {
+        this.object = object;
+        this.x = x;
+        this.z = z;
+        this.isOrigin = isOrigin;
+        this.isInner = isInner;
     }
     
     @Override
@@ -57,8 +79,8 @@ public class MapObject implements IMapObject {
      * @return
      */
     @Override
-    public int getHeight(CodeScale scale, CodeMapFactory factory) {
-        return object.getHeight(scale, factory);
+    public int getHeight(CodeMapFactory factory) {
+        return object.getHeight(factory);
     }
     
     /**
@@ -68,8 +90,8 @@ public class MapObject implements IMapObject {
      * @param factory
      * @return
      */
-    public int getWidth(CodeScale scale, CodeMapFactory factory){
-    	return object.getWidth(scale, factory);
+    public int getWidth(CodeMapFactory factory){
+    	return object.getWidth(factory);
     }
 
     /**
@@ -83,6 +105,11 @@ public class MapObject implements IMapObject {
     public boolean isOrigin() {
         return isOrigin;
     }
+    
+    @Override
+    public boolean isInner() {
+        return isInner;
+    }
   //ww
     /**
      * Returns true if this map object contains the class searched for.
@@ -92,4 +119,21 @@ public class MapObject implements IMapObject {
     public boolean containsClass(String className){
     	return object.containsClass(className);
     }
+    
+    
+    
+	public int getColumn(){
+		return this.codeColumn;
+	}
+	public void setCodeColumn(int column){
+		this.codeColumn = column;
+	}
+	public int getMaxY(){
+		return this.maxYCord;
+	}
+	public void setMaxY(int maxY){
+		this.maxYCord = maxY;
+	}
+
+
 }

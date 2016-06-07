@@ -17,22 +17,22 @@ public class NullDrawableCode implements DrawableCode {
 	}
 
 	@Override
-	public int getSize(CodeScale scale, CodeMapFactory factory) {
+	public int getSize(CodeMapFactory factory) {
 		return 0;
 	}
 
 	@Override
-	public int getHeight(CodeScale scale, CodeMapFactory factory) {
+	public int getHeight(CodeMapFactory factory) {
 		return 0;
 	}
 
 	@Override
-	public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
+	public CodeMap getSubmap(CodeMapFactory factory) {
 		return new CodeMapNull();
 	}
 
 	@Override
-	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+	public int getWidth(CodeMapFactory factory) {
 		return 0;
 	}
 
@@ -48,6 +48,24 @@ public class NullDrawableCode implements DrawableCode {
 	public int[] getLineLength() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int[][] getLowResFromLine(int row,int col) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[][] getFullRep() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean useTexture() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

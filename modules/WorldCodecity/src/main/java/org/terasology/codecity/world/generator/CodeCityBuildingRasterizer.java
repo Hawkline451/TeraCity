@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.terasology.codecity.world.facet.CodeCityFacet;
+import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
@@ -27,22 +29,28 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-    	int prev = -1;
         CodeCityFacet codeCityFacet = chunkRegion
                 .getFacet(CodeCityFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
         	if(codeCityFacet.containsBlock(position)){
-        		int[] ll = codeCityFacet.getBlockType(position.x, position.y, position.z).getObject().getLineLength();
-        		if (ll != null) {
-        			if (prev == -1) {
-        				prev = position.y;
-        			}
-        			else {
-        				prev = Math.min(prev, position.y);
-        			}
+        		
+        		MapObject map = codeCityFacet.getBlockType(position.x, position.y, position.z);
+        		DrawableCode code = map.getObject();
+
+        		if (map.getColumn() != -1){
+            		int row = map.getMaxY()-position.y;
+            		int col = map.getColumn();
+            		
+            		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
+            		block = ReducedViewBlockFactory.generate(sliceBin);
+            		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
+            	    
         		}
-        		block = ReducedViewBlockFactory.generate(ll, position.y-prev);
-        	    chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), block);
+        		else{ //Here block for borders which have map.getColumn() == -1
+        			block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
+        		}
+        		chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), block);
+				
         	}
         }
     }

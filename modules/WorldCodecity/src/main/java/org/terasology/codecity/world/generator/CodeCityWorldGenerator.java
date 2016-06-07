@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeFactory;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.scale.CodeScale;
+import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.codecity.world.structure.scale.SquareRootCodeScale;
 import org.terasology.engine.SimpleUri;
@@ -32,18 +34,18 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     public void initialize(String s) {
-
+        CoreRegistry.put(CodeScaleManager.class, new CodeScaleManager());
         this.path = s;
-    	
     	CodeCityLoader loader;
-        
-    	if (this.path != "")
+    	if (this.path != ""){
     		loader = new CodeCityProjectLoader(this.path);
-    	else
-    		loader = new CodeCityDefaultLoader();
-        
+    	}
+    	else{
+    		this.path = System.getProperty("user.dir")+File.separator+"modules"+File.separator+"WorldCodecity";
+    		loader = new CodeCityProjectLoader(this.path);
+    	}
+    		
         CodeRepresentation code = loader.loadCodeRepresentation();
-
         CodeMap codeMap = generateCodeMap(code);
         CoreRegistry.put(CodeMap.class, codeMap);
         CoreRegistry.put(CodeRepresentation.class, code);
@@ -72,11 +74,10 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
      * Insert into the CodeRegistry the DrawableCode, gen
      * @param code
      */
-    private CodeMap generateCodeMap(CodeRepresentation code) {
+    public static CodeMap generateCodeMap(CodeRepresentation code) {
         DrawableCodeFactory drawableFactory = new DrawableCodeFactory();
         List<DrawableCode> list = new ArrayList<DrawableCode>();
         list.add(drawableFactory.generateDrawableCode(code));
-
         CodeMapFactory factory = new CodeMapFactory();
         return factory.generateMap(list);
     }

@@ -35,8 +35,8 @@ public class CodeMapSpeed extends Speed {
 	 */
 	float calculateSpeed() {
 	    DrawableCode dc = CoreRegistry.get(CodeMap.class).getMapObjects().iterator().next().getObject();
-	    int sizeX = dc.getSize(scale, factory);
-	    int sizeY = dc.getSize(scale, factory);
+	    int sizeX = dc.getSize(factory);
+	    int sizeY = dc.getSize(factory);
 	    getHeight();
 	    int sizeZ = maxHeight;
 	    // We calculate the velocity according to the formula given in the CodeMapSpeedMath class
@@ -67,14 +67,14 @@ public class CodeMapSpeed extends Speed {
         for (MapObject obj : map.getMapObjects()) {
             int x = obj.getPositionX() + offset.getX();
             int y = obj.getPositionZ() + offset.getY();
-            int height = obj.getHeight(scale, factory) + level;
+            int height = obj.getHeight(factory) + level;
             for (int z = level; z < height; z++){
             	if(z > this.maxHeight){
             		this.maxHeight = z;
             	}
             }
             if (obj.isOrigin())
-                getHeightRecursive(obj.getObject().getSubmap(scale, factory), new Vector2i(x+1, y+1), height, world);
+                getHeightRecursive(obj.getObject().getSubmap(factory), new Vector2i(x+1, y+1), height, world);
         }
     }
 	

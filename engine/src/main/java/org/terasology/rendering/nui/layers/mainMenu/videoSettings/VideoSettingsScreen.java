@@ -116,7 +116,8 @@ public class VideoSettingsScreen extends CoreScreenLayer {
 
         UIDropdown<DynamicShadows> dynamicShadows = find("shadows", UIDropdown.class);
         if (dynamicShadows != null) {
-            dynamicShadows.setOptions(Arrays.asList(DynamicShadows.values()));
+            dynamicShadows.setOptions(Arrays.asList(DynamicShadows.OFF));
+            //dynamicShadows.setOptions(Arrays.asList(DynamicShadows.values()));
             dynamicShadows.bindSelection(new DynamicShadowsBinding(config.getRendering()));
         }
 

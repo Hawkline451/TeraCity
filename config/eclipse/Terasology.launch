@@ -12,7 +12,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.terasology.engine.Terasology"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value=""/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-path=&quot;/home/adderou/Projects/Java/TeraCity/modules/WorldCodecity/src/test&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="PC"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms256m -Xmx1024m"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:PC}/../.."/>

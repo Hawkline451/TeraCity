@@ -23,6 +23,7 @@ import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.layers.mainMenu.BookmarksMenuScreen;
+import org.terasology.rendering.nui.layers.mainMenu.VariableWidthMenuScreen;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 
 /**
@@ -68,6 +69,13 @@ public class PauseMenu extends CoreScreenLayer {
             public void onActivated(UIWidget widget) {
             	BookmarksMenuScreen bms = (BookmarksMenuScreen) getManager().pushScreen("bookmarksMenuScreen");
             	bms.setParent(PauseMenu.this);
+            }
+        });
+        WidgetUtil.trySubscribe(this, "variableWidth", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	VariableWidthMenuScreen vwms = (VariableWidthMenuScreen) getManager().pushScreen("variableWidthMenuScreen");
+            	vwms.setParent(PauseMenu.this);
             }
         });
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {

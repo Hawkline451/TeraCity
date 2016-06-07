@@ -10,32 +10,26 @@ import org.terasology.world.block.Block;
 public interface DrawableCode {
 	public CodeRepresentation getBase();
 	/**
-     * @param scale
-     *            The scale used in the code
      * @param factory
      *            The builder of the map
      * @return The size of the base of the building.
      */
-    public int getSize(CodeScale scale, CodeMapFactory factory);
+    public int getSize(CodeMapFactory factory);
 
     /**
-     * @param scale
-     *            The scale used in the code
      * @param factory
      *            The builder of the map
      * @return The height of the base of the building.
      */
-    public int getHeight(CodeScale scale, CodeMapFactory factory);
+    public int getHeight(CodeMapFactory factory);
     
     /**
-     * @param scale
-     *            The scale used in the code
      * @param factory
      *            The builder of the map
      * @return The width of the base of the building.
      */
     
-    public int getWidth(CodeScale scale, CodeMapFactory factory);
+    public int getWidth(CodeMapFactory factory);
 
     /**
      * @param scale
@@ -44,7 +38,7 @@ public interface DrawableCode {
      *            The builder of the map
      * @return The submap inside the code
      */
-    public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory);
+    public CodeMap getSubmap(CodeMapFactory factory);
     
     /**
      * @param className the class name
@@ -54,4 +48,7 @@ public interface DrawableCode {
     
     public void accept(DrawableCodeVisitor visitor);
 	public int[] getLineLength();
+	public int[][] getLowResFromLine(int row,int col);
+	public int[][] getFullRep();
+	public boolean useTexture();
 }

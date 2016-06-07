@@ -45,7 +45,7 @@ public class DrawableCodePackage implements DrawableCode {
 
     
     @Override
-    public int getSize(CodeScale scale, CodeMapFactory factory) {
+    public int getSize(CodeMapFactory factory) {
         if (sizeCache == -1) {
         	CodeMap map = factory.generateMap(contentList);
         	sizeCache = 2 + map.getSize();
@@ -54,19 +54,19 @@ public class DrawableCodePackage implements DrawableCode {
     }
 
     @Override
-    public int getHeight(CodeScale scale, CodeMapFactory factory) {
+    public int getHeight(CodeMapFactory factory) {
         return 1;
     }
 
     @Override
-    public CodeMap getSubmap(CodeScale scale, CodeMapFactory factory) {
+    public CodeMap getSubmap(CodeMapFactory factory) {
     	if (submapCache == null)
     		submapCache = factory.generateMap(contentList);
         return submapCache;
     }
 
 	@Override
-	public int getWidth(CodeScale scale, CodeMapFactory factory) {
+	public int getWidth(CodeMapFactory factory) {
 		return 1;
 	}
 
@@ -84,6 +84,24 @@ public class DrawableCodePackage implements DrawableCode {
 	}
 	public int[] getLineLength() {
 		return null;
+	}
+
+	@Override
+	public int[][] getLowResFromLine(int row,int col) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int[][] getFullRep() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean useTexture() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
