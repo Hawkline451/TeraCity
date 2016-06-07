@@ -37,26 +37,13 @@
                 "content": {
                     "type": "UIBox",
                     "content": {
-                        "type": "ColumnLayout",
-                        "columns": 1,
-                        "verticalSpacing": 2,
-                        "horizontalSpacing": 8,
-                        "family": "option-grid",
-                        "contents": [
-                            {
+
                                 "type": "UIText",
                                 "id": "textclass",
                                 "text" : "path",
-                                "layoutInfo": {
-                                    "height" : 300, 
-                                    "width" : 500,
-                                    "position-left": {},
-                                    "position-right": {},
-                                    "use-content-height": true,
-                                    "position-bottom": {}
-                                }
-                            }
-                        ]
+                                "multiline": true,
+                                "readOnly": false
+                        
                     },
                     "layoutInfo": {
                         "width": 400,
