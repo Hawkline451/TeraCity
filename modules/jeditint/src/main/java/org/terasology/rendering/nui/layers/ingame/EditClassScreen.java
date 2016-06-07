@@ -25,21 +25,14 @@ public class EditClassScreen extends CoreScreenLayer{
 	
 	@In
 	private CameraTargetSystem cameraTarget;	
-	
+	private String path;
 	private UIText textclass;
 	private UILabel pathClass;
 	
+	
 	@Override
-    public void initialise() {
-		
-		
-		
-		CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
-		ClassPathVisitor visitor = new ClassPathVisitor();
-		code.accept(visitor);
-		
-		String path = JeditManager.returnPath(visitor);
-		
+	public void onOpened() { 
+		path = JeditManager.getPath(cameraTarget);
 		pathClass = find("subtitle",UILabel.class);
 		pathClass.setText(path);
 		
@@ -53,7 +46,12 @@ public class EditClassScreen extends CoreScreenLayer{
 		}
 		
 		textclass.setText(contentClass);
-    
+		initialise();
+	}	
+	
+	@Override
+    public void initialise() {
+		
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget widget) {
