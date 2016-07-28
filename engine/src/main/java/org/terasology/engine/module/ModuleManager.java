@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ReflectPermission;
 import java.net.SocketPermission;
 import java.net.URISyntaxException;
+import java.security.AllPermission;
 import java.security.Policy;
 import java.util.Collections;
 import java.util.PropertyPermission;
@@ -159,7 +160,12 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.bulletphysics.linearmath");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("sun.reflect");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); // For use javax.xml.parsers into the new modules
-        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); // For use org.w3c.dom into the new modules 
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); // For use org.w3c.dom into the new modules
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.visitor");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.body");
+        moduleSecurityManager.getBasePermissionSet().addAPIClass(com.github.javaparser.ast.CompilationUnit.class);
+        moduleSecurityManager.getBasePermissionSet().addAPIClass(com.github.javaparser.ast.Node.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(com.esotericsoftware.reflectasm.MethodAccess.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(IOException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);

@@ -123,6 +123,9 @@ dependencies {
     compile group: 'org.terasology', name: 'gestalt-module', version: '2.2.3'
     compile group: 'org.terasology', name: 'TeraMath', version: '+', changing: true
     compile group: 'org.terasology.bullet', name: 'tera-bullet', version: '1.0.3'
+    
+    // To create AST for every .java file and get its metrics.
+    compile group: 'com.github.javaparser', name:'javaparser-core', version:'2.2.2'
 
     // Wildcard dependency to catch any libs provided with the project (remote repo preferred instead)
     compile fileTree(dir: 'libs', include: '*.jar')
