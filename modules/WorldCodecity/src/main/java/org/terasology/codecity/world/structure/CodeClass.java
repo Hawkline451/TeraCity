@@ -1,7 +1,8 @@
 package org.terasology.codecity.world.structure;
 
 import java.io.Serializable;
-import java.util.Arrays;
+
+import metrics.AST;
 
 /**
  * This class represent a Class of a project, saving the variables and length
@@ -11,6 +12,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
   private int variables;
   private int length;
   private int[] lineLength;
+  private AST ast;
 
   private int[][] binaryRepr;
 
@@ -26,17 +28,18 @@ public class CodeClass extends CodeRepresentation implements Serializable {
    */
   public CodeClass(String name, int variables, int length, String path,
       String github) {
-    this(name, variables, length, path, github, DummyArray.getArray(length),
+    this(name, variables, path, github, DummyArray.getArray(length),
         null);
   }
 
-  public CodeClass(String name, int variables, int length, String path,
-      String github, int[] lineLength, int[][] binaryRepr) {
+  public CodeClass(String name, int variables, String path,
+      String github, Integer[] lineLength, int[][] binaryRepr) {
     super(name, path, github);
     this.variables = variables;
-    this.length = fixLength(length);
+    this.length = fixLength(lineLength.length);
     this.lineLength = fixLineLength(lineLength);
     this.binaryRepr = fixBinary(binaryRepr);
+    ast = new AST(path);
   }
 
   /**
@@ -52,6 +55,14 @@ public class CodeClass extends CodeRepresentation implements Serializable {
    */
   public int[] getLineLengths() {
     return lineLength;
+  }
+  
+  /**
+   * 
+   * @return The AST of the file that represents
+   */
+  public AST getAst() {
+	  return ast;
   }
 
   /**
@@ -103,7 +114,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     return length + 2;
   }
 
-  private static int[] fixLineLength(int[] lineLength) {
+  private static int[] fixLineLength(Integer[] lineLength) {
     int[] fixed = new int[lineLength.length + 2];
     for (int i = 0; i < fixed.length; i++) {
       if (i == 0 || i == 1) {
