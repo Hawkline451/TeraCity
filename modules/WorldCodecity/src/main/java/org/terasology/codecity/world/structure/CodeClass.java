@@ -8,6 +8,7 @@ import metrics.AST;
  * This class represent a Class of a project, saving the variables and length
  */
 public class CodeClass extends CodeRepresentation implements Serializable {
+
   private static final long serialVersionUID = -5550203407291855976L;
   private int variables;
   private int length;
@@ -146,7 +147,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     }
   }
 
-public int[][] getFullBinary() {
-	return this.binaryRepr;
-}
+	public int[][] getFullBinary() {
+		return this.binaryRepr;
+	}
 }
