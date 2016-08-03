@@ -36,7 +36,7 @@ public class ColoringButton extends BaseComponentSystem implements HUDToggleButt
 		if (ColoringCommands.STATE.equals("Coloring...") && !coloring) {
 			cc.applyColoring();
 			coloring = true;
-		} else if (ColoringCommands.STATE.equals("Awaiting analisys")) {
+		} else if (ColoringCommands.STATE.equals("Awaiting analysis")) {
 			coloring = false;
 		} 
 		return ColoringCommands.STATE;
