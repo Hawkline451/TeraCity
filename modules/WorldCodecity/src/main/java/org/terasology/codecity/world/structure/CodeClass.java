@@ -2,7 +2,7 @@ package org.terasology.codecity.world.structure;
 
 import java.io.Serializable;
 
-import metrics.AST;
+import org.terasology.codecity.world.metrics.AST;
 
 /**
  * This class represent a Class of a project, saving the variables and length

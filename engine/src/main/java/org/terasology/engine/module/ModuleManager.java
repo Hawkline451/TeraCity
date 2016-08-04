@@ -16,6 +16,8 @@
 package org.terasology.engine.module;
 
 import com.google.common.collect.Sets;
+import com.sun.javafx.sg.prism.NGShape.Mode;
+
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -162,10 +164,14 @@ public class ModuleManager {
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("javax.xml.parsers"); // For use javax.xml.parsers into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("org.w3c.dom"); // For use org.w3c.dom into the new modules
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser");
-        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.visitor");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast");
         moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.body");
-        moduleSecurityManager.getBasePermissionSet().addAPIClass(com.github.javaparser.ast.CompilationUnit.class);
-        moduleSecurityManager.getBasePermissionSet().addAPIClass(com.github.javaparser.ast.Node.class);
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.comments");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.expr");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.internal");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.stmt");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.type");
+        moduleSecurityManager.getBasePermissionSet().addAPIPackage("com.github.javaparser.ast.visitor");
         moduleSecurityManager.getBasePermissionSet().addAPIClass(com.esotericsoftware.reflectasm.MethodAccess.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(IOException.class);
         moduleSecurityManager.getBasePermissionSet().addAPIClass(InvocationTargetException.class);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
+import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.DrawableCodeClass;
 import org.terasology.codecity.world.map.IMapObject;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.structure.scale.CodeScale;
@@ -99,19 +101,22 @@ public abstract class CodeRepresentation implements Serializable {
       return new NullMapObject();
     }
     
+    private static IMapObject getAimedMapObject(CameraTargetSystem cameraTarget){
+    	 int x = cameraTarget.getTargetBlockPosition().getX();
+         int y = cameraTarget.getTargetBlockPosition().getZ();
+         int z = cameraTarget.getTargetBlockPosition().getY();
+         int base = 9;
+         
+         CodeMap map = CoreRegistry.get(CodeMap.class);
+         return getMapObject(map, Vector2i.zero(), base, x, y, z);
+    }
+    
     /**
      * Get CodeRepresentation of the mapObject targeted by the camera.
      * @return CodeRepresentation of the mapObject targeted by the camera.
      */
     public static CodeRepresentation getCodeRepresentation(CameraTargetSystem cameraTarget) {
-      
-      int x = cameraTarget.getTargetBlockPosition().getX();
-      int y = cameraTarget.getTargetBlockPosition().getZ();
-      int z = cameraTarget.getTargetBlockPosition().getY();
-      int base = 9;
-      
-      CodeMap map = CoreRegistry.get(CodeMap.class);
-      IMapObject obj = getMapObject(map, Vector2i.zero(), base, x, y, z);
+      IMapObject obj = getAimedMapObject(cameraTarget); 
       CodeRepresentation code = obj.getObject().getBase();
       return code;
     }
