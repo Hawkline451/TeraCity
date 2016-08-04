@@ -29,7 +29,7 @@ import coloring.modules.*;
  */
 public class ColoringCommands extends BaseComponentSystem{
 	
-	public static String STATE = "Awaiting analisys";
+	public static String STATE = "Awaiting analysis";
 
 	@Command(shortDescription = "Coloreo usando Cobertura",
             helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
