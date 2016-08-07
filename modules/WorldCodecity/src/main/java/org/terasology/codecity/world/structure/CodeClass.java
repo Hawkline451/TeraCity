@@ -1,6 +1,14 @@
 package org.terasology.codecity.world.structure;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import metrics.AST;
 
@@ -14,6 +22,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
   private int length;
   private int[] lineLength;
   private AST ast;
+  private Map<Integer,String> blames = new HashMap<Integer,String>();
 
   private int[][] binaryRepr;
 
@@ -41,6 +50,48 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     this.lineLength = fixLineLength(lineLength);
     this.binaryRepr = fixBinary(binaryRepr);
     ast = new AST(path);
+    try {
+      createBlame(path);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+  }
+
+  /**
+   * Adds the information of author and last modification to
+   * each line of code.
+   * @param path          Path to the file that's being analysed.
+   * @throws IOException 
+   */
+  private void createBlame(String path) throws IOException {
+    if (path != null && (new File(path).isFile())) {
+      String os = System.getProperty("os.name");
+      ProcessBuilder pb = null;
+      if (os.startsWith("Windows")) {
+        pb = new ProcessBuilder("git.exe", "blame", path);
+      } else {
+        // :DDDDDDDD
+      }
+
+      if (pb != null) {
+        pb.redirectErrorStream(true);
+        Process pr = pb.start();
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+            pr.getInputStream()));
+        String line;
+        while ((line = in.readLine()) != null) {
+          String[] ln = parseBlameLine(line);
+          blames.put(Integer.parseInt((ln[0])), ln[1]);
+        }
+      }
+
+    }
+
+  }
+
+  private String[] parseBlameLine(String line) {
+    return new String[]{"0","test"};
   }
 
   /**
