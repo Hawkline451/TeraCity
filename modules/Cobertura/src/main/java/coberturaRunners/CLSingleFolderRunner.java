@@ -30,6 +30,7 @@ public class CLSingleFolderRunner extends CommandLineRunner{
 	protected void runTests() {
 		this.setFiles(BASE+CLASSES_PATH);
     	String testsList = getAllTestNames(BASE+CLASSES_PATH);
+    	
     	String libAssets = getLibFiles();
     	String commands = "java -cp "+ BASE + "/cobertura-2.1.1.jar" + pathSep
     			+ BASE + INSTRUMENTED_PATH + pathSep
