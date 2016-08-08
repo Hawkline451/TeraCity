@@ -61,8 +61,9 @@ public abstract class CommandLineRunner extends Runner{
 		for (File current : files){
 			if(hasExtension(current, wantedExtension)){
 				fileList.append(current.getAbsolutePath());
+				fileList.append(" ");
 			}
-			fileList.append(" ");
+			
 		}
 		return fileList.toString();
 	}
@@ -76,14 +77,25 @@ public abstract class CommandLineRunner extends Runner{
     	return libAssetsBuilder.toString();
 	}
     protected String getAllTestNames(String path){
+    	String testSub = "Test";
         String classesPath = path;
         File folder = new File(classesPath);
-        File[] files = folder.listFiles();
+//        File[] files = folder.listFiles();
         StringBuilder testList = new StringBuilder();
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isFile() && !files[i].getName().equals(".gitignore")){
+        for (int i = 0; i < files.size(); i++){
+        	String fileName = files.get(i).getName();
+            if ((files.get(i).isFile()) && (!fileName.equals(".gitignore"))
+            		&& (fileName.toLowerCase().contains(testSub.toLowerCase()))){
+                
+                String pathT = files.get(i).getPath().replace("/", ".").replace("\\", ".");
+                String path2 = path.replace("/", ".").replace("\\", ".");
+                //Quitar / y \ por puntos para simular path estilo package
+                //eliminar partes comunes en ambos path lo que queda son los packages
+                String res = pathT.replace(path2, "").substring(1); //Quitar primer caracter punto
+
                 testList.append(" ");
-                testList.append(files[i].getName());
+                testList.append(res);
+                
             }
         }
         String sList = testList.toString();
