@@ -88,7 +88,6 @@ public class CodeClass extends CodeRepresentation implements Serializable {
         String tz = "-0000";
         boolean first = true;
         Pattern p = Pattern.compile("^[a-z0-9]*$");
-
         while ((line = in.readLine()) != null) {
           String[] ln = parseBlameLine(line, p);
           if (ln[0].equals("line_number")) {
@@ -104,6 +103,10 @@ public class CodeClass extends CodeRepresentation implements Serializable {
           } else if (ln[0].equals("author-tz")) {
             tz = ln[1];
           }
+
+        }
+        if (!first) {
+          blames.put(number, new BlameInfo(author, time, tz));
 
         }
       }
@@ -186,12 +189,12 @@ public class CodeClass extends CodeRepresentation implements Serializable {
   }
 
   public BlameInfo getLineInfo(int i) {
-    if(blames.containsKey(i)) {
+    if (blames.containsKey(i)) {
       return blames.get(i);
     }
     return new BlameInfo("No information", "0", "-0000");
   }
-  
+
   public int getLongestLineLength() {
     int max = 0;
     for (Integer i : lineLength) {
