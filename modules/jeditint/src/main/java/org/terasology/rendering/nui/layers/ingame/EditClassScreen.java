@@ -47,12 +47,14 @@ public class EditClassScreen extends CoreScreenLayer{
 				String contentClass = "";
 				try {
 					contentClass = EditClass.readFileAsString(path);
+					textclass.setText(contentClass);
+					
+					initialise();
+					System.out.println("Read "+path);
 				} catch (IOException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
+					System.out.println("No File read!");
 				}
-				textclass.setText(contentClass);
-				initialise();
-				System.out.println("Read "+path);
 			}else if(f.isDirectory()){
 				System.out.println(path+" is a directory not a file!");
 			}else{
