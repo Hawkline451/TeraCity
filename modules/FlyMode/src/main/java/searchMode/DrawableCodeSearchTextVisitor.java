@@ -10,8 +10,6 @@ import org.terasology.codecity.world.map.DrawableCodeClass;
 import org.terasology.codecity.world.map.DrawableCodePackage;
 import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.map.MapObject;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.math.geom.Vector3i;
 
 public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
@@ -39,7 +37,6 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 	@Override
 	public void visit(DrawableCodeClass code) {
 		//intentionally blank
-
 	}
 
 	@Override
