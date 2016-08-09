@@ -16,7 +16,7 @@ import org.terasology.codecity.world.structure.BlameInfo;
  * @author Huan
  *
  */
-public class GitBlameMetric extends CodeMetric {
+public class GitBlameMetric  {
 
   private Map<Integer, BlameInfo> blames = new HashMap<Integer, BlameInfo>();
 
@@ -45,7 +45,7 @@ public class GitBlameMetric extends CodeMetric {
       if (os.startsWith("Windows")) {
         pb = new ProcessBuilder("git.exe", "blame", "-p", path);
       } else {
-        // :DDDDDDDD
+          pb = new ProcessBuilder("git", "blame", "-p", path);
       }
 
       if (pb != null) {
@@ -129,5 +129,8 @@ public class GitBlameMetric extends CodeMetric {
     return new BlameInfo("No information", "0", "-0000");
   }
 
+  public boolean existsLineInfo(int i) {
+	  return blames.containsKey(i);
+  }
   
 }

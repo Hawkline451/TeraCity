@@ -1,15 +1,9 @@
 package org.terasology.codecity.world.structure;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import java.io.Serializable;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
+
+import org.terasology.codecity.world.structure.metric.GitBlameMetric;
 
 import metrics.AST;
 
@@ -49,7 +43,11 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     this.lineLength = fixLineLength(lineLength);
     this.binaryRepr = fixBinary(binaryRepr);
     ast = new AST(path);
-    
+    //test
+    GitBlameMetric asdf = new GitBlameMetric(getPath());
+    for (int i= 1; asdf.existsLineInfo(i); i++) {
+    	asdf.getLineInfo(i);
+    }
   }
 
   /**
