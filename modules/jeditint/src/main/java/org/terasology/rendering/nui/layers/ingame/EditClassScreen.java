@@ -17,6 +17,7 @@ import org.terasology.utilities.jedit.JeditManager;
 import org.terasology.utilities.jedit.ClassPathVisitor;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.registry.In;
+import org.terasology.codecity.world.structure.metric.GitBlameMetric;
 
 /**
  * @author Francisco Pulgar Romero
@@ -100,7 +101,11 @@ public class EditClassScreen extends CoreScreenLayer{
             	for (int i = 0; i< curPos; i++) {
             		if (editContent.charAt(i) == '\n') textLine++;
             	}
-            	result.setText("El número de línea seleccionado es el "+textLine);
+            	GitBlameMetric gitMetric = new GitBlameMetric(JeditManager.getPath(cameraTarget));
+            	if (gitMetric.existsLineInfo(textLine))
+            		result.setText("Blame line "+textLine+": "+gitMetric.getLineInfo(textLine).toString());            		
+            	else
+            		result.setText("There is no information about this line");
             }
         });   
         

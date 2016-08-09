@@ -28,11 +28,11 @@ import java.io.File;
  * que el usuario ya ha hecho.
  */
 public abstract class Runner {
-    public static final String BASE = "modules/Cobertura/cobertura-2.1.1";
-    public static final String CLASSES_PATH = "/analysis/classes";
-    public static final String TEST_CLASSES_PATH = "/analysis/testClasses";
-    public static final String INSTRUMENTED_PATH = "/analysis/instrumented";
-    public static final String REPORTS_PATH = "/analysis/reports";
+    public static  String BASE = "modules/Cobertura/cobertura-2.1.1";
+    public static  String CLASSES_PATH = "/analysis/classes";
+    public static  String TEST_CLASSES_PATH = "/analysis/testClasses";
+    public static  String INSTRUMENTED_PATH = "/analysis/instrumented";
+    public static  String REPORTS_PATH = "/analysis/reports";
     public String pathSep = File.pathSeparator;
     
     public void runCobertura(){

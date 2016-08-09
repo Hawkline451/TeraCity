@@ -11,7 +11,6 @@
                 "layoutInfo": {
                     "width": 256,
                     "height": 64,
-                    "position-horizontal-center": {},
                     "position-top": {
                         "target": "TOP",
                         "offset": 18
@@ -60,7 +59,7 @@
                     }
                 },
                 "layoutInfo": {
-                    "width": 840,
+                    "width": 600,
                     "height": 496,
                     "use-content-height": true,
                     "position-horizontal-center": {},
@@ -69,14 +68,15 @@
                         "offset": 16,
                         "widget": "subtitle"
                     },
-                    "position-bottom": {
-                        "target": "TOP",
+                    "position-right": {
+                        "target": "LEFT",
                         "offset": 32,
-                        "widget": "close"
+                        "widget": "infoclass"
                     }
                 }
             },
-
+            
+           
             {
                 "type" : "RowLayout",
                 "horizontalSpacing" : 16,
@@ -90,6 +90,11 @@
                         "type" : "UIButton",
                         "text" : "Back",
                         "id" : "close"
+                    },
+                                        {
+                        "type" : "UIButton",
+                        "text" : "Blame",
+                        "id" : "blame"
                     }
                 ]
             },
@@ -98,7 +103,7 @@
             {
                 "type": "UILabel",
                 "family": "subtitle",
-                "text": "Acá van los resultados del análisis",
+                "text": "Blame: Nobody to blame... yet.",
                 "id": "result",
                 "layoutInfo": {
                     "height": 18,
@@ -123,7 +128,7 @@
                         "offset": 60
                     }
                 }
-            },
+            },                           
 
             {
                 "type": "UIButton",
