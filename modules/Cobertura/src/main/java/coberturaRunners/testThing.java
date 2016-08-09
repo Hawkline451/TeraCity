@@ -8,6 +8,7 @@ public class testThing {
 //		String path = "C:/Users/andres/git/PacmanTest/MyPacman";
 //		String path = "C:/Users/andres/workspace/TeraCity/modules/WorldCodecity";
 		String path = "C:/Users/andres/git/PacmanTest/MyPacman/bin/tests";
+		path = "C:/Users/andres/Desktop/logisim-master";
 		String testPath = "C:/Users/andres/git/PacmanTest/MyPacman/bin/tests";
 		CLSingleFolderRunner da = new CLSingleFolderRunner(path);
 		da.runCobertura();
