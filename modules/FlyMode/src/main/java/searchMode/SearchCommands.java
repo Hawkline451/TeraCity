@@ -1,10 +1,13 @@
 package searchMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -26,6 +29,8 @@ import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
+
+import com.github.javaparser.ast.ImportDeclaration;
 
 /**
  * @author mrgcl
@@ -183,12 +188,12 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", "pink")); //CHANGE TO PINK
     	Block block = blockFamily.getArchetypeBlock();
     	WorldProvider world = CoreRegistry.get(WorldProvider.class);
-    	if(lastHighlightBlock != null){
-    		world.setBlock(lastHighlightPos, BlockManager.getAir());
-    	}
+//    	if(lastHighlightBlock != null){
+//    		world.setBlock(lastHighlightPos, BlockManager.getAir());
+//    	}
     	world.setBlock(pos, block);
-    	lastHighlightPos = pos;
-    	lastHighlightBlock = block;
+//    	lastHighlightPos = pos;
+//    	lastHighlightBlock = block;
     }
     
     /**
@@ -213,4 +218,42 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
         return "No target found";
       return name;
     }
+    
+    /**
+     * Search text all over the body of every file .java
+     * @param text string to search.
+     * @return List of positions of every building representing the 
+     * file that contains the text. 
+     */
+    public List<Vector3i> searchText(String text){
+    	CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+		DrawableCodeSearchTextVisitor visitor = new DrawableCodeSearchTextVisitor(text);
+		for(MapObject object : mapObjects){
+			if(object.containsText(text)){
+				object.getObject().accept(visitor);
+				while(true){
+					if(visitor.resultReady()){
+						return visitor.getVectors();
+					}
+				}
+			}
+		}
+		return null;
+    }
+    
+//    @Command(shortDescription = "Get target's name in the screen center",
+//            requiredPermission = PermissionManager.NO_PERMISSION)
+//    public String searchReferenceFrom(){
+//        CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
+//        CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
+//        AST ast = code.getAst();
+//        if (ast == null)
+//        	return "Not a class!";
+//        List<ImportDeclaration> a = new ArrayList<ImportDeclaration>();
+//        for (ImportDeclaration i :ast.getImports()){
+//        	a.add(i);
+//        }
+//        return a.toString();
+//    }
 }

@@ -68,4 +68,10 @@ public class NullDrawableCode implements DrawableCode {
 		return false;
 	}
 
+	@Override
+	public boolean containsText(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

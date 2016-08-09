@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.map;
 
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
@@ -77,5 +78,11 @@ public class DrawableCodeClass implements DrawableCode {
 	@Override
 	public boolean useTexture() {
 		return true;
+	}
+
+	@Override
+	public boolean containsText(String query) {
+		AST ast = base.getAst();
+		return ast.contains(query);
 	}
 }

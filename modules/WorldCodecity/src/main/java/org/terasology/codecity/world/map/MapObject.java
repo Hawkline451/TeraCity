@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.map;
 
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
 /**
@@ -133,6 +134,22 @@ public class MapObject implements IMapObject {
 	}
 	public void setMaxY(int maxY){
 		this.maxYCord = maxY;
+	}
+	
+	/**
+	 * Search text <code>query</code> inside the AST of object's base.
+	 * @param query
+	 * @return
+	 */
+	public boolean containsText(String query) {
+		return object.containsText(query);
+	}
+
+	public boolean hasText(String query) {
+		AST ast = object.getBase().getAst();
+		if (ast == null)
+			return false;
+		return ast.contains(query);
 	}
 
 

@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.structure;
 
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.codecity.world.structure.CodeVisitor;
 
@@ -19,5 +20,10 @@ public class NullCodeRepresentation extends CodeRepresentation {
 	@Override
 	public int size() {
 		return 0;
+	}
+
+	@Override
+	public AST getAst() {
+		return null;
 	}
 }

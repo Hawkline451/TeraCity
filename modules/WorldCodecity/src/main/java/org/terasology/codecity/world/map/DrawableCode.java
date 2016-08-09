@@ -51,4 +51,5 @@ public interface DrawableCode {
 	public int[][] getLowResFromLine(int row,int col);
 	public int[][] getFullRep();
 	public boolean useTexture();
+	public boolean containsText(String query);
 }

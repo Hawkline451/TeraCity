@@ -103,5 +103,13 @@ public class DrawableCodePackage implements DrawableCode {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean containsText(String query) {
+		for(DrawableCode code : contentList){
+			if(code.containsText(query)) return true;
+		}
+		return false;
+	}
 	
 }
