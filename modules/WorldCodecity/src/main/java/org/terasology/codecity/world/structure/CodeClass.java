@@ -44,10 +44,10 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     this.binaryRepr = fixBinary(binaryRepr);
     ast = new AST(path);
     //test
-    GitBlameMetric asdf = new GitBlameMetric(getPath());
+    /*GitBlameMetric asdf = new GitBlameMetric(getPath());
     for (int i= 1; asdf.existsLineInfo(i); i++) {
-    	asdf.getLineInfo(i);
-    }
+    	System.out.println(asdf.getLineInfo(i));
+    }*/
   }
 
   /**
