@@ -166,7 +166,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	}
 
 	/**
-	 * @return Int[] with length of lines in the code
+	 * @return Int[] with length of lines in the codes magic!
 	 */
 	public int[] getLinesLength() {
 		return linesLength;

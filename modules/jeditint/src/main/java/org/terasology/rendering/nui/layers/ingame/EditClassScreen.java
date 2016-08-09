@@ -29,7 +29,7 @@ public class EditClassScreen extends CoreScreenLayer{
 	private String path;
 	private UIText textclass;
 	private UILabel pathClass;
-	
+	private UILabel result;	
 	
 	@Override
 	public void onOpened() { 
@@ -43,6 +43,7 @@ public class EditClassScreen extends CoreScreenLayer{
 				pathClass.setText(path);
 				
 				textclass = find("textclass", UIText.class);
+				result = find("result", UILabel.class);
 				
 				String contentClass = "";
 				try {
@@ -88,7 +89,20 @@ public class EditClassScreen extends CoreScreenLayer{
 				}
                 getManager().closeScreen(EditClassScreen.this);
             }
-        });        
+        });   
+        
+        WidgetUtil.trySubscribe(this, "blame", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	int curPos = textclass.getCursorPosition();
+            	String editContent = textclass.getText();
+            	int textLine = 1; // Starts counting on first line
+            	for (int i = 0; i< curPos; i++) {
+            		if (editContent.charAt(i) == '\n') textLine++;
+            	}
+            	result.setText("El número de línea seleccionado es el "+textLine);
+            }
+        });   
         
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {
             @Override
