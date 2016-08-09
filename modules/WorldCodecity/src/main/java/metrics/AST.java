@@ -27,6 +27,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	private List<ImportDeclaration> imports;
 	private List<FieldDeclaration> fields;
 	private PackageDeclaration pack;
+	private ArrayList<MethodDeclaration> methods;
 	private String path;
 	private int length;
 	private int[] linesLength;
@@ -39,6 +40,10 @@ public class AST extends VoidVisitorAdapter<Object> {
 		methodCalls = new ArrayList<MethodCallExpr>();
 		fields = new ArrayList<FieldDeclaration>();
 		file = new File(location);
+		comments = new ArrayList<Comment>();
+		imports = new ArrayList<ImportDeclaration>();
+		fields = new ArrayList<FieldDeclaration>();
+		methods = new ArrayList<MethodDeclaration>();
 		try {
 			cu = JavaParser.parse(file);
 			this.setGeneralMetrics(cu);
@@ -79,6 +84,10 @@ public class AST extends VoidVisitorAdapter<Object> {
 	 */
 	public ArrayList<MethodCallExpr> getMethodCalls() {
 		return methodCalls;
+	}
+	
+	public ArrayList<MethodDeclaration> getMethods() {
+		return methods;
 	}
 
 	/**
@@ -171,4 +180,5 @@ public class AST extends VoidVisitorAdapter<Object> {
 	public int[] getLinesLength() {
 		return linesLength;
 	}
+
 }
