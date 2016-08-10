@@ -74,4 +74,10 @@ public class NullDrawableCode implements DrawableCode {
 		return false;
 	}
 
+	@Override
+	public boolean containsPackage(String asterix) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

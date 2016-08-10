@@ -111,5 +111,13 @@ public class DrawableCodePackage implements DrawableCode {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean containsPackage(String asterix) {
+		for(DrawableCode code : contentList){
+			if(code.containsPackage(asterix)) return true;
+		}		
+		return false;
+	}
 	
 }

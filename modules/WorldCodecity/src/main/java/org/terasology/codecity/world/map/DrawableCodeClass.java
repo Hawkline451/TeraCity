@@ -85,4 +85,11 @@ public class DrawableCodeClass implements DrawableCode {
 		AST ast = base.getAst();
 		return ast.contains(query);
 	}
+
+	@Override
+	public boolean containsPackage(String asterix) {
+		AST ast = base.getAst();
+		String pack = ast.getPackage().toString().trim().split(" ")[1].trim();
+		return pack.substring(0, pack.length()).equals(asterix);
+	}
 }

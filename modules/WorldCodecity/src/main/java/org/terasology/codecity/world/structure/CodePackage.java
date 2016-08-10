@@ -50,9 +50,4 @@ public class CodePackage extends CodeRepresentation implements Serializable {
 		return counter;
 	}
 
-	@Override
-	public AST getAst() {
-		return null;
-	}
-
 }

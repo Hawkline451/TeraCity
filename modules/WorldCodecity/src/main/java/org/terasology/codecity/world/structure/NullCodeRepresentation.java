@@ -21,9 +21,4 @@ public class NullCodeRepresentation extends CodeRepresentation {
 	public int size() {
 		return 0;
 	}
-
-	@Override
-	public AST getAst() {
-		return null;
-	}
 }

@@ -1,5 +1,7 @@
 package org.terasology.codecity.world.map;
 
+import java.util.List;
+
 import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 
@@ -150,6 +152,32 @@ public class MapObject implements IMapObject {
 		if (ast == null)
 			return false;
 		return ast.contains(query);
+	}
+
+	public boolean isInPackage(String packageName) {
+		String pack = object.getBase().getPackage();
+		if (pack == null)
+			return false;
+		return pack.equals(packageName);
+	}
+
+	public boolean containsPackage(String asterix) {
+		return object.containsPackage(asterix);
+	}
+
+	
+	public boolean isDirectedImported(List<String> directImports){
+		String name = object.getBase().getName().trim(); 
+		for (String imp: directImports)
+			if (name.equals(imp)) return true;
+		return false;
+	}
+	
+	public boolean containsImport(List<String> directImports) {
+		for (String imp : directImports){
+			if (object.containsClass(imp)) return true;
+		}
+		return false;
 	}
 
 

@@ -122,5 +122,11 @@ public abstract class CodeRepresentation implements Serializable {
       return code;
     }
 
-	public abstract AST getAst();
+	public AST getAst(){
+		return null;
+	}
+
+	public String getPackage() {
+		return "";
+	}
 }

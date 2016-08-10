@@ -52,4 +52,5 @@ public interface DrawableCode {
 	public int[][] getFullRep();
 	public boolean useTexture();
 	public boolean containsText(String query);
+	public boolean containsPackage(String asterix);
 }

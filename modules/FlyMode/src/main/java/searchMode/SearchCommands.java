@@ -188,12 +188,12 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", "pink")); //CHANGE TO PINK
     	Block block = blockFamily.getArchetypeBlock();
     	WorldProvider world = CoreRegistry.get(WorldProvider.class);
-//    	if(lastHighlightBlock != null){
-//    		world.setBlock(lastHighlightPos, BlockManager.getAir());
-//    	}
+    	if(lastHighlightBlock != null){
+    		world.setBlock(lastHighlightPos, BlockManager.getAir());
+    	}
     	world.setBlock(pos, block);
-//    	lastHighlightPos = pos;
-//    	lastHighlightBlock = block;
+    	lastHighlightPos = pos;
+    	lastHighlightBlock = block;
     }
     
     /**
@@ -225,35 +225,54 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
      * @return List of positions of every building representing the 
      * file that contains the text. 
      */
-    public List<Vector3i> searchText(String text){
+	@Command(shortDescription = "Remove highlights marker",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public int searchText(@CommandParam(value="className", required=true)String text){
     	CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		DrawableCodeSearchTextVisitor visitor = new DrawableCodeSearchTextVisitor(text);
+		List<Vector3i> result = new ArrayList<Vector3i>();
+		DrawableCodeSearchTextVisitor visitor;
 		for(MapObject object : mapObjects){
+			visitor = new DrawableCodeSearchTextVisitor(text);
 			if(object.containsText(text)){
 				object.getObject().accept(visitor);
 				while(true){
 					if(visitor.resultReady()){
-						return visitor.getVectors();
+						result.addAll(visitor.getVectors());
+						break;
 					}
 				}
 			}
 		}
-		return null;
+		return result.size();
     }
     
-//    @Command(shortDescription = "Get target's name in the screen center",
-//            requiredPermission = PermissionManager.NO_PERMISSION)
-//    public String searchReferenceFrom(){
-//        CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
-//        CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
-//        AST ast = code.getAst();
-//        if (ast == null)
-//        	return "Not a class!";
-//        List<ImportDeclaration> a = new ArrayList<ImportDeclaration>();
-//        for (ImportDeclaration i :ast.getImports()){
-//        	a.add(i);
-//        }
-//        return a.toString();
-//    }
+	
+	@Command(shortDescription = "Remove highlights marker",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public int searchReferenceFrom(){
+        CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
+        CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
+        AST ast = code.getAst();
+        if (ast == null){
+        	console.addMessage("Not a class!");
+        	return 0;
+        }
+        CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+		List<Vector3i> result = new ArrayList<Vector3i>();
+		DrawableCodeSearchRefFromVisitor visitor;
+        for(MapObject object : mapObjects){
+        	 visitor = new DrawableCodeSearchRefFromVisitor(ast);
+			object.getObject().accept(visitor);
+			while(true){
+				if(visitor.resultReady()){
+					result.addAll(visitor.getVectors());
+					break;
+				}
+			}
+		}
+		return result.size();
+        
+    }
 }
