@@ -2,6 +2,11 @@ package org.terasology.codecity.world.structure.metric;
 
 import org.terasology.codecity.world.structure.CodeClass;
 
+/**
+ * Gets max line length from class (using ast).
+ * @author paula
+ *
+ */
 public class ClassLineLengthMetric extends CodeMetric {
 
 	@Override

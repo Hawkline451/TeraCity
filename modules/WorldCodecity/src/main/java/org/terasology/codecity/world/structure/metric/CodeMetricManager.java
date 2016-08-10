@@ -22,7 +22,10 @@ public class CodeMetricManager {
 		
 		registerCodeMetric("class-line-length",new ClassLineLengthMetric());
 		registerCodeMetric("class-length",new ClassLengthMetric());
-		registerCodeMetric("number-of-methods",new NumberOfMethodsMetric());
+		registerCodeMetric("number-of-comments",new NumberOfCommentsMetric());
+		registerCodeMetric("number-of-imports",new NumberOfImportsMetric());
+		registerCodeMetric("number-of-method-calls",new NumberOfMethodCallsMetric());
+		registerCodeMetric("number-of-methods", new NumberOfMethodsMetric());
 		registerCodeMetric("number-of-properties", new NumberOfPropertiesMetric());
 		this.horizontal = MetricMap.get("square-root");
 		this.vertical = MetricMap.get("linear");

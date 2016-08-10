@@ -73,8 +73,8 @@ public class AST extends VoidVisitorAdapter<Object> {
 
 	private void setGeneralMetrics(CompilationUnit cu) {
 		length = cu.getEndLine();
-		comments = cu.getComments();
-		imports = cu.getImports();
+		comments = (cu.getComments()!=null) ? cu.getComments() : comments;
+		imports = (cu.getImports()!=null) ? cu.getImports() : imports;
 		pack = cu.getPackage();
 		linesLength = countLineLength();
 		for (TypeDeclaration typeDec : cu.getTypes()) {
