@@ -15,7 +15,7 @@ public class lineRate extends CoberturaMetrics {
 	    	  return "Linerate(Cobertura metric): "+(test);
 
 	      } else {
-	         System.err.println("NO MATCH FOR PATH it shouldnt be here");
+		         System.err.println("NO MATCH FOR "+path+" it shouldnt be here");
 	         return null;
 	      }
 	}

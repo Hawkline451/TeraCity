@@ -16,7 +16,7 @@ public class branchRate extends CoberturaMetrics {
 	    	  String test = m.group(4).substring(1, m.group(4).length()-2);
 	    	  return "BranchRate(Cobertura metric) : "+(test);
 	      } else {
-		         System.err.println("NO MATCH FOR PATH it shouldnt be here");
+		         System.err.println("NO MATCH FOR "+path+" it shouldnt be here");
 		         return null;
 	      }
 	}

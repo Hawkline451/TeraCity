@@ -49,6 +49,11 @@ public class CLSingleFolderRunner extends CommandLineRunner{
 		+ "--datafile " + BASE + "/analysis/datafile.ser "
 		+ "--destination " + BASE + REPORTS_PATH + " "
 		+ srcFolder;
+    	 String OS = System.getProperty("os.name");
+        if (!OS.startsWith("Windows")){
+            String permissionComand = "chmod 777 "+ BASE + "/cobertura-report" + progExtension;
+            executeCommand(permissionComand);
+        }
     	executeCommand(command);
     	System.out.println("Done building report");
 	}

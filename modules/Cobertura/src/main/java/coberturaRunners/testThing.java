@@ -9,7 +9,7 @@ public class testThing {
 //		String path = "C:/Users/andres/workspace/TeraCity/modules/WorldCodecity";
 		String path = "C:/Users/andres/git/PacmanTest/MyPacman/bin/tests";
 		path = "C:/Users/andres/Desktop/logisim-master";
-		path = "C:/Users/andres/git/PacmanTest/MyPacman";
+		path = "/home/andres/Escritorio/pacm";
 		String testPath = "C:/Users/andres/git/PacmanTest/MyPacman/bin/tests";
 		CLSingleFolderRunner da = new CLSingleFolderRunner(path);
 		da.runCobertura();

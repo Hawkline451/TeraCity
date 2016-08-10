@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Se proveen varias metodos utiles para correr Cobertura de esta forma.
  * 
  * TODO extender utilidad cobertura
- * Este metodo al parecer no funciona del todo. Solamente va servir para proyectos pequeños (ya que compila todos los archivos con 
+ * Este metodo al parecer no funciona del todo. Solamente va servir para proyectos pequeï¿½os (ya que compila todos los archivos con 
  * un comando y los comandos tienen limite de caracteres) ademas como copia todos los compilados a una carpeta local (ver el path de BASE)
  * no soporta proyectos que referencien archivos de forma local (ejemplo pedir un archivo en la carpeta maps relativo al directorio del proyecto)
  * lo cual limita mucho la utilidad y el funcionamiento de la cobertura. Es necesario poder correr los test relativos a la carpeta del proyecto no 
@@ -37,6 +37,11 @@ public abstract class CommandLineRunner extends Runner{
     			+ "--datafile "+ BASE + "/analysis/datafile.ser "
     			+ "--destination " + BASE + INSTRUMENTED_PATH + " "
     			+ BASE + CLASSES_PATH;
+        String OS = System.getProperty("os.name");
+        if (!OS.startsWith("Windows")){
+            String permissionComand = "chmod 777 "+ BASE + "/cobertura-instrument" + progExtension;
+            executeCommand(permissionComand);
+        }
     	executeCommand(command);
     	System.out.println("Done Instrumenting");
 	}
