@@ -153,7 +153,7 @@ public class CodeClass extends CodeRepresentation implements Serializable {
 	
 	@Override
 	public String getPackage(){
-		String pack = ast.getPackage().toString().trim().split(" ")[1];
-		return pack.trim().substring(0, pack.length() - 2);
+		String pack = ast.getPackage().toString().trim().split(" ")[1].trim();
+		return pack.trim().substring(0, pack.length() - 1);
 	}
 }

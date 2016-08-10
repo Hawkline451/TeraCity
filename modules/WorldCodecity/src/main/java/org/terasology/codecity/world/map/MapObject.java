@@ -3,7 +3,6 @@ package org.terasology.codecity.world.map;
 import java.util.List;
 
 import org.terasology.codecity.world.metrics.AST;
-import org.terasology.codecity.world.structure.scale.CodeScale;
 
 /**
  * This class represent a object in the map
@@ -154,15 +153,29 @@ public class MapObject implements IMapObject {
 		return ast.contains(query);
 	}
 
-	public boolean isInPackage(String packageName) {
+	public boolean isInPackage(String Import) {
 		String pack = object.getBase().getPackage();
 		if (pack == null)
 			return false;
-		return pack.equals(packageName);
+		return pack.equals(Import);
+	}
+	
+	public boolean isInPackage(List<String> packages){
+		for(String pack: packages){
+			if (isInPackage(pack)) return true;
+		}
+		return false;
 	}
 
 	public boolean containsPackage(String asterix) {
 		return object.containsPackage(asterix);
+	}
+	
+	public boolean containsPackage(List<String> asterix) {
+		for (String pack: asterix){
+			if (containsPackage(pack)) return true;
+		}
+		return false;
 	}
 
 	

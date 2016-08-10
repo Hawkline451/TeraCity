@@ -219,15 +219,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
       return name;
     }
     
-    /**
-     * Search text all over the body of every file .java
-     * @param text string to search.
-     * @return List of positions of every building representing the 
-     * file that contains the text. 
-     */
-	@Command(shortDescription = "Remove highlights marker",
-			requiredPermission = PermissionManager.NO_PERMISSION)
-    public int searchText(@CommandParam(value="className", required=true)String text){
+    public List<Vector3i> searchText(String text){
     	CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		List<Vector3i> result = new ArrayList<Vector3i>();
@@ -244,23 +236,20 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 				}
 			}
 		}
-		return result.size();
+		return result;
     }
     
-	
-	@Command(shortDescription = "Remove highlights marker",
-			requiredPermission = PermissionManager.NO_PERMISSION)
-    public int searchReferenceFrom(){
+    public List<Vector3i> searchReferenceFrom(){
         CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
         CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
         AST ast = code.getAst();
+		List<Vector3i> result = new ArrayList<Vector3i>();
         if (ast == null){
         	console.addMessage("Not a class!");
-        	return 0;
+        	return result;
         }
         CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		List<Vector3i> result = new ArrayList<Vector3i>();
 		DrawableCodeSearchRefFromVisitor visitor;
         for(MapObject object : mapObjects){
         	 visitor = new DrawableCodeSearchRefFromVisitor(ast);
@@ -272,7 +261,31 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 				}
 			}
 		}
-		return result.size();
-        
+		return result;
+    }
+	
+    public List<Vector3i> searchReferenceTo(){
+        CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
+        CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
+        AST ast = code.getAst();
+		List<Vector3i> result = new ArrayList<Vector3i>();
+        if (ast == null){
+        	console.addMessage("Not a class!");
+        	return result;
+        }
+        CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+		DrawableCodeSearchRefToVisitor visitor;
+        for(MapObject object : mapObjects){
+        	 visitor = new DrawableCodeSearchRefToVisitor(code);
+			object.getObject().accept(visitor);
+			while(true){
+				if(visitor.resultReady()){
+					result.addAll(visitor.getVectors());
+					break;
+				}
+			}
+		}
+		return result;
     }
 }
