@@ -1,11 +1,14 @@
 package org.terasology.rendering.nui.layers.ingame.metrics;
 
+import org.terasology.codecity.world.generator.JEditExporter;
+import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.config.Config;
 import org.terasology.engine.GameEngine;
 import org.terasology.engine.Time;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.persistence.StorageManager;
 import org.terasology.registry.CoreRegistry;
@@ -86,7 +89,7 @@ public class MetricsOverlay extends CoreScreenLayer {
 
 	@Override
 	public boolean isEscapeToCloseAllowed() {
-		return true;
+		return false;
 	}
 
 	public void toggle() {
@@ -99,8 +102,17 @@ public class MetricsOverlay extends CoreScreenLayer {
 	 * @param codemap
 	 * @return
 	 */
-	public static String getPath(CameraTargetSystem camera) {
-		return "SSSSSSSSSSSS";
+	public String getPath(CameraTargetSystem camera) {
+		if (view) {
+			try {
+				CodeRepresentation code = CodeRepresentation.getCodeRepresentation(camera);
+				return code.getPath();
+			} catch (Exception e) {
+				return "Casi :c";
+			}
+		} else {
+			return "";
+		}
 	}
 
 }

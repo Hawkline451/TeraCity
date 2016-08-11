@@ -39,7 +39,6 @@ import org.terasology.network.ClientComponent;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.NUIManager;
 import org.terasology.rendering.nui.layers.ingame.metrics.DebugOverlay;
-import org.terasology.rendering.nui.layers.ingame.metrics.MetricsOverlay;
 import org.terasology.rendering.world.ViewDistance;
 import org.terasology.rendering.world.WorldRenderer;
 import org.terasology.world.WorldProvider;
@@ -68,14 +67,12 @@ public class DebugControlSystem extends BaseComponentSystem {
 
     private DebugOverlay overlay;
     
-    private MetricsOverlay overlayMetrics;
 
     private boolean mouseGrabbed = true;
 
     @Override
     public void initialise() {
         overlay = nuiManager.addOverlay("engine:debugOverlay", DebugOverlay.class);
-        overlayMetrics = nuiManager.addOverlay("engine:metricsOverlay", MetricsOverlay.class);
     }
 
     @ReceiveEvent(components = ClientComponent.class)
@@ -178,10 +175,6 @@ public class DebugControlSystem extends BaseComponentSystem {
                 DebugProperties debugProperties = (DebugProperties) nuiManager.getHUD().getHUDElement("engine:DebugProperties");
                 debugProperties.setVisible(!mouseGrabbed);
                 Mouse.setGrabbed(mouseGrabbed);
-                event.consume();
-                break;
-            case Keyboard.KeyId.F2:
-            	overlayMetrics.toggle();
                 event.consume();
                 break;
             case Keyboard.KeyId.F3:

@@ -5,7 +5,7 @@ import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.world.block.Block;
 
 /**
- * This class represent a part of the code that can be drawed in the map
+ * This class represent a part of the code that can be drawn in the map
  */
 public interface DrawableCode {
 	public CodeRepresentation getBase();
