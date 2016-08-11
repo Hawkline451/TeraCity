@@ -12,6 +12,8 @@ import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.metric.CodeMetric;
+import org.terasology.codecity.world.structure.metric.CodeMetricManager;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
@@ -499,6 +501,24 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
 	
+	@Command(shortDescription = "Change the Width scale of the buildings.")
+    public String changeWidthScale(@CommandParam("Type")String scale) {
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		CodeScale newScale = man.getScaleFromString(scale);
+		if (newScale==null) {
+	        throw new IllegalArgumentException("scale not found :(");
+		}
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	clearMap(map, Vector2i.zero(), 10, world);
+    		man.setHorizontalScale(newScale);
+        	processMap(map, Vector2i.zero(), 10, world);
+        	return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+	
 	@Command(shortDescription = "Change the Height scale of the buildings.")
     public String changeHeightScale(@CommandParam("Type")String scale) {
 		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
@@ -516,21 +536,80 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+
 	
-	@Command(shortDescription = "Change the Width scale of the buildings.")
-    public String changeWidthScale(@CommandParam("Type")String scale) {
-		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
-		CodeScale newScale = man.getScaleFromString(scale);
-		if (newScale==null) {
-	        throw new IllegalArgumentException("scale not found :(");
+	@Command(shortDescription = "Change the Height Metric of the buildings.")
+    public String changeHeightMetric(@CommandParam("Type")String scale) {
+		CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+		CodeMetric newMetric = CodeMetricManager.getMetricFromString(scale);
+		if (newMetric==null) {
+	        throw new IllegalArgumentException("metric not found :(");
 		}
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	clearMap(map, Vector2i.zero(), 10, world);
+    		men.setVerticalMetric(newMetric);
+        	processMap(map, Vector2i.zero(), 10, world);
+        	return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+	
+	@Command(shortDescription = "Change the Width Metric of the buildings.")
+    public String changeWidthMetric(@CommandParam("Type")String scale) {
+		CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+		CodeMetric newMetric = CodeMetricManager.getMetricFromString(scale);
+		if (newMetric==null) {
+	        throw new IllegalArgumentException("metric not found :(");
+		}
+		WorldProvider world = CoreRegistry.get(WorldProvider.class);
+        if (world != null) {
+        	CodeMap map = CoreRegistry.get(CodeMap.class);
+        	clearMap(map, Vector2i.zero(), 10, world);
+    		men.setHorizontalMetric(newMetric);
+        	processMap(map, Vector2i.zero(), 10, world);
+        	return "Success";
+        }
+        throw new IllegalArgumentException("Sorry, something went wrong!");
+    }
+	
+	@Command(shortDescription = "Change width, height and scales of the buildings")
+    public String changeMetrics(@CommandParam("Vertical Scale")String vsp, 
+    		@CommandParam("Vertical Metric")String vst, 
+    		@CommandParam("Horizontal Scale")String hsp, 
+    		@CommandParam("Horizontal Metric")String hst) {
+		
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+		
+		CodeScale hscale = man.getScaleFromString(hsp);
+		CodeScale vscale = man.getScaleFromString(vsp);
+		
+		CodeMetric hmetric = men.getMetricFromString(hst);
+		CodeMetric vmetric = men.getMetricFromString(vst);
 		WorldProvider world = CoreRegistry.get(WorldProvider.class);
         if (world != null) {
         	//Se limpia
         	CodeMap map = CoreRegistry.get(CodeMap.class);
         	clearMap(map, Vector2i.zero(), 10, world);
-        	// Nueva Escala
-    		man.setHorizontalScale(newScale);
+        	// Nuevas Escalas
+        	if (hscale != null) {
+        		man.setHorizontalScale(hscale);
+        		System.out.println("Changing horizontal scale");
+        	}
+        	if (vscale != null) {
+        		man.setHorizontalScale(vscale);
+        		System.out.println("Changing vertical scale");
+        	}
+        	if (hmetric != null) {
+        		men.setHorizontalMetric(hmetric);
+        		System.out.println("Changing horizontal metric");
+        	}
+        	if (vmetric != null) {
+        		men.setHorizontalMetric(vmetric);
+        		System.out.println("Changing vertical metric");
+        	}        	
         	// Nuevo mapa
         	CodeRepresentation code = CoreRegistry.get(CodeRepresentation.class);
         	CodeMap newMap = CodeCityWorldGenerator.generateCodeMap(code);
@@ -541,5 +620,6 @@ public class PlaceBlockCommand extends BaseComponentSystem {
         }
         throw new IllegalArgumentException("Sorry, something went wrong!");
     }
+	
 
 }

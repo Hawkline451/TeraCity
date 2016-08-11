@@ -89,40 +89,17 @@ public class VariableWidthMenuScreen extends CoreScreenLayer{
 	private void executeCommand(VerticalScaleParameter vsp, HorizontalScaleParameter hsp, 
 			VerticalScaleType vst, HorizontalScaleType hst) {
     	
-    	ConsoleCommand command1 = console.getCommand(new Name("changeHeightMetric"));
+    	ConsoleCommand changemetrics = console.getCommand(new Name("changeMetrics"));
     	ArrayList<String> params1 = new ArrayList<String>();
     	
-    	ConsoleCommand command2 = console.getCommand(new Name("changeWidthMetric"));
-    	ArrayList<String> params2 = new ArrayList<String>();
-    	
-    	ConsoleCommand command3 = console.getCommand(new Name("changeHeightScale"));
-    	ArrayList<String> params3 = new ArrayList<String>();
-    	
-    	ConsoleCommand command4 = console.getCommand(new Name("changeWidthScale"));
-    	ArrayList<String> params4 = new ArrayList<String>();
     	
     	EntityRef e = null;
     	try {
         	params1.add(vsp.toString());
-    		command1.execute(params1, e);
-    	} catch (CommandExecutionException e1) {
-    	} catch (NullPointerException e2) {
-    	}
-    	try {
-        	params2.add(hsp.toString());
-    		command2.execute(params2, e);
-    	} catch (CommandExecutionException e1) {
-    	} catch (NullPointerException e2) {
-    	}
-    	try {
-        	params3.add(vst.toString());
-    		command3.execute(params3, e);
-    	} catch (CommandExecutionException e1) {
-    	} catch (NullPointerException e2) {
-    	}
-    	try {
-        	params4.add(hst.toString());
-    		command4.execute(params4, e);
+        	params1.add(hsp.toString());
+        	params1.add(vst.toString());
+        	params1.add(hst.toString());
+    		changemetrics.execute(params1, e);
     	} catch (CommandExecutionException e1) {
     	} catch (NullPointerException e2) {
     	}
