@@ -27,6 +27,10 @@ public class CodeMetricManager {
 		registerCodeMetric("number-of-method-calls",new NumberOfMethodCallsMetric());
 		registerCodeMetric("number-of-methods", new NumberOfMethodsMetric());
 		registerCodeMetric("number-of-properties", new NumberOfPropertiesMetric());
+		
+		registerCodeMetric("branchRate",new branchRate());
+		registerCodeMetric("lineRate",new lineRate());
+		registerCodeMetric("coverageAprox",new coverageAprox());
 		this.horizontal = MetricMap.get("square-root");
 		this.vertical = MetricMap.get("linear");
 	}
