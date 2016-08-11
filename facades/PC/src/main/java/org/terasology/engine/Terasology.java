@@ -22,6 +22,13 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -97,6 +104,12 @@ public final class Terasology {
     private static final String NO_SOUND = "-noSound";
     private static final String SERVER_PORT = "-serverPort=";
     private static final String PROJECT_PATH = "-path=";
+    
+    private static final String CLEAN_CONFIG = "-cleanConfig";
+    private static final String CONFIG_FILE = "config.properties";
+    private static final String[] SAVED_PARAMETERS = {
+    		USE_SPECIFIED_DIR_AS_HOME, 
+    		PROJECT_PATH};
 
     private static boolean isHeadless;
     private static boolean crashReportEnabled = true;
@@ -118,9 +131,11 @@ public final class Terasology {
         // as JVM argument (not program argument!)
         SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
 
+        setParametersConfigFile(args);        
+        
         handlePrintUsageRequest(args);
         handleLaunchArguments(args);
-
+        
         setupLogging();
 
         try (final TerasologyEngine engine = new TerasologyEngine(createSubsystemList())) {
@@ -212,6 +227,8 @@ public final class Terasology {
         System.out.println();
         System.out.println("To change the port the server is hosted on use the " + SERVER_PORT + " launch argument.");
         System.out.println();
+        System.out.println("To reset the config file ("+ PROJECT_PATH + " and "+ USE_SPECIFIED_DIR_AS_HOME +") use the " + CLEAN_CONFIG  + " launch argument.");
+        System.out.println();
         System.out.println("Examples:");
         System.out.println();
         System.out.println("    Use the current directory as the home directory:");
@@ -234,20 +251,46 @@ public final class Terasology {
     }
 
     private static void handleLaunchArguments(String[] args) {
+    	Properties prop = new Properties();
+    	InputStream input = null;
+    	
+    	String DIR_AS_HOME_CONFIG_FILE = "";
+    	String PROJECT_PATH_CONFIG_FILE = "";
+    	
+    	try {
+    		input = new FileInputStream(CONFIG_FILE);
+    		prop.load(input);
+    		DIR_AS_HOME_CONFIG_FILE = prop.getProperty(USE_SPECIFIED_DIR_AS_HOME);
+    		PROJECT_PATH_CONFIG_FILE = prop.getProperty(PROJECT_PATH);
 
+    	} catch (IOException ex) {
+    		ex.printStackTrace();
+    	} finally {
+    		if (input != null) {
+    			try {
+    				input.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}   	
+    	
         Path homePath = null;
         Path projectPath = null;
-
+        
+        boolean readHomeConfigFile = true;
+        boolean readPathConfigFile = true;
+        
         for (String arg : args) {
             boolean recognized = true;
-
             if (arg.startsWith(USE_SPECIFIED_DIR_AS_HOME)) {
-                homePath = Paths.get(arg.substring(USE_SPECIFIED_DIR_AS_HOME.length()));
+            	homePath = Paths.get(arg.substring(USE_SPECIFIED_DIR_AS_HOME.length()));
+            	readHomeConfigFile = false;
             } else if (arg.equals(USE_CURRENT_DIR_AS_HOME)) {
                 homePath = Paths.get("");
             } else if(arg.startsWith(PROJECT_PATH)){
             	projectPath = Paths.get(arg.substring(PROJECT_PATH.length()));
-            
+            	readPathConfigFile = false;
             } else if (arg.equals(START_HEADLESS)) {
                 isHeadless = true;
                 crashReportEnabled = false;
@@ -261,13 +304,26 @@ public final class Terasology {
                 loadLastGame = true;
             } else if (arg.startsWith(SERVER_PORT)) {
                 serverPort = arg.substring(SERVER_PORT.length());
-            } else {
+            } else if (arg.equals(CLEAN_CONFIG)){
+            	cleanParametersConfigFile();
+            	readHomeConfigFile = false;
+            	readPathConfigFile = false;
+            	homePath = null;
+            	projectPath = null;
+            }else {
                 recognized = false;
             }
 
             System.out.println((recognized ? "Recognized" : "Invalid") + " argument: " + arg);
         }
-
+        
+        if(readHomeConfigFile && !DIR_AS_HOME_CONFIG_FILE.equals("")){
+        	homePath = Paths.get(DIR_AS_HOME_CONFIG_FILE);
+        }
+        if(readPathConfigFile && !PROJECT_PATH_CONFIG_FILE.equals("")){
+        	projectPath = Paths.get(PROJECT_PATH_CONFIG_FILE);
+        }
+        
         try {
         	if (projectPath != null){
         		PathManager.getInstance().setWorldPath(projectPath);
@@ -328,4 +384,107 @@ public final class Terasology {
         return latestGame.getManifest();
     }
 
+    /**
+     * Return if parameter is a saved parameter
+     * @param parameter
+     * @return boolean
+     */      
+    private static boolean isSavedParameter(String param){
+    	for (String p: SAVED_PARAMETERS) {
+    		if(param.equals(p)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    
+    /**
+     * Set parameters in config file.
+	 * @param args
+     */   
+    private static void setParametersConfigFile(String[] args){
+    	
+    	Properties props = new Properties();
+    	
+    	FileInputStream input = null;
+    	OutputStream output = null;
+    	
+    	try {
+    		
+    		File fl = new File(CONFIG_FILE);
+    		if(!fl.exists()) {
+    		    fl.createNewFile();
+    		} 
+    		
+    		input = new FileInputStream(CONFIG_FILE);
+    		props.load(input);
+    		input.close();
+    		
+    		output = new FileOutputStream(CONFIG_FILE);
+    		// If File config doesn't exist
+    		for (String p: SAVED_PARAMETERS){
+    			String paramv = props.getProperty(p);
+    			System.out.println(paramv);
+    			if(paramv == null){
+    				props.setProperty(p, "");
+    			}
+    		}
+    		
+    		// Set parameters in args
+            for (String arg : args) {
+            	for(String p: SAVED_PARAMETERS){
+	               	 if (arg.startsWith(p)) {
+	             		props.setProperty(p, arg.substring(p.length()));
+	             	}
+            	}
+            }
+    		props.store(output, null);    		
+    	} catch (IOException io) {
+    		io.printStackTrace();
+    	} finally {
+    		if (input != null) {
+    			try {
+    				input.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		if (output != null) {
+    			try {
+    				output.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    }
+   
+    /**
+     * Reset parameters in config file.
+     */   
+    private static void cleanParametersConfigFile(){
+    	Properties props = new Properties();
+    	OutputStream output = null;
+    	try {
+    		output = new FileOutputStream(CONFIG_FILE);
+    		
+    		for (String p: SAVED_PARAMETERS){
+    			props.setProperty(p, "");
+    		}
+    		props.store(output, null);    		
+    	} catch (IOException io) {
+    		io.printStackTrace();
+    	} finally {
+    		if (output != null) {
+    			try {
+    				output.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    }
+    
+    
 }
