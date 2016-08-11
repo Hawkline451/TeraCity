@@ -41,7 +41,7 @@ public class coverageAprox extends CoberturaMetrics {
 		    	  
 		      }
 	      }
-	      return "Aprox coverage(cobertura metric) : "+0;
+	      return "Coverage: "+0;
 	}
 
 }

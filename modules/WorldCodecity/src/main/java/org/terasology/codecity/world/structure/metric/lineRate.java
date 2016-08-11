@@ -11,9 +11,9 @@ public class lineRate extends CoberturaMetrics {
 	      Matcher m = r.matcher(localReport);
 	      if (m.find( )) {
 	    	  String test = m.group(3).substring(1, m.group(3).length()-2);
-	    	  return "Linerate(Cobertura metric): "+(test);
+	    	  return "Line Rate: "+(test);
 	      } else {
-	         return "Linerate(Cobertura metric): "+0;
+	         return "Line Rate: "+0;
 	      }
 	}
 

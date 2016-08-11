@@ -91,10 +91,15 @@ public class CodeMetricManager {
 		info.append("Method Calls: ");					
 		info.append(getMetricFromString("number-of-method-calls").getMetricVal(code));
 		info.append("\n");
-		info.append("Properties ");					
+		info.append("Properties: ");					
 		info.append(getMetricFromString("number-of-properties").getMetricVal(code));
 		info.append("\n");
 		// Cobertura Metrics
+		info.append(new branchRate().specificFunction(code.getPath()));
+		info.append("\n");
+		info.append(new coverageAprox().specificFunction(code.getPath()));
+		info.append("\n");
+		info.append(new lineRate().specificFunction(code.getPath()));
 		return info.toString();
 	}
 }

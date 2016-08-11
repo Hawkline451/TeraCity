@@ -13,7 +13,7 @@ public class branchRate extends CoberturaMetrics {
 	    	  String test = m.group(4).substring(1, m.group(4).length()-2);
 	    	  return "Branch Rate: "+(test);
 	      } else {
-	    	  return "BranchRate(Cobertura metric) : "+0;
+	    	  return "Branch Rate: "+0;
 	      }
 	}
 
