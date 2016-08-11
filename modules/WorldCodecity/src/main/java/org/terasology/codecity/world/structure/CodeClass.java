@@ -2,7 +2,6 @@ package org.terasology.codecity.world.structure;
 
 
 import java.io.Serializable;
-import org.terasology.codecity.world.structure.metric.GitBlameMetric;
 import org.terasology.codecity.world.metrics.AST;
 
 /**
@@ -151,7 +150,13 @@ public class CodeClass extends CodeRepresentation implements Serializable {
     }
   }
 
-  public int[][] getFullBinary() {
-    return this.binaryRepr;
-  }
+	public int[][] getFullBinary() {
+		return this.binaryRepr;
+	}
+	
+	@Override
+	public String getPackage(){
+		String pack = ast.getPackage().toString().trim().split(" ")[1].trim();
+		return pack.trim().substring(0, pack.length() - 1);
+	}
 }

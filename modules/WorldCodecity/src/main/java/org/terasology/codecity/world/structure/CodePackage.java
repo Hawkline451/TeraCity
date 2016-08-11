@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.terasology.codecity.world.metrics.AST;
+
 public class CodePackage extends CodeRepresentation implements Serializable {
     private static final long serialVersionUID = -8679763624498442725L;
     // Almacena código representable, sea clases o packages

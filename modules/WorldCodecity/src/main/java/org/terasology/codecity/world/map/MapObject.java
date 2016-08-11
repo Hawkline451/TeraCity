@@ -1,6 +1,8 @@
 package org.terasology.codecity.world.map;
 
-import org.terasology.codecity.world.structure.scale.CodeScale;
+import java.util.List;
+
+import org.terasology.codecity.world.metrics.AST;
 
 /**
  * This class represent a object in the map
@@ -133,6 +135,89 @@ public class MapObject implements IMapObject {
 	}
 	public void setMaxY(int maxY){
 		this.maxYCord = maxY;
+	}
+	
+	/**
+	 * Search text <code>query</code> inside the AST of object's base.
+	 * @param query
+	 * @return
+	 */
+	public boolean containsText(String query) {
+		return object.containsText(query);
+	}
+
+	/**
+	 * Checks if query is contained in the CU of the AST
+	 * of object
+	 * @param query to be search
+	 * @return true if query is in, false otherwise
+	 */
+	public boolean hasText(String query) {
+		AST ast = object.getBase().getAst();
+		if (ast == null)
+			return false;
+		return ast.contains(query);
+	}
+
+	/**
+	 * Checks if object is in the pack <code>import</code>
+	 * @param Import name of the package to check
+	 * @return true if is in, false otherwise
+	 */
+	public boolean isInPackage(String Import) {
+		String pack = object.getBase().getPackage();
+		if (pack == null)
+			return false;
+		return pack.equals(Import);
+	}
+	
+	public boolean isInPackage(List<String> packages){
+		for(String pack: packages){
+			if (isInPackage(pack)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if object's package has pack as subpackage.
+	 * @param pack package name to check
+	 * @return true if packs is subpackage of object's package, false otherwise
+	 */
+	public boolean containsPackage(String pack) {
+		return object.containsPackage(pack);
+	}
+	
+	public boolean containsPackage(List<String> packs) {
+		for (String pack: packs){
+			if (containsPackage(pack)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Checks if object imports directly (no asterisk) all
+	 * the names in directImports
+	 * @param directImports list of names to check
+	 * @return true if some name is directly imported, false otherwise.
+	 */
+	public boolean isDirectedImported(List<String> directImports){
+		String name = object.getBase().getName().trim(); 
+		for (String imp: directImports)
+			if (name.equals(imp)) return true;
+		return false;
+	}
+	
+	/**
+	 * Checks if object' imports or subpackages file
+	 * are in directImports.
+	 * @param directImports names to check
+	 * @return true if object contains a name as import.
+	 */
+	public boolean containsImport(List<String> directImports) {
+		for (String imp : directImports){
+			if (object.containsClass(imp)) return true;
+		}
+		return false;
 	}
 
 

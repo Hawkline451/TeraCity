@@ -8,6 +8,7 @@ import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeClass;
 import org.terasology.codecity.world.map.IMapObject;
 import org.terasology.codecity.world.map.MapObject;
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.HalfLinearCodeScale;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
@@ -120,4 +121,12 @@ public abstract class CodeRepresentation implements Serializable {
       CodeRepresentation code = obj.getObject().getBase();
       return code;
     }
+
+	public AST getAst(){
+		return null;
+	}
+
+	public String getPackage() {
+		return "";
+	}
 }
