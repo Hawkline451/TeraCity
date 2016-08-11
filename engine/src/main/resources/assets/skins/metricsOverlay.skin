@@ -5,8 +5,8 @@
             "text-align-horizontal" : "left",
             "text-shadowed" : true
         },
-        "metricsOverlay" : {
-        	"background-color": "#333333"
+        "ColumnLayout" : {
+        	"background": "greyedBackground"
         }
     }
 }
