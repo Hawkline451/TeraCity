@@ -116,7 +116,8 @@ public class MetricsOverlay extends CoreScreenLayer {
 				}
 				
 			} catch (Exception e) {
-				return "Not ready";
+				e.printStackTrace(System.out);
+				return "Oops!";
 			}
 		}
 		return "";
