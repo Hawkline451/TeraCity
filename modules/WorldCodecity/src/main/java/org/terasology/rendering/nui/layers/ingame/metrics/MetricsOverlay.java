@@ -1,7 +1,9 @@
 package org.terasology.rendering.nui.layers.ingame.metrics;
 
 import org.terasology.codecity.world.generator.JEditExporter;
+import org.terasology.codecity.world.structure.CodeClass;
 import org.terasology.codecity.world.structure.CodeRepresentation;
+import org.terasology.codecity.world.structure.metric.CodeMetricManager;
 import org.terasology.config.Config;
 import org.terasology.engine.GameEngine;
 import org.terasology.engine.Time;
@@ -63,7 +65,7 @@ public class MetricsOverlay extends CoreScreenLayer {
 				return view;
 			}
 		});
-		data = getInfo(getPath(cameraTarget));
+		data = getInfo(cameraTarget);
 		metricsLabel = find("metricsLabel", UILabel.class);
         if (metricsLabel != null) {
         	metricsLabel.bindText(new ReadOnlyBinding<String>() {
@@ -78,7 +80,7 @@ public class MetricsOverlay extends CoreScreenLayer {
 	@Override
 	public void update(float delta) {
 		if (metricsLabel != null) {
-			data = getInfo(getPath(cameraTarget));
+			data = getInfo(cameraTarget);
 		}
 	}
 
@@ -97,26 +99,26 @@ public class MetricsOverlay extends CoreScreenLayer {
 	}
 	
 	/**
-	 * Get path of the mapObject targeted by the camera;
+	 * Get Information of the mapObject targeted by the camera;
 	 * @param camera
 	 * @param codemap
 	 * @return
 	 */
-	public String getPath(CameraTargetSystem camera) {
+	public String getInfo(CameraTargetSystem camera) {
 		if (view) {
 			try {
-				CodeRepresentation code = CodeRepresentation.getCodeRepresentation(camera);
-				return code.getPath();
+				CodeRepresentation codeRep = CodeRepresentation.getCodeRepresentation(camera);
+				CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+				// If it's a class
+				if (codeRep instanceof CodeClass) {
+					CodeClass code = (CodeClass) codeRep;
+					return CodeMetricManager.getInfoString(code);
+				}
+				
 			} catch (Exception e) {
-				return "Casi :c";
+				return "Not ready";
 			}
-		} else {
-			return "";
 		}
-	}
-	
-	public String getInfo(String path) {
 		return "";
 	}
-
 }

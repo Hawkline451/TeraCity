@@ -3,6 +3,8 @@ package org.terasology.codecity.world.structure.metric;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.terasology.codecity.world.structure.CodeClass;
+
 /**
  * Manages the horizontal and vertical Metrics.
  * @author adderou
@@ -11,7 +13,7 @@ import java.util.HashMap;
 public class CodeMetricManager {
 
 	private CodeMetric horizontal, vertical;
-	private HashMap<String,CodeMetric> MetricMap = new HashMap<>();
+	private static HashMap<String,CodeMetric> MetricMap = new HashMap<>();
 	private ArrayList<String> MetricTypes = new ArrayList<>();
 
 	
@@ -56,7 +58,7 @@ public class CodeMetricManager {
 		return horizontal;
 	}
 
-	public CodeMetric getMetricFromString(String Metric) {
+	public static CodeMetric getMetricFromString(String Metric) {
 		return MetricMap.get(Metric);
 	}
 	
@@ -67,5 +69,31 @@ public class CodeMetricManager {
 	private void registerCodeMetric(String MetricName, CodeMetric Metric) {
 		MetricTypes.add(MetricName);
 		MetricMap.put(MetricName, Metric);
+	}
+	
+	public static String getInfoString(CodeClass code) {
+		StringBuilder info  = new StringBuilder();
+		info.append("Class: ");
+		info.append(code.getName());
+		info.append("\n");
+		info.append("Length: ");					
+		info.append(getMetricFromString("class-length").getMetricVal(code));
+		info.append(" lines\n");
+		info.append("Comments: ");					
+		info.append(getMetricFromString("number-of-comments").getMetricVal(code));
+		info.append("\n");
+		info.append("Imports: ");					
+		info.append(getMetricFromString("number-of-imports").getMetricVal(code));
+		info.append("\n");
+		info.append("Methods: ");					
+		info.append(getMetricFromString("number-of-methods").getMetricVal(code));
+		info.append("\n");
+		info.append("Method Calls: ");					
+		info.append(getMetricFromString("number-of-method-calls").getMetricVal(code));
+		info.append("\n");
+		info.append("Properties ");					
+		info.append(getMetricFromString("number-of-properties").getMetricVal(code));
+		info.append("\n");
+		return info.toString();
 	}
 }
