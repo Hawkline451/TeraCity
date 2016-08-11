@@ -11,6 +11,7 @@
                 "layoutInfo": {
                     "width": 256,
                     "height": 64,
+                    "position-horizontal-center": {},                    
                     "position-top": {
                         "target": "TOP",
                         "offset": 18
@@ -24,6 +25,7 @@
                 "id": "subtitle",
                 "layoutInfo": {
                     "height": 18,
+                    "width": 800,
                     "position-horizontal-center": {},
                     "position-top": {
                         "target": "BOTTOM",
@@ -59,7 +61,7 @@
                     }
                 },
                 "layoutInfo": {
-                    "width": 600,
+                    "width": 800,
                     "height": 496,
                     "use-content-height": true,
                     "position-horizontal-center": {},

@@ -1,6 +1,6 @@
 {
     "type" : "metricsOverlay",
-    "skin" : "debugOverlay",
+    "skin" : "metricsOverlay",
     "contents" : {
         "type" : "relativeLayout",
         "contents" : [

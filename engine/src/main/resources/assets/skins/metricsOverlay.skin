@@ -1,0 +1,12 @@
+{
+    "inherit" : "engine:default",
+    "elements" : {
+        "UILabel" : {
+            "text-align-horizontal" : "left",
+            "text-shadowed" : true
+        },
+        "metricsOverlay" : {
+        	"background-color": "#333333"
+        }
+    }
+}
