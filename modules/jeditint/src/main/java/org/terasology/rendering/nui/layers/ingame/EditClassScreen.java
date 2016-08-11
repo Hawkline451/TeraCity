@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.terasology.codecity.world.structure.CodeRepresentation;
 import org.terasology.engine.GameEngine;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.nui.CoreScreenLayer;
 import org.terasology.rendering.nui.UIWidget;
 import org.terasology.rendering.nui.WidgetUtil;
@@ -18,6 +19,9 @@ import org.terasology.utilities.jedit.ClassPathVisitor;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.registry.In;
 import org.terasology.codecity.world.structure.metric.GitBlameMetric;
+
+import org.terasology.rendering.FontColor;
+import org.terasology.rendering.nui.Color;
 
 /**
  * @author Francisco Pulgar Romero
@@ -49,7 +53,9 @@ public class EditClassScreen extends CoreScreenLayer{
 				String contentClass = "";
 				try {
 					contentClass = EditClass.readFileAsString(path);
-					textclass.setText(contentClass);
+					Color green = new Color(0xCCFF99);
+					String textWithColoredComments = contentClass.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", FontColor.getColored("$0", green));
+					textclass.setText(textWithColoredComments);
 					
 					initialise();
 					System.out.println("Read "+path);
@@ -64,7 +70,7 @@ public class EditClassScreen extends CoreScreenLayer{
 			}
 		 }
 		 catch(Exception e1) {
-			 System.out.println("No ClassPath found!");
+			 System.out.println("ERROR READ!");
 		 }
 	}	
 	
@@ -85,8 +91,9 @@ public class EditClassScreen extends CoreScreenLayer{
             @Override
             public void onActivated(UIWidget widget) {
             	String editContent = textclass.getText();
+            	String editContentWithoutColor =FontColor.stripColor(editContent);
             	try {
-					EditClass.writeFile(pathClass.getText(), editContent);
+					EditClass.writeFile(pathClass.getText(), editContentWithoutColor);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
