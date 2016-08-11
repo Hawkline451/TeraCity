@@ -63,7 +63,7 @@ public class MetricsOverlay extends CoreScreenLayer {
 				return view;
 			}
 		});
-		data = getPath(cameraTarget);
+		data = getInfo(getPath(cameraTarget));
 		metricsLabel = find("metricsLabel", UILabel.class);
         if (metricsLabel != null) {
         	metricsLabel.bindText(new ReadOnlyBinding<String>() {
@@ -78,7 +78,7 @@ public class MetricsOverlay extends CoreScreenLayer {
 	@Override
 	public void update(float delta) {
 		if (metricsLabel != null) {
-			data = getPath(cameraTarget);
+			data = getInfo(getPath(cameraTarget));
 		}
 	}
 
@@ -113,6 +113,10 @@ public class MetricsOverlay extends CoreScreenLayer {
 		} else {
 			return "";
 		}
+	}
+	
+	public String getInfo(String path) {
+		return "";
 	}
 
 }

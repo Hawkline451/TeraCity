@@ -31,8 +31,8 @@ public class CodeMetricManager {
 		registerCodeMetric("branchRate",new branchRate());
 		registerCodeMetric("lineRate",new lineRate());
 		registerCodeMetric("coverageAprox",new coverageAprox());
-		this.horizontal = MetricMap.get("square-root");
-		this.vertical = MetricMap.get("linear");
+		this.horizontal = MetricMap.get("class-line-length");
+		this.vertical = MetricMap.get("class-length");
 	}
 	
 	public CodeMetricManager(CodeMetric horizontal, CodeMetric vertical) {

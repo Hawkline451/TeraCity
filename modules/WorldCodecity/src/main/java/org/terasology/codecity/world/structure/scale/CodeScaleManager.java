@@ -23,7 +23,6 @@ public class CodeScaleManager {
 		registerCodeScale("square-root",new SquareRootCodeScale());
 		registerCodeScale("half-linear",new HalfLinearCodeScale());
 		this.horizontal = scaleMap.get("square-root");
-//		this.horizontal = scaleMap.get("linear");
 		this.vertical = scaleMap.get("half-linear");
 	}
 	
