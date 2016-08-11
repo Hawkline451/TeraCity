@@ -41,9 +41,7 @@ public class coverageAprox extends CoberturaMetrics {
 		    	  
 		      }
 	      }
-	         System.err.println("NO MATCH FOR "+path+" it shouldnt be here");
-
-	         return null;
+	      return "Aprox coverage(cobertura metric) : "+0;
 	}
 
 }

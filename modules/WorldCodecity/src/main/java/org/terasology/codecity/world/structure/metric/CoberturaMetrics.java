@@ -30,7 +30,19 @@ public abstract class CoberturaMetrics extends CodeMetric {
 	 */
 	private boolean inReport(String path){
 		localReport = readFile(pathToReports);
-		return localReport.toLowerCase().contains(path.toLowerCase());
+		String pattern = "<class name=(.*)."+path+"\"";
+	      Pattern r = Pattern.compile(pattern);
+	      Matcher m = r.matcher(localReport);
+	      
+	      
+	      if (m.find()){
+		    	  return true;
+		      
+	      }
+	      else{
+	    	  return false;
+	      }
+
 	}
 
 	
@@ -103,15 +115,21 @@ public abstract class CoberturaMetrics extends CodeMetric {
 	public static void main(String[] args){	
 		CoberturaMetrics c1 = new branchRate();
 		CoberturaMetrics c2 = new lineRate();
-		CoberturaMetrics c3 = new lineRate();
+		CoberturaMetrics c3 = new coverageAprox();
+		
+		System.out.println(c1.inReport("GameFactory"));
+		System.out.println(c1.inReport("GameFactory45"));
+		System.out.println(c1.inReport("3GameFactory"));
 		System.out.println(c1.inReport("GameInstance"));
-		//System.out.println(c1.specificFunction("GameActionDown"));
-		System.out.println(c2.specificFunction("GameAgentPacman"));
-		//System.out.println(c1.specificFunction("GameEventLivesUpdated"));
-		System.out.println(c1.specificFunction("GameInstance"));
-		System.out.println(c2.specificFunction("GameInstance"));
-		System.out.println(c3.specificFunction("GameInstance"));
-		//System.out.println(c1.specificFunction("afdsdas"));
+		System.out.println(c1.inReport("GameInstanceTest"));
+		System.out.println(c1.specificFunction("GameActionDown"));
+		System.out.println("Get lineRate AgentPacman "+c2.specificFunction("GameAgentPacman"));
+		System.out.println(c1.specificFunction("GameEventLivesUpdated"));
+		System.out.println("Get lineRate GameInstance "+c2.specificFunction("GameInstance"));
+		System.out.println("Get branchRate GameInstance "+c1.specificFunction("GameInstance"));
+		
+		System.out.println("Get lineRate GameInstance "+c3.specificFunction("GameInstance"));
+		System.out.println(c1.specificFunction("afdsdas"));
 		}
 
 }

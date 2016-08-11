@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class lineRate extends CoberturaMetrics {
-
 	@Override
 	public String specificFunction(String path) {
 		String pattern = "filename=(.*)"+path+"(.*)line-rate=(.*)branch-rate=(.*)complexity=(.*)>";
@@ -13,10 +12,8 @@ public class lineRate extends CoberturaMetrics {
 	      if (m.find( )) {
 	    	  String test = m.group(3).substring(1, m.group(3).length()-2);
 	    	  return "Linerate(Cobertura metric): "+(test);
-
 	      } else {
-		         System.err.println("NO MATCH FOR "+path+" it shouldnt be here");
-	         return null;
+	         return "Linerate(Cobertura metric): "+0;
 	      }
 	}
 
