@@ -11,7 +11,7 @@ import org.terasology.codecity.world.structure.CodeClass;
 
 
 /*
- * This class read the result from the cobertura result of cobertura module (see TeraCity\modules\Cobertura)
+ * This class read the report from the cobertura result of cobertura module (see TeraCity\modules\Cobertura)
  * the results are stored as a xml in TeraCity\modules\Cobertura\cobertura-2.1.1\analysis\reports. This class uses stored results to update the report
  * run cobertura from a system console or in game run CoberturAnalysis -s "Path to project to analyse" this will overwrite the old report
  * @author andres
@@ -99,6 +99,20 @@ public abstract class CoberturaMetrics extends CodeMetric {
 			return " No hay informacion para ese archivo ";
 		}
 	}
+	
+	public static void main(String[] args){	
+		CoberturaMetrics c1 = new branchRate();
+		CoberturaMetrics c2 = new lineRate();
+		CoberturaMetrics c3 = new lineRate();
+		System.out.println(c1.inReport("GameInstance"));
+		//System.out.println(c1.specificFunction("GameActionDown"));
+		System.out.println(c2.specificFunction("GameAgentPacman"));
+		//System.out.println(c1.specificFunction("GameEventLivesUpdated"));
+		System.out.println(c1.specificFunction("GameInstance"));
+		System.out.println(c2.specificFunction("GameInstance"));
+		System.out.println(c3.specificFunction("GameInstance"));
+		//System.out.println(c1.specificFunction("afdsdas"));
+		}
 
 }
 

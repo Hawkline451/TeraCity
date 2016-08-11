@@ -30,7 +30,7 @@ public class CLSingleFolderRunner extends CommandLineRunner{
 	protected void runTests() {
 		this.setFiles(BASE+CLASSES_PATH);
     	String testsList = getAllTestNames(BASE+CLASSES_PATH);
-    	
+//    	testsList = "tests.GameInstanceTest tests.HashTestCases tests.QueueTest tests.TestMaptoMazeConversion tests.TestPriorityQueue";
     	String libAssets = getLibFiles();
     	String commands = "java -cp "+ BASE + "/cobertura-2.1.1.jar" + pathSep
     			+ BASE + INSTRUMENTED_PATH + pathSep
@@ -49,6 +49,11 @@ public class CLSingleFolderRunner extends CommandLineRunner{
 		+ "--datafile " + BASE + "/analysis/datafile.ser "
 		+ "--destination " + BASE + REPORTS_PATH + " "
 		+ srcFolder;
+    	 String OS = System.getProperty("os.name");
+        if (!OS.startsWith("Windows")){
+            String permissionComand = "chmod 777 "+ BASE + "/cobertura-report" + progExtension;
+            executeCommand(permissionComand);
+        }
     	executeCommand(command);
     	System.out.println("Done building report");
 	}

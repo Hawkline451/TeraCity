@@ -2,6 +2,11 @@ package org.terasology.codecity.world.structure.metric;
 
 import org.terasology.codecity.world.structure.CodeClass;
 
+/**
+ * Gets class length from ast.
+ * @author paula
+ *
+ */
 public class ClassLengthMetric extends CodeMetric {
 
 	@Override
