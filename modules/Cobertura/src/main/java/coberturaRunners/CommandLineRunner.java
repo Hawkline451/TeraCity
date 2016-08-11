@@ -12,7 +12,12 @@ import java.util.ArrayList;
  * 
  * Se proveen varias metodos utiles para correr Cobertura de esta forma.
  * 
- *
+ * TODO extender utilidad cobertura
+ * Este metodo al parecer no funciona del todo. Solamente va servir para proyectos peque�os (ya que compila todos los archivos con 
+ * un comando y los comandos tienen limite de caracteres) ademas como copia todos los compilados a una carpeta local (ver el path de BASE)
+ * no soporta proyectos que referencien archivos de forma local (ejemplo pedir un archivo en la carpeta maps relativo al directorio del proyecto)
+ * lo cual limita mucho la utilidad y el funcionamiento de la cobertura. Es necesario poder correr los test relativos a la carpeta del proyecto no 
+ * copiarlos otra vez
  */
 public abstract class CommandLineRunner extends Runner{
 	/**
@@ -32,6 +37,11 @@ public abstract class CommandLineRunner extends Runner{
     			+ "--datafile "+ BASE + "/analysis/datafile.ser "
     			+ "--destination " + BASE + INSTRUMENTED_PATH + " "
     			+ BASE + CLASSES_PATH;
+        String OS = System.getProperty("os.name");
+        if (!OS.startsWith("Windows")){
+            String permissionComand = "chmod 777 "+ BASE + "/cobertura-instrument" + progExtension;
+            executeCommand(permissionComand);
+        }
     	executeCommand(command);
     	System.out.println("Done Instrumenting");
 	}
@@ -61,8 +71,9 @@ public abstract class CommandLineRunner extends Runner{
 		for (File current : files){
 			if(hasExtension(current, wantedExtension)){
 				fileList.append(current.getAbsolutePath());
+				fileList.append(" ");
 			}
-			fileList.append(" ");
+			
 		}
 		return fileList.toString();
 	}
@@ -76,37 +87,45 @@ public abstract class CommandLineRunner extends Runner{
     	return libAssetsBuilder.toString();
 	}
     protected String getAllTestNames(String path){
+    	String testSub = "Test";
         String classesPath = path;
         File folder = new File(classesPath);
-        File[] files = folder.listFiles();
+//        File[] files = folder.listFiles();
         StringBuilder testList = new StringBuilder();
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isFile() && !files[i].getName().equals(".gitignore")){
+        for (int i = 0; i < files.size(); i++){
+        	String fileName = files.get(i).getName();
+            if ((files.get(i).isFile()) && (!fileName.equals(".gitignore"))
+            		&& (fileName.toLowerCase().contains(testSub.toLowerCase()))){
+                
+                String pathT = files.get(i).getPath().replace("/", ".").replace("\\", ".");
+                String path2 = path.replace("/", ".").replace("\\", ".");
+                //Quitar / y \ por puntos para simular path estilo package
+                //eliminar partes comunes en ambos path lo que queda son los packages
+                String res = pathT.replace(path2, "").substring(1); //Quitar primer caracter punto
+
                 testList.append(" ");
-                testList.append(files[i].getName());
+                testList.append(res);
+                
             }
         }
         String sList = testList.toString();
         sList = sList.replace(".class", "");
         return sList;
     }
+    
+    
     protected void executeCommand(String command){
     	System.out.println(command);
-        try
-        {            
-            Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec(command);
-            InputStream stderr = proc.getInputStream();
-            InputStreamReader isr = new InputStreamReader(stderr);
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-            while ( (line = br.readLine()) != null)
-                System.out.println(line);
-            int exitVal = proc.waitFor();
-            System.out.println("Process exitValue: " + exitVal);
-        } catch (Throwable t){
-            t.printStackTrace();
-        }
+    	try{
+	    	Process p = Runtime.getRuntime().exec(command) ;  
+	    	ReadStream s1 = new ReadStream("stdin", p.getInputStream ());
+	    	ReadStream s2 = new ReadStream("stderr", p.getErrorStream ());
+	    	s1.start ();
+	    	s2.start ();
+	    	p.waitFor();        
+	    	} catch (Exception e) {  
+	    	e.printStackTrace();  
+	    	} 
     }
     private void cleanFolderUp(String path){
         File folder = new File(path);

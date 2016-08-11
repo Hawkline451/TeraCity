@@ -1,0 +1,24 @@
+{
+    "type" : "metricsOverlay",
+    "skin" : "metricsOverlay",
+    "contents" : {
+        "type" : "relativeLayout",
+        "contents" : [
+            {
+                "type" : "ColumnLayout",
+                "contents" : [
+                    {
+                        "type" : "UILabel",
+                        "id" : "metricsLabel"
+                    }
+                ],
+                "layoutInfo" : {
+                    "use-content-height" : true,
+                    "use-content-width" : true,
+                    "position-horizontal-right" : {},
+                    "position-vertical-bottom" : {}
+                }
+            }
+        ]
+    }
+}

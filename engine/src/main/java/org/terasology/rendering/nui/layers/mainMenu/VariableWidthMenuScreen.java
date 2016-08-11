@@ -38,12 +38,26 @@ public class VariableWidthMenuScreen extends CoreScreenLayer{
     @SuppressWarnings("unchecked")
 	protected void initialise() {
         
+		UIDropdown<VerticalScaleParameter> verticalScaleParameter = find("verticalScaleParameter", UIDropdown.class);
+        if (verticalScaleParameter != null) {
+        	verticalScaleParameter.setOptions(Arrays.asList(VerticalScaleParameter.LINELENGTH, VerticalScaleParameter.LENGTH, VerticalScaleParameter.COMMENTS, 
+        			VerticalScaleParameter.IMPORTS, VerticalScaleParameter.METHODCALLS, VerticalScaleParameter.METHODS, VerticalScaleParameter.PROP));
+        	verticalScaleParameter.bindSelection(BindHelper.bindBeanProperty("verticalScaleParameter", config.getRendering(), VerticalScaleParameter.class));
+        }
+        
         UIDropdown<VerticalScaleType> verticalScaleType = find("verticalScaleType", UIDropdown.class);
         if (verticalScaleType != null) {
         	verticalScaleType.setOptions(Arrays.asList(VerticalScaleType.LINEAR, VerticalScaleType.HALFLINEAR, VerticalScaleType.SQRT));
         	verticalScaleType.bindSelection(BindHelper.bindBeanProperty("verticalScaleType", config.getRendering(), VerticalScaleType.class));
         }
-
+        
+        UIDropdown<HorizontalScaleParameter> horizontalScaleParameter = find("horizontalScaleParameter", UIDropdown.class);
+        if (horizontalScaleParameter != null) {
+        	horizontalScaleParameter.setOptions(Arrays.asList(HorizontalScaleParameter.LINELENGTH, HorizontalScaleParameter.LENGTH, HorizontalScaleParameter.COMMENTS, 
+        			HorizontalScaleParameter.IMPORTS, HorizontalScaleParameter.METHODCALLS, HorizontalScaleParameter.METHODS, HorizontalScaleParameter.PROP));
+        	horizontalScaleParameter.bindSelection(BindHelper.bindBeanProperty("horizontalScaleParameter", config.getRendering(), HorizontalScaleParameter.class));
+        }
+        
         UIDropdown<HorizontalScaleType> horizontalScaleType = find("horizontalScaleType", UIDropdown.class);
         if (horizontalScaleType != null) {
         	horizontalScaleType.setOptions(Arrays.asList(HorizontalScaleType.LINEAR, HorizontalScaleType.HALFLINEAR, HorizontalScaleType.SQRT));
@@ -55,9 +69,11 @@ public class VariableWidthMenuScreen extends CoreScreenLayer{
 		WidgetUtil.trySubscribe(this, "applyWidths", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
+            	VerticalScaleParameter vsp = verticalScaleParameter.getSelection();
             	VerticalScaleType vst = verticalScaleType.getSelection();
+            	HorizontalScaleParameter hsp = horizontalScaleParameter.getSelection();
             	HorizontalScaleType hst = horizontalScaleType.getSelection();
-            	executeCommand(vst, hst);
+            	executeCommand(vsp, hsp, vst, hst);
             }
         });
 		
@@ -70,24 +86,20 @@ public class VariableWidthMenuScreen extends CoreScreenLayer{
 	}
 	
 	
-	private void executeCommand(VerticalScaleType vst, HorizontalScaleType hst) {
+	private void executeCommand(VerticalScaleParameter vsp, HorizontalScaleParameter hsp, 
+			VerticalScaleType vst, HorizontalScaleType hst) {
     	
-    	ConsoleCommand command1 = console.getCommand(new Name("changeHeightScale"));
+    	ConsoleCommand changemetrics = console.getCommand(new Name("changeMetrics"));
     	ArrayList<String> params1 = new ArrayList<String>();
     	
-    	ConsoleCommand command2 = console.getCommand(new Name("changeWidthScale"));
-    	ArrayList<String> params2 = new ArrayList<String>();
     	
     	EntityRef e = null;
     	try {
+        	params1.add(vsp.toString());
+        	params1.add(hsp.toString());
         	params1.add(vst.toString());
-    		command1.execute(params1, e);
-    	} catch (CommandExecutionException e1) {
-    	} catch (NullPointerException e2) {
-    	}
-    	try {
-        	params2.add(hst.toString());
-    		command2.execute(params2, e);
+        	params1.add(hst.toString());
+    		changemetrics.execute(params1, e);
     	} catch (CommandExecutionException e1) {
     	} catch (NullPointerException e2) {
     	}

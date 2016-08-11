@@ -2,6 +2,7 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeClass;
+import org.terasology.codecity.world.structure.metric.CodeMetricManager;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.registry.CoreRegistry;
 
@@ -29,13 +30,15 @@ public class DrawableCodeClass implements DrawableCode {
     @Override
     public int getSize(CodeMapFactory factory) {
         CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
-        return man.getHorizontalScale().getScaledSize(base.getLongestLineLength(), 1);
+        CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+        return man.getHorizontalScale().getScaledSize(Integer.parseInt(men.getHorizontalMetric().getMetricVal(base)), 1);
     }
 
     @Override
     public int getHeight(CodeMapFactory factory) {
     	CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
-        return man.getVerticalScale().getScaledSize(base.getClassLength(), 1);
+        CodeMetricManager men = CoreRegistry.get(CodeMetricManager.class);
+        return man.getVerticalScale().getScaledSize(Integer.parseInt(men.getVerticalMetric().getMetricVal(base)), 1);
     }
 
     @Override

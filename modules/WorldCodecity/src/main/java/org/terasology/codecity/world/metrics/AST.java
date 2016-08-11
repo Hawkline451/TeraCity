@@ -27,6 +27,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	private List<ImportDeclaration> imports;
 	private List<FieldDeclaration> fields;
 	private PackageDeclaration pack;
+	private ArrayList<MethodDeclaration> methods;
 	private String path;
 	private int length;
 	private int[] linesLength;
@@ -38,7 +39,10 @@ public class AST extends VoidVisitorAdapter<Object> {
 		path = location;
 		methodCalls = new ArrayList<MethodCallExpr>();
 		fields = new ArrayList<FieldDeclaration>();
-		file = new File(location);
+		comments = new ArrayList<Comment>();
+		imports = new ArrayList<ImportDeclaration>();
+		methods = new ArrayList<MethodDeclaration>();
+		file = new File(path);
 		try {
 			cu = JavaParser.parse(file);
 			this.setGeneralMetrics(cu);
@@ -57,6 +61,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	@Override
 	public void visit(MethodDeclaration n, Object arg) {
 		super.visit(n, arg);
+		methods.add(n);
 	}
 
 	/**
@@ -80,6 +85,10 @@ public class AST extends VoidVisitorAdapter<Object> {
 	public ArrayList<MethodCallExpr> getMethodCalls() {
 		return methodCalls;
 	}
+	
+	public ArrayList<MethodDeclaration> getMethods() {
+		return methods;
+	}
 
 	/**
 	 * Sets general metrics for the class, such as
@@ -88,8 +97,8 @@ public class AST extends VoidVisitorAdapter<Object> {
 	 */
 	private void setGeneralMetrics(CompilationUnit cu) {
 		length = cu.getEndLine();
-		comments = cu.getComments();
-		imports = cu.getImports();
+		comments = (cu.getComments()!=null) ? cu.getComments() : comments;
+		imports = (cu.getImports()!=null) ? cu.getImports() : imports;
 		pack = cu.getPackage();
 		linesLength = countLineLength();
 		for (TypeDeclaration typeDec : cu.getTypes()) {
@@ -166,7 +175,7 @@ public class AST extends VoidVisitorAdapter<Object> {
 	}
 
 	/**
-	 * @return Int[] with length of lines in the code
+	 * @return Int[] with length of lines in the codes magic!
 	 */
 	public int[] getLinesLength() {
 		return linesLength;

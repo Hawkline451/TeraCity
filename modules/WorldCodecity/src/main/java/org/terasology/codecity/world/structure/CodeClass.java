@@ -1,7 +1,7 @@
 package org.terasology.codecity.world.structure;
 
-import java.io.Serializable;
 
+import java.io.Serializable;
 import org.terasology.codecity.world.metrics.AST;
 
 /**
@@ -29,18 +29,22 @@ public class CodeClass extends CodeRepresentation implements Serializable {
    */
   public CodeClass(String name, int variables, int length, String path,
       String github) {
-    this(name, variables, path, github, DummyArray.getArray(length),
-        null);
+    this(name, variables, path, github, DummyArray.getArray(length), null);
   }
 
-  public CodeClass(String name, int variables, String path,
-      String github, Integer[] lineLength, int[][] binaryRepr) {
+  public CodeClass(String name, int variables, String path, String github,
+      Integer[] lineLength, int[][] binaryRepr) {
     super(name, path, github);
     this.variables = variables;
     this.length = fixLength(lineLength.length);
     this.lineLength = fixLineLength(lineLength);
     this.binaryRepr = fixBinary(binaryRepr);
     ast = new AST(path);
+    //test
+    /*GitBlameMetric asdf = new GitBlameMetric(getPath());
+    for (int i= 1; asdf.existsLineInfo(i); i++) {
+    	System.out.println(asdf.getLineInfo(i));
+    }*/
   }
 
   /**
@@ -57,13 +61,13 @@ public class CodeClass extends CodeRepresentation implements Serializable {
   public int[] getLineLengths() {
     return lineLength;
   }
-  
+
   /**
    * 
    * @return The AST of the file that represents
    */
   public AST getAst() {
-	  return ast;
+    return ast;
   }
 
   /**
@@ -99,18 +103,17 @@ public class CodeClass extends CodeRepresentation implements Serializable {
       temp[1][0] = this.binaryRepr[row * 2 + 1][column * 2];
       temp[1][1] = this.binaryRepr[row * 2 + 1][column * 2 + 1];
     } catch (IndexOutOfBoundsException e) {
-      System.err.println("Row col: " +row+" "+column+" "+e.getMessage());
+      System.err.println("Row col: " + row + " " + column + " "
+          + e.getMessage());
       return null;
     }
 
     return temp;
   }
 
-  
-  //Section that adds two empty lines at the beginning of the class
-  //so the roof of the building is empty
-  
-  
+  // Section that adds two empty lines at the beginning of the class
+  // so the roof of the building is empty
+
   private static int fixLength(int length) {
     return length + 2;
   }

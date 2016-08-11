@@ -17,6 +17,7 @@ import org.terasology.utilities.jedit.JeditManager;
 import org.terasology.utilities.jedit.ClassPathVisitor;
 import org.terasology.input.cameraTarget.CameraTargetSystem;
 import org.terasology.registry.In;
+import org.terasology.codecity.world.structure.metric.GitBlameMetric;
 
 /**
  * @author Francisco Pulgar Romero
@@ -29,7 +30,7 @@ public class EditClassScreen extends CoreScreenLayer{
 	private String path;
 	private UIText textclass;
 	private UILabel pathClass;
-	
+	private UILabel result;	
 	
 	@Override
 	public void onOpened() { 
@@ -43,6 +44,7 @@ public class EditClassScreen extends CoreScreenLayer{
 				pathClass.setText(path);
 				
 				textclass = find("textclass", UIText.class);
+				result = find("result", UILabel.class);
 				
 				String contentClass = "";
 				try {
@@ -90,7 +92,24 @@ public class EditClassScreen extends CoreScreenLayer{
 				}
                 getManager().closeScreen(EditClassScreen.this);
             }
-        });        
+        });   
+        
+        WidgetUtil.trySubscribe(this, "blame", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget widget) {
+            	int curPos = textclass.getCursorPosition();
+            	String editContent = textclass.getText();
+            	int textLine = 1; // Starts counting on first line
+            	for (int i = 0; i< curPos; i++) {
+            		if (editContent.charAt(i) == '\n') textLine++;
+            	}
+            	GitBlameMetric gitMetric = new GitBlameMetric(JeditManager.getPath(cameraTarget));
+            	if (gitMetric.existsLineInfo(textLine))
+            		result.setText("Blame line "+textLine+": "+gitMetric.getLineInfo(textLine).toString());            		
+            	else
+            		result.setText("There is no information about this line");
+            }
+        });   
         
         WidgetUtil.trySubscribe(this, "exit", new ActivateEventListener() {
             @Override

@@ -66,6 +66,7 @@ public class DebugControlSystem extends BaseComponentSystem {
     private NUIManager nuiManager;
 
     private DebugOverlay overlay;
+    
 
     private boolean mouseGrabbed = true;
 

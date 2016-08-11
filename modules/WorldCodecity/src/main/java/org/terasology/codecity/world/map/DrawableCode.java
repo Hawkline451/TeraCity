@@ -2,7 +2,7 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
 /**
- * This class represent a part of the code that can be drawed in the map
+ * This class represent a part of the code that can be drawn in the map
  */
 public interface DrawableCode {
 	public CodeRepresentation getBase();
