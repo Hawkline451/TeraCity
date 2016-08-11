@@ -28,7 +28,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 	private List<String> asteriskImports;
 	private String astPackage;
 	private boolean resultReady;
-	int A,B,C,D,E;
 	
 	public DrawableCodeSearchRefFromVisitor(AST ast){
 		myAst = ast;
@@ -37,12 +36,8 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 		directImports = new ArrayList<String>();
 		asteriskImports = new ArrayList<String>();
 		parseImports(ast.getImports());
-		System.out.println(astPackage);
-		System.out.println(directImports);
-		System.out.println(asteriskImports);
 		codeMapFactory = new CodeMapFactory();
 		Y = X = Z = 0;
-		A = B = C = D = E = 0;
 		Ys = new ArrayList<Integer>();
 		Xs = new ArrayList<Integer>();
 		Zs = new ArrayList<Integer>();
@@ -66,7 +61,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 				asteriskImports.add(pack.trim().substring(0, pack.length() - 3));
 				continue;
 			}
-			//directImports.add(impt.split(" ")[1].trim().split(";")[0].trim());
 			String[] name = path[path.length - 1].split(";");
 			directImports.add(name[name.length - 1].trim() + ".java");
 		}
@@ -85,8 +79,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 	public void visit(DrawableCodePackage code) {
 		CodeMap map = code.getSubmap(codeMapFactory);
 		Set<MapObject> mapObjects = map.getPosMapObjects();
-		System.out.println("AAAA:" + code.getBase().getName());
-		System.out.println(mapObjects);
 		for(MapObject object : mapObjects){
 			if (object.isInPackage(astPackage) && isReferenced(object.toString())){	//If the .java is in the same package of astPackage
 				Ys.add(Y + object.getHeight(codeMapFactory));
@@ -95,7 +87,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 				
 				Xs.add(X + (object.getPositionX() + 1));
 				
-				A++;
 				continue;
 			}
 			for (String asterix: asteriskImports){      							//Check if is in a package with asterisk
@@ -105,7 +96,7 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 					Zs.add(Z + (object.getPositionZ() + 1));
 					
 					Xs.add(X + (object.getPositionX() + 1));
-					B++;
+
 					continue;
 				}
 				else if(object.containsPackage(asterix)){
@@ -120,7 +111,7 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 					Y = auxY;
 					Z = auxZ;
 					X = auxX;
-					C++;
+					
 					continue;
 				}
 			}									
@@ -130,7 +121,7 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 				Zs.add(Z + (object.getPositionZ() + 1));
 				
 				Xs.add(X + (object.getPositionX() + 1));
-				D++;
+
 				continue;
 			}
 			else if(object.containsImport(directImports)){
@@ -145,7 +136,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 				Y = auxY;
 				Z = auxZ;
 				X = auxX;
-				E++;
 			}
 		}
 		resultReady = true;
@@ -162,11 +152,6 @@ public class DrawableCodeSearchRefFromVisitor implements DrawableCodeVisitor {
 		for (int i = 0; i < Ys.size(); i++){
 			result.add(new Vector3i(Xs.get(i), Ys.get(i), Zs.get(i)));
 		}
-		System.out.println("A: " + A);
-		System.out.println("B: " + B);
-		System.out.println("C: " + C);
-		System.out.println("D: " + D);
-		System.out.println("E: " + E);
 		return result;
 	}
 }
