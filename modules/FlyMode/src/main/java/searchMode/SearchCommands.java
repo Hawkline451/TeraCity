@@ -30,8 +30,6 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.BlockUri;
 import org.terasology.world.block.family.BlockFamily;
 
-import com.github.javaparser.ast.ImportDeclaration;
-
 /**
  * @author mrgcl
  */
@@ -48,6 +46,9 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	
 	private Vector3i lastHighlightPos;
 	private Block lastHighlightBlock;
+	
+	private List<Vector3i> buildingHighlighted = new ArrayList<Vector3i>();
+	private List<Integer> highlightWidths = new ArrayList<Integer>();
 	
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
@@ -219,35 +220,62 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
       return name;
     }
     
-    public List<Vector3i> searchText(String text){
+    /**
+     * Searches the <text> in all files of the project to then highlight the roof of their buildings
+     * @param text string to search
+     */
+	@Command(shortDescription = "Search a string and highlight every building"
+			+ "containing it",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public void searchText(@CommandParam(value="text", required=true) String text){
     	CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		List<Vector3i> result = new ArrayList<Vector3i>();
+		List<Vector3i> positions = new ArrayList<Vector3i>();
+        List<Integer> widths = new ArrayList<Integer>();
+        List<String> names = new ArrayList<String>();
 		DrawableCodeSearchTextVisitor visitor;
+        console.addMessage("Searching....");
 		for(MapObject object : mapObjects){
 			visitor = new DrawableCodeSearchTextVisitor(text);
 			if(object.containsText(text)){
 				object.getObject().accept(visitor);
 				while(true){
 					if(visitor.resultReady()){
-						result.addAll(visitor.getVectors());
+						positions.addAll(visitor.getVectors());
+						widths.addAll(visitor.getWidths());
+						names.addAll(visitor.getNames());
 						break;
 					}
 				}
 			}
 		}
-		return result;
+		for (String name: names){
+			console.addMessage("--> " + name);
+		}
+		console.addMessage("Total: " + positions.size() + " files contain " + text);
+        for (int i = 0; i < positions.size(); i++){
+        	highlightRoof(positions.get(i), widths.get(i), "red");
+        }
     }
     
-    public List<Vector3i> searchReferenceFrom(){
+	/**
+	 * Search of all the files that are referenced by the target building's file, highlighting
+	 * all their roofs.
+	 */
+	@Command(shortDescription = "Highlights every building referenced by the target building",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public void searchReferenceFrom(){
         CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
         CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
         AST ast = code.getAst();
-		List<Vector3i> result = new ArrayList<Vector3i>();
         if (ast == null){
         	console.addMessage("Not a class!");
-        	return result;
+        	return;
         }
+		List<Vector3i> positions = new ArrayList<Vector3i>();
+		List<Integer> widths = new ArrayList<Integer>();
+		List<String> names = new ArrayList<String>();
+        console.addMessage("Searching....");
         CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		DrawableCodeSearchRefFromVisitor visitor;
@@ -256,23 +284,40 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			object.getObject().accept(visitor);
 			while(true){
 				if(visitor.resultReady()){
-					result.addAll(visitor.getVectors());
+					positions.addAll(visitor.getVectors());
+					widths.addAll(visitor.getWidths());
+					names.addAll(visitor.getNames());
 					break;
 				}
 			}
 		}
-		return result;
+        for (String name: names){
+			console.addMessage("--> " + name);
+		}
+		console.addMessage("Total: " + positions.size() + " files are referenced by " + code.getName());
+        for (int i = 0; i < positions.size(); i++){
+        	highlightRoof(positions.get(i), widths.get(i), "blue");
+        }
     }
 	
-    public List<Vector3i> searchReferenceTo(){
+	/**
+	 * Search of all the files referencing to the target building's file, highlighting
+	 * all their roofs.
+	 */
+	@Command(shortDescription = "Highlights every building referencing the target building",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public void searchReferenceTo(){
         CameraTargetSystem cameraTarget = CoreRegistry.get(CameraTargetSystem.class);
         CodeRepresentation code = CodeRepresentation.getCodeRepresentation(cameraTarget);
         AST ast = code.getAst();
-		List<Vector3i> result = new ArrayList<Vector3i>();
         if (ast == null){
         	console.addMessage("Not a class!");
-        	return result;
+        	return;
         }
+        console.addMessage("Searching....");
+        List<Vector3i> positions = new ArrayList<Vector3i>();
+		List<Integer> widths = new ArrayList<Integer>();
+		List<String> names = new ArrayList<String>();
         CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		DrawableCodeSearchRefToVisitor visitor;
@@ -281,11 +326,74 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			object.getObject().accept(visitor);
 			while(true){
 				if(visitor.resultReady()){
-					result.addAll(visitor.getVectors());
+					positions.addAll(visitor.getVectors());
+					widths.addAll(visitor.getWidths());
+					names.addAll(visitor.getNames());
 					break;
 				}
 			}
 		}
-		return result;
+        for (String name: names){
+			console.addMessage("--> " + name);
+		}
+		console.addMessage("Total: " + positions.size() + " files reference to " + code.getName());
+        for (int i = 0; i < positions.size(); i++){
+        	highlightRoof(positions.get(i), widths.get(i), "yellow");
+        }
+    }
+	
+	/**
+	 * Highligth the roof of a building.
+	 * @param position of the CodeRepresentation of the building.
+	 * @param width of the building
+	 * @param color of the highlight
+	 */
+	public void highlightRoof(Vector3i position, Integer width, String color){
+		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", color));
+    	Block block = blockFamily.getArchetypeBlock();
+		switchBlock(position, width, block);
+    	buildingHighlighted.add(position);
+    	highlightWidths.add(width);
+	}
+    
+	/**
+	 * Switch the block, to another block type in a roof.
+	 * @param position position of the CodeRepresentation of the building.
+	 * @param width of the building
+	 * @param block uri to be change
+	 */
+    public void switchBlock(Vector3i position, Integer width, Block block){
+    	WorldProvider world = CoreRegistry.get(WorldProvider.class);
+    	Vector3i currentPos;
+    	for (int x = 0; x < width; x++){
+    		for(int z = 0; z < width; z++){
+    			currentPos = new Vector3i(position.getX() + x,position.getY() + 10, position.getZ() + z);
+    			world.setBlock(currentPos, block);
+    		}
+    	}
+    }
+    
+    
+    /**
+     * Cleans all the highlighted buildings
+     */
+	@Command(shortDescription = "Cleans all the highlights",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public void cleanHighlights(){
+    	BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("core", "stone"));
+    	Block block = blockFamily.getArchetypeBlock();
+    	Vector3i currentPos;
+    	Integer width;
+    	for (int i = 0; i < buildingHighlighted.size(); i++){
+    		currentPos = buildingHighlighted.get(i);
+    		width = highlightWidths.get(i);
+    		switchBlock(currentPos, width, block);
+    	}
+    	for (int i = 0; i < buildingHighlighted.size(); i++){
+    		buildingHighlighted.remove(i);
+			highlightWidths.remove(i);
+    	}
     }
 }

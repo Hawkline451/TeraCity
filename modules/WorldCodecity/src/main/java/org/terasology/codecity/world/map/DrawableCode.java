@@ -1,9 +1,6 @@
 package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.world.block.Block;
-
 /**
  * This class represent a part of the code that can be drawed in the map
  */
@@ -51,6 +48,18 @@ public interface DrawableCode {
 	public int[][] getLowResFromLine(int row,int col);
 	public int[][] getFullRep();
 	public boolean useTexture();
+	
+	/**
+	 * Check if query it is contained if code's base.
+	 * @param query
+	 * @return true if query is contained by code's base, false otherwise.
+	 */
 	public boolean containsText(String query);
-	public boolean containsPackage(String asterix);
+	
+	/**
+	 * Checks if package is contained by code's base.
+	 * @param pack package name to be checked
+	 * @return true if pack is contained by code's base, false otherwise.
+	 */
+	public boolean containsPackage(String pack);
 }

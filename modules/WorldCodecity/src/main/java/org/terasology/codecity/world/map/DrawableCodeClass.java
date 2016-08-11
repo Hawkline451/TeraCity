@@ -2,10 +2,8 @@ package org.terasology.codecity.world.map;
 
 import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeClass;
-import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
 
 public class DrawableCodeClass implements DrawableCode {
     private CodeClass base;
@@ -47,7 +45,8 @@ public class DrawableCodeClass implements DrawableCode {
 
 	@Override
 	public int getWidth(CodeMapFactory factory) {
-		return 1;
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		return man.getHorizontalScale().getScaledSize(base.getLongestLineLength(), 1);
 	}
 
 	@Override

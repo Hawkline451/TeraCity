@@ -146,6 +146,12 @@ public class MapObject implements IMapObject {
 		return object.containsText(query);
 	}
 
+	/**
+	 * Checks if query is contained in the CU of the AST
+	 * of object
+	 * @param query to be search
+	 * @return true if query is in, false otherwise
+	 */
 	public boolean hasText(String query) {
 		AST ast = object.getBase().getAst();
 		if (ast == null)
@@ -153,6 +159,11 @@ public class MapObject implements IMapObject {
 		return ast.contains(query);
 	}
 
+	/**
+	 * Checks if object is in the pack <code>import</code>
+	 * @param Import name of the package to check
+	 * @return true if is in, false otherwise
+	 */
 	public boolean isInPackage(String Import) {
 		String pack = object.getBase().getPackage();
 		if (pack == null)
@@ -167,18 +178,28 @@ public class MapObject implements IMapObject {
 		return false;
 	}
 
-	public boolean containsPackage(String asterix) {
-		return object.containsPackage(asterix);
+	/**
+	 * Check if object's package has pack as subpackage.
+	 * @param pack package name to check
+	 * @return true if packs is subpackage of object's package, false otherwise
+	 */
+	public boolean containsPackage(String pack) {
+		return object.containsPackage(pack);
 	}
 	
-	public boolean containsPackage(List<String> asterix) {
-		for (String pack: asterix){
+	public boolean containsPackage(List<String> packs) {
+		for (String pack: packs){
 			if (containsPackage(pack)) return true;
 		}
 		return false;
 	}
 
-	
+	/**
+	 * Checks if object imports directly (no asterisk) all
+	 * the names in directImports
+	 * @param directImports list of names to check
+	 * @return true if some name is directly imported, false otherwise.
+	 */
 	public boolean isDirectedImported(List<String> directImports){
 		String name = object.getBase().getName().trim(); 
 		for (String imp: directImports)
@@ -186,6 +207,12 @@ public class MapObject implements IMapObject {
 		return false;
 	}
 	
+	/**
+	 * Checks if object' imports or subpackages file
+	 * are in directImports.
+	 * @param directImports names to check
+	 * @return true if object contains a name as import.
+	 */
 	public boolean containsImport(List<String> directImports) {
 		for (String imp : directImports){
 			if (object.containsClass(imp)) return true;

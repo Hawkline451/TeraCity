@@ -21,12 +21,14 @@ public class DrawableCodeSearchRefToVisitor extends AbstractDrawableCodeSearchRe
 		Set<MapObject> mapObjects = map.getPosMapObjects();
 		for(MapObject object : mapObjects){
 			if(object.hasText(className)){
-				System.out.println(code.getBase().getName());
 				Ys.add(Y + object.getHeight(codeMapFactory));
 				
 				Zs.add(Z + (object.getPositionZ() + 1));
 				
 				Xs.add(X + (object.getPositionX() + 1));
+				
+				widths.add(object.getWidth(codeMapFactory));
+				names.add(object.toString());
 
 				continue;
 			}

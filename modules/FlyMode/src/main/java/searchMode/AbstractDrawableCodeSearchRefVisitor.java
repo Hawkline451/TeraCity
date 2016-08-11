@@ -10,6 +10,11 @@ import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.metrics.AST;
 import org.terasology.math.geom.Vector3i;
 
+/**
+ * Abstract for visitors that search by reference.
+ * @author nicol
+ *
+ */
 public abstract class AbstractDrawableCodeSearchRefVisitor implements DrawableCodeVisitor {
 	protected int Y;
 	protected int X;
@@ -17,6 +22,8 @@ public abstract class AbstractDrawableCodeSearchRefVisitor implements DrawableCo
 	protected List<Integer> Ys;
 	protected List<Integer> Xs;
 	protected List<Integer> Zs;
+	protected List<Integer> widths;
+	protected List<String> names;
 	protected CodeMapFactory codeMapFactory;
 	protected AST myAst;
 	protected String astPackage;
@@ -31,6 +38,8 @@ public abstract class AbstractDrawableCodeSearchRefVisitor implements DrawableCo
 		Ys = new ArrayList<Integer>();
 		Xs = new ArrayList<Integer>();
 		Zs = new ArrayList<Integer>();
+		widths = new ArrayList<Integer>();
+		names = new ArrayList<String>();
 		resultReady = false;
 	}
 	
@@ -49,10 +58,17 @@ public abstract class AbstractDrawableCodeSearchRefVisitor implements DrawableCo
 		return result;
 	}
 	
+	public List<Integer> getWidths(){
+		return widths;
+	}
+	
+	public List<String> getNames(){
+		return names;
+	}
+	
 	@Override
 	public void visit(DrawableCodeClass code) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

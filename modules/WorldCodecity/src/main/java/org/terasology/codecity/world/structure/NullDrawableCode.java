@@ -6,8 +6,6 @@ import org.terasology.codecity.world.map.CodeMapNull;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.world.block.Block;
 
 public class NullDrawableCode implements DrawableCode {
 

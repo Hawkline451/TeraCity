@@ -11,6 +11,10 @@ import org.terasology.codecity.world.metrics.AST;
 
 import com.github.javaparser.ast.ImportDeclaration;
 
+/**
+ * Visitor to get all building positions which code is referenced by code.
+ *
+ */
 public class DrawableCodeSearchRefFromVisitor extends AbstractDrawableCodeSearchRefVisitor {
 	protected List<String> directImports;
 	protected List<String> asteriskImports;
@@ -60,6 +64,9 @@ public class DrawableCodeSearchRefFromVisitor extends AbstractDrawableCodeSearch
 				
 				Xs.add(X + (object.getPositionX() + 1));
 				
+				widths.add(object.getWidth(codeMapFactory));
+				names.add(object.toString());
+				
 				continue;
 			}
 			else if(object.isInPackage(asteriskImports) && isReferenced(object.toString())){ //Check if is in a package with asterisk
@@ -69,6 +76,9 @@ public class DrawableCodeSearchRefFromVisitor extends AbstractDrawableCodeSearch
 				Zs.add(Z + (object.getPositionZ() + 1));
 				
 				Xs.add(X + (object.getPositionX() + 1));
+				
+				widths.add(object.getWidth(codeMapFactory));
+				names.add(object.toString());
 
 				continue;
 			}
@@ -93,6 +103,9 @@ public class DrawableCodeSearchRefFromVisitor extends AbstractDrawableCodeSearch
 				Zs.add(Z + (object.getPositionZ() + 1));
 				
 				Xs.add(X + (object.getPositionX() + 1));
+				
+				widths.add(object.getWidth(codeMapFactory));
+				names.add(object.toString());
 
 				continue;
 			}

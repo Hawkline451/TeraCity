@@ -12,6 +12,10 @@ import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.math.geom.Vector3i;
 
+/**
+ * Visitor to search a string in the CodeMap of the project.
+ *
+ */
 public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 	private int Y;
 	private int X;
@@ -19,6 +23,8 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 	private List<Integer> Ys;
 	private List<Integer> Xs;
 	private List<Integer> Zs;
+	private List<Integer> widths;
+	private List<String> names;
 	private CodeMapFactory codeMapFactory;
 	private String query;
 	private boolean resultReady;
@@ -31,6 +37,8 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 		Ys = new ArrayList<Integer>();
 		Xs = new ArrayList<Integer>();
 		Zs = new ArrayList<Integer>();
+		widths = new ArrayList<Integer>();
+		names = new ArrayList<String>();
 	}
 	
 
@@ -50,6 +58,9 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 				Zs.add(Z + (object.getPositionZ() + 1));
 				
 				Xs.add(X + (object.getPositionX() + 1));
+				
+				names.add(object.toString());
+				widths.add(object.getWidth(codeMapFactory));
 			}
 			else if(object.containsText(query)){
 				int auxY, auxZ, auxX;
@@ -88,5 +99,13 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 			result.add(new Vector3i(Xs.get(i), Ys.get(i), Zs.get(i)));
 		}
 		return result;
+	}
+	
+	public List<Integer> getWidths(){
+		return widths;
+	}
+	
+	public List<String> getNames(){
+		return names;
 	}
 }
