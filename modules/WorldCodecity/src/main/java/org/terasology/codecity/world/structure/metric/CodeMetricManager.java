@@ -94,6 +94,7 @@ public class CodeMetricManager {
 		info.append("Properties ");					
 		info.append(getMetricFromString("number-of-properties").getMetricVal(code));
 		info.append("\n");
+		// Cobertura Metrics
 		return info.toString();
 	}
 }

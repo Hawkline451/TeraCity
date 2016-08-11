@@ -37,7 +37,7 @@ public class coverageAprox extends CoberturaMetrics {
 			    	  }
 			      }
 			      float result = ((float)hasHits) / ((float)lineas);
-			      return "Aprox coverage(cobertura metric) : "+result;
+			      return "Coverage: "+result;
 		    	  
 		      }
 	      }
