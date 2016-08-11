@@ -150,4 +150,10 @@ public class CodeClass extends CodeRepresentation implements Serializable {
 	public int[][] getFullBinary() {
 		return this.binaryRepr;
 	}
+	
+	@Override
+	public String getPackage(){
+		String pack = ast.getPackage().toString().trim().split(" ")[1].trim();
+		return pack.trim().substring(0, pack.length() - 1);
+	}
 }

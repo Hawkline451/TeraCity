@@ -1,10 +1,9 @@
 package org.terasology.codecity.world.map;
 
+import org.terasology.codecity.world.metrics.AST;
 import org.terasology.codecity.world.structure.CodeClass;
-import org.terasology.codecity.world.structure.scale.CodeScale;
 import org.terasology.codecity.world.structure.scale.CodeScaleManager;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
 
 public class DrawableCodeClass implements DrawableCode {
     private CodeClass base;
@@ -46,7 +45,8 @@ public class DrawableCodeClass implements DrawableCode {
 
 	@Override
 	public int getWidth(CodeMapFactory factory) {
-		return 1;
+		CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);
+		return man.getHorizontalScale().getScaledSize(base.getLongestLineLength(), 1);
 	}
 
 	@Override
@@ -77,5 +77,18 @@ public class DrawableCodeClass implements DrawableCode {
 	@Override
 	public boolean useTexture() {
 		return true;
+	}
+
+	@Override
+	public boolean containsText(String query) {
+		AST ast = base.getAst();
+		return ast.contains(query);
+	}
+
+	@Override
+	public boolean containsPackage(String asterix) {
+		AST ast = base.getAst();
+		String pack = ast.getPackage().toString().trim().split(" ")[1].trim();
+		return pack.substring(0, pack.length()).equals(asterix);
 	}
 }

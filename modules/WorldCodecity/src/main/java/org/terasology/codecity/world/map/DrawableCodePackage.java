@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.terasology.codecity.world.structure.CodePackage;
 import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.codecity.world.structure.DummyArray;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.world.block.Block;
 
 /**
  * This class represent a Package that can be drawed in the map
@@ -101,6 +98,22 @@ public class DrawableCodePackage implements DrawableCode {
 	@Override
 	public boolean useTexture() {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsText(String query) {
+		for(DrawableCode code : contentList){
+			if(code.containsText(query)) return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean containsPackage(String asterix) {
+		for(DrawableCode code : contentList){
+			if(code.containsPackage(asterix)) return true;
+		}		
 		return false;
 	}
 	

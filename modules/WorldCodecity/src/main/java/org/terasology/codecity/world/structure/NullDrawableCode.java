@@ -6,8 +6,6 @@ import org.terasology.codecity.world.map.CodeMapNull;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeVisitor;
 import org.terasology.codecity.world.structure.CodeRepresentation;
-import org.terasology.codecity.world.structure.scale.CodeScale;
-import org.terasology.world.block.Block;
 
 public class NullDrawableCode implements DrawableCode {
 
@@ -64,6 +62,18 @@ public class NullDrawableCode implements DrawableCode {
 
 	@Override
 	public boolean useTexture() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsText(String query) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsPackage(String asterix) {
 		// TODO Auto-generated method stub
 		return false;
 	}
