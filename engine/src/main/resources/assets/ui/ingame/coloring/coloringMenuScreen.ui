@@ -75,7 +75,14 @@
                         "type" : "UIButton",
                         "id"   : "mockColoring",
                         "text" : "Mock"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id"   : "search",
+                        "text" : "Search"
                     }
+                    
+                    
                 ]
             },
             {
