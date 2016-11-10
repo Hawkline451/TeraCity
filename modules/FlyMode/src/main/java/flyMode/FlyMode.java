@@ -51,6 +51,8 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     @Override
     public void initialise() {
         toggleButtonsClientSystem.registerToggleButton(this);
+        
+        
     }
 
     /**
@@ -183,6 +185,7 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
  */
     @Override
     public String getText() {
+    	System.out.println(new Exception().getStackTrace()[1].getClassName());
         switch (getMovementMode()) {
             case CLIMBING:
                 return "Climbing";

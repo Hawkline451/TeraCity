@@ -100,6 +100,13 @@ public class ColoringMenuScreen extends CoreScreenLayer {
                 getManager().popScreen();
             }
         });
+        // Nuevo intento .
+        WidgetUtil.trySubscribe(this, "search", new ActivateEventListener() {
+            @Override
+            public void onActivated(UIWidget button) {
+            	;
+            }
+        });
     }
     
     private void sendUpdateRegistryCommand(Boolean renderQuakes) {

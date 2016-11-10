@@ -53,14 +53,16 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
+	
+	
 	private static final String FLY = "flight";
 	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String search(@CommandParam(value="className", required=true)  String className) {
-		String message = "Class not found.";
-		console.addMessage("Starting search...");
+		String message = "Class not found. Ole ole2 ole!";
+		console.addMessage("Starting la search...");
 		
 		if(bookMarks.containsKey(className)){
 			Vector3i pos = bookMarks.get(className);
@@ -101,7 +103,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String addBookmark(@CommandParam(value="className", required=true)  String className, 
     		@CommandParam(value="bookName", required=true)  String bookName) {
-		String message = "Class not found.";
+		String message = "Class not found. Ole ole ole!";
 		console.addMessage("Searching class to mark....");
 		if(addBookmarkBool(className, bookName)){
 			message = "Bookmarked!";
