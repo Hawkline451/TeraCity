@@ -49,6 +49,7 @@ public class GitMetric {
 				+" -r "+ Url
 				+" -o "+ outPath
 				+" -t "+ tempFolderPath;
+		//System.out.println(command);
 		return command;
 	}
 	public void execute(){
