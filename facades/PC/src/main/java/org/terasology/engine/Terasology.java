@@ -29,6 +29,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -92,6 +98,13 @@ import org.terasology.rendering.nui.layers.mainMenu.savedGames.GameProvider;
  * @author and many others
  */
 
+
+/*AudioInputStream audio = AudioSystem.getAudioInputStream(new File("/home/joaquin/git/TeraCity-master/TeraCity/facades/PC/src/main/java/org/terasology/engine/chewy.wav"));
+Clip clip = AudioSystem.getClip();
+clip.open(audio);
+clip.start();
+
+*/
 public final class Terasology {
 
     private static final String[] PRINT_USAGE_FLAGS = {"--help", "-help", "/help", "-h", "/h", "-?", "/?"};
@@ -121,7 +134,7 @@ public final class Terasology {
     private Terasology() {
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 
         // To have the splash screen in your favorite IDE add
         //
@@ -129,7 +142,8 @@ public final class Terasology {
         //   IntelliJ: -splash:facades/PC/src/main/resources/splash.jpg (root project is the working dir.)
         //
         // as JVM argument (not program argument!)
-        SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
+    	
+    	SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
 
         setParametersConfigFile(args);        
         

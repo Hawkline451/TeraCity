@@ -34,7 +34,7 @@ public class JsonReader {
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject objects = jsonArray.getJSONObject(i);
 			Object sha = objects.get(key);
-			/*for (Iterator<String> it = jsonArray.getJSONObject(i).keys(); it.hasNext(); ){
+			/*for (Iterator<String> it = jsonArray.getJSONObject(i).keys();  it.hasNext(); ){
 				String asd = it.next();
 				System.out.println("\n" + asd );
 			}*/				
