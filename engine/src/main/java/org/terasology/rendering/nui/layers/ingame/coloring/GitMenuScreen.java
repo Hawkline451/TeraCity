@@ -15,6 +15,7 @@ import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.rendering.nui.widgets.UIText;
 
 import com.google.common.collect.Lists;
 
@@ -42,6 +43,9 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
 	        }
 	        
+	        final UIText projectURL = find("projectURL", UIText.class);
+	        final UIText projectName = find("projectName", UIText.class);
+	        
 	        // displays info to the user: warnings, errors, ...
 	        final UILabel infoField = find("infoField", UILabel.class);
 	        
@@ -50,7 +54,9 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	FaceToPaint face = faceToPaint.getSelection();
 	            	ColorScale color = colorScale.getSelection();
-	            	executeCommand("bugs", face, color);
+	            	String url = projectURL.getText();
+	            	String name = projectName.getText();
+	            	executeCommand("bugs", face, color, url, name);
 	            }
 	        });
 	        WidgetUtil.trySubscribe(this, "versions", new ActivateEventListener() {
@@ -58,7 +64,9 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	FaceToPaint face = faceToPaint.getSelection();
 	            	ColorScale color = colorScale.getSelection();
-	            	executeCommand("versions", face, color);
+	            	String url = projectURL.getText();
+	            	String name = projectName.getText();
+	            	executeCommand("bugs", face, color, url, name);
 	            }
 	        });
 	       
@@ -74,7 +82,7 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        });
 	    }
 	    
-	    private void executeCommand(String metric, FaceToPaint face, ColorScale color) {
+	    private void executeCommand(String metric, FaceToPaint face, ColorScale color, String url, String name) {
 	    	
 	    	// manage invalid face selections
 	    	final UILabel infoField = find("infoField", UILabel.class);
@@ -86,12 +94,12 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	
 	    	ConsoleCommand ca = console.getCommand(new Name("paintWithGit"));	
 	    	ArrayList<String> params = new ArrayList<String>();
-	    	String url="";
+	    	//String url="";
 	    	String metricString = metric;
-			String projectName = "WorldCodecity";
+			//String projectName = "WorldCodecity";
 			params.add(metricString);
 	    	params.add(url);
-	    	params.add(projectName);
+	    	params.add(name);
 	    	params.add(face.toString());
 	    	params.add(color.toString());
 	    	EntityRef e = null;
