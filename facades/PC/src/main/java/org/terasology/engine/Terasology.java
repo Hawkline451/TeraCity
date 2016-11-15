@@ -64,6 +64,7 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.rendering.nui.layers.mainMenu.savedGames.GameInfo;
 import org.terasology.rendering.nui.layers.mainMenu.savedGames.GameProvider;
 
+
 /**
  * Class providing the main() method for launching Terasology as a PC app.
  * <br><br>

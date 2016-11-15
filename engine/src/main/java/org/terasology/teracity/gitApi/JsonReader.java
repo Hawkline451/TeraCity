@@ -1,9 +1,10 @@
-package Json;
+package org.terasology.teracity.gitApi;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.json.JSONArray;
@@ -11,38 +12,52 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonReader {
-	 
-	public JSONArray getJson(String url) {
+	
+	public JSONArray getJsonArray(String url) {
  
 		String jsonString = callURL(url);
-		//System.out.println("\n\njsonString: " + jsonString);
-		
+		//System.out.println("\n\njsonString: " + jsonString);		
 		try {  
 			JSONArray jsonArray = new JSONArray(jsonString);
 			//System.out.println("\n\njsonArray: " + jsonArray);
 			return jsonArray;
-
-		} catch (JSONException e) {
+		}
+		catch (JSONException e) {
 			e.printStackTrace();
 			return null;	
-		}
-			
+		}			
 	}
 	
-	public void getJsonObject(JSONArray jsonArray, String key){
-		
+	public JSONObject getJsonObject(String url) {
+		String jsonString = callURL(url);
+		//System.out.println("\n\njsonString: " + jsonString);		
+		try {  
+			JSONObject jsonObject = new JSONObject(jsonString);
+			//System.out.println("\n\njsonArray: " + jsonArray);
+			return jsonObject;
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+			return null;	
+		}	
+	}
+	
+	public ArrayList<String> getJsonList(JSONArray jsonArray, String key){
+		ArrayList<String> arrayOut = new ArrayList<String>();
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject objects = jsonArray.getJSONObject(i);
-			Object sha = objects.get(key);
+			Object value = objects.get(key);
 			/*for (Iterator<String> it = jsonArray.getJSONObject(i).keys();  it.hasNext(); ){
 				String asd = it.next();
 				System.out.println("\n" + asd );
-			}*/				
-			System.out.println("\n\njsonArray[" + i +"]: " + objects.toString()+"\n" + sha);
+			}*/			
+			//arrayOut.add("\n\njsonArray[" + i +"]: " + objects.toString()+"\n" + value);
+			arrayOut.add(value.toString());
 		}
+		return arrayOut;
 	}
  
-	public static String callURL(String myURL) {
+	public String callURL(String myURL) {
 		System.out.println("Requested URL:" + myURL);
 		StringBuilder sb = new StringBuilder();
 		URLConnection urlConn = null;
@@ -69,7 +84,6 @@ public class JsonReader {
 			throw new RuntimeException("Exception while calling URL:"+ myURL, e);
 		}  
 		return sb.toString();
-	}
- 
+	} 
 }
  

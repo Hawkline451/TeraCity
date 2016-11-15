@@ -9,12 +9,6 @@ import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 
-
-
-
-
-
-
 import org.terasology.logic.console.Console;
 import org.terasology.registry.In;
 
