@@ -37,7 +37,7 @@
                 "verticalSpacing" : 8,
                 "family" : "subtitle",
                 "layoutInfo" : {
-                    "width" : 400,
+                    "width" : 500,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "BOTTOM",
@@ -57,7 +57,7 @@
                             "type" : "ColumnLayout",
                             "family" : "option-grid",
                             "columns" : 2,
-                            "column-widths" : [0.30, 0.70],
+                            "column-widths" : [0.25, 0.75],
                             "verticalSpacing" : 8,
                             "horizontalSpacing" : 8,
                             "contents" : [
@@ -76,6 +76,39 @@
                                 {
                                 	"type" : "UIText",
                                 	"id"   : "projectName"
+                                },
+                                {
+                                	"type" : "UILabel",
+                                	"text" : "Branch: "
+                                },
+                                {
+                                	"type" : "UIText",
+                                	"id" : "branch"
+                                },
+                                {
+                                	"type" : "UILabel",
+                                	"text" : "From date: "
+                                },
+                                {
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 3,
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                            			{
+                            				"type" : "UIDropdown",
+                            				"id" : "dateYear"
+                            			},
+                            			{
+                            				"type" : "UIDropdown",
+                            				"id" : "dateMonth"
+                            			},
+                            			{
+                            				"type" : "UIDropdown",
+                            				"id" : "dateDay"
+                            			}
+                            		]
                                 },
                             	{
                                 	"type": "UILabel",
