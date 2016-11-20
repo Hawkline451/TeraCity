@@ -15,10 +15,6 @@ public class CodeMapHash implements CodeMap {
     private HashMap<String, MapObject> contentMap;
     private HashMap<DrawableCode, Vector2i> codePosition;
     private int size;
-    /**
-     * The minimum space between buildings, measured in blocks
-     */
-    private final int minimumBuildingSeparation = 3;
 
     private HashSet<Vector2i> positionCache;
     /**
@@ -130,7 +126,7 @@ public class CodeMapHash implements CodeMap {
 
         for (int i = x; i < buildingSize+x; i++)
             for (int j = y; j < buildingSize+y; j++)
-                if (!canPlaceInPosition(i, j, minimumBuildingSeparation))
+                if (!canPlaceInPosition(i, j))
                     return false;
         return true;
     }
@@ -191,30 +187,15 @@ public class CodeMapHash implements CodeMap {
      *            Coordinate x to be used
      * @param y
      *            Coordinate y to be used
-     * @param minDistance
-     * 			  Minimum distance that must be free around the given
-     * 			  position.
-     * 			  This method will check every position in a square of side
-     * 			  (2*minDistance + 1) around the given position.
-     * 			  Use with caution: higher values (10 or more) tend to
-     * 			  slow down the game noticeably.           
      * @return
      */
-    private boolean canPlaceInPosition(int x, int y, int minDistance) {
-        for (int i = -minDistance; i <= minDistance; i++)
-            for (int j = -minDistance; j <= minDistance; j++)
-                if (isUsed(x + i, y + j))
-                    return false;
-        return true;
-    }
-    
-    /*private boolean canPlaceInPosition(int x, int y) {
+    private boolean canPlaceInPosition(int x, int y) {
         for (int i = -1; i <= 1; i++)
             for (int j = -1; j <= 1; j++)
                 if (isUsed(x + i, y + j))
                     return false;
         return true;
-    }*/
+    }
 
     /**
      * {@inheritDoc}

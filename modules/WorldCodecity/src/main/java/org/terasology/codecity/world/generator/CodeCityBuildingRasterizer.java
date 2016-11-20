@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.IndexCodeBlockFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;
@@ -44,13 +45,19 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
             		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
             		block = ReducedViewBlockFactory.generate(sliceBin);
             		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
+            		
+            		// Generate the invisible block
+            		
+            		
+            		
             	    
         		}
         		else{ //Here block for borders which have map.getColumn() == -1
         			block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         		}
         		chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), block);
-				
+        		Block indexBlock = IndexCodeBlockFactory.generate();
+        		chunk.setBlock(ChunkMath.calcBlockPos(position.x+1, position.y, position.z), indexBlock);
         	}
         }
     }
