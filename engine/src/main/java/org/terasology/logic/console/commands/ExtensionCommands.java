@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -53,9 +55,9 @@ public class ExtensionCommands extends BaseComponentSystem{
 		ArrayList<String> shaList = opCommits.getCommit(date, branch); 
     	System.out.println(shaList.toString());
     	//por el momento solo entrega el 1er commit
-    	String sha = shaList.get(0);
-    	opCommits.getFiles(sha);
-    	
+    	for (String sha:shaList){
+    		opCommits.getFiles(sha);
+    	}    	
     	saveTSV(opCommits.getTable(), (projectName+"_"+branch));
     	JsonOperation op = new JsonOperation(path);
     	//console.addMessage(op.getCommit(date, branch).toString());
@@ -68,7 +70,9 @@ public class ExtensionCommands extends BaseComponentSystem{
         output = new BufferedWriter(new FileWriter(file));
    	 	BufferedWriter bw = new BufferedWriter(new FileWriter(file));
         for(String key:table.keySet()){
-        	 bw.write(key);
+        	 //bw.write(key);
+        	 Path path = Paths.get(key);
+   		 	 bw.write(path.getFileName().toString());
         	 bw.write("\t");
         	 bw.write(table.get(key).toString());
         	 bw.write("\n");

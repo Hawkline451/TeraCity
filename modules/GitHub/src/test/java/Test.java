@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -60,10 +61,12 @@ public class Test {
 	        output = new BufferedWriter(new FileWriter(file));
        	 	BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 	        for(String key:table.keySet()){
-	        	 bw.write(key);
-	        	 bw.write("\t");
-	        	 bw.write(table.get(key).toString());
-	        	 bw.write("\n");
+	        	//Path path = Paths.get(key);
+	    		 //bw.write(path.getFileName().toString());
+	        	bw.write(key);
+	        	bw.write("\t");
+	        	bw.write(table.get(key).toString());
+	        	bw.write("\n");
 	        }
 	        bw.close();
 	        output.close();
