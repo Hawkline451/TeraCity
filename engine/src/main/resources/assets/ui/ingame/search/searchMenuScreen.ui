@@ -1,82 +1,44 @@
 {
-    "type" : "engine:CheckStyleMenuScreen",
+    "type" : "engine:SearchMenuScreen",
     "skin" : "pauseMenu",
     "contents" : {
         "type" : "relativeLayout",
         "contents" : [
             {
-                "type": "UILabel",
-                "family": "title",
-                "text": "Available Metrics: ",
-                "id": "subtitle",
-                "layoutInfo": {
-                    "height": 48,
-                    "position-horizontal-center": {},
-                    "position-top": {
-                        "target": "BOTTOM",
-                        "widget": "title",
-                        "offset": 30
-                    }
-                }
-            },
-            {
                 "type" : "columnLayout",
-                "id" : "metrics",
-                "verticalSpacing" : 8,
-                "horizontalSpacing" : 8,
-                "columns": 2,
-                "family" : "menu-options",
-                "layoutInfo" : {
-                    "width" : 600,
-                    "height" : 120,
-                    "position-horizontal-center" : {},
-                    "position-top" : {
-                        "target" : "BOTTOM",
-                        "offset" : 50,
-                        "widget" : "subtitle"
-                    }
-                },
+                "verticalSpacing" : 9,
                 "contents" : [
                     {
+                        "type" : "UILabel",
+                        "text" : "SearchMenu"
+                    },
+                    {
+                        "type" : "UISpace",
+                        "size" : [1, 8]
+                    },
+                    {
+                    	"type" : "UIText", 
+                    	"id"   : "searchTextBox"
+                    },
+                    {               
                         "type" : "UIButton",
-                        "id" : "booleana",
-                        "text" : "Booleanaasdad"
+                        "id" : "searchButton",
+                        "text" : "Search!"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "close",
+                        "text" : "Back"
                     }
-                ]
-            },
-            {
-                "type" : "columnLayout",
-                "id" : "values",
-                "verticalSpacing" : 8,
-                "horizontalSpacing" : 8,
-                "columns": 2,
-                "family" : "option-grid",
+                                        
+                ],
                 "layoutInfo" : {
-                    "width" : 700,
-                    "height" : 170,
+                    "use-content-width" : true,
+                    "use-content-height" : true,
                     "position-horizontal-center" : {},
-                    "position-top" : {
-                        "target": "BOTTOM",
-                        "offset": 20,
-                        "widget" : "metrics"
-                    }
-                },
-            },
-            {
-                "type": "UIButton",
-                "text": "Back",
-                "id": "close",
-                "layoutInfo": {
-                    "height": 32,
-                    "width": 200,
-                    "position-horizontal-center": {},
-                    "position-bottom": {
-                        "target": "BOTTOM",
-                        "offset": 48
-                    }
+                    "position-vertical-center" : {}
                 }
             }
         ]
     }
 }
-

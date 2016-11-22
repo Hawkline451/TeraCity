@@ -61,8 +61,8 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String search(@CommandParam(value="className", required=true)  String className) {
-		String message = "Class not found. Ole ole2 ole!";
-		console.addMessage("Starting la search...");
+		String message = "Class not found.";
+		console.addMessage("Starting search...");
 		
 		if(bookMarks.containsKey(className)){
 			Vector3i pos = bookMarks.get(className);
@@ -103,7 +103,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String addBookmark(@CommandParam(value="className", required=true)  String className, 
     		@CommandParam(value="bookName", required=true)  String bookName) {
-		String message = "Class not found. Ole ole ole!";
+		String message = "Class not found.";
 		console.addMessage("Searching class to mark....");
 		if(addBookmarkBool(className, bookName)){
 			message = "Bookmarked!";
