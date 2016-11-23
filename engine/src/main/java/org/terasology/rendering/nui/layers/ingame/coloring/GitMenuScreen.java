@@ -115,6 +115,7 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        
 	        final UIText projectURL = find("projectURL", UIText.class);
 	        final UIText projectName = find("projectName", UIText.class);
+	        final UIText projectBranch = find("branch", UIText.class);
 	        
 	        // displays info to the user: warnings, errors, ...
 	        final UILabel infoField = find("infoField", UILabel.class);
@@ -129,11 +130,12 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            	String day = dateDay.getText();
 	            	String url = projectURL.getText();
 	            	String name = projectName.getText();
+	            	String branch = projectBranch.getText();
 	            	if (checkDateFormat(day, month, year, infoField)) {
 	            		day = addZeroToNumber(day);
 	            		month = addZeroToNumber(month);
 	            		String date = year + "/" + month + "/" + day;
-		            	executeCommand("bugs", face, color, url, name, date);
+		            	executeCommand("bugs", face, color, url, name, branch, date);
 	            	}
 	            }
 	        });
@@ -147,11 +149,12 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            	String day = dateDay.getText();
 	            	String url = projectURL.getText();
 	            	String name = projectName.getText();
+	            	String branch = projectBranch.getText();
 	            	if (checkDateFormat(day, month, year, infoField)) {
 	            		day = addZeroToNumber(day);
 	            		month = addZeroToNumber(month);
 	            		String date = year + "/" + month + "/" + day;
-		            	executeCommand("versions", face, color, url, name, date);
+		            	executeCommand("versions", face, color, url, name, branch, date);
 	            	}
 	            }
 	        });
@@ -265,7 +268,7 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    }
 	    
 	    private void executeCommand(String metric, FaceToPaint face, ColorScale color,
-	    		String url, String name, String date) {
+	    		String url, String name, String branch, String date) {
 	    	
 	    	// manage invalid face selections
 	    	final UILabel infoField = find("infoField", UILabel.class);
@@ -289,8 +292,9 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	params.add(name);
 	    	params.add(face.toString());
 	    	params.add(color.toString());
+	    	//params.add(branch)
 	    	//params.add(date);
-	    	//TODO add parameter "date" according to new command's parameters
+	    	//TODO add parameters "branch" and "date" according to new command's
 	    	EntityRef e = null;
 	    	try {
 				ca.execute(params, e);
