@@ -61,6 +61,11 @@ public class GitCommand extends BaseComponentSystem{
     		git.execute();
     		git.setData();
     		data= git.getData();
+    		
+    		System.out.println(data.toString());
+    		System.out.println("Prueba!!!!!");
+    		System.out.println("\n\n\n\n");
+    		
     		String result;
     		if (data!=null) {
 				StringBuilder r = new StringBuilder();
@@ -74,7 +79,7 @@ public class GitCommand extends BaseComponentSystem{
 				result = r.toString();
 			}
     		else{
-    			result="algo fallo en el análisis";
+    			result="algo fallo en el analisis";
     		}
 			return result;
     }
