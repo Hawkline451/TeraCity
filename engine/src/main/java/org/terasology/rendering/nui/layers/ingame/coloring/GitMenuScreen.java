@@ -181,6 +181,7 @@ public class GitMenuScreen extends CoreScreenLayer{
 	     */
 	    private boolean checkDateFormat(String day, String month, String year, UILabel infoField) {
 	    	ArrayList<String> monthsWith30Days = Lists.newArrayList("04", "06", "09", "11", "4", "6", "9");
+	    	Calendar c = Calendar.getInstance();
 	    	int numberOfDay, lastMonthDay, yearNumber, numberOfMonth;
 	    	try {
 		    	numberOfDay = Integer.parseInt(day);
@@ -193,8 +194,8 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	if (numberOfMonth < 1 || numberOfMonth > 12) {
 	    		infoField.setText("Warning: Month must be a number between 01 and 12!");
 	    		return false;
-	    	} else if (yearNumber < 2008 || yearNumber > Calendar.getInstance().get(Calendar.YEAR)) {
-	    		infoField.setText("Warning: Year must be a number between 2008 and the current year!");
+	    	} else if (yearNumber < 2008) {
+	    		infoField.setText("Warning: Year must be a number between 2008! (There was no GitHub before)");
 	    		return false;
 	    	} else if (numberOfDay <= 0) {
 	    		infoField.setText("Warning: Day must be at least 01!");
@@ -218,6 +219,23 @@ public class GitMenuScreen extends CoreScreenLayer{
 		    	infoField.setText("Warning: That month didn't have that much days!");
 	    		return false;
 	    	}
+	    	if (yearNumber == c.get(Calendar.YEAR)) {
+	    		if (numberOfMonth == c.get(Calendar.MONTH) + 1) {
+	    			if (numberOfDay == c.get(Calendar.DAY_OF_MONTH)) {
+	    				//TODO will the new command work if the given date is "today"?
+	    			} else if (numberOfDay > c.get(Calendar.DAY_OF_MONTH)) {
+	    				infoField.setText("Warning: You can't check future commits!");
+	    				return false;
+	    			}
+	    		} else if (numberOfMonth > c.get(Calendar.MONTH) + 1) {
+    				infoField.setText("Warning: You can't check future commits!");
+    				return false;
+	    		}
+	    	} else if (yearNumber > c.get(Calendar.YEAR)) {
+				infoField.setText("Warning: You can't check future commits!");
+				return false;
+	    	}
+	    	
 	    	infoField.setText("");
 	    	return true;
 	    }
