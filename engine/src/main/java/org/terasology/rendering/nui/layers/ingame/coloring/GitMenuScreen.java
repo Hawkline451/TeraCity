@@ -21,7 +21,12 @@ import org.terasology.rendering.nui.widgets.UIText;
 
 import com.google.common.collect.Lists;
 
-
+/**
+ * Class that manages the UI for Git Menu Screen, from ingame Coloring menu.
+ * This works with gitMenuScreen.ui, found in:
+ * engine/src/main/resources/assets/ui/ingame/coloring/
+ *
+ */
 public class GitMenuScreen extends CoreScreenLayer{
 
 	    @In
@@ -45,20 +50,17 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
 	        }
 	        
-	        final UIDropdown<String> dateYear = find("dateYear", UIDropdown.class);
+	        final UIText dateYear = find("dateYear", UIText.class);
 	        if (dateYear != null) {
-	        	dateYear.setOptions(generateYearList());
-	        	dateYear.bindSelection(new Binding<String>() {
+	        	dateYear.bindText(new Binding<String>() {
 	        		String year;
 	        		
 					@Override
 					public String get() {
-						if (year != null) {
-							return year;
-						} else {
-							set("2008");
-							return year;
+						if (year == null) {
+							set("yyyy");
 						}
+						return year;
 					}
 
 					@Override
@@ -69,20 +71,17 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        	});
 	        }
 	        
-	        final UIDropdown<String> dateMonth = find("dateMonth", UIDropdown.class);
+	        final UIText dateMonth = find("dateMonth", UIText.class);
 	        if (dateMonth != null) {
-	        	dateMonth.setOptions(Lists.newArrayList("January", "February", "March", "April", "May", "June", "Jule", "August", "September", "October", "November", "December"));;
-	        	dateMonth.bindSelection(new Binding<String>() {
+	        	dateMonth.bindText(new Binding<String>() {
 	        		String month;
 	        		
 					@Override
 					public String get() {
-						if (month != null) {
-							return month;
-						} else {
-							set("January");
-							return month;
+						if (month == null) {
+							set("mm");
 						}
+						return month;
 					}
 
 					@Override
@@ -93,20 +92,17 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        	});
 	        }
 	        
-	        final UIDropdown<String> dateDay = find("dateDay", UIDropdown.class);
+	        final UIText dateDay = find("dateDay", UIText.class);
 	        if (dateDay != null) {
-	        	dateDay.setOptions(generateDayList());
-	        	dateDay.bindSelection(new Binding<String>() {
+	        	dateDay.bindText(new Binding<String>() {
 	        		String day;
 	        		
 					@Override
 					public String get() {
-						if (day != null) {
-							return day;
-						} else {
-							set("01");
-							return day;
+						if (day == null) {
+							set("dd");
 						}
+						return day;
 					}
 
 					@Override
@@ -128,16 +124,16 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	FaceToPaint face = faceToPaint.getSelection();
 	            	ColorScale color = colorScale.getSelection();
-	            	String year = dateYear.getSelection();
-	            	String month = dateMonth.getSelection();
-	            	String day = dateDay.getSelection();
+	            	String year = dateYear.getText();
+	            	String month = dateMonth.getText();
+	            	String day = dateDay.getText();
 	            	String url = projectURL.getText();
 	            	String name = projectName.getText();
-	            	if (checkDayFormat(day, month, year)) {
-		            	executeCommand("bugs", face, color, url, name);
-	            	} else {
-	            		infoField.setText("The day field is wrongly filled.\n"
-	            				+ "Please, write a number from 1 to 31 according to selected month's length");
+	            	if (checkDateFormat(day, month, year, infoField)) {
+	            		day = addZeroToNumber(day);
+	            		month = addZeroToNumber(month);
+	            		String date = year + "/" + month + "/" + day;
+		            	executeCommand("bugs", face, color, url, name, date);
 	            	}
 	            }
 	        });
@@ -146,16 +142,16 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	FaceToPaint face = faceToPaint.getSelection();
 	            	ColorScale color = colorScale.getSelection();
-	            	String year = dateYear.getSelection();
-	            	String month = dateMonth.getSelection();
-	            	String day = dateDay.getSelection();
+	            	String year = dateYear.getText();
+	            	String month = dateMonth.getText();
+	            	String day = dateDay.getText();
 	            	String url = projectURL.getText();
 	            	String name = projectName.getText();
-	            	if (checkDayFormat(day, month, year)) {
-		            	executeCommand("bugs", face, color, url, name);
-	            	} else {
-	            		infoField.setText("The day field is wrongly filled.\n"
-	            				+ "Please, write a number from 1 to 31 according to selected month's length");
+	            	if (checkDateFormat(day, month, year, infoField)) {
+	            		day = addZeroToNumber(day);
+	            		month = addZeroToNumber(month);
+	            		String date = year + "/" + month + "/" + day;
+		            	executeCommand("versions", face, color, url, name, date);
 	            	}
 	            }
 	        });
@@ -173,42 +169,8 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    }
 	    
 	    /**
-	     * Generates a list with all years from the current one to 2008
-	     * (since GitHub was launched on April 10th of 2008).
-	     * 
-	     * @return An ArrayList containing all years from current to 2008.
-	     */
-	    private ArrayList<String> generateYearList() {
-	    	ArrayList<String> years = new ArrayList<String>();
-	    	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-	    	for(int i = currentYear; i >= 2008; i--){
-	    		years.add(Integer.toString(i));
-	    	}
-	    	return years;
-	    }
-	    
-	    /**
-	     * Generates a list with all days, from 1 to 31.
-	     * 
-	     * @return	An ArrayList containing numbers from 1 to 31,
-	     * 			representing days of a month.
-	     */
-	    private ArrayList<String> generateDayList() {
-	    	ArrayList<String> days = new ArrayList<String>();
-	    	String tmp;
-	    	for(int i = 0; i <= 31; i++) {
-	    		tmp = Integer.toString(i);
-	    		if (i < 10) {
-	    			tmp = "0" + tmp;
-	    		}
-	    		days.add(tmp);
-	    	}
-	    	return days;
-	    }
-	    
-	    /**
 	     * Checks that the day given by the user has a correct format. That means a day number
-	     * must not be negative, nor 0, nor exceding month's length, even considering if the given
+	     * must not be negative, nor 0, nor exceeding month's length, even considering if the given
 	     * month is February and year is a leap year.
 	     * 
 	     * @param day		The day selected by the user.
@@ -217,17 +179,27 @@ public class GitMenuScreen extends CoreScreenLayer{
 	     * 
 	     * @return			True if it's a valid day. False otherwise.
 	     */
-	    private boolean checkDayFormat(String day, String month, String year) {
-	    	ArrayList<String> monthsWith30Days = Lists.newArrayList("April", "June", "September", "November");
-	    	int numberOfDay, lastMonthDay, yearNumber = Integer.parseInt(year);
+	    private boolean checkDateFormat(String day, String month, String year, UILabel infoField) {
+	    	ArrayList<String> monthsWith30Days = Lists.newArrayList("04", "06", "09", "11", "4", "6", "9");
+	    	int numberOfDay, lastMonthDay, yearNumber, numberOfMonth;
 	    	try {
 		    	numberOfDay = Integer.parseInt(day);
+		    	yearNumber = Integer.parseInt(year);
+		    	numberOfMonth = Integer.parseInt(month);
 	    	} catch(NumberFormatException e) {
+	    		infoField.setText("Warning: Date must be written in numbers!");
 	    		return false;
 	    	}
-	    	if (numberOfDay <= 0) {
+	    	if (numberOfMonth < 1 || numberOfMonth > 12) {
+	    		infoField.setText("Warning: Month must be a number between 01 and 12!");
 	    		return false;
-	    	} else if (month.equals("February")) {
+	    	} else if (yearNumber < 2008 || yearNumber > Calendar.getInstance().get(Calendar.YEAR)) {
+	    		infoField.setText("Warning: Year must be a number between 2008 and the current year!");
+	    		return false;
+	    	} else if (numberOfDay <= 0) {
+	    		infoField.setText("Warning: Day must be at least 01!");
+	    		return false;
+	    	} else if (numberOfMonth == 2) {
 	    		if (yearNumber % 4 != 0) {
 	    			lastMonthDay = 28;
 	    		} else if (yearNumber % 100 != 0) {
@@ -242,10 +214,40 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	} else {
 	    		lastMonthDay = 31;
 	    	}
-	    	return (numberOfDay <= lastMonthDay);
+	    	if (numberOfDay > lastMonthDay) {
+		    	infoField.setText("Warning: That month didn't have that much days!");
+	    		return false;
+	    	}
+	    	infoField.setText("");
+	    	return true;
 	    }
 	    
-	    private void executeCommand(String metric, FaceToPaint face, ColorScale color, String url, String name) {
+	    /**
+	     * Formalizes date format for day/month if they're lesser than 10,
+	     * by adding 0 at the start.
+	     * 
+	     * @param number	day/month to be formalized.
+	     * 
+	     * @return			formalized day/month
+	     */
+	    private String addZeroToNumber(String number) {
+	    	int n;
+	    	if (number.startsWith("0")) {
+	    		return number;
+	    	}
+	    	try {
+	    		n = Integer.parseInt(number);
+		    	if (n < 10) {
+		    		number = "0" + number;
+		    	}
+	    	} catch(NumberFormatException e) {
+	    		// If this method is used, then it'll never throw that exception.
+	    	}
+	    	return number;
+	    }
+	    
+	    private void executeCommand(String metric, FaceToPaint face, ColorScale color,
+	    		String url, String name, String date) {
 	    	
 	    	// manage invalid face selections
 	    	final UILabel infoField = find("infoField", UILabel.class);
@@ -255,7 +257,9 @@ public class GitMenuScreen extends CoreScreenLayer{
         	}
         	infoField.setText("");
 	    	
-	    	ConsoleCommand ca = console.getCommand(new Name("paintWithGit"));	
+	    	ConsoleCommand ca = console.getCommand(new Name("paintWithGit"));
+	    	//ConsoleCommand ca = console.getCommand(new Name("gitCommit"));
+	    	//TODO change command name according to new git command
 	    	ArrayList<String> params = new ArrayList<String>();
 	    	if (name.equals("")) {
 	    		name = "WorldCodecity";
@@ -267,6 +271,8 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	params.add(name);
 	    	params.add(face.toString());
 	    	params.add(color.toString());
+	    	//params.add(date);
+	    	//TODO add parameter "date" according to new command's parameters
 	    	EntityRef e = null;
 	    	try {
 				ca.execute(params, e);

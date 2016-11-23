@@ -56,38 +56,47 @@
                         "content" : {
                             "type" : "ColumnLayout",
                             "family" : "option-grid",
-                            "columns" : 2,
-                            "column-widths" : [0.25, 0.75],
+                            "columns" : 1,
                             "verticalSpacing" : 8,
                             "horizontalSpacing" : 8,
                             "contents" : [
-                                {
-                                	"type" : "UILabel",
-                                	"text" : "Project URL: "
-                                },
-                                {
-                                	"type" : "UIText",
-                                	"id"   : "projectURL"
-                                },
-                                {
-                                	"type" : "UILabel",
-                                	"text" : "Project Name: "
-                                },
-                                {
-                                	"type" : "UIText",
-                                	"id"   : "projectName"
-                                },
-                                {
-                                	"type" : "UILabel",
-                                	"text" : "Branch: "
-                                },
-                                {
-                                	"type" : "UIText",
-                                	"id" : "branch"
-                                },
-                                {
-                                	"type" : "UILabel",
-                                	"text" : "From date: "
+                            	{
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 2,
+                            		"column-widths" : [0.25, 0.75],
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Project URL: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id"   : "projectURL"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Project Name: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id"   : "projectName"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Branch: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id" : "branch"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Starting date: "
+                                		},
+                            		]
                                 },
                                 {
                                 	"type" : "ColumnLayout",
@@ -97,39 +106,79 @@
                             		"horizontalSpacing" : 8,
                             		"contents" : [
                             			{
-                            				"type" : "UIDropdown",
-                            				"id" : "dateYear"
-                            			},
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Year:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateYear"
+                            					}
+                            				]
+                        				},
                             			{
-                            				"type" : "UIDropdown",
-                            				"id" : "dateMonth"
-                            			},
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Month:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateMonth"
+                            					}
+                            				]
+                        				},
                             			{
-                            				"type" : "UIDropdown",
-                            				"id" : "dateDay"
-                            			}
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Day:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateDay"
+                            					}
+                            				]
+                        				}
                             		]
                                 },
-                            	{
-                                	"type": "UILabel",
-                                	"text": "Face to paint: "
-                            	},
-                            	{
-                                	"type": "UIDropdown",
-                                	"id": "faceToPaint"
-                            	},
-                            	{
-                                	"type": "UILabel",
-                                	"text": "Color Scale: "
-                            	},
-                            	{
-                                	"type": "UIDropdown",
-                                	"id": "colorScale"
-                            	}
+                                {
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 2,
+                            		"column-widths" : [0.25, 0.75],
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                            			{
+                                			"type": "UILabel",
+                                			"text": "Face to paint: "
+                            			},
+                            			{
+                                			"type": "UIDropdown",
+                                			"id": "faceToPaint"
+                            			},
+                            			{
+                                			"type": "UILabel",
+                                			"text": "Color Scale: "
+                            			},
+                            			{
+                                			"type": "UIDropdown",
+                                			"id": "colorScale"
+                            			}
+                            		]
+                                }
                             ]
                         },
                         "layoutInfo" : {
-                            "width" : 450,
+                            "width" : 600,
                             "position-horizontal-center" : {}
                         }
                     },
