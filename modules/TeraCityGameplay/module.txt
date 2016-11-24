@@ -8,7 +8,7 @@
         {"id": "Core", "minVersion": "0.1.0"},
         {"id": "Coloring", "minVersion": "0.1.0"},
         {"id": "jeditint", "minVersion": "0.1.0"},
-		{"id": "FlyMode", "minVersion": "0.1.0"}
+	{"id": "FlyMode", "minVersion": "0.1.0"}
     ],
     "isGameplay" : "true",
     "defaultWorldGenerator" : "Core:WorldCodecity"

@@ -76,7 +76,6 @@ import org.terasology.world.block.shapes.BlockShapeImpl;
 import org.terasology.world.generator.internal.WorldGeneratorManager;
 
 import java.io.IOException;
-import java.nio.charset.*;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Deque;
