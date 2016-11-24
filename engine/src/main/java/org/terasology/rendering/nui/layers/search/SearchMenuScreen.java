@@ -51,10 +51,13 @@ public class SearchMenuScreen extends CoreScreenLayer {
 
 				parameters.add(searchText.getText());
 				try {
-					cmd.execute(parameters, e);
+					if (!parameters.get(0).equals("")) {
+						cmd.execute(parameters, e);						
+						getManager().popScreen();
+					}
 				} catch (CommandExecutionException e1) {
 				}
-				getManager().popScreen();
+
 			}
 		});
 	}
