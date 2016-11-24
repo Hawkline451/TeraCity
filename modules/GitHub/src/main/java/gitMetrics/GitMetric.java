@@ -9,6 +9,12 @@ import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 
+
+
+
+
+
+
 import org.terasology.logic.console.Console;
 import org.terasology.registry.In;
 
@@ -43,7 +49,6 @@ public class GitMetric {
 				+" -r "+ Url
 				+" -o "+ outPath
 				+" -t "+ tempFolderPath;
-		//System.out.println(command);
 		return command;
 	}
 	public void execute(){
