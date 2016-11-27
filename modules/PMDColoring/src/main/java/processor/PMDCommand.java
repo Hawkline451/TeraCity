@@ -77,10 +77,22 @@ class ThreadPMDExecution implements Runnable
 			separator = "\\";
 		}
 		
+		StringBuilder pmdRoute = new StringBuilder();
+		pmdRoute.append('.');
+		pmdRoute.append(separator);
+		pmdRoute.append("modules");
+		pmdRoute.append(separator);
+		pmdRoute.append("PMDColoring");
+		pmdRoute.append(separator);
+		pmdRoute.append("libs");
+		pmdRoute.append(separator);
+		pmdRoute.append("pmd");
+		pmdRoute.append(separator);
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("java -cp ");
 		sb.append(beforePath);
-		sb.append('.');
+		sb.append(".");
 		sb.append(separator);
 		sb.append("modules");
 		sb.append(separator);
@@ -96,7 +108,10 @@ class ThreadPMDExecution implements Runnable
 		sb.append(sourcePath);
 		sb.append(" -f ");
 		sb.append(outPutType);
-		sb.append(" -R rulesets/java/");
+		sb.append(" -R ");
+		sb.append(pmdRoute);
+		sb.append("Metrics");
+		sb.append(separator);
 		sb.append(rules);
 		sb.append(".xml");
 		return sb.toString();
@@ -112,44 +127,42 @@ class ThreadPMDExecution implements Runnable
 			Process process;
 			process = Runtime.getRuntime().exec(inputString);
 			InputStream is = process.getInputStream();
-			 InputStreamReader isr = new InputStreamReader(is);
-			 BufferedReader br = new BufferedReader(isr);
-				
-			 String line;
-			 int messageLines = 0;
-			 while ((line = br.readLine()) != null) 
-			 {
-				 console.addMessage(line);
-				 ++messageLines;
-			 }
-			 console.addMessage("Lineas del mensage: "+ messageLines);
-			 
-			 int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
 			
-			 console.addMessage("Lineas totales: "+ totalLines);
-			 /* 
-			 if(rules.equals("comments"))
-			 {
-				 String color = new CommentsMetric(messageLines, totalLines).getColor();
-				 currentColor = color;
-				 console.addMessage(color);
-			 }
-			 else if(rules.equals("codesize"))
-			 {
-				 String color = new CodeSizesMetric(messageLines, totalLines).getColor();
-				 currentColor = color;
-				 console.addMessage(color);
-			 }
-			 */
-			 console.addMessage("Fin del Analisis");
-			 
+			String line;
+			int messageLines = 0;
+			while ((line = br.readLine()) != null) 
+			{
+			 console.addMessage(line);
+			 ++messageLines;
+			}
+			console.addMessage("Lineas del mensage: "+ messageLines);
+			
+			int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
+			
+			console.addMessage("Lineas totales: "+ totalLines);
+			/* 
+			if(rules.equals("comments"))
+			{
+			 String color = new CommentsMetric(messageLines, totalLines).getColor();
+			 currentColor = color;
+			 console.addMessage(color);
+			}
+			else if(rules.equals("codesize"))
+			{
+			 String color = new CodeSizesMetric(messageLines, totalLines).getColor();
+			 currentColor = color;
+			 console.addMessage(color);
+			}
+			*/
+			console.addMessage("Fin del Analisis");
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 } 
 
 class LineCounter{
