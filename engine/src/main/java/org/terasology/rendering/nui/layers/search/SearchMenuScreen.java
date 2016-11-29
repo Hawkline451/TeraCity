@@ -33,6 +33,7 @@ public class SearchMenuScreen extends CoreScreenLayer {
 	public void initialise() {
 
 		final UIText searchText = find("searchTextBox", UIText.class);
+		ConsoleCommand cmd = console.getCommand(new Name("search"));
 
 		WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
 			@Override
@@ -46,13 +47,12 @@ public class SearchMenuScreen extends CoreScreenLayer {
 			@Override
 			public void onActivated(UIWidget widget) {
 				EntityRef e = null;
-				ConsoleCommand cmd = console.getCommand(new Name("search"));
 				ArrayList<String> parameters = new ArrayList<String>();
 
 				parameters.add(searchText.getText());
 				try {
 					if (!parameters.get(0).equals("")) {
-						cmd.execute(parameters, e);						
+						cmd.execute(parameters, e);
 						getManager().popScreen();
 					}
 				} catch (CommandExecutionException e1) {
@@ -60,5 +60,22 @@ public class SearchMenuScreen extends CoreScreenLayer {
 
 			}
 		});
+		WidgetUtil.trySubscribe(this, "classSearch", new ActivateEventListener() {
+
+			@Override
+			public void onActivated(UIWidget widget) {
+				console.getCommand(new Name("search"));
+			}
+
+		});
+		WidgetUtil.trySubscribe(this, "textSearch", new ActivateEventListener() {
+
+			@Override
+			public void onActivated(UIWidget widget) {
+				console.getCommand(new Name("textSearch"));
+			}
+
+		});
+
 	}
 }

@@ -27,6 +27,17 @@
                     },
                     {
                         "type" : "UIButton",
+                        "id" : "classSearch",
+                        "text" : "Class Search"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "textSearch",
+                        "text" : "Text Search"
+                    },
+                    
+                    {
+                        "type" : "UIButton",
                         "id" : "close",
                         "text" : "Back"
                     }
