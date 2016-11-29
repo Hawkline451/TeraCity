@@ -1,0 +1,55 @@
+{
+    "type" : "engine:SearchMenuScreen",
+    "skin" : "pauseMenu",
+    "contents" : {
+        "type" : "relativeLayout",
+        "contents" : [
+            {
+                "type" : "columnLayout",
+                "verticalSpacing" : 9,
+                "contents" : [
+                    {
+                        "type" : "UILabel",
+                        "text" : "SearchMenu"
+                    },
+                    {
+                        "type" : "UISpace",
+                        "size" : [1, 8]
+                    },
+                    {
+                    	"type" : "UIText", 
+                    	"id"   : "searchTextBox"
+                    },
+                    {               
+                        "type" : "UIButton",
+                        "id" : "searchButton",
+                        "text" : "Search!"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "classSearch",
+                        "text" : "Class Search"
+                    },
+                    {
+                        "type" : "UIButton",
+                        "id" : "textSearch",
+                        "text" : "Text Search"
+                    },
+                    
+                    {
+                        "type" : "UIButton",
+                        "id" : "close",
+                        "text" : "Back"
+                    }
+                                        
+                ],
+                "layoutInfo" : {
+                    "use-content-width" : true,
+                    "use-content-height" : true,
+                    "position-horizontal-center" : {},
+                    "position-vertical-center" : {}
+                }
+            }
+        ]
+    }
+}

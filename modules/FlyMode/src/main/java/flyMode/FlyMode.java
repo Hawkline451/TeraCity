@@ -51,6 +51,8 @@ public class FlyMode extends BaseComponentSystem implements HUDToggleButtonsClie
     @Override
     public void initialise() {
         toggleButtonsClientSystem.registerToggleButton(this);
+        
+        
     }
 
     /**
