@@ -26,16 +26,51 @@
                         "text" : "Search!"
                     },
                     {
-                        "type" : "UIButton",
-                        "id" : "classSearch",
-                        "text" : "Class Search"
+                        "type" : "UISpace",
+                        "size" : [1, 8]
                     },
-                    {
-                        "type" : "UIButton",
-                        "id" : "textSearch",
-                        "text" : "Text Search"
-                    },
-                    
+		            {
+		                "type" : "columnLayout",
+		                "verticalSpacing" : 8,
+		                "horizontalSpacing": 8,
+		                "family" : "option-grid",
+		                "id"     : "searchType",
+		                "columns": 1,
+		                "layoutInfo" : {
+		                    "use-content-width" : true,
+		                    "use-content-height" : true,
+		                    "position-horizontal-center" : {
+		                        "target" : "CENTER",
+		                        "widget" : "searchType"
+		                    },
+		                    "position-top" : {
+		                        "target" : "BOTTOM",
+		                        "offset" : 10,
+		                        "widget" : "searchType"
+		                    },
+		                    "position-bottom" : {
+		                        "offset" : 80
+		                    }
+		                },
+		                "contents" : [
+		                    {
+		                        "type": "UILabel",
+		                        "text": "Class Search:"
+		                    },
+		                    {
+		                        "type": "UICheckbox",
+		                        "id": "classSearch"
+		                    },
+		                    {
+		                        "type": "UILabel",
+		                        "text": "Text Search: "
+		                    },
+		                    {
+		                        "type": "UICheckbox",
+		                        "id": "textSearch"
+		                    }
+		                ]
+		            },
                     {
                         "type" : "UIButton",
                         "id" : "close",
