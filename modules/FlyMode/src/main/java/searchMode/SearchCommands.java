@@ -53,6 +53,8 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
+	
+	
 	private static final String FLY = "flight";
 	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
