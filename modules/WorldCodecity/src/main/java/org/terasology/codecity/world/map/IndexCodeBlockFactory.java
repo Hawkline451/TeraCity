@@ -39,7 +39,7 @@ public class IndexCodeBlockFactory {
 
   }
    
-  
+	   
   @Deprecated
 	public static Block generate(int[] lineLength, int blockNum) {
 	  return CoreRegistry.get(BlockManager.class).getBlock("core:lava");
