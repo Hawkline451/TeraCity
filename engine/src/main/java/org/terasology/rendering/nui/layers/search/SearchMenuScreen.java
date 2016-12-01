@@ -31,9 +31,6 @@ public class SearchMenuScreen extends CoreScreenLayer {
 	@In
 	private Console console;
 
-	// SearchFlag : True if it's searching classes, false in other cases.
-	private Boolean searchFlag = new Boolean(true);
-
 	@Override
 	public void initialise() {
 
@@ -65,60 +62,65 @@ public class SearchMenuScreen extends CoreScreenLayer {
 
 			}
 		});
-		
-		//Class/Text search buttons.
-		
-		
-    	UICheckbox classSearchBox = find("classSearch", UICheckbox.class);
-    	if (classSearchBox != null) {
-    		classSearchBox.setChecked(true);
-    	}
-    	
-    	UICheckbox textSearchBox= find("textSearch", UICheckbox.class);
-    	if (textSearchBox != null) {
-    		textSearchBox.setChecked(false);
-    	}
-    	/*
+
+		// Class/Text search buttons.
+
+		UICheckbox classSearchBox = find("classSearch", UICheckbox.class);
+		if (classSearchBox != null) {
+			classSearchBox.setChecked(true);
+		}
+
+		UICheckbox textSearchBox = find("textSearch", UICheckbox.class);
+		if (textSearchBox != null) {
+			textSearchBox.setChecked(false);
+		}
+
 		WidgetUtil.tryBindCheckbox(this, "classSearch", new Binding<Boolean>() {
 
-			@Override
-			public void set(Boolean value) {
-				setSearchFlag(new Boolean (true));
-				console.getCommand(new Name("search"));
-				textSearch.setChecked(false);
-				classSearch.setChecked(true);				
-			}
+			private Boolean isChecked = new Boolean(false);
 
 			@Override
 			public Boolean get() {
-				return getSearchFlag();
+				return isChecked;
+			}
+
+			@Override
+			public void set(Boolean value) {
+				isChecked = value;
+
+				if (classSearchBox.isFocused()) {
+					if (value) {
+						textSearchBox.setChecked(false);
+					} else {
+						textSearchBox.setChecked(true);
+					}
+					console.getCommand(new Name("searchText"));
+				}
 			}
 		});
-		*/
+
 		WidgetUtil.tryBindCheckbox(this, "textSearch", new Binding<Boolean>() {
 
+			private Boolean isChecked = new Boolean(false);
+
 			@Override
 			public void set(Boolean value) {
-				setSearchFlag(new Boolean(!value));
-				textSearchBox.setChecked(!value);
-				classSearchBox.setChecked(value);
-				console.getCommand(new Name("textSearch"));
+				isChecked = value;
+
+				if (textSearchBox.isFocused()) {
+					if (value) {
+						classSearchBox.setChecked(false);
+					} else {
+						classSearchBox.setChecked(true);
+					}
+					console.getCommand(new Name("searchText"));
+				}
 			}
 
 			@Override
 			public Boolean get() {
-				return getSearchFlag();
-
+				return isChecked;
 			}
 		});
-
-	}
-
-	private void setSearchFlag(Boolean val) {
-		searchFlag = val;
-	}
-
-	private Boolean getSearchFlag() {
-		return searchFlag;
 	}
 }
