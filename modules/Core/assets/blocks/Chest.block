@@ -17,8 +17,8 @@
 /**
  * A chest is interesting for two reasons: It is asymmetrical (front texture differs) and should store stuff
  */
-{
-    "basedOn" : "core:wood",
+{   
+   
     "attachmentAllowed" : false,
     "rotation" : "horizontal",
     // Graphics
@@ -30,6 +30,7 @@
     "entity" : {
         "prefab" : "chest"
     },
+
     "inventory" : {
         "stackable" : false,
         "directPickup" : true
