@@ -113,30 +113,39 @@ public class GitMenuScreen extends CoreScreenLayer{
 	        	});
 	        }
 	        
-	        final UIText projectURL = find("projectURL", UIText.class);
+	        final UIText projectOwner = find("projectOwner", UIText.class);
 	        final UIText projectName = find("projectName", UIText.class);
 	        final UIText projectBranch = find("branch", UIText.class);
 	        
 	        // displays info to the user: warnings, errors, ...
 	        final UILabel infoField = find("infoField", UILabel.class);
 	        
-	        WidgetUtil.trySubscribe(this, "bugs", new ActivateEventListener() {
+	        WidgetUtil.trySubscribe(this, "log", new ActivateEventListener() {
 	            @Override
 	            public void onActivated(UIWidget widget) {
-	            	FaceToPaint face = faceToPaint.getSelection();
-	            	ColorScale color = colorScale.getSelection();
+	            	String owner = projectOwner.getText();
+	            	String name = projectName.getText();
 	            	String year = dateYear.getText();
 	            	String month = dateMonth.getText();
 	            	String day = dateDay.getText();
-	            	String url = projectURL.getText();
-	            	String name = projectName.getText();
 	            	String branch = projectBranch.getText();
 	            	if (checkDateFormat(day, month, year, infoField)) {
 	            		day = addZeroToNumber(day);
 	            		month = addZeroToNumber(month);
 	            		String date = year + "/" + month + "/" + day;
-		            	executeCommand("bugs", face, color, url, name, branch, date);
+		            	executeLogCommand(owner, name, date, branch);
 	            	}
+	            }
+	        });
+	        
+	        WidgetUtil.trySubscribe(this, "bugs", new ActivateEventListener() {
+	            @Override
+	            public void onActivated(UIWidget widget) {
+	            	FaceToPaint face = faceToPaint.getSelection();
+	            	ColorScale color = colorScale.getSelection();
+	            	String owner = projectOwner.getText();
+	            	String name = projectName.getText();
+	            	executePaintCommand("versions", face, color, owner, name);
 	            }
 	        });
 	        WidgetUtil.trySubscribe(this, "versions", new ActivateEventListener() {
@@ -144,18 +153,19 @@ public class GitMenuScreen extends CoreScreenLayer{
 	            public void onActivated(UIWidget widget) {
 	            	FaceToPaint face = faceToPaint.getSelection();
 	            	ColorScale color = colorScale.getSelection();
-	            	String year = dateYear.getText();
-	            	String month = dateMonth.getText();
-	            	String day = dateDay.getText();
-	            	String url = projectURL.getText();
+	            	String owner = projectOwner.getText();
 	            	String name = projectName.getText();
-	            	String branch = projectBranch.getText();
-	            	if (checkDateFormat(day, month, year, infoField)) {
-	            		day = addZeroToNumber(day);
-	            		month = addZeroToNumber(month);
-	            		String date = year + "/" + month + "/" + day;
-		            	executeCommand("versions", face, color, url, name, branch, date);
-	            	}
+	            	executePaintCommand("versions", face, color, owner, name);
+	            }
+	        });
+	        WidgetUtil.trySubscribe(this,  "difference", new ActivateEventListener() {
+	            @Override
+	            public void onActivated(UIWidget widget) {
+	            	FaceToPaint face = faceToPaint.getSelection();
+	            	ColorScale color = colorScale.getSelection();
+	            	String owner = projectOwner.getText();
+	            	String name = projectName.getText();
+	            	executePaintCommand("versions", face, color, owner, name);
 	            }
 	        });
 	       
@@ -267,8 +277,31 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	return number;
 	    }
 	    
-	    private void executeCommand(String metric, FaceToPaint face, ColorScale color,
-	    		String url, String name, String branch, String date) {
+	    private void executeLogCommand(String owner, String name, String date, String branch) {
+	    	final UILabel infoField = find("infoField", UILabel.class);
+	    	infoField.setText("");
+	    	
+	    	ConsoleCommand ca = console.getCommand(new Name("githubCommitsTest"));
+	    	
+	    	ArrayList<String> params = new ArrayList<String>();
+	    	if(name.equals("")) {
+	    		name = "WorldCodecity";
+	    	}
+	    	params.add(owner);
+	    	params.add(name);
+	    	params.add(date);
+	    	params.add(branch);
+	    	
+	    	EntityRef e = null;
+	    	try {
+	    		ca.execute(params, e);
+	    	} catch(CommandExecutionException e1) {
+	    		
+	    	}
+	    }
+	    
+	    private void executePaintCommand(String metric, FaceToPaint face, ColorScale color,
+	    		String owner, String name) {
 	    	
 	    	// manage invalid face selections
 	    	final UILabel infoField = find("infoField", UILabel.class);
@@ -285,14 +318,14 @@ public class GitMenuScreen extends CoreScreenLayer{
 	    	if (name.equals("")) {
 	    		name = "WorldCodecity";
 	    	}
-	    	//String url = "";
+	    	String url = "https://github.com/" + owner + "/" + name;
 	    	String metricString = metric;
 			params.add(metricString);
 	    	params.add(url);
 	    	params.add(name);
 	    	params.add(face.toString());
 	    	params.add(color.toString());
-	    	//params.add(branch)
+	    	//params.add(branch);
 	    	//params.add(date);
 	    	//TODO add parameters "branch" and "date" according to new command's
 	    	EntityRef e = null;
