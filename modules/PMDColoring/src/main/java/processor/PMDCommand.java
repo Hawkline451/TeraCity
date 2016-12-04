@@ -29,8 +29,19 @@ public class PMDCommand extends BaseComponentSystem{
 	@In
     private LocalPlayer localPlayer;
 	
-	
-	@Command(shortDescription = "PMD coloring.",
+	@Command(shortDescription = "Shows which lines of the specified file have conflicts with the selected metric. Available metrics:\n"
+			+ "codesize\n"
+			+ "commentcontent\n"
+			+ "commentrequired\n"
+			+ "comments\n"
+			+ "commentsize\n"
+			+ "coupling\n"
+			+ "couplingbetweenobjects\n"
+			+ "cyclomaticcomplexity\n"
+			+ "excessiveimports\n"
+			+ "lawofdemeter\n"
+			+ "npathcomplexity\n"
+			+ "toomanymethods",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String pmdColoring(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules,@CommandParam(value="outPutType",required=false) String outPutType) throws IOException
     {
@@ -122,11 +133,11 @@ class ThreadPMDExecution implements Runnable
 				 console.addMessage(line);
 				 ++messageLines;
 			 }
-			 console.addMessage("Lineas del mensage: "+ messageLines);
+			 console.addMessage("Lineas conflictivas: "+ messageLines);
 			 
 			 int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
 			
-			 console.addMessage("Lineas totales: "+ totalLines);
+			 console.addMessage("Lineas totales del archivo: "+ totalLines);
 			 /* 
 			 if(rules.equals("comments"))
 			 {
