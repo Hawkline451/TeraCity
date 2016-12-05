@@ -70,6 +70,7 @@ public class CodeMapHash implements CodeMap {
         int yMax = y0 + buildingSize;
         updateSize(xMax, yMax);
 
+        //Position of the code in the map
         codePosition.put(content, new Vector2i(x0, y0));
         
         //We are going to create only the "shell" of each building
@@ -110,7 +111,8 @@ public class CodeMapHash implements CodeMap {
                 		(i==0 && j==buildingSize-1) ||  
                 		(i==0 && j==0) ||
                 		(i==buildingSize-1 && j==buildingSize-1) || 
-                		(i==buildingSize-1 && j==0) ){
+                		(i==buildingSize-1 && j==0) ||
+                		(content instanceof DrawableCodePackage) ){
                 	map.setCodeColumn(-1);
                 }
                 
@@ -121,38 +123,38 @@ public class CodeMapHash implements CodeMap {
         
         // Now we build the transparent layer in each face of the 
         
-        
-        for (int i = 1; i < buildingSize - 1; i++) {
-        	//South face
-        	int x = x0 + i;
-            int y = y0 - 1 ;     	
-        	MapObject map = new MapObject(content, x, y, false,false); //isIndex
-        	map.setIndexBlock(true);
-        	contentMap.put(x + "," + y, map);
-            positionCache.add(new Vector2i(x,y));
-            //North Face
-        	x = x0 + i;
-            y = y0 + buildingSize;     	
-        	map = new MapObject(content, x, y, false,false); //isIndex
-        	map.setIndexBlock(true);
-        	contentMap.put(x + "," + y, map);
-            positionCache.add(new Vector2i(x,y));
-            //East Face
-            x = x0 - 1;
-            y = y0 + i;     	
-        	map = new MapObject(content, x, y, false,false); //isIndex
-        	map.setIndexBlock(true);
-        	contentMap.put(x + "," + y, map);
-            positionCache.add(new Vector2i(x,y));
-            //West Face
-            x = x0 + buildingSize;
-            y = y0 + i;     	
-        	map = new MapObject(content, x, y, false,false); //isIndex
-        	map.setIndexBlock(true);
-        	contentMap.put(x + "," + y, map);
-            positionCache.add(new Vector2i(x,y));
-            
-            
+        if (content instanceof DrawableCodeClass){
+	        for (int i = 1; i < buildingSize - 1; i++) {
+	        	//South face
+	        	int x = x0 + i;
+	            int y = y0 - 1 ;     	
+	        	MapObject map = new MapObject(content, x, y, false,false); //isIndex
+	        	map.setIndexBlock(true);
+	        	contentMap.put(x + "," + y, map);
+	            positionCache.add(new Vector2i(x,y));
+	            //North Face
+	        	x = x0 + i;
+	            y = y0 + buildingSize;     	
+	        	map = new MapObject(content, x, y, false,false); //isIndex
+	        	map.setIndexBlock(true);
+	        	contentMap.put(x + "," + y, map);
+	            positionCache.add(new Vector2i(x,y));
+	            //East Face
+	            x = x0 - 1;
+	            y = y0 + i;     	
+	        	map = new MapObject(content, x, y, false,false); //isIndex
+	        	map.setIndexBlock(true);
+	        	contentMap.put(x + "," + y, map);
+	            positionCache.add(new Vector2i(x,y));
+	            //West Face
+	            x = x0 + buildingSize;
+	            y = y0 + i;     	
+	        	map = new MapObject(content, x, y, false,false); //isIndex
+	        	map.setIndexBlock(true);
+	        	contentMap.put(x + "," + y, map);
+	            positionCache.add(new Vector2i(x,y));
+	                      
+	        }
         }
         
         
