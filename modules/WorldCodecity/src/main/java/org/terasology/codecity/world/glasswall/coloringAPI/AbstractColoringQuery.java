@@ -1,5 +1,9 @@
 package org.terasology.codecity.world.glasswall.coloringAPI;
 
-public abstract class AbstractColoringQuery implements ColoringQueryInterface {
+import org.terasology.world.block.Block;
 
+public abstract class AbstractColoringQuery implements ColoringQueryInterface {
+  Block trueblock;
+  Block falseblock;
+  String search;
 }
