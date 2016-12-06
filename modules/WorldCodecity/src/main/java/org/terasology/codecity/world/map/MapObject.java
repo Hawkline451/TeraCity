@@ -14,6 +14,8 @@ public class MapObject implements IMapObject {
     private boolean isOrigin;
     boolean isInner;
     
+    private boolean isIndexBlock;
+    
     private int codeColumn; //What part of the code texture row is ? -1 means border
     private int maxYCord; //This variable make possible to calculate the row given a Z coordinate
 
@@ -34,6 +36,7 @@ public class MapObject implements IMapObject {
         this.z = z;
         this.isOrigin = isOrigin;
         this.isInner = false;
+        this.setIndexBlock(false);
     }
     
     /**
@@ -218,6 +221,14 @@ public class MapObject implements IMapObject {
 			if (object.containsClass(imp)) return true;
 		}
 		return false;
+	}
+
+	public boolean isIndexBlock() {
+		return isIndexBlock;
+	}
+
+	public void setIndexBlock(boolean isIndexBlock) {
+		this.isIndexBlock = isIndexBlock;
 	}
 
 
