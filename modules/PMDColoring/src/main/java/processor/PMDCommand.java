@@ -30,22 +30,40 @@ public class PMDCommand extends BaseComponentSystem{
     private LocalPlayer localPlayer;
 	
 	@Command(shortDescription = "Shows which lines of the specified file have conflicts with the selected metric. Available metrics:\n"
+			+ "android\n"
+			+ "basic\n"
+			+ "braces\n"
+			+ "clone\n"
 			+ "codesize\n"
-			+ "commentcontent\n"
-			+ "commentrequired\n"
 			+ "comments\n"
-			+ "commentsize\n"
+			+ "controversial\n"
 			+ "coupling\n"
-			+ "couplingbetweenobjects\n"
-			+ "cyclomaticcomplexity\n"
-			+ "excessiveimports\n"
-			+ "lawofdemeter\n"
-			+ "npathcomplexity\n"
-			+ "toomanymethods",
+			+ "design\n"
+			+ "empty\n"
+			+ "finalizers\n"
+			+ "imports\n"
+			+ "j2ee\n"
+			+ "javabeans\n"
+			+ "junit\n"
+			+ "logging-jakarta-commons\n"
+			+ "logging-java\n"
+			+ "migrating\n"
+			+ "migrating_to_13\n"
+			+ "migrating_to_14\n"
+			+ "migrating_to_15\n"
+			+ "migrating_to_junit4\n"
+			+ "naming\n"
+			+ "optimizations\n"
+			+ "strictexception\n"
+			+ "strings\n"
+			+ "sunsecure\n"
+			+ "typeresolution\n"
+			+ "unnecessary\n"
+			+ "unusedcode",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String pmdColoring(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules,@CommandParam(value="outPutType",required=false) String outPutType) throws IOException
     {
-    	if (rules == null) rules = "codesize";
+    	if (rules == null) rules = "basic";
     	if (outPutType == null) outPutType = "text";
     	Thread t = new Thread(new ThreadPMDExecution(sourcePath, outPutType, rules,console));
 		t.start();
