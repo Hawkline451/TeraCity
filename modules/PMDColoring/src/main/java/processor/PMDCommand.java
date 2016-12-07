@@ -1,12 +1,16 @@
 package processor;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -29,7 +33,8 @@ public class PMDCommand extends BaseComponentSystem{
 	@In
     private LocalPlayer localPlayer;
 	
-	@Command(shortDescription = "Shows which lines of the specified file have conflicts with the selected metric. Available metrics:\n"
+	@Command(shortDescription = "Shows which lines of the specified file have conflicts with the selected rule. "
+			+ "If no rule is specified, 'basic' is used by default. Available rules:\n"
 			+ "android\n"
 			+ "basic\n"
 			+ "braces\n"
@@ -61,28 +66,41 @@ public class PMDCommand extends BaseComponentSystem{
 			+ "unnecessary\n"
 			+ "unusedcode",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String pmdColoring(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules,@CommandParam(value="outPutType",required=false) String outPutType) throws IOException
+    public String pmdColoring(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules) throws IOException
     {
     	if (rules == null) rules = "basic";
-    	if (outPutType == null) outPutType = "text";
+    	String outPutType = "text";
     	Thread t = new Thread(new ThreadPMDExecution(sourcePath, outPutType, rules,console));
 		t.start();
-		return "Esperando por resultados del analisis con regla " + rules + " y output tipo " + outPutType + "...";
+		return "Analysing files with rule: " + rules + "...";
     }
 }
 
-class ThreadPMDExecution implements Runnable
-{
+class ThreadPMDExecution implements Runnable {
 	private String sourcePath;
 	private String outPutType;
 	private String rules;
 	private Console console;
+	private String beforePath;
+	private String separator;
+	
 
+	
 	public ThreadPMDExecution(String sourcePath, String outPutType, String rules, Console console) {
 		this.sourcePath = sourcePath;
 		this.outPutType = outPutType;
 		this.rules = rules;
 		this.console = console;
+
+		String OS = System.getProperty("os.name");
+		if (OS.startsWith("Linux")) {
+			this.beforePath = ":";
+			this.separator = "/";
+		}
+		else if (OS.startsWith("Windows")) {
+			this.beforePath = "";
+			this.separator = "\\";
+		}
 	}
 	
 	private static String currentColor;
@@ -92,20 +110,7 @@ class ThreadPMDExecution implements Runnable
 
 	private String buildInputString() {
 		
-		String OS = System.getProperty("os.name");
-		String beforePath = null;
-		String separator = null;
-		if (OS.startsWith("Linux"))
-		{
-			beforePath = ":";
-			separator = "/";
-		}
-		else if (OS.startsWith("Windows"))
-		{
-			beforePath = "";
-			separator = "\\";
-		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("java -cp ");
 		sb.append(beforePath);
@@ -129,12 +134,36 @@ class ThreadPMDExecution implements Runnable
 		sb.append(rules);
 		sb.append(".xml");
 		return sb.toString();
-}
+	}
 
+	private  void saveTSV(Hashtable<String, String> table, String name) throws IOException {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(".");
+		sb.append(separator);
+		sb.append("modules");
+		sb.append(separator);
+		sb.append("PMDColoring");
+		sb.append(separator);
+		sb.append("results");
+		sb.append(separator);
+		sb.append(name);
+		sb.append(".tsv");
+		
+		File file = new File(sb.toString());
+		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+		
+		for (String key:table.keySet()) {
+			bw.write(key);
+			bw.write("\t");
+			bw.write(table.get(key));
+			bw.write("\n");
+		}
+		bw.close();
+	}
 	
 	@Override
-	public void run() 
-	{
+	public void run() {
 		
 		String inputString = buildInputString();
 		try {
@@ -146,39 +175,39 @@ class ThreadPMDExecution implements Runnable
 				
 			 String line;
 			 int messageLines = 0;
-			 while ((line = br.readLine()) != null) 
-			 {
-				 console.addMessage(line);
+			 
+			 Hashtable<String, String> table = new Hashtable<String, String>();
+			 
+			 while ((line = br.readLine()) != null) {
+				 line = line.substring(line.lastIndexOf(separator) + 1);
+				 String[] occurrence = line.split(":");
+				 
+				 if (table.containsKey(occurrence[0])) {
+					 String value = table.get(occurrence[0]);
+					 value = value + "\t" + occurrence[1];
+					 table.put(occurrence[0],value);
+				 }
+				 else {
+					 table.put(occurrence[0], occurrence[1]);
+				 }
+				 
 				 ++messageLines;
 			 }
-			 console.addMessage("Lineas conflictivas: "+ messageLines);
+			 
+			 
+			 console.addMessage("Conflictive lines: "+ messageLines);
 			 
 			 int totalLines = new LineCounter(LineCounter.JAVA_REGEX).countLines(sourcePath);
 			
-			 console.addMessage("Lineas totales del archivo: "+ totalLines);
-			 /* 
-			 if(rules.equals("comments"))
-			 {
-				 String color = new CommentsMetric(messageLines, totalLines).getColor();
-				 currentColor = color;
-				 console.addMessage(color);
-			 }
-			 else if(rules.equals("codesize"))
-			 {
-				 String color = new CodeSizesMetric(messageLines, totalLines).getColor();
-				 currentColor = color;
-				 console.addMessage(color);
-			 }
-			 */
-			 console.addMessage("Fin del Analisis");
+			 console.addMessage("Total lines scanned: "+ totalLines);
+			 console.addMessage("Analysis complete");
+			 saveTSV(table, rules);
 			 
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
 } 
 
 class LineCounter{
