@@ -87,16 +87,14 @@ public class ExtensionCommands extends BaseComponentSystem{
         System.out.println("File has been written");	   
 }
 	@Command(shortDescription = "Launch the findBug analysis\n"
-			+ "<sourcePath>: Path of the package/class concerned\n",
+			+ "<sourcePath>: Path of the package/class concerned since teraCity project's folder\n",
 			requiredPermission = PermissionManager.NO_PERMISSION)
 				
 	public void findBugsAnalysis(
 			@CommandParam(value= "sourcePath", required=true) String sourcepath
 			) throws IOException {
 		FindBugsProcessor findBugs = getProcessor(sourcepath);
-		// TODO: Write all the treatment
-		warningCounterMap = findBugs.getCounterMap();
-		System.out.println("Analysis ending: " + warningCounterMap + " errors" );
+		console.addMessage(String.valueOf(findBugs.getLineBugs()) + " bugs");
 	}
 	
 	private FindBugsProcessor getProcessor(String path) {

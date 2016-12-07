@@ -1,4 +1,17 @@
 package org.terasology.engine.findBugs;
+import edu.umd.cs.findbugs.BugInstance;
+import edu.umd.cs.findbugs.BugReporter;
+import edu.umd.cs.findbugs.Detector;
+import edu.umd.cs.findbugs.DetectorFactoryCollection;
+import edu.umd.cs.findbugs.FindBugs2;
+import edu.umd.cs.findbugs.FindBugsCommandLine;
+import edu.umd.cs.findbugs.IFindBugsEngine;
+import edu.umd.cs.findbugs.Plugin;
+import edu.umd.cs.findbugs.PluginException;
+import edu.umd.cs.findbugs.PrintingBugReporter;
+import edu.umd.cs.findbugs.Project;
+import edu.umd.cs.findbugs.SortedBugCollection;
+import edu.umd.cs.findbugs.config.UserPreferences;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,80 +22,56 @@ import java.util.Map;
 
 public class FindBugsProcessor {
 
+	
 	private String rootPath;
-	private Map<String, Integer> counters;
-
+	private int lineBugs;
+	FindBugs2 findBugs;
+	
+	
 	public FindBugsProcessor(String rootPath) {
+		findBugs = new FindBugs2();
 		this.rootPath = rootPath;
 		process();
 	}
 	
-	public Map<String, Integer> getCounterMap() {
-		return counters;
+	public int getLineBugs() {
+		return lineBugs;
 	}
 	
-	private String buildInputString() {
-		
-		String beforePath = File.pathSeparator;
-		String separator = File.separator;
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("java -cp ");
-		sb.append(beforePath);
-		
-		StringBuilder fbRoute = new StringBuilder();
-		fbRoute.append('.');
-		fbRoute.append(separator);
-		fbRoute.append("modules");
-		fbRoute.append(separator);
-		fbRoute.append("FindBugsColoring");
-		fbRoute.append(separator);
-		fbRoute.append("libs");
-		fbRoute.append(separator);
-		fbRoute.append("findBugs");
-
-		sb.append(" -jar");
-		sb.append(" findbugs-plugin.jar ");
-		sb.append(" -onlyAnalyze ");
-		sb.append(this.rootPath);
-
-		return sb.toString();
-	}
-
 	private void process(){
-		counters = new HashMap<String, Integer>();
-		String inputString = buildInputString();
-		invokefindBugs(inputString);
-	}
-	
-	public void invokefindBugs(String inputString) {
-		Process process;
-		try {
-			process = Runtime.getRuntime().exec(inputString);
-			
-			InputStream is = process.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			String line;
-			while ((line = br.readLine()) != null) 
-			{
-				if (line.indexOf(':') != -1) {	
-					try{
-						// get filename only
-						String pathClass = line.substring(0, line.lastIndexOf(".java")+5);
-						File fi = new File(pathClass);
-						pathClass = fi.getName();
-						
-						if (!counters.containsKey(pathClass)) {
-							counters.put(pathClass, 0);
-						}
-						counters.put(pathClass, counters.get(pathClass)+1);
-						
-					} catch(IndexOutOfBoundsException e){}
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	        try {
+	            Project project = new Project();
+	            System.out.println("Analyzing " + rootPath);
+	            project.addFile(rootPath);
+	            System.setProperty("findbugs.jaws", "true");
+	            DetectorFactoryCollection.instance();
+
+	            findBugs.setProject(project);
+	            final BugReporter reporter = new PrintingBugReporter() {
+	                @Override
+	                protected void doReportBug(final BugInstance bug) {
+	                        super.doReportBug(bug);
+	                }
+	            }; 
+
+	            IFindBugsEngine findBugs = new FindBugs2();
+	            findBugs.setBugReporter(reporter);
+	            findBugs.setProject(project);
+	            findBugs.setDetectorFactoryCollection(DetectorFactoryCollection.instance());
+	            findBugs.setUserPreferences(UserPreferences.createDefaultUserPreferences());
+	            
+	            reporter.setPriorityThreshold(Detector.NORMAL_PRIORITY);
+
+
+	            
+	            System.out.print("Executing FindBugs");
+	            findBugs.execute();
+	            System.out.println("End of execution FindBugs");
+	            this.lineBugs =  findBugs.getBugCount();
+	            
+	        } catch (Exception e) {
+	            System.err.println("FindBugs processing error");
+	            e.printStackTrace();
+	        }
 	}
 }
