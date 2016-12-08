@@ -20,11 +20,6 @@
                     	"type" : "UIText", 
                     	"id"   : "searchTextBox"
                     },
-                    {               
-                        "type" : "UIButton",
-                        "id" : "searchButton",
-                        "text" : "Search!"
-                    },
                     {
                         "type" : "UISpace",
                         "size" : [1, 8]
@@ -35,7 +30,7 @@
 		                "horizontalSpacing": 8,
 		                "family" : "option-grid",
 		                "id"     : "searchType",
-		                "columns": 1,
+		                "columns": 2,
 		                "layoutInfo" : {
 		                    "use-content-width" : true,
 		                    "use-content-height" : true,
@@ -54,23 +49,21 @@
 		                },
 		                "contents" : [
 		                    {
-		                        "type": "UILabel",
-		                        "text": "Class Search:"
+		                    	"type" : "UIButton",
+		                    	"id" : "classSearch",
+		                    	"text" : "Class Search"
 		                    },
 		                    {
-		                        "type": "UICheckbox",
-		                        "id": "classSearch"
-		                    },
-		                    {
-		                        "type": "UILabel",
-		                        "text": "Text Search: "
-		                    },
-		                    {
-		                        "type": "UICheckbox",
-		                        "id": "textSearch"
+		                    	"type" : "UIButton",
+		                    	"id" : "textSearch",
+		                    	"text" : "Text Search"
 		                    }
 		                ]
 		            },
+                    {
+                        "type" : "UISpace",
+                        "size" : [1, 8]
+                    },
                     {
                         "type" : "UIButton",
                         "id" : "close",
@@ -79,6 +72,7 @@
                                         
                 ],
                 "layoutInfo" : {
+					"width" : 400,
                     "use-content-width" : true,
                     "use-content-height" : true,
                     "position-horizontal-center" : {},

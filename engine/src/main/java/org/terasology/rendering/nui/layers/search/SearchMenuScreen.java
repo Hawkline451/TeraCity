@@ -34,8 +34,9 @@ public class SearchMenuScreen extends CoreScreenLayer {
 	@Override
 	public void initialise() {
 
-		final UIText searchText = find("searchTextBox", UIText.class);
-		ConsoleCommand cmd = console.getCommand(new Name("search"));
+		final UIText searchText = find("searchTextBox", UIText.class);		
+		ConsoleCommand textSearchCommand = console.getCommand(new Name("searchText"));
+		ConsoleCommand classSearchCommand = console.getCommand(new Name("search"));
 
 		WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
 			@Override
@@ -45,7 +46,7 @@ public class SearchMenuScreen extends CoreScreenLayer {
 				getManager().pushScreen("pauseMenu");
 			}
 		});
-		WidgetUtil.trySubscribe(this, "searchButton", new ActivateEventListener() {
+		WidgetUtil.trySubscribe(this, "textSearch", new ActivateEventListener() {
 			@Override
 			public void onActivated(UIWidget widget) {
 				EntityRef e = null;
@@ -54,7 +55,7 @@ public class SearchMenuScreen extends CoreScreenLayer {
 				parameters.add(searchText.getText());
 				try {
 					if (!parameters.get(0).equals("")) {
-						cmd.execute(parameters, e);
+						textSearchCommand.execute(parameters, e);
 						getManager().popScreen();
 					}
 				} catch (CommandExecutionException e1) {
@@ -63,63 +64,28 @@ public class SearchMenuScreen extends CoreScreenLayer {
 			}
 		});
 
-		// Class/Text search buttons.
-
-		UICheckbox classSearchBox = find("classSearch", UICheckbox.class);
-		if (classSearchBox != null) {
-			classSearchBox.setChecked(true);
-		}
-
-		UICheckbox textSearchBox = find("textSearch", UICheckbox.class);
-		if (textSearchBox != null) {
-			textSearchBox.setChecked(false);
-		}
-
-		WidgetUtil.tryBindCheckbox(this, "classSearch", new Binding<Boolean>() {
-
-			private Boolean isChecked = new Boolean(false);
-
+		WidgetUtil.trySubscribe(this, "classSearch", new ActivateEventListener() {
 			@Override
-			public Boolean get() {
-				return isChecked;
-			}
-
-			@Override
-			public void set(Boolean value) {
-				isChecked = value;
-
-				if (classSearchBox.isFocused()) {
-					if (value) {
-						textSearchBox.setChecked(false);
-					} else {
-						textSearchBox.setChecked(true);
-					}
-					console.getCommand(new Name("searchText"));
+			public void onActivated(UIWidget widget) {
+				EntityRef e = null;
+				ArrayList<String> parameters = new ArrayList<String>();
+				String className = searchText.getText();
+				int lastIndex = className.length();
+				String classNameEnd = className.substring(lastIndex - 5, lastIndex);
+				System.out.println(classNameEnd);
+				System.out.println(classNameEnd.equals(".java"));
+				if (!classNameEnd.equals(".java")) {
+					className += ".java";
 				}
-			}
-		});
-
-		WidgetUtil.tryBindCheckbox(this, "textSearch", new Binding<Boolean>() {
-
-			private Boolean isChecked = new Boolean(false);
-
-			@Override
-			public void set(Boolean value) {
-				isChecked = value;
-
-				if (textSearchBox.isFocused()) {
-					if (value) {
-						classSearchBox.setChecked(false);
-					} else {
-						classSearchBox.setChecked(true);
+				parameters.add(className);
+				try {
+					if (!parameters.get(0).equals("")) {
+						classSearchCommand.execute(parameters, e);
+						getManager().popScreen();
 					}
-					console.getCommand(new Name("searchText"));
+				} catch (CommandExecutionException e1) {
 				}
-			}
 
-			@Override
-			public Boolean get() {
-				return isChecked;
 			}
 		});
 	}
