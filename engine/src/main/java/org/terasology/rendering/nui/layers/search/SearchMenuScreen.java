@@ -56,6 +56,7 @@ public class SearchMenuScreen extends CoreScreenLayer {
 				try {
 					if (!parameters.get(0).equals("")) {
 						textSearchCommand.execute(parameters, e);
+						searchText.setText("");
 						getManager().popScreen();
 					}
 				} catch (CommandExecutionException e1) {
@@ -81,6 +82,7 @@ public class SearchMenuScreen extends CoreScreenLayer {
 				try {
 					if (!parameters.get(0).equals("")) {
 						classSearchCommand.execute(parameters, e);
+						searchText.setText("");
 						getManager().popScreen();
 					}
 				} catch (CommandExecutionException e1) {

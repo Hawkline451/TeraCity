@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.DrawableCode;
-import org.terasology.codecity.world.map.IndexCodeBlockFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;
