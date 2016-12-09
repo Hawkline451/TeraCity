@@ -30,8 +30,7 @@ import org.terasology.engine.findBugs.FindBugsProcessor;
  */
 @RegisterSystem
 public class ExtensionCommands extends BaseComponentSystem{
-	public static Map<String, Integer> warningCounterMap = new HashMap<String, Integer>();
-
+	
 	public static Hashtable<String, Integer> data;
 	@In
 	private Console console;
@@ -93,8 +92,9 @@ public class ExtensionCommands extends BaseComponentSystem{
 	public void findBugsAnalysis(
 			@CommandParam(value= "sourcePath", required=true) String sourcepath
 			) throws IOException {
+		console.addMessage("Executing findBugs...");
 		FindBugsProcessor findBugs = getProcessor(sourcepath);
-		console.addMessage(String.valueOf(findBugs.getLineBugs()) + " bugs");
+		console.addMessage("Keeping the result in  findBugsAnalysis.tsv file");
 	}
 	
 	private FindBugsProcessor getProcessor(String path) {
