@@ -17,18 +17,18 @@ public class CoberturaCommand extends BaseComponentSystem{
 	public static HashMap<String, DataNode> classData;
 	private Thread thread;
 	
-    @Command(shortDescription = "Analisis usando Cobertura",
-            helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
-            		+ "sobre los archivos especificados\n"
-                    + "type: Formato de input a utilizar: \n"
-                    + " - \"-t\": Archivos testeados y de tests en dos carpetas separadas\n"
-                    + " - \"-s\": Todos los archivos en una sola carpeta (ayuda a no hacer procesos "
-                    + "en archivos donde no sean necesarios).\n"
-                    + " - \"-r\": Se entrega un path directamente a un reporte de Cobertura a analizar ("
-                    + "al reporte en si mismo no solo a la carpeta que lo contiene).\n"
-                    + "firstArg: Primer argumento. Si se elige el tipo 1, son los archivos a testear.\n"
-                    + "secondArg: Segundo argumento. Si se elige el tipo 2, son los archivos de tests,"
-                    + "no se usa para los otros dos tipos.",
+    @Command(shortDescription = "Analyse using Cobertura",
+            helpText = "Run color of Cobertura, with input in the specified format, "
+            		+ "on specified files\n"
+                    + "type: input's format to use: \n"
+                    + " - \"-t\": test and tested files in two separate folders\n"
+                    + " - \"-s\": All the files in only one folder (Help to do not process "
+                    + "in files where it is not necessary).\n"
+                    + " - \"-r\": A path is delivered directly to a Cobertura report to be analyzed ("
+                    + "to the report itself not only to the folder containing it).\n"
+                    + "firstArg: first argument. If 1 is choosen, it concerns the files to be tested.\n"
+                    + "secondArg: Second argument . If 2 is choosen, it concerns the test files,"
+                    + "not used for the other two types.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String CoberturaAnalysis(
     		@CommandParam(value="type",required=true) String type,
@@ -36,7 +36,7 @@ public class CoberturaCommand extends BaseComponentSystem{
             @CommandParam(value="secondArg",required=false) String secondArg) throws IOException{
         
     	analyze(type, firstArg, secondArg);
-        return "Esperando por resultados del analisis ...";
+        return "Waiting the results of the analysis...";
     }
     public void waitForAnalysis(){
     	try {

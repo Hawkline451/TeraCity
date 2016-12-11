@@ -1,7 +1,7 @@
 package org.terasology.codecity.world.structure.scale;
 
 /**
- * This class represent the scale applyed to the code to show it in a better
+ * This class represent the scale applied to the code to show it in a better
  * way.
  */
 public abstract class CodeScale {

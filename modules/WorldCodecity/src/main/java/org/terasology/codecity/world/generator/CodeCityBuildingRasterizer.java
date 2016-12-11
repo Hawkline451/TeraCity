@@ -26,7 +26,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
     public void initialize() {
         block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
     }
-
+    
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         CodeCityFacet codeCityFacet = chunkRegion
@@ -36,22 +36,34 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
         		
         		MapObject map = codeCityFacet.getBlockType(position.x, position.y, position.z);
         		DrawableCode code = map.getObject();
+        		
+        		
+        		
 
-        		if (map.getColumn() != -1){
+        		if (map.getColumn() != -1 ){
             		int row = map.getMaxY()-position.y;
             		int col = map.getColumn();
             		
+            		// Generate the invisible block related to the block code if it has code
+            		if (map.isIndexBlock()){
+            			block = CoreRegistry.get(BlockManager.class).getBlock("core:Ice");
+            		}
+            		else{
             		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
             		block = ReducedViewBlockFactory.generate(sliceBin);
             		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
+            		}
+
             	    
         		}
         		else{ //Here block for borders which have map.getColumn() == -1
         			block = CoreRegistry.get(BlockManager.class).getBlock("core:stone");
         		}
         		chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z), block);
-				
+        		
         	}
         }
     }
+    
 }
+    
