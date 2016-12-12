@@ -250,13 +250,6 @@ public class CodeMapHash implements CodeMap {
         return true;
     }
     
-    /*private boolean canPlaceInPosition(int x, int y) {
-        for (int i = -1; i <= 1; i++)
-            for (int j = -1; j <= 1; j++)
-                if (isUsed(x + i, y + j))
-                    return false;
-        return true;
-    }*/
 
     /**
      * {@inheritDoc}
