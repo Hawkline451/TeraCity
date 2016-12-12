@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.terasology.codecity.world.map.CodeBuilding;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.metrics.AST;
@@ -20,6 +21,7 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.PlayerSystem;
+import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
@@ -57,6 +59,22 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	
 	private static final String FLY = "flight";
 	
+	
+	@Command(shortDescription = "Display all the buldings",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+    public String displayBuildings() {
+		String message = "There are no buildings";
+		console.addMessage("Displaying Bookmarks");
+		CodeMap codeMap = CoreRegistry.get(CodeMap.class);		
+		Set<CodeBuilding> buildings = codeMap.getBuildings();
+		for(CodeBuilding building : buildings){
+			console.addMessage("Building: "+building.getClassName());
+			message = "";
+		}
+        return message;
+    }
+	
+	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 			"towards it if it exists.",
 			requiredPermission = PermissionManager.NO_PERMISSION)
@@ -64,38 +82,28 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		String message = "Class not found.";
 		console.addMessage("Starting search...");
 		
-		if(bookMarks.containsKey(className)){
-			Vector3i pos = bookMarks.get(className);
-			putHighlightBlockAt(new Vector3i(pos.getX(), pos.getY()+10, pos.getZ()));
-			String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
-			console.execute(command, getLocalClientEntity());
-			console.execute(FLY, getLocalClientEntity());
-			message = "Class found, teleporting!";
-			return message;				
+		
+		
+		CodeMap codeMap = CoreRegistry.get(CodeMap.class);		
+		
+		Set<CodeBuilding> buildings = codeMap.getBuildings();
+		if(buildings.isEmpty()){
+			console.addMessage("Empty Buildings");
 		}
-		
-		
-		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		for(MapObject object : mapObjects){
-			if(object.containsClass(className)){
-				DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
-				object.getObject().accept(visitor);
-				while(true){
-					if(visitor.resultReady()){
-						Vector3i pos = visitor.getPosition();
-						pos.setY(pos.getY()+10); 
-						putHighlightBlockAt(pos);
-						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
-						console.execute(command, getLocalClientEntity());
-						console.execute(FLY, getLocalClientEntity());
-						message = "Class found, teleporting!";
-						break;
-					}
-				}
+			
+		for(CodeBuilding building : buildings){
+			console.addMessage("Searching building:" + building.getClassName());
+			if(building.getClassName().equals(className)){
+				Vector2i posXZ = building.getOrigin();
+				Vector3i pos = new Vector3i(posXZ.getX(), building.getHeight(), posXZ.getY());
+				putHighlightBlockAt(pos);
+				String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
+				console.execute(command, getLocalClientEntity());
+				console.execute(FLY, getLocalClientEntity());
+				message = "Class found, teleporting!";
 				break;
 			}	
-		}		
+		}			
         return message;
     }
 	

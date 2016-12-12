@@ -1,6 +1,7 @@
 package org.terasology.codecity.world.map;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
@@ -56,6 +57,12 @@ public class CodeMapNull implements CodeMap {
 
 	@Override
 	public Set<MapObject> getPosMapObjects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Set<CodeBuilding> getBuildings() {
 		// TODO Auto-generated method stub
 		return null;
 	}
