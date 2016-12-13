@@ -19,7 +19,9 @@ import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+
 
 import org.terasology.teracity.gitApi.*;
 
@@ -83,6 +85,11 @@ public class ExtensionCommands extends BaseComponentSystem{
         bw.close();
         output.close();
         System.out.println("File has been written");	   
+
+	}
+	
+	
+
 }
 	@Command(shortDescription = "Launch the findBug analysis\n"
 			+ "<sourcePath>: Path of the package/class concerned since teraCity project's folder\n",
@@ -99,6 +106,7 @@ public class ExtensionCommands extends BaseComponentSystem{
 	private FindBugsProcessor getProcessor(String path) {
 		return new FindBugsProcessor(path);
 	}
+
 	
 }
 

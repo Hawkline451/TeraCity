@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.DrawableCode;
+import org.terasology.codecity.world.map.DrawableCodeClass;
+
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;
@@ -51,8 +53,25 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
             		else{
             		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);
             		block = ReducedViewBlockFactory.generate(sliceBin);
-            		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
             		}
+            		//HERE GOES THE NEW FACTORY THAT TRANSLATE BLOQUE TO THE CORRENT BLOCK
+            		
+//            		if (map.getObject() instanceof DrawableCodeClass){
+//	            		MapObject.Facing facing = map.getFacing();
+//	            		Block indexBlock = CoreRegistry.get(BlockManager.class).getBlock("core:Ice");
+//	            		if (facing == MapObject.Facing.SOUTH){
+//	            			chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z - 1), indexBlock);
+//	            		}
+//	            		else if (facing == MapObject.Facing.NORTH){
+//	            			chunk.setBlock(ChunkMath.calcBlockPos(position.x, position.y, position.z + 1), indexBlock);
+//	            		}
+//	            		else if (facing == MapObject.Facing.WEST){
+//	            			chunk.setBlock(ChunkMath.calcBlockPos(position.x - 1, position.y, position.z), indexBlock);
+//	            		}
+//	        			else if (facing == MapObject.Facing.EAST){
+//	        				chunk.setBlock(ChunkMath.calcBlockPos(position.x + 1, position.y, position.z), indexBlock);
+//	            		}
+//            		}
 
             	    
         		}

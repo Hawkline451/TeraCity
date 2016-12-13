@@ -20,22 +20,50 @@
                     	"type" : "UIText", 
                     	"id"   : "searchTextBox"
                     },
-                    {               
-                        "type" : "UIButton",
-                        "id" : "searchButton",
-                        "text" : "Search!"
-                    },
                     {
-                        "type" : "UIButton",
-                        "id" : "classSearch",
-                        "text" : "Class Search"
+                        "type" : "UISpace",
+                        "size" : [1, 8]
                     },
+		            {
+		                "type" : "columnLayout",
+		                "verticalSpacing" : 8,
+		                "horizontalSpacing": 8,
+		                "family" : "option-grid",
+		                "id"     : "searchType",
+		                "columns": 2,
+		                "layoutInfo" : {
+		                    "use-content-width" : true,
+		                    "use-content-height" : true,
+		                    "position-horizontal-center" : {
+		                        "target" : "CENTER",
+		                        "widget" : "searchType"
+		                    },
+		                    "position-top" : {
+		                        "target" : "BOTTOM",
+		                        "offset" : 10,
+		                        "widget" : "searchType"
+		                    },
+		                    "position-bottom" : {
+		                        "offset" : 80
+		                    }
+		                },
+		                "contents" : [
+		                    {
+		                    	"type" : "UIButton",
+		                    	"id" : "classSearch",
+		                    	"text" : "Class Search"
+		                    },
+		                    {
+		                    	"type" : "UIButton",
+		                    	"id" : "textSearch",
+		                    	"text" : "Text Search"
+		                    }
+		                ]
+		            },
                     {
-                        "type" : "UIButton",
-                        "id" : "textSearch",
-                        "text" : "Text Search"
+                        "type" : "UISpace",
+                        "size" : [1, 8]
                     },
-                    
                     {
                         "type" : "UIButton",
                         "id" : "close",
@@ -44,6 +72,7 @@
                                         
                 ],
                 "layoutInfo" : {
+					"width" : 400,
                     "use-content-width" : true,
                     "use-content-height" : true,
                     "position-horizontal-center" : {},

@@ -14,6 +14,9 @@ import com.google.common.base.Preconditions;
 public class CodeMapHash implements CodeMap {
     private HashMap<String, MapObject> contentMap;
     private HashMap<DrawableCode, Vector2i> codePosition;
+    private static HashSet<CodeBuilding> buildings = new HashSet<CodeBuilding>();
+    private static int building_size = 0;
+    
     private int size;
     /**
      * The minimum space between buildings, measured in blocks
@@ -93,18 +96,21 @@ public class CodeMapHash implements CodeMap {
                 //X axis column
                 if(i==0){
                 	map.setCodeColumn(j-1);
+                	map.setFacing(MapObject.Facing.WEST);
                 }
                 if(i==buildingSize-1){
                 	map.setCodeColumn((buildingSize-2)-(j));
+                	map.setFacing(MapObject.Facing.EAST);
                 }  
                 //Y axis column
                 if(j==0){
                 	
                 	map.setCodeColumn((buildingSize-2)-(i));
-                	
+                	map.setFacing(MapObject.Facing.SOUTH);
                 }
                 if(j==buildingSize-1){
                 	map.setCodeColumn(i-1);
+                	map.setFacing(MapObject.Facing.NORTH);
                 }
                 
                 if( //Borders or corners (avoid X axis at the same as Y axis)
@@ -121,9 +127,13 @@ public class CodeMapHash implements CodeMap {
             }
         }
         
-        // Now we build the transparent layer in each face of the 
-        
+        // Content represents a building of code
+        // Now we build the transparent layer in each face of the        
         if (content instanceof DrawableCodeClass){
+        	//Create the representation of a building
+        	building_size++;
+        	CodeBuilding building = new CodeBuilding(content, x0, y0);
+        	buildings.add(building);
 	        for (int i = 1; i < buildingSize - 1; i++) {
 	        	//South face
 	        	int x = x0 + i;
@@ -155,7 +165,7 @@ public class CodeMapHash implements CodeMap {
 	            positionCache.add(new Vector2i(x,y));
 	                      
 	        }
-        }
+        } 
         
         
       
@@ -265,6 +275,10 @@ public class CodeMapHash implements CodeMap {
     @Override
     public Vector2i getCodePosition(DrawableCode code) {
         return codePosition.get(code);
+    }
+    
+    public Set<CodeBuilding> getBuildings(){
+    	return this.buildings;
     }
 
 	
