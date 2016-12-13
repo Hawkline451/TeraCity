@@ -1,5 +1,6 @@
 package org.terasology.codecity.world.map;
 
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
@@ -88,5 +89,11 @@ public interface CodeMap {
      * @return Position where the code was added
      */
     public Vector2i getCodePosition(DrawableCode code);
+    
+    
+    /**
+     * @return List of buildings containing code
+     */
+    public Set<CodeBuilding> getBuildings();
     
 }

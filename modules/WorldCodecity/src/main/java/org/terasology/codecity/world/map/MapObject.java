@@ -19,7 +19,14 @@ public class MapObject implements IMapObject {
     private int codeColumn; //What part of the code texture row is ? -1 means border
     private int maxYCord; //This variable make possible to calculate the row given a Z coordinate
 
-
+    
+    public static enum Facing{
+    	NONE, NORTH, SOUTH, WEST, EAST
+    }
+    
+    private Facing facing;
+    
+    
     /**
      * Create a new Object in map
      * 
@@ -37,6 +44,7 @@ public class MapObject implements IMapObject {
         this.isOrigin = isOrigin;
         this.isInner = false;
         this.setIndexBlock(false);
+        this.setFacing(Facing.NONE);
     }
     
     /**
@@ -230,6 +238,15 @@ public class MapObject implements IMapObject {
 	public void setIndexBlock(boolean isIndexBlock) {
 		this.isIndexBlock = isIndexBlock;
 	}
+
+	public Facing getFacing() {
+		return facing;
+	}
+
+	public void setFacing(Facing facing) {
+		this.facing = facing;
+	}
+	
 
 
 }
