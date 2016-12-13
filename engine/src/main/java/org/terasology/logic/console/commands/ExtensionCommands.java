@@ -58,7 +58,6 @@ public class ExtensionCommands extends BaseComponentSystem{
 		JsonOperation opCommits = new JsonOperation(path);
 		ArrayList<String> shaList = opCommits.getCommit(date, branch); 
     	System.out.println(shaList.toString());
-    	//por el momento solo entrega el 1er commit
     	for (String sha:shaList){
     		opCommits.getFiles(sha);
     	}    	
