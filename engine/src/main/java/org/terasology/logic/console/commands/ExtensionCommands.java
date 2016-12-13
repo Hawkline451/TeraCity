@@ -89,8 +89,6 @@ public class ExtensionCommands extends BaseComponentSystem{
 	}
 	
 	
-
-}
 	@Command(shortDescription = "Launch the findBug analysis\n"
 			+ "<sourcePath>: Path of the package/class concerned since teraCity project's folder\n",
 			requiredPermission = PermissionManager.NO_PERMISSION)
