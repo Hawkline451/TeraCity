@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.terasology.codecity.world.map.CodeBuilding;
 import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.metrics.AST;
@@ -56,10 +55,6 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
-	private HashMap<Vector3i, Block> modifiedBlocks = new HashMap<Vector3i, Block>();
-	
-	
-	
 	private static final String FLY = "flight";
 	
 	
@@ -70,22 +65,8 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		  String message = "Class not found.";
 		  console.addMessage("Starting search...");
 		  
-//		  if(bookMarks.containsKey(className)){
-//		    Vector3i pos = bookMarks.get(className);
-//		    putHighlightBlockAt(new Vector3i(pos.getX(), pos.getY()+10, pos.getZ()));
-////		    highlightRoof(pos, widths.get(i), "red");
-//		    
-//		    String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
-//		    console.execute(command, getLocalClientEntity());
-//		    console.execute(FLY, getLocalClientEntity());
-//		    message = "Class found, teleporting!";
-//		    return message;				
-//		  }
-		  
-		  
 		  CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		  Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		  
 		  for(MapObject object : mapObjects){
 		    if(object.containsClass(className)){
 		    DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
@@ -96,43 +77,9 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		          Vector3i pos = visitor.getPosition();
 		          int width = visitor.getWidth();
 		          
-		          CodeBuildingPositions b = new CodeBuildingPositions(pos, width, object);
-		          restoreModifiedBlocks();
-		          color2DArray(b.getRoofPos(), "red");
-		          color2DArray(b.getNorthFacePos(), "red");
-		          color2DArray(b.getSouthFacePos(), "blue");
-		          color2DArray(b.getEastFacePos(), "green");
-		          color2DArray(b.getWestFacePos(), "yellow");
-		          
-		          colorLine(0, b.getSouthFacePos(), "red");
-		          colorLine(2, b.getSouthFacePos(), "red");
-		          
-		          colorLines(4, 8, b.getSouthFacePos(), "red");
-		          
-		          Vector3i[][] north_face = b.getNorthFacePos();
-		          int count = 1;
-		          
-		          for(int j = 0; j < b.getHeight(); j++){
-		        	  count = (j % 2);
-		        	  for (int i = 0; i < b.getWidth()-2; i++ )
-		        		  if(count == 1){
-		        			  colorRowCol(j, i, north_face, "blue");
-		        			  count--;
-		        		  }
-		        		  else{
-		        			  count++	;
-		        		  }
-		        	  }
-		          for (Vector3i[] vv : north_face)
-		        	  for (Vector3i v : vv){
-		        		  
-		        	  }
-		          
-//		          int height = pos.getY();
-//		          highlightRoof(pos, width, "red");
-//		          pos.setY(pos.getY()+10); 
-//		          putHighlightBlockAt(pos);
-//		          colorWalls(pos, width, height, "red");
+		          CodeBuilding b = new CodeBuilding(pos, width, object);
+		          CodeBuildingUtil.restoreModifiedBlocks();
+		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
 		          String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
 		          console.execute(command, getLocalClientEntity());
 		          console.execute(FLY, getLocalClientEntity());
@@ -143,8 +90,8 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		      break;
 		    }	
 		  }		
-		      return message;
-		  }
+	      return message;
+	  }
 	
 	@Command(shortDescription = "Add a bookmark to a specific Class in format: class bookmark",
 			requiredPermission = PermissionManager.NO_PERMISSION)
@@ -446,102 +393,4 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		}
 	}
 
-	public void restoreModifiedBlocks(){
-		WorldProvider world = CoreRegistry.get(WorldProvider.class);
-		for(Entry<Vector3i,Block> entry : modifiedBlocks.entrySet()){
-			Vector3i pos = entry.getKey();
-			Block block = entry.getValue();
-			if(block != null){
-				world.setBlock(pos, block);
-			}
-		}
-		modifiedBlocks = new HashMap<Vector3i, Block>();
-	}
-
-	public void colorWalls(Vector3i position, Integer width, Integer height, String color){
-		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-		BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", color));
-		Block block = blockFamily.getArchetypeBlock();
-		WorldProvider world = CoreRegistry.get(WorldProvider.class);
-		Vector3i currentPos;
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++){
-				currentPos = new Vector3i(position.getX() + i, position.getY() - j, position.getZ());
-				world.setBlock(currentPos, block);
-			}
-		}
-	}
-
-	public void modifyBlock(Vector3i pos, Block block){
-		WorldProvider world = CoreRegistry.get(WorldProvider.class);
-		//We only store the orginal block
-		if(!modifiedBlocks.containsKey(pos)){
-			//Find the current block in the world at the position
-			Block current_block = world.getBlock(pos);
-			//We save the current block
-			modifiedBlocks.put(pos, current_block);
-		}
-		world.setBlock(pos, block);
-	}
-
-	public void color2DArray(Vector3i[][] positions, String color){
-			BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-			BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", color));
-			Block block = blockFamily.getArchetypeBlock();
-			
-			for (Vector3i[] vv : positions)
-				for(Vector3i v : vv){
-					modifyBlock(v, block);
-				}
-	    	
-	}
-	
-	/**
-	 * Color line at position
-	 * 
-	 * @param row
-	 * @param positions
-	 * @param color
-	 */
-	public void colorLine(int row, Vector3i[][] positions,  String color){
-		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-		BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", color));
-		Block block = blockFamily.getArchetypeBlock();
-		
-		for(Vector3i v : positions[row]){
-			modifyBlock(v, block);
-		}
-	
-	}
-	
-	
-	/**
-	 * Color all lines between i and j [i, j]
-	 * @param i
-	 * @param j
-	 * @param positions
-	 * @param color
-	 */
-	public void colorLines(int i, int j, Vector3i[][] positions,  String color){
-		for (int x = i; x < j; x++)
-			colorLine(x, positions, color);
-
-	}
-	
-	/**
-	 * 
-	 * Color block at position [row][col]
-	 * @param row
-	 * @param col
-	 * @param positions
-	 * @param color
-	 */
-	public void colorRowCol(int row, int col, Vector3i[][] positions,  String color){
-		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-		BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("Coloring", color));
-		Block block = blockFamily.getArchetypeBlock();
-		modifyBlock(positions[row][col], block);
-	}
-	
-	
 }

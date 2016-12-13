@@ -2,12 +2,15 @@ package searchMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.terasology.codecity.world.map.CodeMap;
 import org.terasology.codecity.world.map.CodeMapFactory;
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.registry.CoreRegistry;
 
-public class CodeBuildingPositions {
+public class CodeBuilding {
 	
 	private static CodeMapFactory codeMapFactory = new CodeMapFactory();
 	private int height, width;
@@ -20,11 +23,34 @@ public class CodeBuildingPositions {
 	public int getWidth() {
 		return width;
 	}
+	
+	
+//	public CodeBuildingPositions getCodeBuilding(String className){
+//		
+//		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+//		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+//		  
+//	    for(MapObject object : mapObjects){
+//	    	if(object.containsClass(className)){
+//	    		DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
+//	    		object.getObject().accept(visitor);
+//		  
+//	    		while(true){
+//	    			if(visitor.resultReady()){
+//	    				Vector3i pos = visitor.getPosition();
+//	    				int width = visitor.getWidth();
+//	    				CodeBuildingPositions building = new CodeBuildingPositions(pos, width, object);
+//	    				return building;
+//		        }
+//		      }
+//		    }
+//	    	
+//	}
 
 	/**
 	 * @param origin position returned form a visitor
 	 */
-	public CodeBuildingPositions(Vector3i origin, int w, MapObject object) {
+	public CodeBuilding(Vector3i origin, int w, MapObject object) {
 		pos = origin;
 		pos.setY(pos.getY()+10); //TODO Why +10?
 		height = origin.getY();
