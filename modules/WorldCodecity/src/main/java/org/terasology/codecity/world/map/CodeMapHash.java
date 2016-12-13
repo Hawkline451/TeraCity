@@ -96,18 +96,21 @@ public class CodeMapHash implements CodeMap {
                 //X axis column
                 if(i==0){
                 	map.setCodeColumn(j-1);
+                	map.setFacing(MapObject.Facing.WEST);
                 }
                 if(i==buildingSize-1){
                 	map.setCodeColumn((buildingSize-2)-(j));
+                	map.setFacing(MapObject.Facing.EAST);
                 }  
                 //Y axis column
                 if(j==0){
                 	
                 	map.setCodeColumn((buildingSize-2)-(i));
-                	
+                	map.setFacing(MapObject.Facing.SOUTH);
                 }
                 if(j==buildingSize-1){
                 	map.setCodeColumn(i-1);
+                	map.setFacing(MapObject.Facing.NORTH);
                 }
                 
                 if( //Borders or corners (avoid X axis at the same as Y axis)
@@ -162,7 +165,7 @@ public class CodeMapHash implements CodeMap {
 	            positionCache.add(new Vector2i(x,y));
 	                      
 	        }
-        }
+        } 
         
         
       
