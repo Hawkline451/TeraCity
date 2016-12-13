@@ -8,7 +8,9 @@ import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -23,12 +25,14 @@ import org.terasology.registry.In;
 
 import org.terasology.teracity.gitApi.*;
 
+import org.terasology.engine.findBugs.FindBugsProcessor;
+
 /**
  * @author Hawkline451
  */
 @RegisterSystem
 public class ExtensionCommands extends BaseComponentSystem{
-    
+	
 	public static Hashtable<String, Integer> data;
 	@In
 	private Console console;
@@ -82,9 +86,28 @@ public class ExtensionCommands extends BaseComponentSystem{
         bw.close();
         output.close();
         System.out.println("File has been written");	   
+
 	}
 	
 	
+
+}
+	@Command(shortDescription = "Launch the findBug analysis\n"
+			+ "<sourcePath>: Path of the package/class concerned since teraCity project's folder\n",
+			requiredPermission = PermissionManager.NO_PERMISSION)
+				
+	public void findBugsAnalysis(
+			@CommandParam(value= "sourcePath", required=true) String sourcepath
+			) throws IOException {
+		console.addMessage("Executing findBugs...");
+		FindBugsProcessor findBugs = getProcessor(sourcepath);
+		console.addMessage("Keeping the result in  findBugsAnalysis.tsv file");
+	}
+	
+	private FindBugsProcessor getProcessor(String path) {
+		return new FindBugsProcessor(path);
+	}
+
 	
 }
 

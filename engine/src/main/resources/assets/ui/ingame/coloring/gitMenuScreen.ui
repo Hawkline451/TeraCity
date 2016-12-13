@@ -70,11 +70,11 @@
                             		"contents" : [
                                 		{
                                 			"type" : "UILabel",
-                                			"text" : "Project URL: "
+                                			"text" : "Project Owner: "
                                 		},
                                 		{
                                 			"type" : "UIText",
-                                			"id"   : "projectURL"
+                                			"id"   : "projectOwner"
                                 		},
                                 		{
                                 			"type" : "UILabel",
@@ -146,9 +146,38 @@
                             						"id" : "dateDay"
                             					}
                             				]
+                        				},
+                        				{
+                        					"type" : "UILabel",
+                        					"text" : ""
+                        				},
+                            			{
+                              				"type" : "UIButton",
+                               				"id" : "log",
+                               				"text" : "Get GitHub\nLog"
+                            			},
+                        				{
+                        					"type" : "UILabel",
+                        					"text" : ""
                         				}
                             		]
-                                },
+                                }
+                            ]
+                        },
+                        "layoutInfo" : {
+                            "width" : 600,
+                            "position-horizontal-center" : {}
+                        }
+                    },
+                    {
+                        "type" : "UIBox",
+                        "content" : {
+                            "type" : "ColumnLayout",
+                            "family" : "option-grid",
+                            "columns" : 1,
+                            "verticalSpacing" : 8,
+                            "horizontalSpacing" : 8,
+                            "contents" : [
                                 {
                                 	"type" : "ColumnLayout",
                             		"family" : "option-grid",
@@ -174,33 +203,33 @@
                                 			"id": "colorScale"
                             			}
                             		]
-                                }
+                                },
+                    			{
+                    				"type" : "ColumnLayout",
+                        			"family" : "option-grid",
+                        			"columns" : 3,
+                        			"verticalSpacing" : 8,
+                        			"horizontalSpacing" : 8,
+                        			"contents" : [
+                    					{
+                       						"type" : "UIButton",
+                       						"id" : "bugs",
+                       						"text" : "Paint Bug Metrics"
+                    					},
+                    					{
+                       						"type" : "UIButton",
+                       						"id" : "versions",
+                       						"text" : "Paint Version Metrics"
+                    					},
+                    					{
+                    						"type" : "UIButton",
+                    						"id" : "difference",
+                    						"text" : "Paint Commit Difference"
+                    					}
+                    				]
+                    			}
                             ]
-                        },
-                        "layoutInfo" : {
-                            "width" : 600,
-                            "position-horizontal-center" : {}
-                        }
-                    },
-                    {
-                    	"type" : "ColumnLayout",
-                        "family" : "option-grid",
-                        "columns" : 2,
-                        "column-widths" : [0.50, 0.50],
-                        "verticalSpacing" : 8,
-                        "horizontalSpacing" : 8,
-                        "contents" : [
-                    		{
-                       			"type" : "UIButton",
-                       			"id" : "bugs",
-                       			"text" : "Bugs Metrics"
-                    		},
-                    		{
-                       			"type" : "UIButton",
-                       			"id" : "versions",
-                       			"text" : "Version Metrics"
-                    		}
-                    	]
+                         }
                     },
                     {
                         "type": "UILabel",

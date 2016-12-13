@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.terasology.codecity.world.facet.CodeCityFacet;
 import org.terasology.codecity.world.map.DrawableCode;
 import org.terasology.codecity.world.map.DrawableCodeClass;
+
 import org.terasology.codecity.world.map.MapObject;
 import org.terasology.codecity.world.map.ReducedViewBlockFactory;
 import org.terasology.math.ChunkMath;
@@ -47,7 +48,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
             		
             		// Generate the invisible block related to the block code if it has code
             		if (map.isIndexBlock()){
-            			block = CoreRegistry.get(BlockManager.class).getBlock("core:Ice");
+            			block = CoreRegistry.get(BlockManager.class).getBlock("core:transparentGreen");
             		}
             		else{
             		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);

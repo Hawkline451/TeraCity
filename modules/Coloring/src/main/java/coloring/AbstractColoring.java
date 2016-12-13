@@ -87,7 +87,7 @@ public abstract class AbstractColoring implements IColoring, Runnable {
 			damage = Math.min((maxHealth-1), damage);
 			
 			String color = colorScale;
-			if (colorScale.equals( ColorScale.RAINBOW.toString() )) {
+			if (colorScale.equals(ColorScale.RAINBOW.toString())) {
 				color = classMetric.getColor();
 			}
 			pbc.ColorBuildCommon(path, color, faceToPaint, damage);
