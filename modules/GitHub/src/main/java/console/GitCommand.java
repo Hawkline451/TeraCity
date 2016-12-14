@@ -17,10 +17,6 @@ package console;
 
 
 import gitMetrics.GitMetric;
-<<<<<<< HEAD
-=======
-import searchMode.CodeBuildingUtil;
->>>>>>> d14fa7d4f6753387e23b1c859d9b5e1553ba70cf
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -43,12 +39,6 @@ import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionExc
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.naming.Name;
 import org.terasology.registry.In;
-<<<<<<< HEAD
-=======
-
->>>>>>> d14fa7d4f6753387e23b1c859d9b5e1553ba70cf
-
-
 
 /**
  * @author mperalta92, kidonkey
@@ -108,7 +98,9 @@ public class GitCommand extends BaseComponentSystem{
     public void githubColoring(
     		@CommandParam(value= "tsvName", required=true) String tsvName
     		) throws IOException, CommandExecutionException {
-    		ConsoleCommand classSearchCommand = console.getCommand(new Name("findBuilding"));
+    	
+    		ConsoleCommand colorFace = console.getCommand(new Name("colorBuilding"));
+    		ConsoleCommand colorRow = console.getCommand(new Name("colorBuildingLine"));
     		EntityRef ent = null;
      		
     		readTsvFile(tsvName);
@@ -116,10 +108,19 @@ public class GitCommand extends BaseComponentSystem{
     		
     		for (String key:keys){
         		ArrayList<String> parameters = new ArrayList<String>();
-        		parameters.add(key);
-        		parameters.add("red");
+        		ArrayList<String> parameters2 = new ArrayList<String>();
+        		
+        		parameters.add(key);        		
+        		parameters.add("transparentRed");        		
+        		parameters.add("W");
+        		
+        		parameters2.add(key);
+        		parameters2.add("transparentGreen");
+        		parameters2.add("S");
+        		parameters2.add("4");
         		try{
-        			classSearchCommand.execute(parameters, ent);
+        			colorFace.execute(parameters, ent);
+        			colorRow.execute(parameters2, ent);
         		}
         		catch(Exception e){
         			continue;

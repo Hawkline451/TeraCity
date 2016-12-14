@@ -89,14 +89,56 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 		    "towards it if it exists. Return the code Building",
 		    requiredPermission = PermissionManager.NO_PERMISSION)
-	  public void findBuilding(@CommandParam(value="className", required=true)  String className, @CommandParam(value="color", required=true) String color) {
+	  public void colorBuilding(@CommandParam(value="className", required=true)  String className, 
+			  					@CommandParam(value="color", required=true) String color,
+			  					@CommandParam(value="face", required=true) String face) {
 		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
 		  if (b != null){
 	          Vector3i pos = b.getPosition();
 	          CodeBuildingUtil.color2DArray(b.getRoofPos(), color);
+	          if (face.equals("N")){
+	        	  CodeBuildingUtil.color2DArray(b.getNorthFacePos(), color);
+	          }
+	          if (face.equals("S")){
+	        	  CodeBuildingUtil.color2DArray(b.getSouthFacePos(), color);
+	          }
+	          if (face.equals("E")){
+	        	  CodeBuildingUtil.color2DArray(b.getEastFacePos(), color);
+	          }
+	          if (face.equals("W")){
+	        	  CodeBuildingUtil.color2DArray(b.getWestFacePos(), color);
+	          }
 		  }	
 		  this.building = b;
 	  }
+	
+	@Command(shortDescription = "Searches for the className building and moves the player " +
+		    "towards it if it exists. Return the code Building",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+	  public void colorBuildingLine(@CommandParam(value="className", required=true)  String className, 
+			  					@CommandParam(value="color", required=true) String color,
+			  					@CommandParam(value="face", required=true) String face,
+			  					@CommandParam(value="row", required=true) String row) {
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
+	          if (face.equals("N")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getNorthFacePos(), color);
+	          }
+	          if (face.equals("S")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getSouthFacePos(), color);
+	          }
+	          if (face.equals("E")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getEastFacePos(), color);
+	          }
+	          if (face.equals("W")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getWestFacePos(), color);
+	          }
+		  }	
+		  this.building = b;
+	  }
+
 
 	@Command(shortDescription = "Restore original blocks that were modified by a command",
 		    requiredPermission = PermissionManager.NO_PERMISSION)
