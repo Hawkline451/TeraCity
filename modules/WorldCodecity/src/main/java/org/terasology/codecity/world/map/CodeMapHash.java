@@ -14,8 +14,6 @@ import com.google.common.base.Preconditions;
 public class CodeMapHash implements CodeMap {
     private HashMap<String, MapObject> contentMap;
     private HashMap<DrawableCode, Vector2i> codePosition;
-    private static HashSet<CodeBuilding> buildings = new HashSet<CodeBuilding>();
-    private static int building_size = 0;
     
     private int size;
     /**
@@ -130,10 +128,6 @@ public class CodeMapHash implements CodeMap {
         // Content represents a building of code
         // Now we build the transparent layer in each face of the        
         if (content instanceof DrawableCodeClass){
-        	//Create the representation of a building
-        	building_size++;
-        	CodeBuilding building = new CodeBuilding(content, x0, y0);
-        	buildings.add(building);
 	        for (int i = 1; i < buildingSize - 1; i++) {
 	        	//South face
 	        	int x = x0 + i;
@@ -277,9 +271,4 @@ public class CodeMapHash implements CodeMap {
         return codePosition.get(code);
     }
     
-    public Set<CodeBuilding> getBuildings(){
-    	return this.buildings;
-    }
-
-	
 }
