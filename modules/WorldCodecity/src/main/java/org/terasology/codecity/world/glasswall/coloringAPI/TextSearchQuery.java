@@ -2,6 +2,9 @@ package org.terasology.codecity.world.glasswall.coloringAPI;
 import org.terasology.world.block.Block;
 
 public class TextSearchQuery extends AbstractColoringQuery {
+  private Block trueblock;
+  private Block falseblock;
+  private String search;
   
   /**
    * TextSearchQuery(String)
