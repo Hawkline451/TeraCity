@@ -14,7 +14,7 @@ public class CodeBuilding {
 	
 	private static CodeMapFactory codeMapFactory = new CodeMapFactory();
 	private int height, width;
-	Vector3i pos;
+	private Vector3i pos;
 	
 	public int getHeight() {
 		return height;
@@ -25,27 +25,28 @@ public class CodeBuilding {
 	}
 	
 	
-//	public CodeBuildingPositions getCodeBuilding(String className){
-//		
-//		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-//		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-//		  
-//	    for(MapObject object : mapObjects){
-//	    	if(object.containsClass(className)){
-//	    		DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
-//	    		object.getObject().accept(visitor);
-//		  
-//	    		while(true){
-//	    			if(visitor.resultReady()){
-//	    				Vector3i pos = visitor.getPosition();
-//	    				int width = visitor.getWidth();
-//	    				CodeBuildingPositions building = new CodeBuildingPositions(pos, width, object);
-//	    				return building;
-//		        }
-//		      }
-//		    }
-//	    	
-//	}
+	public static CodeBuilding getCodeBuilding(String className){
+		
+		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+	    for(MapObject object : mapObjects){
+	    	if(object.containsClass(className)){
+	    		DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
+	    		object.getObject().accept(visitor);
+    			if(visitor.resultReady()){
+    				Vector3i pos = visitor.getPosition();
+    				int width = visitor.getWidth();
+    				CodeBuilding building = new CodeBuilding(pos, width, object);
+    				return building;
+		        }
+             }	
+	    }
+	    return null;
+	}
+	
+	public Vector3i getPosition(){
+		return pos;
+	}
 
 	/**
 	 * @param origin position returned form a visitor
