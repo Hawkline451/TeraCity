@@ -31,18 +31,18 @@ public class ColoringCommands extends BaseComponentSystem{
 	
 	public static String STATE = "Awaiting analysis";
 
-    @Command(shortDescription = "Coloring using Cobertura",
-            helpText = "Run color of Cobertura, with input in the specified format, "
-                    + "on specified files\n"
-                    + "type: input's format to use:\n"
-                    + " - \"-t\":  test and tested files in two separate folders\n"
-                    + " - \"-s\": All the files in only one folder (Help to do not process "
-                    + "in files where it is not necessary)..\n"
-                    + " - \"-r\": A path is delivered directly to a Cobertura report to be analyzed ("
-                    + "to the report itself not only to the folder containing it)\n"
-                    + "firstArg: first argument. If 1 is choosen, it concerns the files to be tested.\n"
-                    + "secondArg: Second argument . If 2 is choosen, it concerns the test files,"
-                    + "not used for the other two types.",
+	@Command(shortDescription = "Coloreo usando Cobertura",
+            helpText = "Ejecuta coloreo de Cobertura, con el input de la forma especificada, "
+            		+ "sobre los archivos especificados\n"
+                    + "type: Formato de input a utilizar:\n"
+                    + " - \"-t\": Archivos testeados y de tests en dos carpetas separadas\n"
+                    + " - \"-s\": Todos los archivos en una sola carpeta (ayuda a no hacer procesos "
+                    + "en archivos donde no sean necesarios).\n"
+                    + " - \"-r\": Se entrega un path directamente a un reporte de Cobertura a analizar ("
+                    + "al reporte en si mismo no solo a la carpeta que lo contiene).\n"
+                    + "firstArg: Primer argumento. Si se elige el tipo 1, son los archivos a testear.\n"
+                    + "secondArg: Segundo argumento. Si se elige el tipo 2, son los archivos de tests,"
+                    + "no se usa para los otros dos tipos.",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCobertura(
     		@CommandParam(value="face"     , required=true) String face,
@@ -63,13 +63,13 @@ public class ColoringCommands extends BaseComponentSystem{
 		return "Loading ...";
     }
 	
-	@Command(shortDescription = "Coloring using CheckStyle",
-            helpText = "Run coloring using CheckStyle\n",
+	@Command(shortDescription = "Coloreo usando CheckStyle",
+            helpText = "Ejecuta coloreo usando CheckStyle\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithCheckStyle(
-    		@CommandParam("Path")         String path,
-    		@CommandParam("Metric")      String metric,
-    		@CommandParam("Maximum value") String max,
+    		@CommandParam("Ruta")         String path,
+    		@CommandParam("Metrica")      String metric,
+    		@CommandParam("Valor Maximo") String max,
     		@CommandParam(value="face"  , required=true) String face,
 			@CommandParam(value="color" , required=true) String color) { 
 
@@ -83,8 +83,8 @@ public class ColoringCommands extends BaseComponentSystem{
     	coloring.execute(params);
     	return "";
     }
-	@Command(shortDescription = "Coloring using Git",
-            helpText = "Run coloring using Git\n",
+	@Command(shortDescription = "Coloreo usando Git",
+            helpText = "Ejecuta coloreo usando Git\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithGit(
     		@CommandParam("metric") String metric,
@@ -101,8 +101,8 @@ public class ColoringCommands extends BaseComponentSystem{
     	return "";
     }
 	
-	@Command(shortDescription = "Coloring using PMD",
-            helpText = "Run coloring using PMD giving in the argument the corresponding rule \n",
+	@Command(shortDescription = "Coloreo usando PMD",
+            helpText = "Ejecuta coloreo usando PMD y dando como argumento la regla correspondiente\n",
             requiredPermission = PermissionManager.NO_PERMISSION)
     public String paintWithPMD(
     		@CommandParam(value="rule" , required=true) String rule,
@@ -135,21 +135,21 @@ public class ColoringCommands extends BaseComponentSystem{
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Command(shortDescription = "Apply the coloration",
+	@Command(shortDescription = "Aplica el coloreo",
 			requiredPermission = PermissionManager.NO_PERMISSION)
 	public String applyColoring() {
 		ListenableFuture<AbstractColoring> listeneableFuture = CoreRegistry.get(ListenableFuture.class);
-		if (listeneableFuture == null || !listeneableFuture.isDone()) return "Analisis not finished";
+		if (listeneableFuture == null || !listeneableFuture.isDone()) return "Analisis no terminado";
 		try {
 			listeneableFuture.get().executeColoring();
 		} catch (InterruptedException | ExecutionException e) {
-			System.out.println("Paint error");
+			System.out.println("Error de Pintado");
 		}
-		return "Painted";
+		return "Pintado";
     }
 	
 	@Command(
-			shortDescription  = "Updates registry with the color status",
+			shortDescription  = "actualiza registro con estado del coloreo",
             helpText           = "TODO\n",
             requiredPermission = PermissionManager.NO_PERMISSION
 	)

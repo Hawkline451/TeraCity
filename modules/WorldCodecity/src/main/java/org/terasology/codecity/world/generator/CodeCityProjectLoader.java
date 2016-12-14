@@ -26,10 +26,10 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		CodePackage pack = new CodePackage(folder.getName(), folder.getPath(), "");
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
-				// Generates recursively over the directory 
+				// Genera recursion sobre la carpeta
 				pack.addCodeContent(listFilesForFolder(fileEntry));
 			} else {
-				// Stores class inside CodePackage
+				// Almacena clase dentro de CodePackage
 				pack.addCodeContent(
 						new CodeClass(folder.getName(), 0 /* TODO */ , (int) folder.length(), folder.getPath(), ""));
 			}
@@ -38,22 +38,15 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		return pack;
 	}
 
-	
-	
-	/**
-	 * @param file
-	 * @return
-	 *  	Returns the code representation of the file 
-	 */
 	public CodeRepresentation filesToRepresentation(final File file) {
 		if (!file.isDirectory()) {
 			String name = file.getName();
 			if (isJava(name)){
 				return new CodeClass(name,
-						0 /* TODO Count Variables */,
-						file.getPath(), // Path of the file
-						"", /* TODO Associate github link */
-						countLineLength(file.getPath()),  //Lengths of the lines //TODO each file is read twice
+						0 /* TODO Ver variables*/,
+						file.getPath(),
+						"",
+						countLineLength(file.getPath()),           //TODO each file is read twice
 						transformToCodeRepresentation(file.getPath())
 						);
 			}
@@ -82,11 +75,6 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		return false;
 	}
 	
-	/**
-	 * @param filename
-	 * @return
-	 * 		Returns a list of the line lengths 
-	 */
 	public static Integer[] countLineLength(String filename) {
 		List<Integer> result = new ArrayList<Integer>();
 		try {
@@ -99,9 +87,8 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 	            for (int i = 0; i < readChars; ++i) {
 	            	count++;
 	                if (c[i] == '\n') {
-	                	// Count has the total amount of bytes/chars in the line
-	                	result.add(count); // Add to the list
-	                	count = 0; // Reset count to 0 for new line
+	                	result.add(count);
+	                	count = 0;
 	                }
 	            }
 	        }
@@ -150,20 +137,22 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 	public static int[][] transformToCodeRepresentation(String filename) {
 
 		String content = readFile(filename);
-		int maxLengthLine = 0; //Max length of a line in the code
-		int maxBlockLength = 0; /* TODO Variable not used? Always 0 */
+		int maxLengthLine = 0;
+		int maxBlockLength = 0;
 
 		String lines[] = content.split("\\r?\\n");
 
 		for (String line : lines) {
 			maxLengthLine = Math.max(maxLengthLine, line.length());
+			// System.out.println(line);
 
 		}
 
-		int[][] result = new int[lines.length][2 * maxBlockLength]; /* TODO [2 * maxBlockLength] = [0] */
+		int[][] result = new int[lines.length][2 * maxBlockLength];
 
 		for (int i = 0; i < lines.length; i++) {
 			result[i] = transformCodeLine(lines[i], maxLengthLine);
+			// System.out.println(Arrays.toString(result[i]));
 		}
 
 
@@ -180,13 +169,13 @@ public class CodeCityProjectLoader implements CodeCityLoader {
 		while (builder.length() < maxLineLength) {
 			builder.append(" ");
 		}
-		// Builder has now the codeLine plus a fill of whitespaces 
+
 		int[] resultRow = new int[maxLineLength];
 		int step = 1;
 
 		for (int i = 0; i < maxLineLength; i++) {
 			String stepString = builder.substring(step * i, step * (i + 1));
-			String replaced = stepString.replaceAll("\\s+", ""); // Removes all whitespace
+			String replaced = stepString.replaceAll("\\s+", "");
 
 			if (replaced.trim().length() > 0) {
 				resultRow[i] = 1;

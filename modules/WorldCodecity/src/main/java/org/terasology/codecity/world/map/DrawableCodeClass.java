@@ -26,8 +26,7 @@ public class DrawableCodeClass implements DrawableCode {
     public CodeClass getBase() {
         return base;
     }
-    
-    //TODO factory is not being used in any of the gets
+
     @Override
     public int getSize(CodeMapFactory factory) {
         CodeScaleManager man = CoreRegistry.get(CodeScaleManager.class);

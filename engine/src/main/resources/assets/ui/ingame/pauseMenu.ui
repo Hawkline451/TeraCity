@@ -41,11 +41,6 @@
                         "text" : "Coloring"
                     },
                     {
-                        "type" : "UIButton",
-                        "id" : "search",
-                        "text" : "Search"
-                    },
-                    {
                     	"type" : "UIButton",
                     	"id" : "bookmarks",
                     	"text" : "Bookmarks"

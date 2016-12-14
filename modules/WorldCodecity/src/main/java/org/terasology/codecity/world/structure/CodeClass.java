@@ -7,10 +7,6 @@ import org.terasology.codecity.world.metrics.AST;
 /**
  * This class represent a Class of a project, saving the variables and length
  */
-/**
- * @author tewis
- *
- */
 public class CodeClass extends CodeRepresentation implements Serializable {
 
   private static final long serialVersionUID = -5550203407291855976L;
@@ -30,23 +26,12 @@ public class CodeClass extends CodeRepresentation implements Serializable {
    *          Number of variables in the class.
    * @param length
    *          Number of lines in the class.
-   * @param github
-   * 		  Github link to the document          
    */
   public CodeClass(String name, int variables, int length, String path,
       String github) {
     this(name, variables, path, github, DummyArray.getArray(length), null);
   }
 
-  	
-  /**
- * @param name
- * @param variables
- * @param path
- * @param github
- * @param lineLength
- * @param binaryRepr
- */
   public CodeClass(String name, int variables, String path, String github,
       Integer[] lineLength, int[][] binaryRepr) {
     super(name, path, github);

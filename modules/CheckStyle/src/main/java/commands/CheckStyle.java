@@ -19,7 +19,7 @@ public class CheckStyle extends BaseComponentSystem{
 	@In
 	Console console;
 	
-	@Command(shortDescription = "Show in console the simplification of the last analysis's parse")
+	@Command(shortDescription = "Muestra en consola la simplificacion del parseo del ultimo analisis")
 	public String showParse() throws IOException {
 		String path = "modules/CheckStyle/Project/out.xml";
 		CheckStyleParser cp = new CheckStyleParser();
@@ -27,16 +27,16 @@ public class CheckStyle extends BaseComponentSystem{
 		return cp.toString();
 	}
 	
-	@Command(shortDescription = "Using checkstyle to analyze a file", 
-			 helpText = "Using checkstyle to analyse some problems following the given metric \n"
-			 		+ "cstyle file metric maxValue \n"
-			 		+ "Where:\n"
-			 		+ "    file: the file to analyze \n"
-			 		+ "    metric: b for boolean, Cyclomatic by default \n"
-			 		+ "    maxValue: maximum value of comparators if metric is a boolean")
-	public String cstyle(@CommandParam("Path") String path, 
-						 @CommandParam("Metric") String metricString,
-						 @CommandParam("Maximum boolean value") Integer max) throws IOException {
+	@Command(shortDescription = "Utiliza checkstyle para analizar un archivo", 
+			 helpText = "Utiliza checkStyle para para analizar algun programa segun la metrica dada \n"
+			 		+ "cstyle archivo metrica maxValue \n"
+			 		+ "Donde:\n"
+			 		+ "    archivo: es el archivo a analizar \n"
+			 		+ "    metrica: b para booleana, ciclomatica por defecto \n"
+			 		+ "    maxValue: maximo valor de comparadores en caso de metrica booleana")
+	public String cstyle(@CommandParam("Archivo") String path, 
+						 @CommandParam("Metrica") String metricString,
+						 @CommandParam("Maximo valor booleano") Integer max) throws IOException {
 		
 		Metric metric = Metric.createMetric(metricString, max, console);
 		metric.execute(path);

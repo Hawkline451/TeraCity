@@ -75,7 +75,7 @@
                         "type" : "UIButton",
                         "id"   : "mockColoring",
                         "text" : "Mock"
-                    },             
+                    }
                 ]
             },
             {
