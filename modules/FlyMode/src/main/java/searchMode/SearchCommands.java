@@ -73,75 +73,35 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		  String message = "Class not found.";
 		  console.addMessage("Starting search...");
 		  
-		  CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		  Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		  for(MapObject object : mapObjects){
-		    if(object.containsClass(className)){
-		    DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
-		      object.getObject().accept(visitor);
-		  
-		      while(true){
-		        if(visitor.resultReady()){
-		          Vector3i pos = visitor.getPosition();
-		          int width = visitor.getWidth();
-		          ////
-		          CodeBuilding b = new CodeBuilding(pos, width, object);
-		          CodeBuildingUtil.restoreModifiedBlocks();
-		          ////          
-		          ////
-		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");		          
-		          ////
-		          String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
-		          console.execute(command, getLocalClientEntity());
-		          console.execute(FLY, getLocalClientEntity());		          
-		          console.addMessage("Class found, teleporting!");
-		          break;
-		        }
-		      }
-		      break;
-		    }	
-		  }		
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          CodeBuildingUtil.restoreModifiedBlocks();
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");		          
+	          String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
+	          console.execute(command, getLocalClientEntity());
+	          console.execute(FLY, getLocalClientEntity());		          
+	          message = "Class found, teleporting!";
+		  }	
 	      return message;
 	  }
 	
 	@Command(shortDescription = "Searches for the className building and moves the player " +
 		    "towards it if it exists. Return the code Building",
 		    requiredPermission = PermissionManager.NO_PERMISSION)
-		  public void findBuilding(@CommandParam(value="className", required=true)  String className, @CommandParam(value="color", required=true) String color) {
-		  console.addMessage("Starting search...");
-		  
-		  CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		  Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		  CodeBuilding b = null;
-		  for(MapObject object : mapObjects){
-		    if(object.containsClass(className)){
-		    DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
-		      object.getObject().accept(visitor);
-		  
-		      while(true){
-		        if(visitor.resultReady()){
-		          Vector3i pos = visitor.getPosition();
-		          int width = visitor.getWidth();
-		          ////
-		          b = new CodeBuilding(pos, width, object);
-		          //CodeBuildingUtil.restoreModifiedBlocks();
-		          ////
-		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
-		          CodeBuildingUtil.color2DArray(b.getNorthFacePos(), color);
-		          ////	          
-		          break;
-		        }
-		      }
-		      break;
-		    }	
-		  }
-		  building=b;
-	   }	
-	@Command(shortDescription = "Coloring current building",
+	  public void findBuilding(@CommandParam(value="className", required=true)  String className, @CommandParam(value="color", required=true) String color) {
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), color);
+		  }	
+		  this.building = b;
+	  }
+
+	@Command(shortDescription = "Restore original blocks that were modified by a command",
 		    requiredPermission = PermissionManager.NO_PERMISSION)
-		 public void coloringRed() {  	  
-		  
-			CodeBuildingUtil.color2DArray(building.getSouthFacePos(), "TransparentGreen");
+		 public void cleanBuildings() {  	  
+			CodeBuildingUtil.restoreModifiedBlocks();
 	   	}	
 
 	@Command(shortDescription = "Add a bookmark to a specific Class in format: class bookmark",

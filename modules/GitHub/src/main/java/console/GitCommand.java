@@ -17,9 +17,7 @@ package console;
 
 
 import gitMetrics.GitMetric;
-import searchMode.CodeBuilding;
 import searchMode.CodeBuildingUtil;
-import searchMode.SearchCommands;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -31,7 +29,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.scm.util.FilenameUtils;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -39,10 +36,11 @@ import org.terasology.logic.console.Console;
 import org.terasology.logic.console.commandSystem.ConsoleCommand;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
+import org.terasology.logic.console.commandSystem.exceptions.CommandExecutionException;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.naming.Name;
 import org.terasology.registry.In;
-import searchMode.SearchCommands;
+
 
 
 
@@ -103,9 +101,8 @@ public class GitCommand extends BaseComponentSystem{
             requiredPermission = PermissionManager.NO_PERMISSION)
     public void githubColoring(
     		@CommandParam(value= "tsvName", required=true) String tsvName
-    		) throws IOException {
+    		) throws IOException, CommandExecutionException {
     		ConsoleCommand classSearchCommand = console.getCommand(new Name("findBuilding"));
-    		ConsoleCommand redFace = console.getCommand(new Name("coloringRed"));
     		EntityRef ent = null;
      		
     		readTsvFile(tsvName);
@@ -114,9 +111,9 @@ public class GitCommand extends BaseComponentSystem{
     		for (String key:keys){
         		ArrayList<String> parameters = new ArrayList<String>();
         		parameters.add(key);
-        		parameters.add("transparentGreen");
+        		parameters.add("red");
         		try{
-        			classSearchCommand. execute(parameters, ent);
+        			classSearchCommand.execute(parameters, ent);
         		}
         		catch(Exception e){
         			continue;
