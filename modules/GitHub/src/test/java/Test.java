@@ -1,6 +1,9 @@
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -19,6 +22,7 @@ import console.GitMetricsConsole;
 public class Test {
 	
 	String outPath = "modules/GitHub/Metrics/";
+	public static Hashtable<String, Integer> data;
 	
 	public static void main(String[] args) throws IOException {
 		 
@@ -43,7 +47,7 @@ public class Test {
     	//GitMetricsConsole console = new GitMetricsConsole();
     	//console.githubCommits(ownerName, projectName, date, branch);
 		
-		JsonOperation opCommits = new JsonOperation(path);
+		/*JsonOperation opCommits = new JsonOperation(path);
 		ArrayList<String> shaList = opCommits.getCommit(date, branch); 
     	System.out.println(shaList.toString());
     	//Por ahora solo lee el 1er elemento.
@@ -51,6 +55,31 @@ public class Test {
     	opCommits.getFiles(sha);
     	
     	saveTSV(opCommits.getTable());
+		*/
+		readTsvFile("TeraCity_master");
+	}
+	private static void readTsvFile(String name){
+		// This method read a Tsv File and Set data hashtable...
+    	String tsvPath = "modules/GitHub/Metrics/" + name + ".tsv";
+		String linea;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(tsvPath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			while((linea=br.readLine())!=null){
+				String [] args = linea.split("\t");
+				System.out.println(args[0]+"\n");
+				data.put(args[0], Integer.parseInt(args[1]));
+				
+			}
+			br.close();
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

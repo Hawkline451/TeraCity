@@ -17,18 +17,32 @@ package console;
 
 
 import gitMetrics.GitMetric;
+import searchMode.CodeBuilding;
+import searchMode.CodeBuildingUtil;
+import searchMode.SearchCommands;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
+import org.apache.maven.scm.util.FilenameUtils;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.console.Console;
+import org.terasology.logic.console.commandSystem.ConsoleCommand;
 import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
+import org.terasology.naming.Name;
 import org.terasology.registry.In;
+import searchMode.SearchCommands;
 
 
 
@@ -83,6 +97,62 @@ public class GitCommand extends BaseComponentSystem{
     		}
 			return result;
     }
+    
+    @Command(shortDescription = "Activate the GitHub metrics",
+    		helpText = "Read a TSV with the number of commits per file\n",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public void githubColoring(
+    		@CommandParam(value= "tsvName", required=true) String tsvName
+    		) throws IOException {
+    		ConsoleCommand classSearchCommand = console.getCommand(new Name("findBuilding"));
+    		ConsoleCommand redFace = console.getCommand(new Name("coloringRed"));
+    		EntityRef ent = null;
+     		
+    		readTsvFile(tsvName);
+    		Set<String> keys = data.keySet();
+    		
+    		for (String key:keys){
+        		ArrayList<String> parameters = new ArrayList<String>();
+        		parameters.add(key);
+        		parameters.add("transparentGreen");
+        		try{
+        			classSearchCommand. execute(parameters, ent);
+        		}
+        		catch(Exception e){
+        			continue;
+        		}
+    			data.get(key);
+    		}
+    		
+    		
+    		
+    }
+    private static void readTsvFile(String name){
+		// This method read a Tsv File and Set data hashtable...
+    	String tsvPath = "modules/GitHub/Metrics/" + name + ".tsv";
+		String linea;
+		BufferedReader br = null;
+		
+		data = new Hashtable<String, Integer>();
+		try {
+			br = new BufferedReader(new FileReader(tsvPath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			while((linea=br.readLine())!=null){
+				String [] args = linea.split("\t");
+				data.put(args[0], Integer.parseInt(args[1]));
+				
+			}
+			br.close();
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+    
 }
 
 

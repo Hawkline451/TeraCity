@@ -1,8 +1,12 @@
 package searchMode;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Map.Entry;
 
+import org.terasology.codecity.world.map.CodeMap;
+import org.terasology.codecity.world.map.MapObject;
+import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.WorldProvider;
@@ -109,5 +113,4 @@ public class CodeBuildingUtil {
 		}
 		modifiedBlocks = new HashMap<Vector3i, Block>();
 	}
-
 }
