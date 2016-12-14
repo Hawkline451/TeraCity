@@ -90,10 +90,4 @@ public interface CodeMap {
      */
     public Vector2i getCodePosition(DrawableCode code);
     
-    
-    /**
-     * @return List of buildings containing code
-     */
-    public Set<CodeBuilding> getBuildings();
-    
 }
