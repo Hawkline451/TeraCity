@@ -44,7 +44,7 @@ public class FindBugsReporter extends PrintingBugReporter {
 
 	@Override
     protected void doReportBug(final BugInstance bug) {
-		String key = bug.getPrimarySourceLineAnnotation().getClassName()+".java";
+		String key = bug.getPrimarySourceLineAnnotation().getSimpleClassName()+".java";
 		int value = bug.getPrimarySourceLineAnnotation().getEndLine();
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		if (fileLine.containsKey(key)) {

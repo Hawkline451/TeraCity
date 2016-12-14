@@ -49,6 +49,7 @@ public class GitCommand extends BaseComponentSystem{
     //private final CodeMapFactory factory = new CodeMapFactory(scale);
     
 	public static Hashtable<String, Integer> data;
+	public static Hashtable<String, ArrayList<Integer>> datafindBugs;
 	public static String metrica;
 	@In
 	private Console console;
@@ -132,12 +133,75 @@ public class GitCommand extends BaseComponentSystem{
     		
     }
     private static void readTsvFile(String name){
+ 		// This method read a Tsv File and Set data hashtable...
+     	String tsvPath = "modules/GitHub/Metrics/" + name + ".tsv";
+ 		String linea;
+ 		BufferedReader br = null;
+ 		
+ 		data = new Hashtable<String, Integer>();
+ 		try {
+ 			br = new BufferedReader(new FileReader(tsvPath));
+ 		} catch (FileNotFoundException e) {
+ 			e.printStackTrace();
+ 		}
+ 		try {
+ 			while((linea=br.readLine())!=null){
+ 				String [] args = linea.split("\t");
+ 				data.put(args[0], Integer.parseInt(args[1]));
+ 				
+ 			}
+ 			br.close();
+ 		} catch (NumberFormatException | IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+ 	}
+    
+    @Command(shortDescription = "Activate the findBugs metrics",
+    		helpText = "Read findBugsAnalsis.tsv TSV with the line that presents bug on each file\n"
+    				+ " so it uses the last findBugs analysis launch by command findBugsAnalysis",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public void findBugsColoring(
+    		) throws IOException, CommandExecutionException {
+    	
+    		ConsoleCommand colorRow = console.getCommand(new Name("colorBuildingLine"));
+    		EntityRef ent = null;
+     		
+    		readFindBugsTsvFile();
+    		Set<String> keys = datafindBugs.keySet();
+    		
+    		for (String key:keys){
+        		ArrayList<String> parameters = new ArrayList<String>();
+        		
+        		parameters.add(key);        		
+        		parameters.add("transparentRed");        		
+        		parameters.add("S");
+        		console.addMessage("Coloring on " + key + ", south face");
+        		for (int i : datafindBugs.get(key)) {
+        			// Don not color the general problems proper to one class at now
+        			if (i != -1) {
+        				// Math.round(i/2.0) to higlight the good one
+        				parameters.add(String.valueOf(Math.round(i/2.0)));
+        				console.addMessage("Coloring line " + Math.round(i/2.0));
+        			}
+        			 
+        		}
+        		try{
+        			colorRow.execute(parameters, ent);
+        		}
+        		catch(Exception e){
+        			continue;
+        		}
+    		}	
+    }
+    
+    private static void readFindBugsTsvFile(){
 		// This method read a Tsv File and Set data hashtable...
-    	String tsvPath = "modules/GitHub/Metrics/" + name + ".tsv";
+    	String tsvPath = "modules/GitHub/Metrics/findBugsAnalysis.tsv";
 		String linea;
 		BufferedReader br = null;
 		
-		data = new Hashtable<String, Integer>();
+		datafindBugs = new Hashtable<String, ArrayList<Integer>>();
 		try {
 			br = new BufferedReader(new FileReader(tsvPath));
 		} catch (FileNotFoundException e) {
@@ -146,7 +210,11 @@ public class GitCommand extends BaseComponentSystem{
 		try {
 			while((linea=br.readLine())!=null){
 				String [] args = linea.split("\t");
-				data.put(args[0], Integer.parseInt(args[1]));
+				ArrayList<Integer> temp = new ArrayList<Integer>();
+				for (int i = 1; i < args.length; i++) {
+					temp.add(Integer.parseInt(args[i]));
+					datafindBugs.put(args[0],temp);
+				}
 				
 			}
 			br.close();
@@ -156,7 +224,6 @@ public class GitCommand extends BaseComponentSystem{
 		}
 		
 	}
-    
 }
 
 
