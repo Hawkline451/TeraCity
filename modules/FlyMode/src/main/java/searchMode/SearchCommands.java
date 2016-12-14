@@ -1,7 +1,12 @@
 package searchMode;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -36,6 +41,7 @@ import org.terasology.world.block.family.BlockFamily;
  * @author mrgcl
  */
 @RegisterSystem
+//public class SearchCommands extends BaseComponentSystem implements ISearchCommands{
 public class SearchCommands extends BaseComponentSystem implements ISearchCommands{
 	@In
 	private Console console;
@@ -54,6 +60,8 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
+	
+	private CodeBuilding building;
 	
 	private static final String FLY = "flight";
 	
@@ -76,14 +84,17 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		        if(visitor.resultReady()){
 		          Vector3i pos = visitor.getPosition();
 		          int width = visitor.getWidth();
-		          
+		          ////
 		          CodeBuilding b = new CodeBuilding(pos, width, object);
 		          CodeBuildingUtil.restoreModifiedBlocks();
-		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
+		          ////          
+		          ////
+		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");		          
+		          ////
 		          String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
 		          console.execute(command, getLocalClientEntity());
-		          console.execute(FLY, getLocalClientEntity());
-		          message = "Class found, teleporting!";
+		          console.execute(FLY, getLocalClientEntity());		          
+		          console.addMessage("Class found, teleporting!");
 		          break;
 		        }
 		      }
@@ -93,6 +104,46 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	      return message;
 	  }
 	
+	@Command(shortDescription = "Searches for the className building and moves the player " +
+		    "towards it if it exists. Return the code Building",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+		  public void findBuilding(@CommandParam(value="className", required=true)  String className, @CommandParam(value="color", required=true) String color) {
+		  console.addMessage("Starting search...");
+		  
+		  CodeMap codeMap = CoreRegistry.get(CodeMap.class);
+		  Set<MapObject> mapObjects = codeMap.getPosMapObjects();
+		  CodeBuilding b = null;
+		  for(MapObject object : mapObjects){
+		    if(object.containsClass(className)){
+		    DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
+		      object.getObject().accept(visitor);
+		  
+		      while(true){
+		        if(visitor.resultReady()){
+		          Vector3i pos = visitor.getPosition();
+		          int width = visitor.getWidth();
+		          ////
+		          b = new CodeBuilding(pos, width, object);
+		          //CodeBuildingUtil.restoreModifiedBlocks();
+		          ////
+		          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
+		          CodeBuildingUtil.color2DArray(b.getNorthFacePos(), color);
+		          ////	          
+		          break;
+		        }
+		      }
+		      break;
+		    }	
+		  }
+		  building=b;
+	   }	
+	@Command(shortDescription = "Coloring current building",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+		 public void coloringRed() {  	  
+		  
+			CodeBuildingUtil.color2DArray(building.getSouthFacePos(), "TransparentGreen");
+	   	}	
+
 	@Command(shortDescription = "Add a bookmark to a specific Class in format: class bookmark",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String addBookmark(@CommandParam(value="className", required=true)  String className, 
@@ -391,6 +442,32 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			buildingHighlighted.remove(i);
 			highlightWidths.remove(i);
 		}
+	}
+	
+	////
+	////
+	//// New Methods for coloring
+	
+	private void readTsvFile(String tsvPath){
+		// This method read a Tsv File and Set data hashtable...
+		Hashtable<String, Integer> data = new Hashtable();
+		String linea;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(tsvPath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			while((linea=br.readLine())!=null){
+				String [] args = linea.split("\t");
+				data.put(args[0], Integer.parseInt(args[1]));
+			}
+			br.close();
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

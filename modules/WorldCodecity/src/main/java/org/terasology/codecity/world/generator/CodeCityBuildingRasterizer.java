@@ -48,7 +48,7 @@ public class CodeCityBuildingRasterizer implements WorldRasterizer {
             		
             		// Generate the invisible block related to the block code if it has code
             		if (map.isIndexBlock()){
-            			block = CoreRegistry.get(BlockManager.class).getBlock("core:transparentGreen");
+            			block = CoreRegistry.get(BlockManager.class).getBlock("core:ice");
             		}
             		else{
             		int[][] sliceBin = ReducedViewBlockFactory.recalcBinary(code,row,col);

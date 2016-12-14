@@ -24,7 +24,6 @@ import org.terasology.registry.In;
 
 
 import org.terasology.teracity.gitApi.*;
-
 import org.terasology.engine.findBugs.FindBugsProcessor;
 
 /**
@@ -104,7 +103,6 @@ public class ExtensionCommands extends BaseComponentSystem{
 	private FindBugsProcessor getProcessor(String path) {
 		return new FindBugsProcessor(path);
 	}
-
 	
 }
 
