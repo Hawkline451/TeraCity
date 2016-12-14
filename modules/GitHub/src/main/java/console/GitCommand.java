@@ -17,9 +17,6 @@ package console;
 
 
 import gitMetrics.GitMetric;
-import searchMode.CodeBuilding;
-import searchMode.CodeBuildingUtil;
-import searchMode.SearchCommands;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -31,7 +28,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.scm.util.FilenameUtils;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
@@ -42,7 +38,6 @@ import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.naming.Name;
 import org.terasology.registry.In;
-import searchMode.SearchCommands;
 
 
 
