@@ -1,0 +1,62 @@
+CodeCityGroundProvider.java	12	15	20
+ClassLineLengthMetric.java	13	17
+NumberOfCommentsMetric.java	13
+CommitDifferenceQuery.java	3	6
+ReducedViewBlockFactory.java	13	27	93
+CodeScaleTest.java	8	9	12
+CodeCityFileLoader.java	11	12	14	26
+BlameInfo.java	12	13	14	16	22	26	30	34
+MetricsControlSystem.java	1	46	49	52	55	58	60	64	70
+LinearCodeScale.java	3	6
+NumberOfImportsMetric.java	13
+CodeCityGroundRasterizer.java	13	14	17	22
+CodeMapFactory.java	21	81	91	93	98
+ProblemQuery.java	3	6
+NullCodeClass.java	3	5	9	15	20
+CodeScale.java	17
+CoverageQuery.java	3	6
+CodeCityProjectLoader.java	17	18	20	25	78	120	150	175
+CodeScaleManager.java	12	13	14	29	34	38	42	46	50	54
+NullCodeRepresentation.java	7	9	12	17	21
+branchRate.java	6	8
+coverageAprox.java	6	11
+CodeRepresentation.java	22	23	24	25	49	66	70	72	125	129
+DrawableCodeClass.java	9	10	32	39	46	51	57	62	66	71	76	82	87	93
+GlassColor.java	3
+ColoringQueryInterface.java	3	4
+IMapObject.java	5	7	9	11	27
+HalfLinearCodeScale.java	3	6
+TextSearchQuery.java	4
+DrawableCodeFactory.java	12	14	29	35
+AbstractColoringQuery.java	5	6	7	8
+lineRate.java	6	8
+CodeCityFacet.java	13	14	15	17	23	27	31	36	41	49
+CodeMetricManager.java	15	16	17	40	45	49	53	57	61	65	74
+NumberOfPropertiesMetric.java	13
+DrawableCodePackage.java	13	16	17	18	45	54	59	66	71	79	82	87	93	99	105	113
+CodeMapHash.java	14	15	16	18	24	195	233	257
+CodeCityBuildingRasterizer.java	25	28	33	61	63	66	69	72
+NullDrawableCode.java	10	13	18	23	28	33	38	43	46	52	58	64	70	76
+CoberturaMetrics.java	14	15	16	20	22	25	72	74	105	115
+CodeCityWorldGenerator.java	27	29	34	54
+JEditExporter.java	28	33	45
+CodeMap.java	9	27	38	55
+MetricsOverlay.java	26	29	32	35	38	41	44	47	51	53	55	57	60	64	73	81	88	93	97
+CodeCitySocketLoader.java	16	18	23
+CodeMapNull.java	16	21	26	31	37	43	48	53	59
+MapObject.java	11	12	13	14	15	17	19	20	23	27	30	51	67	118	123	138	141	144	147	173	192	208	241	245	249	253
+NumberOfMethodsMetric.java	13
+CodeCityLoaderManager.java	10	16	22
+DummyArray.java	5	6
+CodePackage.java	9	10	12	41	46
+AST.java	23	25	26	27	28	29	30	31	32	33	34	35	37	56	62	82	98
+GitBlameMetric.java	21	24	91	125	132
+ClassLengthMetric.java	13
+DrawableCodeVisitor.java	3	4	5
+CodeMetric.java	5	8
+NullMapObject.java	8	11	16	21	26	31	36
+CodeCityBuildingProvider.java	33	35	40	45
+NumberOfMethodCallsMetric.java	13
+GlassWallColoringAPI.java	10	16	24	33
+DrawableCode.java	8	46	47	48	49	50
+CodeClass.java	16	17	18	19	20	22	24	96	101	105	113	168	173

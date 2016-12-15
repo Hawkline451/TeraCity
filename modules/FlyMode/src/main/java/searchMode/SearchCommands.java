@@ -306,9 +306,9 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		}
 		console.addMessage("Total: " + positions.size() + " files contain " + text);
         for (int i = 0; i < positions.size(); i++){
-        	highlightRoof(positions.get(i), widths.get(i), "red");
         	//Color multiple lines
         	CodeBuilding b = CodeBuilding.getCodeBuilding(names.get(i));
+        	CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
         	for (int rowNum = 0; rowNum<lines.get(i).length; rowNum++){
         		if (lines.get(i)[rowNum]){        			
         				CodeBuildingUtil.colorLine(Math.round(rowNum/2) +1, b.getNorthFacePos(), "transparentGreen");
