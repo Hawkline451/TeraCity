@@ -7,7 +7,8 @@ public enum BlockColors {
 	BLOCK_ORANGE("orange"),
 	BLOCK_RED("red"),
 	BLOCK_YELLOW("yellow"),
-	BLOCK_NOTFOUND("notfound");
+	BLOCK_NOTFOUND("notfound"),
+	BLOCK_TRANSP_BLUE("transparentBlue"),;
 	
 	private final String text;
 	

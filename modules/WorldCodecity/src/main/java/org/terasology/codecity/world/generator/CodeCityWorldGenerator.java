@@ -39,7 +39,7 @@ public class CodeCityWorldGenerator extends BaseFacetedWorldGenerator {
 		if (this.path != "") {
 			loader = new CodeCityProjectLoader(this.path);
 		} else {
-			//this.path = "/home/adderou/Projects/MyPacman/";
+			// Default path is the package of WorldCodeCity 
 			this.path = System.getProperty("user.dir") + File.separator + "modules" + File.separator + "WorldCodecity";
 			loader = new CodeCityProjectLoader(this.path);
 		}

@@ -6,7 +6,7 @@
         "contents" : [
             {
                 "type" : "UIImage",
-                "image" : "engine:teracity",
+                "image" : "engine:github",
                 "id" : "title",
                 "layoutInfo" : {
                     "width" : 512,
@@ -37,63 +37,199 @@
                 "verticalSpacing" : 8,
                 "family" : "subtitle",
                 "layoutInfo" : {
-                    "width" : 280,
-                    "height" : 288,
+                    "width" : 500,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "BOTTOM",
-                        "offset" : 16,
+                        "offset" : 0,
                         "widget" : "subtitle"
                     },
                     "position-bottom" : {
-                        "offset" : 32
+                        "target" : "TOP",
+                        "offset" : 10,
+                        "widget" : "close"
                     }
                 },
                 "contents" : [
-                    {
-                        "type" : "UIButton",
-                        "id" : "bugs",
-                        "text" : "Bugs Metrics"
-                    },
-                    {
-                        "type" : "UIButton",
-                        "id" : "versions",
-                        "text" : "Version Metrics"
-                    },
-                    {
-                        "type" : "columnLayout",
-                        "verticalSpacing" : 8,
-                        "horizontalSpacing" : 8,
-                        "columns": 2,
-                        "family" : "option-grid",
-                        "layoutInfo" : {
-                            "width" : 400,
-                            "height" : 80,
-                            "position-horizontal-center" : {},
-                            "position-top" : {
-                                "target": "BOTTOM",
-                                "offset": 20,
-                                "widget" : "subtitle"
-                            }
+                	{
+                        "type" : "UIBox",
+                        "content" : {
+                            "type" : "ColumnLayout",
+                            "family" : "option-grid",
+                            "columns" : 1,
+                            "verticalSpacing" : 8,
+                            "horizontalSpacing" : 8,
+                            "contents" : [
+                            	{
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 2,
+                            		"column-widths" : [0.25, 0.75],
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Project Owner: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id"   : "projectOwner"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Project Name: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id"   : "projectName"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Branch: "
+                                		},
+                                		{
+                                			"type" : "UIText",
+                                			"id" : "branch"
+                                		},
+                                		{
+                                			"type" : "UILabel",
+                                			"text" : "Starting date: "
+                                		},
+                            		]
+                                },
+                                {
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 3,
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                            			{
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Year:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateYear"
+                            					}
+                            				]
+                        				},
+                            			{
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Month:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateMonth"
+                            					}
+                            				]
+                        				},
+                            			{
+                            				"type" : "RowLayout",
+                            				"horizontalSpacing" : 4,
+                            				"contents" : [
+                            					{
+                            						"type" : "UILabel",
+                            						"text" : "Day:"
+                            					},
+                            					{
+                            						"type" : "UIText",
+                            						"id" : "dateDay"
+                            					}
+                            				]
+                        				},
+                        				{
+                        					"type" : "UILabel",
+                        					"text" : ""
+                        				},
+                            			{
+                              				"type" : "UIButton",
+                               				"id" : "log",
+                               				"text" : "Get GitHub\nLog"
+                            			},
+                        				{
+                        					"type" : "UILabel",
+                        					"text" : ""
+                        				}
+                            		]
+                                }
+                            ]
                         },
-                        "contents" : [
-                            {
-                                "type": "UILabel",
-                                "text": "Face to paint: "
-                            },
-                            {
-                                "type": "UIDropdown",
-                                "id": "faceToPaint"
-                            },
-                            {
-                                "type": "UILabel",
-                                "text": "Color Scale: "
-                            },
-                            {
-                                "type": "UIDropdown",
-                                "id": "colorScale"
-                            }
-                        ]
+                        "layoutInfo" : {
+                            "width" : 600,
+                            "position-horizontal-center" : {}
+                        }
+                    },
+                    {
+                        "type" : "UIBox",
+                        "content" : {
+                            "type" : "ColumnLayout",
+                            "family" : "option-grid",
+                            "columns" : 1,
+                            "verticalSpacing" : 8,
+                            "horizontalSpacing" : 8,
+                            "contents" : [
+                                {
+                                	"type" : "ColumnLayout",
+                            		"family" : "option-grid",
+                            		"columns" : 2,
+                            		"column-widths" : [0.25, 0.75],
+                            		"verticalSpacing" : 8,
+                            		"horizontalSpacing" : 8,
+                            		"contents" : [
+                            			{
+                                			"type": "UILabel",
+                                			"text": "Face to paint: "
+                            			},
+                            			{
+                                			"type": "UIDropdown",
+                                			"id": "faceToPaint"
+                            			},
+                            			{
+                                			"type": "UILabel",
+                                			"text": "Color Scale: "
+                            			},
+                            			{
+                                			"type": "UIDropdown",
+                                			"id": "colorScale"
+                            			}
+                            		]
+                                },
+                    			{
+                    				"type" : "ColumnLayout",
+                        			"family" : "option-grid",
+                        			"columns" : 3,
+                        			"verticalSpacing" : 8,
+                        			"horizontalSpacing" : 8,
+                        			"contents" : [
+                    					{
+                       						"type" : "UIButton",
+                       						"id" : "bugs",
+                       						"text" : "Paint Bug Metrics"
+                    					},
+                    					{
+                       						"type" : "UIButton",
+                       						"id" : "versions",
+                       						"text" : "Paint Version Metrics"
+                    					},
+                    					{
+                    						"type" : "UIButton",
+                    						"id" : "difference",
+                    						"text" : "Paint Commit Difference"
+                    					}
+                    				]
+                    			}
+                            ]
+                         }
                     },
                     {
                         "type": "UILabel",

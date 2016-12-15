@@ -1,8 +1,14 @@
 package searchMode;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.terasology.codecity.world.map.CodeMap;
@@ -20,6 +26,7 @@ import org.terasology.logic.console.commandSystem.annotations.Command;
 import org.terasology.logic.console.commandSystem.annotations.CommandParam;
 import org.terasology.logic.permission.PermissionManager;
 import org.terasology.logic.players.PlayerSystem;
+import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.network.ClientComponent;
 import org.terasology.registry.CoreRegistry;
@@ -34,6 +41,7 @@ import org.terasology.world.block.family.BlockFamily;
  * @author mrgcl
  */
 @RegisterSystem
+//public class SearchCommands extends BaseComponentSystem implements ISearchCommands{
 public class SearchCommands extends BaseComponentSystem implements ISearchCommands{
 	@In
 	private Console console;
@@ -53,50 +61,91 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 	private HashMap<String, Vector3i> bookMarks = new HashMap<String, Vector3i>();
 	private HashMap<String, String> bookMarksName = new HashMap<String, String>();
 	
+	private CodeBuilding building;
+	
 	private static final String FLY = "flight";
 	
-	@Command(shortDescription = "Searches for the className building and moves the player " +
-			"towards it if it exists.",
-			requiredPermission = PermissionManager.NO_PERMISSION)
-    public String search(@CommandParam(value="className", required=true)  String className) {
-		String message = "Class not found.";
-		console.addMessage("Starting search...");
-		
-		if(bookMarks.containsKey(className)){
-			Vector3i pos = bookMarks.get(className);
-			putHighlightBlockAt(new Vector3i(pos.getX(), pos.getY()+10, pos.getZ()));
-			String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+15, pos.getZ());
-			console.execute(command, getLocalClientEntity());
-			console.execute(FLY, getLocalClientEntity());
-			message = "Class found, teleporting!";
-			return message;				
-		}
-		
-		
-		CodeMap codeMap = CoreRegistry.get(CodeMap.class);
-		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
-		for(MapObject object : mapObjects){
-			if(object.containsClass(className)){
-				DrawableCodeSearchVisitor visitor = new DrawableCodeSearchVisitor(className);
-				object.getObject().accept(visitor);
-				while(true){
-					if(visitor.resultReady()){
-						Vector3i pos = visitor.getPosition();
-						pos.setY(pos.getY()+10); 
-						putHighlightBlockAt(pos);
-						String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
-						console.execute(command, getLocalClientEntity());
-						console.execute(FLY, getLocalClientEntity());
-						message = "Class found, teleporting!";
-						break;
-					}
-				}
-				break;
-			}	
-		}		
-        return message;
-    }
 	
+	@Command(shortDescription = "Searches for the className building and moves the player " +
+		    "towards it if it exists.",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+		  public String search(@CommandParam(value="className", required=true)  String className) {
+		  String message = "Class not found.";
+		  console.addMessage("Starting search...");
+		  
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          CodeBuildingUtil.restoreModifiedBlocks();
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");		          
+	          String command = String.format("teleport %d %d %d", pos.getX(), pos.getY()+5, pos.getZ());
+	          console.execute(command, getLocalClientEntity());
+	          console.execute(FLY, getLocalClientEntity());		          
+	          message = "Class found, teleporting!";
+		  }	
+	      return message;
+	  }
+	
+	@Command(shortDescription = "Searches for the className building and moves the player " +
+		    "towards it if it exists. Return the code Building",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+	  public void colorBuilding(@CommandParam(value="className", required=true)  String className, 
+			  					@CommandParam(value="color", required=true) String color,
+			  					@CommandParam(value="face", required=true) String face) {
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
+	          if (face.equals("N")){
+	        	  CodeBuildingUtil.color2DArray(b.getNorthFacePos(), color);
+	          }
+	          if (face.equals("S")){
+	        	  CodeBuildingUtil.color2DArray(b.getSouthFacePos(), color);
+	          }
+	          if (face.equals("E")){
+	        	  CodeBuildingUtil.color2DArray(b.getEastFacePos(), color);
+	          }
+	          if (face.equals("W")){
+	        	  CodeBuildingUtil.color2DArray(b.getWestFacePos(), color);
+	          }
+		  }	
+		  this.building = b;
+	  }
+	
+	@Command(shortDescription = "Searches for the className building and moves the player " +
+		    "towards it if it exists. Return the code Building",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+	  public void colorBuildingLine(@CommandParam(value="className", required=true)  String className, 
+			  					@CommandParam(value="color", required=true) String color,
+			  					@CommandParam(value="face", required=true) String face,
+			  					@CommandParam(value="row", required=true) String row) {
+		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
+		  if (b != null){
+	          Vector3i pos = b.getPosition();
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
+	          if (face.equals("N")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getNorthFacePos(), color);
+	          }
+	          if (face.equals("S")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getSouthFacePos(), color);
+	          }
+	          if (face.equals("E")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getEastFacePos(), color);
+	          }
+	          if (face.equals("W")){
+	        	  CodeBuildingUtil.colorLine(Integer.parseInt(row), b.getWestFacePos(), color);
+	          }
+		  }	
+		  this.building = b;
+	  }
+
+
+	@Command(shortDescription = "Restore original blocks that were modified by a command",
+		    requiredPermission = PermissionManager.NO_PERMISSION)
+		 public void cleanBuildings() {  	  
+			CodeBuildingUtil.restoreModifiedBlocks();
+	   	}	
+
 	@Command(shortDescription = "Add a bookmark to a specific Class in format: class bookmark",
 			requiredPermission = PermissionManager.NO_PERMISSION)
     public String addBookmark(@CommandParam(value="className", required=true)  String className, 
@@ -356,7 +405,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     	buildingHighlighted.add(position);
     	highlightWidths.add(width);
 	}
-    
+	
 	/**
 	 * Switch the block, to another block type in a roof.
 	 * @param position position of the CodeRepresentation of the building.
@@ -376,24 +425,51 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     
     
     /**
-     * Cleans all the highlighted buildings
-     */
+	 * Cleans all the highlighted buildings
+	 */
 	@Command(shortDescription = "Cleans all the highlights",
 			requiredPermission = PermissionManager.NO_PERMISSION)
-    public void cleanHighlights(){
-    	BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-    	BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("core", "stone"));
-    	Block block = blockFamily.getArchetypeBlock();
-    	Vector3i currentPos;
-    	Integer width;
-    	for (int i = 0; i < buildingHighlighted.size(); i++){
-    		currentPos = buildingHighlighted.get(i);
-    		width = highlightWidths.get(i);
-    		switchBlock(currentPos, width, block);
-    	}
-    	for (int i = 0; i < buildingHighlighted.size(); i++){
-    		buildingHighlighted.remove(i);
+	public void cleanHighlights(){
+		BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+		BlockFamily blockFamily = blockManager.getBlockFamily(new BlockUri("core", "stone"));
+		Block block = blockFamily.getArchetypeBlock();
+		Vector3i currentPos;
+		Integer width;
+		for (int i = 0; i < buildingHighlighted.size(); i++){
+			currentPos = buildingHighlighted.get(i);
+			width = highlightWidths.get(i);
+			switchBlock(currentPos, width, block);
+		}
+		for (int i = 0; i < buildingHighlighted.size(); i++){
+			buildingHighlighted.remove(i);
 			highlightWidths.remove(i);
-    	}
-    }
+		}
+	}
+	
+	////
+	////
+	//// New Methods for coloring
+	
+	private void readTsvFile(String tsvPath){
+		// This method read a Tsv File and Set data hashtable...
+		Hashtable<String, Integer> data = new Hashtable();
+		String linea;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(tsvPath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			while((linea=br.readLine())!=null){
+				String [] args = linea.split("\t");
+				data.put(args[0], Integer.parseInt(args[1]));
+			}
+			br.close();
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }

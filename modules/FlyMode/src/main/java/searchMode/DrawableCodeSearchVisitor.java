@@ -1,5 +1,6 @@
 package searchMode;
 
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.map.CodeMap;
@@ -26,6 +27,7 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 	private CodeMapFactory codeMapFactory;
 	private String query;
 	private boolean resultReady;
+	int width;
 	
 	public DrawableCodeSearchVisitor(String className){
 		codeScale = new HalfLinearCodeScale();                                                  
@@ -52,6 +54,7 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 				totalY += object.getHeight(codeMapFactory);
 				totalZ += (object.getPositionZ() + 1);
 				totalX += (object.getPositionX() + 1);
+				width = object.getWidth(codeMapFactory);
 				break;
 			}
 			else if(object.containsClass(query)){
@@ -80,4 +83,9 @@ public class DrawableCodeSearchVisitor implements DrawableCodeVisitor{
 	public Vector3i getPosition(){
 		return new Vector3i(totalX, totalY, totalZ);
 	}
+	
+	public int getWidth(){
+		return width;
+	}
+	
 }

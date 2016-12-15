@@ -53,10 +53,7 @@ public class PMDProcessor {
 		sb.append(rootPath);
 		sb.append(" -f ");
 		sb.append(outPutType);
-		sb.append(" -R ");
-		sb.append(pmdRoute);
-		sb.append("Metrics");
-		sb.append(separator);
+		sb.append(" -R rulesets/java/");
 		sb.append(rule);
 		sb.append(".xml");
 		return sb.toString();

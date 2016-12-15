@@ -1,6 +1,7 @@
 package org.terasology.codecity.world.map;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.terasology.codecity.world.structure.scale.CodeScale;
