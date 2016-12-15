@@ -280,6 +280,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
     	CodeMap codeMap = CoreRegistry.get(CodeMap.class);
 		Set<MapObject> mapObjects = codeMap.getPosMapObjects();
 		List<Vector3i> positions = new ArrayList<Vector3i>();
+		List<boolean[]> lines = new ArrayList<boolean[]>();
         List<Integer> widths = new ArrayList<Integer>();
         List<String> names = new ArrayList<String>();
 		DrawableCodeSearchTextVisitor visitor;
@@ -288,22 +289,32 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 			visitor = new DrawableCodeSearchTextVisitor(text);
 			if(object.containsText(text)){
 				object.getObject().accept(visitor);
+				
 				while(true){
 					if(visitor.resultReady()){
 						positions.addAll(visitor.getVectors());
 						widths.addAll(visitor.getWidths());
 						names.addAll(visitor.getNames());
+						lines.addAll(visitor.getLines());
 						break;
 					}
 				}
 			}
 		}
 		for (String name: names){
-			console.addMessage("--> " + name);
+			console.addMessage("--> " + name);			
 		}
 		console.addMessage("Total: " + positions.size() + " files contain " + text);
         for (int i = 0; i < positions.size(); i++){
         	highlightRoof(positions.get(i), widths.get(i), "red");
+        	//Color multiple lines
+        	CodeBuilding b = CodeBuilding.getCodeBuilding(names.get(i));
+        	for (int rowNum = 0; rowNum<lines.get(i).length; rowNum++){
+        		if (lines.get(i)[rowNum]){        			
+        				CodeBuildingUtil.colorLine(Math.round(rowNum/2) +1, b.getNorthFacePos(), "transparentGreen");
+        		}
+        		//console.addMessage(lines.get(i).toString() + "  asd  " + names.get(i));
+        	}
         }
     }
     

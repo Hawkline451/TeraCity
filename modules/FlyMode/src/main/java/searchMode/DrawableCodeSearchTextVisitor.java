@@ -24,6 +24,7 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 	private List<Integer> Xs;
 	private List<Integer> Zs;
 	private List<Integer> widths;
+	private List<boolean[]> searchLines;
 	private List<String> names;
 	private CodeMapFactory codeMapFactory;
 	private String query;
@@ -39,6 +40,7 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 		Zs = new ArrayList<Integer>();
 		widths = new ArrayList<Integer>();
 		names = new ArrayList<String>();
+		searchLines = new ArrayList<boolean[]>();
 	}
 	
 
@@ -61,6 +63,7 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 				
 				names.add(object.toString());
 				widths.add(object.getWidth(codeMapFactory));
+				searchLines.add(object.hasTextLines(query));
 			}
 			else if(object.containsText(query)){
 				int auxY, auxZ, auxX;
@@ -107,5 +110,9 @@ public class DrawableCodeSearchTextVisitor implements DrawableCodeVisitor {
 	
 	public List<String> getNames(){
 		return names;
+	}
+	
+	public List<boolean[]> getLines(){
+		return searchLines;
 	}
 }
