@@ -66,7 +66,7 @@ public class PMDCommand extends BaseComponentSystem{
 			+ "unnecessary\n"
 			+ "unusedcode",
             requiredPermission = PermissionManager.NO_PERMISSION)
-    public String pmdColoring(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules) throws IOException
+    public String pmdAnalysis(@CommandParam(value = "sourcePath",required = true) String sourcePath,@CommandParam(value="rules",required=false) String rules) throws IOException
     {
     	if (rules == null) rules = "basic";
     	String outPutType = "text";

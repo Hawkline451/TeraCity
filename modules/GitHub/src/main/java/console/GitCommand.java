@@ -53,6 +53,7 @@ public class GitCommand extends BaseComponentSystem{
     
 	public static Hashtable<String, Integer> data;
 	public static HashMap<String, Integer> gitCommits;
+	public static HashMap<String, ArrayList<Integer>> dataPMD;
 	public static Hashtable<String, ArrayList<Integer>> datafindBugs;
 
 	public static String metrica;
@@ -134,7 +135,6 @@ public class GitCommand extends BaseComponentSystem{
         			parameters.add("transparentGreen"); 
         		}
         		//parameters.add("transparentGreen"); 
-        		        System.out.println(maxCommit+" "+gitCommits.get(key)+"\n\n\n");		
         		parameters.add("W");
         		
         		parameters2.add(key);
@@ -146,14 +146,11 @@ public class GitCommand extends BaseComponentSystem{
         			//githubColoring TeraCity_master
         			//colorRow.execute(parameters2, ent);
         		}
-        		
         		catch(Exception e){
         			continue;
         		}
         		gitCommits.get(key);
-    		}
-    		
-    		
+    		}    		
     		
     }
     private static void readTsvFile(String name){
@@ -162,7 +159,7 @@ public class GitCommand extends BaseComponentSystem{
  		String linea;
  		BufferedReader br = null;
  		
- 		data = new Hashtable<String, Integer>();
+ 		gitCommits = new HashMap<String, Integer>();
  		try {
  			br = new BufferedReader(new FileReader(tsvPath));
  		} catch (FileNotFoundException e) {
@@ -171,8 +168,7 @@ public class GitCommand extends BaseComponentSystem{
  		try {
  			while((linea=br.readLine())!=null){
  				String [] args = linea.split("\t");
- 				data.put(args[0], Integer.parseInt(args[1]));
- 				
+ 				gitCommits.put(args[0], Integer.parseInt(args[1])); 				
  			}
  			br.close();
  		} catch (NumberFormatException | IOException e) {
@@ -237,11 +233,77 @@ public class GitCommand extends BaseComponentSystem{
 			while((linea=br.readLine())!=null){
 				String [] args = linea.split("\t");
 
-				gitCommits.put(args[0], Integer.parseInt(args[1]));
 				ArrayList<Integer> temp = new ArrayList<Integer>();
 				for (int i = 1; i < args.length; i++) {
 					temp.add(Integer.parseInt(args[i]));
 					datafindBugs.put(args[0],temp);
+				}
+				
+			}
+			br.close();
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+    
+    @Command(shortDescription = "Activate the PMD metrics",
+    		helpText = "Read (metric).tsv TSV with the line that presents bug on each file\n"
+    				+ " so it uses the last PMD analysis with a selected metric",
+            requiredPermission = PermissionManager.NO_PERMISSION)
+    public void pmdColoring( @CommandParam(value="metric", required=true) String metric
+    		) throws IOException, CommandExecutionException {
+    	
+    		ConsoleCommand colorRow = console.getCommand(new Name("colorBuildingLine"));
+    		EntityRef ent = null;
+     		
+    		readPMDTsvFile(metric);
+    		Set<String> keys = dataPMD.keySet();
+    		
+    		for (String key:keys){
+        		ArrayList<String> parameters = new ArrayList<String>();
+        		
+        		parameters.add(key);        		
+        		parameters.add("transparentYellow");        		
+        		parameters.add("E");
+        		console.addMessage("Coloring on " + key + ", east Face");
+        		for (int i : dataPMD.get(key)) {
+        			if (i != -1) {
+        				// Math.round(i/2.0) to higlight the good one
+        				parameters.add(String.valueOf(Math.round(i/2.0)));
+        				console.addMessage("Coloring line " + Math.round(i/2.0));
+        			}        			 
+        		}
+        		try{
+        			colorRow.execute(parameters, ent);
+        		}
+        		catch(Exception e){
+        			continue;
+        		}
+    		}	
+    }
+    
+    private static void readPMDTsvFile(String type){
+		// This method read a Tsv File and Set data hashtable...
+    	String tsvPath = "modules/PMDColoring/results/"+type+".tsv";
+		String linea;
+		BufferedReader br = null;
+		
+		dataPMD = new HashMap<String, ArrayList<Integer>>();
+
+		try {
+			br = new BufferedReader(new FileReader(tsvPath));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			while((linea=br.readLine())!=null){
+				String [] args = linea.split("\t");
+				ArrayList<Integer> temp = new ArrayList<Integer>();
+				for (int i = 1; i < args.length; i++) {
+					temp.add(Integer.parseInt(args[i]));
+					dataPMD.put(args[0],temp);
 				}
 				
 			}
