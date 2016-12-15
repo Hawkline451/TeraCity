@@ -191,27 +191,27 @@ public class GitCommand extends BaseComponentSystem{
     		Set<String> keys = datafindBugs.keySet();
     		
     		for (String key:keys){
-        		ArrayList<String> parameters = new ArrayList<String>();
-        		
-        		parameters.add(key);        		
-        		parameters.add("transparentRed");        		
-        		parameters.add("S");
+    			ArrayList<String> parameters = null;
         		console.addMessage("Coloring on " + key + ", south face");
         		for (int i : datafindBugs.get(key)) {
+        			
+        			parameters = new ArrayList<String>();        		
+            		parameters.add(key);        		
+            		parameters.add("transparentRed");        		
+            		parameters.add("S");
         			// Don not color the general problems proper to one class at now
         			if (i != -1) {
         				// Math.round(i/2.0) to higlight the good one
         				parameters.add(String.valueOf(Math.round(i/2.0)));
         				console.addMessage("Coloring line " + Math.round(i/2.0));
-        			}
-        			 
-        		}
-        		try{
-        			colorRow.execute(parameters, ent);
-        		}
-        		catch(Exception e){
-        			continue;
-        		}
+        				try{
+                			colorRow.execute(parameters, ent);
+                		}
+                		catch(Exception e){
+                			continue;
+                		}
+        			}        			 
+        		}        		
     		}	
     }
     
@@ -261,26 +261,27 @@ public class GitCommand extends BaseComponentSystem{
     		readPMDTsvFile(metric);
     		Set<String> keys = dataPMD.keySet();
     		
-    		for (String key:keys){
-        		ArrayList<String> parameters = new ArrayList<String>();
-        		
-        		parameters.add(key);        		
-        		parameters.add("transparentYellow");        		
-        		parameters.add("E");
+    		for (String key:keys){        	        		
         		console.addMessage("Coloring on " + key + ", east Face");
-        		for (int i : dataPMD.get(key)) {
+    			ArrayList<String> parameters = null;
+
+        		for (int i : dataPMD.get(key)) {        			
+        			parameters = new ArrayList<String>();        		
+            		parameters.add(key);        		
+            		parameters.add("transparentYellow");        		
+            		parameters.add("E");
         			if (i != -1) {
         				// Math.round(i/2.0) to higlight the good one
         				parameters.add(String.valueOf(Math.round(i/2.0)));
         				console.addMessage("Coloring line " + Math.round(i/2.0));
+        				try{
+                			colorRow.execute(parameters, ent);
+                		}
+                		catch(Exception e){
+                			continue;
+                		}
         			}        			 
-        		}
-        		try{
-        			colorRow.execute(parameters, ent);
-        		}
-        		catch(Exception e){
-        			continue;
-        		}
+        		}        		
     		}	
     }
     
