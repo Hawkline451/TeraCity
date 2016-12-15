@@ -30,9 +30,14 @@ import org.terasology.rendering.nui.WidgetUtil;
 import org.terasology.rendering.nui.widgets.ActivateEventListener;
 import org.terasology.rendering.nui.widgets.UIDropdown;
 import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.rendering.nui.widgets.UIText;
 
 import com.google.common.collect.Lists;
 
+/**
+ * PMD Coloring UI Manager.
+ *
+ */
 public class PMDMenuScreen extends CoreScreenLayer {
 
     @In
@@ -44,8 +49,27 @@ public class PMDMenuScreen extends CoreScreenLayer {
     @Override
     @SuppressWarnings("unchecked")
     public void initialise() {
-        
-
+    	
+    	final UIText filePath = find("filePath", UIText.class);
+    	final UIText metricText = find("metric", UIText.class);
+    	
+    	WidgetUtil.trySubscribe(this, "analyze", new ActivateEventListener() {
+			@Override
+			public void onActivated(UIWidget widget) {
+				String path = filePath.getText();
+				String metric = metricText.getText();
+				executeAnalysisCommand(path, metric);
+			}
+    	});
+    	
+    	WidgetUtil.trySubscribe(this, "paint", new ActivateEventListener() {
+    		@Override
+    		public void onActivated(UIWidget widget) {
+    			String metric = metricText.getText();
+    			executeColoringCommand(metric);
+    		}
+    	});
+    	/*
     	final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
         if (faceToPaint != null) {
             faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
@@ -165,28 +189,44 @@ public class PMDMenuScreen extends CoreScreenLayer {
             	getManager().popScreen();
             }
         });
+        */
     }
     
-    private void executeCommand(String metric, FaceToPaint face, ColorScale color) {
-    	
-    	// manage invalid face selections
-    	final UILabel infoField = find("infoField", UILabel.class);
-    	if (face == null || color == null) {
-    		infoField.setText("Warning: Please choose a face and a color to paint!");
+    private void executeAnalysisCommand(String path, String metric) {
+    	if (path.equals("")) {
+//    		infoField.setText("Warning: a file path is required to analyze!");
+    		return;
+    	} else if (metric.equals("")) {
+//    		infoField.setText("Warning: you need to write a valid metric!");
     		return;
     	}
-    	infoField.setText("");
+//    	infoField.setText("");
+    	ConsoleCommand ca = console.getCommand(new Name("pmdAnalysis"));
+    	ArrayList<String> params = new ArrayList<String>();
+    	params.add(path);
+    	params.add(metric);
+    	try {
+    		ca.execute(params, EntityRef.NULL);
+    	} catch (CommandExecutionException e) {
+    		// Potato
+    	}
+    }
+    
+    private void executeColoringCommand(String metric) {
+    	if (metric.equals("")) {
+//    		infoField.setText("Warning: you need to write a valid metric!");
+    		return;
+    	}
+//    	infoField.setText("");
     	
-    	// send paint command
-    	ConsoleCommand ca = console.getCommand(new Name("paintWithPMD"));
+    	ConsoleCommand ca = console.getCommand(new Name("pmdColoring"));
     	ArrayList<String> params = new ArrayList<String>();
     	params.add(metric);
-    	params.add(face.toString());
-    	params.add(color.toString());
     	try {
-			ca.execute(params, EntityRef.NULL);
-		} catch (CommandExecutionException e1) {
-		}
+    		ca.execute(params, EntityRef.NULL);
+    	} catch (CommandExecutionException e) {
+    		// More potatoes
+    	}
     }
 
     @Override
