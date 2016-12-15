@@ -95,7 +95,7 @@ public class SearchCommands extends BaseComponentSystem implements ISearchComman
 		  CodeBuilding b = CodeBuilding.getCodeBuilding(className);
 		  if (b != null){
 	          Vector3i pos = b.getPosition();
-	          CodeBuildingUtil.color2DArray(b.getRoofPos(), color);
+	          CodeBuildingUtil.color2DArray(b.getRoofPos(), "red");
 	          if (face.equals("N")){
 	        	  CodeBuildingUtil.color2DArray(b.getNorthFacePos(), color);
 	          }

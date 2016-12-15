@@ -23,7 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +52,7 @@ public class GitCommand extends BaseComponentSystem{
     //private final CodeMapFactory factory = new CodeMapFactory(scale);
     
 	public static Hashtable<String, Integer> data;
+	public static HashMap<String, Integer> gitCommits;
 	public static String metrica;
 	@In
 	private Console console;
@@ -102,16 +106,33 @@ public class GitCommand extends BaseComponentSystem{
     		ConsoleCommand colorFace = console.getCommand(new Name("colorBuilding"));
     		ConsoleCommand colorRow = console.getCommand(new Name("colorBuildingLine"));
     		EntityRef ent = null;
+    		
+    		//int maxCommit = Collections.max(gitCommits.values());
      		
     		readTsvFile(tsvName);
-    		Set<String> keys = data.keySet();
+    		Set<String> keys = gitCommits.keySet();
+    		int maxCommit = Collections.max((gitCommits.values()));
     		
     		for (String key:keys){
         		ArrayList<String> parameters = new ArrayList<String>();
         		ArrayList<String> parameters2 = new ArrayList<String>();
         		
-        		parameters.add(key);        		
-        		parameters.add("transparentRed");        		
+        		parameters.add(key);
+        		
+        		if (gitCommits.get(key)<=(maxCommit*0.3)){
+        			parameters.add("transparentBlue");  
+        		}
+        		else if (gitCommits.get(key)>(maxCommit*0.3) && gitCommits.get(key)<=(maxCommit*0.6)){
+        			parameters.add("transparentYellow");  
+        		}
+        		else if (gitCommits.get(key)>(maxCommit*0.6) && gitCommits.get(key)<=(maxCommit)){
+        			parameters.add("transparentRed");  
+        		}
+        		else{
+        			parameters.add("transparentGreen"); 
+        		}
+        		//parameters.add("transparentGreen"); 
+        		        System.out.println(maxCommit+" "+gitCommits.get(key)+"\n\n\n");		
         		parameters.add("W");
         		
         		parameters2.add(key);
@@ -120,12 +141,14 @@ public class GitCommand extends BaseComponentSystem{
         		parameters2.add("4");
         		try{
         			colorFace.execute(parameters, ent);
-        			colorRow.execute(parameters2, ent);
+        			//githubColoring TeraCity_master
+        			//colorRow.execute(parameters2, ent);
         		}
+        		
         		catch(Exception e){
         			continue;
         		}
-    			data.get(key);
+        		gitCommits.get(key);
     		}
     		
     		
@@ -137,7 +160,7 @@ public class GitCommand extends BaseComponentSystem{
 		String linea;
 		BufferedReader br = null;
 		
-		data = new Hashtable<String, Integer>();
+		gitCommits = new HashMap<String, Integer>();
 		try {
 			br = new BufferedReader(new FileReader(tsvPath));
 		} catch (FileNotFoundException e) {
@@ -146,7 +169,7 @@ public class GitCommand extends BaseComponentSystem{
 		try {
 			while((linea=br.readLine())!=null){
 				String [] args = linea.split("\t");
-				data.put(args[0], Integer.parseInt(args[1]));
+				gitCommits.put(args[0], Integer.parseInt(args[1]));
 				
 			}
 			br.close();
