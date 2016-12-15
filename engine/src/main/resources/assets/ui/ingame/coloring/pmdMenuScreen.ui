@@ -21,7 +21,7 @@
             {
                 "type": "UILabel",
                 "family": "title",
-                "text": "Available Metrics: ",
+                "text": "Paint your city with PMD metrics! ",
                 "id": "subtitle",
                 "layoutInfo": {
                     "height": 20,
@@ -35,172 +35,87 @@
             },
             {
                 "type" : "columnLayout",
-                "id" : "metrics",
-                "verticalSpacing" : 40,
-                "horizontalSpacing" : 8,
-                "columns": 1,
-                "family" : "menu-options",
+                "verticalSpacing" : 8,
+                "family" : "subtitle",
                 "layoutInfo" : {
-                    "width" : 600,
-                    "height" : 350,
+                    "width" : 500,
                     "position-horizontal-center" : {},
                     "position-top" : {
                         "target" : "BOTTOM",
-                        "offset" : 20,
+                        "offset" : 0,
                         "widget" : "subtitle"
+                    },
+                    "position-bottom" : {
+                        "target" : "TOP",
+                        "offset" : 10,
+                        "widget" : "close"
                     }
                 },
                 "contents" : [
+                
                     {
-                        "type" : "columnLayout",
-                        "id" : "columnComments",
-                        "verticalSpacing" : 10,
-                        "horizontalSpacing" : 8,
-                        "columns": 1,
-                        "family" : "menu-options",
-                        "contents" : [
-                            {
-                                "type" : "UIButton",
-                                "id" : "comments",
-                                "text" : "Comments"
-                            },
-                            {
-                                "type" : "columnLayout",
-                                "id" : "commentsmetrics",
-                                "verticalSpacing" : 8,
-                                "horizontalSpacing" : 8,
-                                "columns": 3,
-                                "family" : "menu-options",
-                                "contents" : [
-                                    {
-                                        "id" : "commentrequired",
-                                        "type" : "UIButton",
-                                        "text" : "CommentRequired"
-                                    },
-                                    {
-                                        "id" : "commentsize",
-                                        "type" : "UIButton",
-                                        "text" : "CommentSize"
-                                    },
-                                    {
-                                        "id" : "commentcontent",
-                                        "type" : "UIButton",
-                                        "text" : "CommentContent"
-                                    }
-                                ]
-                            }
-                        ]
+                        "type" : "UISpace",
+                        "size" : [1, 8]
                     },
                     {
-                        "type" : "columnLayout",
-                        "id" : "columnCodesize",
-                        "verticalSpacing" : 10,
-                        "horizontalSpacing" : 8,
-                        "columns": 1,
-                        "family" : "menu-options",
-                        "contents" : [
-                            {
-                                "type" : "UIButton",
-                                "id" : "codesize",
-                                "text" : "CodeSize"
-                            },
-                            {
-                                "type" : "columnLayout",
-                                "id" : "codesizemetrics",
-                                "verticalSpacing" : 8,
-                                "horizontalSpacing" : 8,
-                                "columns": 3,
-                                "family" : "menu-options",
-                                "contents" : [
-                                    {
-                                        "id" : "npathcomplexity",
-                                        "type" : "UIButton",
-                                        "text" : "NPathComplexity"
-                                    },
-                                    {
-                                        "id" : "cyclomaticcomplexity",
-                                        "type" : "UIButton",
-                                        "text" : "CyclomaticComplexity"
-                                    },
-                                    {
-                                        "id" : "toomanymethods",
-                                        "type" : "UIButton",
-                                        "text" : "TooManyMethods"
-                                    }
-                                ]
-                            }
-                        ]
+                    	"type" : "UIBox",
+                    	"content" : 
+		                	{
+		                		"type" : "UILabel",
+		                		"text" : "Available metrics: android, basic, braces, clone, codesize, comments, controversial, coupling, design, empty, finalizers, imports, j2ee, javabeans, junit, logging-jakarta-commons, logging-java, migrating, migrating_to_13, migrating_to_14, migrating_to_15, migrating_to_junit4, naming, optimizations, strictexception, strings, sunsecure, typeresolution, unnecessary, unusedcode. If none is written, basic is done by default."
+		                	}
+                    },
+		            {
+		                "type" : "UISpace",
+		                "size" : [1, 8]
+		            },
+                    {
+	                   	"type" : "ColumnLayout",
+	                    "family" : "option-grid",
+	                    "columns" : 2,
+                        "column-widths" : [0.2, 0.8],
+	                    "verticalSpacing" : 8,
+	                    "horizontalSpacing" : 8,
+	                    "contents" : [
+	                     	{
+	                      		"type" : "UILabel",
+	                       		"text" : "File path: "
+	                      	},
+	                       	{
+	                       		"type" : "UIText",
+	                       		"id" : "filePath"
+	                       	},
+	                       	{
+	                       		"type" : "UILabel",
+	                       		"text" : "Metric: "
+	                       	},
+	                       	{
+	                       		"type" : "UIText",
+	                       		"id" : "metric"
+	                       	}
+	                    ]
+	                },
+                    {
+                    	"type" : "RowLayout",
+                    	"horizontalSpacing" : 4,
+                    	"contents" : [
+                    		{
+                    			"type" : "UIButton",
+                    			"text" : "Start Analysis",
+                    			"id" : "analyze"
+                    		},
+                    		{
+                    			"type" : "UIButton",
+                    			"text" : "Paint with PMD",
+                    			"id" : "paint"
+                    		}
+                    	]
                     },
                     {
-                        "type" : "columnLayout",
-                        "id" : "columnCoupling",
-                        "verticalSpacing" : 8,
-                        "horizontalSpacing" : 8,
-                        "columns": 1,
-                        "family" : "menu-options",
-                        "contents" : [
-                            {
-                                "type" : "UIButton",
-                                "id" : "coupling",
-                                "text" : "Coupling"
-                            },
-                            {
-                                "type" : "columnLayout",
-                                "id" : "couplingmetrics",
-                                "verticalSpacing" : 8,
-                                "horizontalSpacing" : 8,
-                                "columns": 3,
-                                "family" : "menu-options",
-                                "contents" : [
-                                    {
-                                        "id" : "couplingbetweenobjects",
-                                        "type" : "UIButton",
-                                        "text" : "CouplingBetweenObjects"
-                                    },
-                                    {
-                                        "id" : "excessiveimports",
-                                        "type" : "UIButton",
-                                        "text" : "ExcessiveImports"
-                                    },
-                                    {
-                                        "id" : "lawofdemeter",
-                                        "type" : "UIButton",
-                                        "text" : "LawOfDemeter"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type" : "columnLayout",
-                        "verticalSpacing" : 8,
-                        "horizontalSpacing" : 8,
-                        "columns": 2,
-                        "family" : "option-grid",
-                        "contents" : [
-                            {
-                                "type": "UILabel",
-                                "text": "Face to paint: "
-                            },
-                            {
-                                "type": "UIDropdown",
-                                "id": "faceToPaint"
-                            },
-                            {
-                                "type": "UILabel",
-                                "text": "Color Scale: "
-                            },
-                            {
-                                "type": "UIDropdown",
-                                "id": "colorScale"
-                            },
-                            {
-                                "type": "UILabel",
-                                "id"  : "infoField",
-                                "text": ""  
-                            }
-                        ]
-                    }
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
+                    }  
                 ]
             },
             {
