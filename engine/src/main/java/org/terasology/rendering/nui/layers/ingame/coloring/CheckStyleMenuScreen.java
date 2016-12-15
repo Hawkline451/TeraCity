@@ -123,7 +123,7 @@ public class CheckStyleMenuScreen extends CoreScreenLayer {
     	// manage invalid face selections
     	final UILabel infoField = find("infoField", UILabel.class);
     	if (face == null || color == null) {
-    		infoField.setText("waning: please choose a face and a color to paint!");
+    		infoField.setText("Warning: Please choose a face and a color to paint!");
     		return;
     	}
     	infoField.setText("");
