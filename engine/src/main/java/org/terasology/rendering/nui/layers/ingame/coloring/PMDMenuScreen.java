@@ -40,6 +40,12 @@ import com.google.common.collect.Lists;
  */
 public class PMDMenuScreen extends CoreScreenLayer {
 
+	private final ArrayList<String> validMetrics = Lists.newArrayList("android", "basic", "braces", "clone",
+			"codesize", "comments", "controversial", "coupling", "design", "empty", "finalizers", "imports",
+			"j2ee", "javabeans", "junit", "logging-jakarta-commons", "logging-java", "migrating",
+			"migrating_to_13", "migrating_to_14", "migrating_to_15", "migrating_to_junit4", "naming",
+			"optimizations", "strictexception", "strings", "sunsecure", "typeresolution", "unnecessary",
+			"unusedcode");
     @In
     private Config config;
     
@@ -49,7 +55,8 @@ public class PMDMenuScreen extends CoreScreenLayer {
     @Override
     @SuppressWarnings("unchecked")
     public void initialise() {
-    	
+
+    	final UILabel infoField = find("infoField", UILabel.class);
     	final UIText filePath = find("filePath", UIText.class);
     	final UIText metricText = find("metric", UIText.class);
     	
@@ -58,7 +65,7 @@ public class PMDMenuScreen extends CoreScreenLayer {
 			public void onActivated(UIWidget widget) {
 				String path = filePath.getText();
 				String metric = metricText.getText();
-				executeAnalysisCommand(path, metric);
+				executeAnalysisCommand(path, metric, infoField);
 			}
     	});
     	
@@ -66,121 +73,10 @@ public class PMDMenuScreen extends CoreScreenLayer {
     		@Override
     		public void onActivated(UIWidget widget) {
     			String metric = metricText.getText();
-    			executeColoringCommand(metric);
+    			executeColoringCommand(metric, infoField);
     		}
     	});
-    	/*
-    	final UIDropdown<FaceToPaint> faceToPaint = find("faceToPaint", UIDropdown.class);
-        if (faceToPaint != null) {
-            faceToPaint.setOptions(Lists.newArrayList(FaceToPaint.ALL, FaceToPaint.NORTH, FaceToPaint.EAST, FaceToPaint.WEST, FaceToPaint.SOUTH));
-        }
-        
-        final UIDropdown<ColorScale> colorScale = find("colorScale", UIDropdown.class);
-        if (colorScale != null) {
-        	colorScale.setOptions(Lists.newArrayList(ColorScale.RAINBOW,ColorScale.RED, ColorScale.ORANGE,ColorScale.YELLOW,ColorScale.GREEN,ColorScale.BLUE));
-        }
-        
-        // displays info to the user: warnings, errors, ...
-        final UILabel infoField = find("infoField", UILabel.class);
-        
-        WidgetUtil.trySubscribe(this, "comments", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("comments", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "commentrequired", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("commentrequired", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "commentsize", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("commentsize", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "commentcontent", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("commentcontent", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "codesize", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("codesize", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "npathcomplexity", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("npathcomplexity", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "cyclomaticcomplexity", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("cyclomaticcomplexity", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "toomanymethods", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("toomanymethods", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "coupling", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("coupling", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "couplingbetweenobjects", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("couplingbetweenobjects", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "excessiveimports", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("excessiveimports", face, color);
-            }
-        });
-        WidgetUtil.trySubscribe(this, "lawofdemeter", new ActivateEventListener() {
-            @Override
-            public void onActivated(UIWidget widget) {
-            	FaceToPaint face = faceToPaint.getSelection();
-            	ColorScale color = colorScale.getSelection();
-            	executeCommand("lawofdemeter", face, color);
-            }
-        });
-        
-        
+    	
         WidgetUtil.trySubscribe(this, "close", new ActivateEventListener() {
             @Override
             public void onActivated(UIWidget button) {
@@ -189,18 +85,18 @@ public class PMDMenuScreen extends CoreScreenLayer {
             	getManager().popScreen();
             }
         });
-        */
     }
     
-    private void executeAnalysisCommand(String path, String metric) {
+    private void executeAnalysisCommand(String path, String metric, UILabel infoField) {
     	if (path.equals("")) {
-//    		infoField.setText("Warning: a file path is required to analyze!");
+    		infoField.setText("Warning: You have to write a file path!");
     		return;
-    	} else if (metric.equals("")) {
-//    		infoField.setText("Warning: you need to write a valid metric!");
+    	} else if (metric.equals("") || !validMetrics.contains(metric)) {
+    		infoField.setText("Warning: The given metric is not valid!");
     		return;
     	}
-//    	infoField.setText("");
+    	infoField.setText("");
+    	
     	ConsoleCommand ca = console.getCommand(new Name("pmdAnalysis"));
     	ArrayList<String> params = new ArrayList<String>();
     	params.add(path);
@@ -209,15 +105,17 @@ public class PMDMenuScreen extends CoreScreenLayer {
     		ca.execute(params, EntityRef.NULL);
     	} catch (CommandExecutionException e) {
     		// Potato
+    		infoField.setText("Something went wrong!");
+    		return;
     	}
     }
     
-    private void executeColoringCommand(String metric) {
-    	if (metric.equals("")) {
-//    		infoField.setText("Warning: you need to write a valid metric!");
+    private void executeColoringCommand(String metric, UILabel infoField) {
+    	if (metric.equals("") || !validMetrics.contains(metric)) {
+    		infoField.setText("Warning: The given metric is not valid!");
     		return;
     	}
-//    	infoField.setText("");
+    	infoField.setText("");
     	
     	ConsoleCommand ca = console.getCommand(new Name("pmdColoring"));
     	ArrayList<String> params = new ArrayList<String>();
@@ -226,6 +124,8 @@ public class PMDMenuScreen extends CoreScreenLayer {
     		ca.execute(params, EntityRef.NULL);
     	} catch (CommandExecutionException e) {
     		// More potatoes
+    		infoField.setText("Something went wrong!");
+    		return;
     	}
     }
 

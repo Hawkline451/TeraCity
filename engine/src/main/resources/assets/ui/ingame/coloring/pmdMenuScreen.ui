@@ -110,7 +110,12 @@
                     			"id" : "paint"
                     		}
                     	]
-                    }
+                    },
+                    {
+                        "type": "UILabel",
+                        "id"  : "infoField",
+                        "text": ""
+                    }  
                 ]
             },
             {
