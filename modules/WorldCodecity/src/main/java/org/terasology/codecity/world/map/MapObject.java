@@ -169,6 +169,13 @@ public class MapObject implements IMapObject {
 			return false;
 		return ast.contains(query);
 	}
+	
+	public boolean[] hasTextLines(String query) {
+	  AST ast = object.getBase().getAst();
+	  if (ast == null)
+	    return null;
+	  return ast.containsLines(query);
+	}
 
 	/**
 	 * Checks if object is in the pack <code>import</code>

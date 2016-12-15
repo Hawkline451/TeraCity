@@ -78,6 +78,15 @@ public class AST extends VoidVisitorAdapter<Object> {
 	public boolean contains(String text) {
 		return cu.toString().contains(text);
 	}
+	
+	public boolean[] containsLines(String text) {
+	  String[] lines = cu.toString().split("\n");
+	  boolean[] foundrows = new boolean[lines.length];
+	  for (int i = 0; i < foundrows.length; i++) {
+	    foundrows[i] = lines[i].contains(text);
+	  }
+	  return foundrows;
+	}
 
 	/**
 	 * @return Methods calls made in code
